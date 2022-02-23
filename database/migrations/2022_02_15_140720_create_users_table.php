@@ -21,11 +21,11 @@ class CreateUsersTable extends Migration
             $table->bigInteger('role_id')->unsigned();
             $table->foreign('role_id')->references('id')->on('role');
             $table->string('name');
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('password');
             $table->bigInteger('phoneNumber')->default(12);
-            $table->string('city');
-            $table->string('country');
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
             $table->longText('address');
             $table->tinyInteger('gender');
             $table->tinyInteger('status');
