@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClinicController;
+use App\Http\Controllers\LoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +20,14 @@ Route::get('/', function () {
     return view('login.login');
 });
 
-Route::get('/clinic-name', function () {
+Route::get('clinic-name', function () {
     return view('registration.clinic_name');
 })->name('clinic-name');
 
-Route::get('/register-clinic', function () {
+Route::get('register-clinic', function () {
     return view('registration.clinic_registration');
 })->name('register-clinic');
+
+Route::post('register-clinic',[ClinicController::class, 'register'])->name('clinic.register');
+
+Route::post('login',[LoginController::class, 'login'])->name('login');
