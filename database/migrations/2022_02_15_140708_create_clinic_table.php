@@ -23,10 +23,11 @@ class CreateClinicTable extends Migration
             $table->text('address');
             $table->tinyInteger('status')->default('1');
             $table->integer('package_id');
+            $table->timestamp('package_purchased_date')->nullable();
+            $table->integer('package_purchased_times')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
-
         });
     }
 
