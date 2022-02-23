@@ -17,12 +17,12 @@ class CreatePackageTable extends Migration
             $table->id();
             $table->string('type');
             $table->string('name');
-            $table->string('price');
-            $table->integer('trialPeriod');
-            $table->tinyInteger('isDiscount');
-            $table->integer('discountPercentage');
-            $table->datetime('discountStartDate');
-            $table->datetime('discountEndDate');
+            $table->string('price')->default('0');
+            $table->integer('trialPeriod')->nullable();
+            $table->tinyInteger('isDiscount')->default(0);
+            $table->integer('discountPercentage')->nullable();
+            $table->datetime('discountStartDate')->nullable();
+            $table->datetime('discountEndDate')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
