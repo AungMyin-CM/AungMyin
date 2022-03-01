@@ -1,6 +1,6 @@
 ## Clone the repo
 
-# copy .env.example to .env ( create your won )
+# copy .env.example to .env new file
 
 # php artisan key:generate  
 
