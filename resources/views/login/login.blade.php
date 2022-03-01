@@ -1,4 +1,6 @@
-@include('layouts.app')
+@extends('layouts.app')
+
+@section('content')
 <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
@@ -72,8 +74,8 @@
         <!-- /.login-card-body -->
       </div>
     </div>
+</body>
     <!-- /.login-box -->
     
     <!-- jQuery -->
-    @extends('layouts.js')
-</body>
+@endsection

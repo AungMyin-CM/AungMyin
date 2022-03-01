@@ -26,3 +26,14 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 </head>
+
+
+
+@auth
+  @include('layouts.navbar')
+  @include('layouts.sidebar')
+@endauth
+
+  @yield('content')
+
+  @include('layouts.js')

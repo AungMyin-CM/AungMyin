@@ -1,0 +1,4 @@
+[
+    {"key":"pr-1","value":"{doctor: {p-create, p-edit, p-delete, p-show, d-create, d-edit, d-delete, d-show}, "},
+    {"key":"pr-2","value":"{doctor: {p-create, p-edit, p-delete, p-show, d-create, d-edit, d-delete, d-show}, staff: {p-create, p-edit, p-delete, p-show}}"}
+]

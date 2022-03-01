@@ -28,11 +28,11 @@ class CreateUsersTable extends Migration
             $table->string('country')->nullable();
             $table->longText('address');
             $table->tinyInteger('gender');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->string('lastest_ip')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
