@@ -25,7 +25,7 @@ class LoginController extends Controller
                 $userCredentials = $request->only('code', 'password');
 
                 if(Auth::attempt($userCredentials)){
-                    echo "Hello";
+                    return redirect('/clinic-home')->with('message', "");
                 }else{
                     return redirect('/')->with('message', "Invalid Credentials");
                 }
