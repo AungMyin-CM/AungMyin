@@ -16,48 +16,34 @@ class ClinicController extends Controller
 {
     public function index()
     {
-        $userData = User::all();
+        $userData = User::where('clinic_id', Auth::guard('clinic')->user()['id'])->get();
         return view('user/index')->with('data',$userData);
     }
 
     public function register(RegisterRequest $request) 
     {
         $clinic = Clinic::create($request->validated());
-        return redirect('/')->with('success', "Clinic successfully registered.");
+        return redirect('/clinic-login')->with('success', "Clinic successfully registered.");
     }
 
     public function newUser(){
-        $id = Clinic::where('id', auth()->user()->id)->pluck('package_id')->first();
-        $package_id= "pr-".$id;
-       // $data = Master::where('key', $package_id)->pluck('value')->toJson();
-        // print_r($data);
-        // foreach ($data as $row){
-        //     print_r($row);
-        // }
-        $data = '[["doctor","{patinet::create}"], ["staff", "{create}"], ["pharmacist","{create}"]]';
-
-
         
+        $id = Clinic::where('id', Auth::guard('clinic')->user()['id'])->pluck('package_id')->first();
+       
+        $data = '[["doctor","{patient::create}"], ["staff", "{create}"], ["pharmacist","{create}"]]';
+
         return view('user/new')->with('data',$data);
     }
 
     public function registerUser(UserRegisterRequest $request)
     {
 
-        // if ($request->validated()) {
-        //     echo "Hello";
-        // }else{
-        //     echo "Not helllo";
-        // }
-        // $user = User::create();
-        // return redirect('/')->with('success', "Clinic successfully registered.");
-
         $role_id = Role::create(['role_type' => $request->role_type, 'permissions' => '1,2,3'])->id;
         
         $user = new User();
 
         $user->create(['name' => $request->name, 
-                        'clinic_id' => Auth::id(),
+                        'clinic_id' => Auth::guard('clinic')->user()['id'],
                         'role_id' => $role_id,
                         'code' => $request->code,
                         'name' => $request->name,
@@ -70,22 +56,8 @@ class ClinicController extends Controller
                         'gender' => $request->gender
                     ]);
         
-        return redirect('/users')->with('success', "Registered Successfully?");
-
-
+        return redirect('/users')->with('success', "Registered Successfully");
 
     }
-
-    public function logout()
-    {
-        // Session::flush();
-        
-        Auth::logout();
-
-        return redirect('/');
-    }
-
-
-
 
 }
