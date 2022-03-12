@@ -19,12 +19,10 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
-
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
-            }
+        if (Auth::guard('user')->check()) {
+            return redirect('home');
+        }elseif(Auth::guard('clinic')->check()) {
+            return redirect('dashboard');
         }
 
         return $next($request);
