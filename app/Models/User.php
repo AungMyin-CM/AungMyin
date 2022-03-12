@@ -20,6 +20,8 @@ class User extends Authenticatable
 
     protected $table = 'user';
 
+    protected $guard = 'user';
+
     protected $fillable = [
         'code',
         'name',
@@ -45,6 +47,11 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function roleType()
+    {   
+        return $this->hasOne(Role::class,'id','role_id');
+    }
 
     /**
      * The attributes that should be cast.
