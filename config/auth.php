@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'user',
         'passwords' => 'users',
     ],
 
@@ -36,7 +36,11 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'clinic'  => [
+            'driver'  => 'session',
+            'provider' => 'clinic',
+        ],
+        'user' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
@@ -60,15 +64,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'clinic' => [
             'driver' => 'eloquent',
             'model' => App\Models\Clinic::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
     ],
 
     /*
