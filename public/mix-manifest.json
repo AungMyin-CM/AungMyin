@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/js/components/clinic-name.js": "/js/components/clinic-name.js",
-    "/js/components/clinic-register.js": "/js/components/clinic-register.js"
+    "/js/components/clinic-register.js": "/js/components/clinic-register.js",
+    "/js/dictionary.js": "/js/dictionary.js",
+    "/js/patient.js": "/js/patient.js"
 }
