@@ -16,9 +16,9 @@ class CreateDictionaryTable extends Migration
         Schema::create('dictionary', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->longText('meaing');
+            $table->longText('meaning');
             $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->tinyInteger('isCommon')->default('0');
             $table->tinyInteger('isMed')->default('0');
             $table->timestamps();
