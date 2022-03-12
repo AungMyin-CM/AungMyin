@@ -55,7 +55,7 @@
                           <div class="col-md-6">
                             <div class="form-group">
                                 <label for="code">Code</label>
-                                <input type="code" class="form-control" id="code" name="code" placeholder="Enter code" value="">
+                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter code" value="">
                             </div>
                           </div>
                           <div class="col-md-6">
