@@ -1,4 +1,5 @@
-@include('layouts.app')
+@extends('layouts.app')
+@section('content')
 <body class="hold-transition register-page">
     <div class="register-box">
       <div class="register-logo">
@@ -85,4 +86,5 @@
 
     <!-- jQuery -->
     
-    </body>
+</body>
+@endsection
