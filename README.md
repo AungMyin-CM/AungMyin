@@ -4,10 +4,10 @@
 
 Installation
 
--   Make a new env file for application configuration by coping from .env.example. Follow the steps to setup
+-   Make a new .env file for application configuration by coping data from .env.example. Follow the steps to setup
     the application in your local server.
 
--   php artisan key:generate ( to generate a unique key for the application. )(
+-   php artisan key:generate ( to generate a unique key for the application. )
 
 -   php artisan migrate ( for database integration.)
 
