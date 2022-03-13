@@ -34,10 +34,20 @@ class PatientController extends Controller
 
             $code = $this->codeGenerator();
 
-            $dict->create(['code' => $code,
+            $clinic_id = Auth::guard('user')->user()['clinic_id'];
+
+            $clinic_code = Clinic::select('code')->where('id',$clinic_id)->first();
+
+            $patient->create([
+                          'user_id' => Auth::guard('user')->user()['id'],
+                          'code' => $code,
                           'name' => $request->name,
                           'father_name' => $request->father_name,
+                          'phoneNumber' => $request->phoneNumber,
                           'age' => $request->age,
+                          'address' => $request->address,
+                          'gender' => $request->gender,
+                          'clinic_code' => $clinic_code->code
                           
             ]);
             return redirect('patient')->with('success', "Done!");
