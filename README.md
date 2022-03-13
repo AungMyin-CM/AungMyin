@@ -1,9 +1,14 @@
-## Clone the repo
+## Aung Myin
 
-# copy .env.example to .env new file
+-   Aung Myin is a multi platform infrasture that is built mainly for medical doctors ( Nurses, Doctors, And Staffs in a clinic and hospital)
 
-# php artisan key:generate  
+Installation
 
-# php artisan migrate
+-   Make a new env file for application configuration by coping from .env.example. Follow the steps to setup
+    the application in your local server.
 
-# php artisan serve
+-   php artisan key:generate ( to generate a unique key for the application. )(
+
+-   php artisan migrate ( for database integration.)
+
+-   php artisan serve
