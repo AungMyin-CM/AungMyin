@@ -24,7 +24,6 @@ class PatientRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|unique:patient',
             'name' => 'required',
             'age' => 'required',
             'address' => 'required',
