@@ -34,7 +34,7 @@
                     </div><!-- /.container-fluid -->
                 </section>
 
-                <form action="{{ route('dictionary.store') }}" method="POST">
+                <form action="{{ route('patient.store') }}" method="POST">
 
                     @csrf
 
@@ -48,6 +48,15 @@
                                         <div class="card-header">
                                             <h3 class="card-title">New Patient</h3>
                                         </div>
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger">
+                                                <ul>
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div><br />
+                                        @endif
                                         <div class="card-body">
                                             {{-- <p class="badge badge-secondary fs-3">{{ $code }}
                                             </p><br /> --}}
@@ -57,7 +66,7 @@
                                                     <div class="form-group">
                                                         <label for="name">Name</label>
                                                         <input type="text" class="form-control" id="patient_name"
-                                                            name="name" placeholder="Name" value="">
+                                                            name="name" placeholder="Name" value=" {{ old('name') }}">
 
                                                     </div>
                                                 </div>
@@ -65,7 +74,8 @@
                                                     <div class="form-group">
                                                         <label for="sel1">Father name</label>
                                                         <input type="f-name" class="form-control" id="f-name"
-                                                            name="father_name" placeholder="Father name" value="">
+                                                            name="father_name" placeholder="Father name"
+                                                            value="{{ old('father_name') }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -75,7 +85,7 @@
                                                     <div class="form-group">
                                                         <label for="name">Age</label>
                                                         <input type="number" class="form-control" id="age" name="age"
-                                                            min="1" max="100" placeholder="Age" value="">
+                                                            min="1" max="100" placeholder="Age" value="{{ old('age') }}">
                                                     </div>
                                                 </div>
 
@@ -91,8 +101,7 @@
 
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <textarea class="form-control" placeholder="Address"
-                                                    name="address">{{ old('address') }}</textarea>
+                                                <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
                                             </div>
 
                                             <div class="form-group">
@@ -133,8 +142,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="address">Summary</label>
-                                                        <textarea class="form-control" placeholder="Summary" rows="4"
-                                                            name="summary">{{ old('summary') }}</textarea>
+                                                        <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ old('summary') }}</textarea>
                                                     </div>
                                                 </div>
 
@@ -152,10 +160,12 @@
 
                                             <div class="form-group">
                                                 <label for="address">Investigation</label>
-                                                <textarea class="form-control" id="dictionary" rows="10"
-                                                    placeholder="Start Typing here..."
-                                                    name="address">{{ old('address') }}</textarea>
+                                                <textarea class="form-control" id="dictionary" rows="10" placeholder="Start Typing here..."
+                                                    name="dictionary">{{ old('dictionary') }}</textarea>
                                             </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->

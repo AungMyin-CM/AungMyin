@@ -39,27 +39,35 @@
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="{{ route('clinic.home') }}" class="nav-link">
-                            <i class="nav-icon fas fa-home"></i>
-                            <p>
-                                Dashboard
-                            </p>
+                        @if (Auth::guard('clinic')->user())
+                            <a href="{{ route('clinic.home') }}" class="nav-link">
+                            @elseif(Auth::guard('user')->user())
+                                <a href="#" class="nav-link">
+                        @endif
+
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Dashboard
+                        </p>
                         </a>
 
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('user.list') }}" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
-                            <p>
-                                Users
-                            </p>
-                        </a>
 
-                    </li>
+                    @if (Auth::guard('clinic')->user())
+                        <li class="nav-item">
+                            <a href="{{ route('user.list') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+
+                        </li>
+                    @endif
 
                     <li class="nav-item">
                         <a href="{{ route('dictionary.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-user"></i>
+                            <i class="nav-icon fas fa-book"></i>
                             <p>
                                 Dictionary
                             </p>
@@ -69,7 +77,7 @@
 
                     <li class="nav-item">
                         <a href="{{ route('patient.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-patient"></i>
+                            <i class="nav-icon fas fa-user-md"></i>
                             <p>
                                 Patients
                             </p>

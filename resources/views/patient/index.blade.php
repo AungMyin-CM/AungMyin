@@ -59,7 +59,7 @@
                                                         <td>{{ $row->name }}</td>
                                                         <td>{{ $row->code }}</td>
                                                         <td>{{ $row->phoneNumber }}</td>
-                                                        <td>{{ $row->roleType['role_type'] }}</td>
+                                                        {{-- <td>{{ $row->roleType['role_type'] }}</td> --}}
                                                         <td></td>
                                                     </tr>
                                                 @endforeach
