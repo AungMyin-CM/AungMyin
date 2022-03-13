@@ -1,6 +1,6 @@
 ## Aung Myin
 
--   Aung Myin is a multi platform infrasture that is built mainly for medical doctors ( Nurses, Doctors, And Staffs in a clinic and hospital)
+-   Aung Myin is a multi platform infrasture that is built mainly for medical workeres ( Nurses, Doctors, And Staffs in a clinic and hospital)
 
 Installation
 
