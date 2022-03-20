@@ -11,6 +11,9 @@ use App\Models\Clinic;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Master;
+use App\Models\Package;
+use Illuminate\Support\Str;
+
 
 class ClinicController extends Controller
 {
@@ -30,14 +33,13 @@ class ClinicController extends Controller
         
         $id = Clinic::where('id', Auth::guard('clinic')->user()['id'])->pluck('package_id')->first();
        
-        $data = '[["doctor","{patient::create}"], ["staff", "{create}"], ["pharmacist","{create}"]]';
+        $data = '["permission","{patient::create}"], ["staff", "{create}"], ["pharmacist","{create}"]]';
 
         return view('user/new')->with('data',$data);
     }
 
     public function registerUser(UserRegisterRequest $request)
     {
-
         $role_id = Role::create(['role_type' => $request->role_type, 'permissions' => '1,2,3'])->id;
         
         $user = new User();
@@ -60,4 +62,44 @@ class ClinicController extends Controller
 
     }
 
+    public function stepOneRegister()
+    {
+
+        $data = Package::where('status', 1)->get();
+
+        return view('registration/clinic_name')->with('data',$data);
+
+    }
+
+    public function stepTwoRegister(Request $request)
+    {
+        $name = explode(' ',$request->clinic_name);
+        $package_id = $request->package_id;
+        
+        if(count($name)==1){
+
+            $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+            $clinicCode2 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+            $clinicCode3 = substr($name[0] ,0,2 ).$this->generateClinicCode(6);
+
+        }
+        else{
+            $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+            $clinicCode2 = substr($name[1] ,0,4 ).$this->generateClinicCode();
+            $clinicCode3 = substr($name[0] ,0,1 ).substr($name[1] ,0,1 ).$this->generateClinicCode();
+
+        }
+            
+        return view('registration/clinic_registration')->with('data',['name' => $request->clinic_name, 'package_id' => $package_id, 'clinicCode1' => $clinicCode1, 'clinicCode2' => $clinicCode2, 'clinicCode3' => $clinicCode3 , 'style' => 'font-size: 100% !important; cursor: pointer;']);
+    }
+
+
+    private function generateClinicCode($count = 4)
+    {
+
+        $code = Str::random($count);
+
+        return $code;
+
+    }
 }
