@@ -48,8 +48,8 @@
                                                 <tr>
                                                     <th>Name</th>
                                                     <th>Code</th>
-                                                    <th>Phone number</th>
-                                                    <th>Role type</th>
+                                                    <th>Age</th>
+                                                    <th>Gender</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -58,8 +58,8 @@
                                                     <tr>
                                                         <td>{{ $row->name }}</td>
                                                         <td>{{ $row->code }}</td>
-                                                        <td>{{ $row->phoneNumber }}</td>
-                                                        {{-- <td>{{ $row->roleType['role_type'] }}</td> --}}
+                                                        <td>{{ $row->age }}</td>
+                                                        <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
                                                         <td></td>
                                                     </tr>
                                                 @endforeach
