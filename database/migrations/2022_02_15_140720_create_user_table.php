@@ -23,7 +23,7 @@ class CreateUserTable extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('password');
-            $table->bigInteger('phoneNumber')->default(12);
+            $table->string('phoneNumber')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->longText('address');

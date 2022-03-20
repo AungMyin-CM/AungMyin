@@ -22,7 +22,7 @@ class CreatePatientsTable extends Migration
             $table->string('name');
             $table->string('father_name')->nullable();
             $table->integer('age');
-            $table->bigInteger('phoneNumber')->nullable();
+            $table->string('phoneNumber')->nullable();
             $table->longText('address');
             $table->tinyInteger('gender');
             $table->longText('summary')->nullable();
