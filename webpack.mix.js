@@ -12,8 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/clinic-name.js', 'public/js/components/clinic-name.js')
-    .js('resources/js/clinic-register.js', 'public/js/components/clinic-register.js')
+    .js('resources/js/user.js', 'public/js/user.js')
     .js('resources/js/dictionary.js', 'public/js/dictionary.js')
     .js('resources/js/patient.js', 'public/js/patient.js')
 

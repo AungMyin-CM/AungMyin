@@ -21,13 +21,17 @@ use App\Http\Controllers\PatientController;
 
 Route::get('/', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('clinic-name', function () {
-    return view('registration.clinic_name');    
-})->name('clinic-name');
+// Route::get('clinic-name', function () {
+//     return view('registration.clinic_name');    
+// })->name('clinic-name');
 
-Route::get('register-clinic', function () {
-    return view('registration.clinic_registration');
-})->name('register-clinic');
+Route::get('clinic-name',[ClinicController::class, 'stepOneRegister'])->name('clinic.name');
+
+// Route::get('register-clinic', function () {
+//     return view('registration.clinic_registration');
+// })->name('register-clinic');
+
+Route::post('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
