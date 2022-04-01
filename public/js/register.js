@@ -10965,9 +10965,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!******************************!*\
-  !*** ./resources/js/user.js ***!
-  \******************************/
+/*!**********************************!*\
+  !*** ./resources/js/register.js ***!
+  \**********************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
@@ -10977,29 +10977,26 @@ __webpack_require__.r(__webpack_exports__);
   "use strict";
 
   $(function () {
-    $("#p_view").on("change", function () {
-      if (this.checked) {
-        $("#p_create,#p_delete,#p_update,#p_treatment").prop('checked', true);
-      } else {
-        $("#p_create,#p_delete,#p_update,#p_treatment").prop('checked', false);
-      }
-    });
-    $("#p_create,#p_delete,#p_update,#p_treatment").on('change', function () {
-      if (this.checked) {
-        $("#p_view").prop('checked', true);
-      }
-    });
-    $("#d_view").on("change", function () {
-      if (this.checked) {
-        $("#d_create,#d_delete,#d_update").prop('checked', true);
-      } else {
-        $("#d_create,#d_delete,#d_update").prop('checked', false);
-      }
-    });
-    $("#d_create,#d_delete,#d_update").on('change', function () {
-      if (this.checked) {
-        $("#d_view").prop('checked', true);
-      }
+    $("#register").on('click', function () {
+      alert("Hello");
+      var formdata = $('#clinicregister').serialize();
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        type: "POST",
+        url: '/register-clinic',
+        data: formdata
+      }).done(function (response) {
+        if (response == 'done') {
+          window.location.href = "localhost:8000/clinic-login"; //     var obj = JSON.parse(response);
+          //     var vall = $('#dictionary').val();
+          //     vall = vall.slice(0, -(obj.code.length+1));                
+          //    $('#dictionary').val(vall+obj.meaning);
+        }
+      });
     });
   });
 })((jquery__WEBPACK_IMPORTED_MODULE_0___default()));

@@ -7,16 +7,27 @@ use App\Http\Requests\PatientRequest;
 use App\Models\Patient;
 use App\Models\Dictionary;
 use App\Models\Clinic;
+use App\Models\Visit;
 
 use Carbon\Carbon;
 
 use Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
+use File;
+
 
 class PatientController extends Controller
 {
     public function index()
     {
-        $patientData = Patient::all();
+
+        if(!$this->checkPermission('p_view')){
+            abort(403);
+        }
+
+        $patientData = Patient::where("user_id",Auth::guard('user')->user()['id'])->get();
         return view('patient/index')->with('data',$patientData);
     }
 
@@ -35,10 +46,13 @@ class PatientController extends Controller
             $code = $this->codeGenerator();
 
             $clinic_id = Auth::guard('user')->user()['clinic_id'];
+            $user_id = Auth::guard('user')->user()['id'];
 
             $clinic_code = Clinic::select('code')->where('id',$clinic_id)->first();
 
-            $patient->create([
+            $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
+
+            $patient_id = $patient->create([
                           'user_id' => Auth::guard('user')->user()['id'],
                           'code' => $code,
                           'name' => $request->name,
@@ -47,21 +61,55 @@ class PatientController extends Controller
                           'age' => $request->age,
                           'address' => $request->address,
                           'gender' => $request->gender,
-                          'clinic_code' => $clinic_code->code
-                          
-            ]);
-            return redirect('patient')->with('success', "Done!");
+                          'clinic_code' => $clinic_code->code,
+                          'drug_allergy' => $request->drug_allergy,
+                          'summary' => $request->summary,
+                          'Ref' => $reference
+            ])->id;
 
+
+            $images = [];
+
+            if($request->hasfile('images'))
+            {
+                foreach($request->file('images') as $file)
+                {
+                    $name = $this->imageNameGenerate($patient_id).'.'.$file->extension();
+                    $path = public_path().'/images/'.$code;
+                    File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+                    $file->move($path, $name);  
+                    $images[] = $name;  
+                }
+            }
+
+            Visit::create([
+                'patient_id' => $patient_id,
+                'prescription' => $request->prescription,
+                'diag' => $request->diag,
+                'images' => json_encode($images),
+                'fees' => $request->fees,
+                'doctor_id' => $user_id,
+                'investigation' => $request->investigation,
+                'procedure' => $request->procedure,
+                'is_followup' => $request->is_followup,
+                'followup_date' => $request->followup_date
+            ]);
+
+            return redirect('patient')->with('success', "Done!");
         }
     }
 
     public function edit($id)
     {
-        $patient = Patient::findOrFail($id);
+        try {
+            $id = Crypt::decrypt($id);
+            $patient = Patient::findOrfail($id);
+            return view('patient/edit',compact('patient'));
 
-        return view('patient/edit', compact('patient'));
+        }catch(DecryptException $e){
+            abort(404);
+        }
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -75,6 +123,55 @@ class PatientController extends Controller
 
         return redirect('patient')->with('success', 'Done !');
     }
+
+    public function treatment($id)
+    {
+        try {
+            $id = Crypt::decrypt($id);
+            $patient = Patient::findOrfail($id);
+            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->get();
+            return view('patient/treatment')->with('data' , [ 'patient' => $patient , 'visit' => $visit]);
+
+        }catch(DecryptException $e){
+            abort(404);
+        }
+    }
+
+    public function saveTreatment(Request $request, $id)
+    {
+        
+        $user_id = Auth::guard('user')->user()['id'];
+        $code = $request->code;
+
+        $images = [];
+
+        if($request->hasfile('images'))
+        {
+            foreach($request->file('images') as $file)
+            {
+                $name = $this->imageNameGenerate($id).'.'.$file->extension();
+                $path = public_path().'/images/'.$code;
+                $file->move($path, $name);  
+                $images[] = $name;  
+            }
+        }
+
+        Visit::create([
+            'patient_id' => $id,
+            'prescription' => $request->prescription,
+            'diag' => $request->diag,
+            'images' => json_encode($images),
+            'fees' => $request->fees,
+            'doctor_id' => $user_id,
+            'investigation' => $request->investigation,
+            'procedure' => $request->procedure,
+            'is_followup' => $request->is_followup,
+            'followup_date' => $request->followup_date
+        ]);
+
+        return redirect('patient')->with('success', "Done!");
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -103,6 +200,33 @@ class PatientController extends Controller
         }
     }
 
+    public function searchPatient(Request $request)
+    {
+        $ref = str_replace(' ','_',$request->key);
+
+        $clinic_id = $request->clinic_id;
+
+        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+
+        $data = Patient::select('id','name','age','father_name')->
+                where('Ref', 'like', '%'.$ref.'%')->
+                where('clinic_code',$clinic_code)->
+                where('status',1)->
+                get();
+
+        $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
+        foreach($data as $row)
+        {
+            $output .= '
+            <li><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'">'.$row->name.'&#9;'.$row->age.'&#9;'.$row->father_name.'</a></li>
+            ';
+        }
+        $output .= '</ul>';
+
+        echo $output;
+
+    }
+
     private function codeGenerator()
     {
         $timestamp = Carbon::now();
@@ -114,6 +238,17 @@ class PatientController extends Controller
         $patient_code = str_replace(' ','',$c_name->name).":p:".$current_date;
 
         return $patient_code;
+
+    }
+
+    private function imageNameGenerate($patient_id)
+    {
+        $timestamp = Carbon::now();
+        $current_date = $timestamp->format('ymdhisu');
+
+        $image_name = "p-".$patient_id.'-'.$current_date;
+
+        return $image_name;
 
     }
 }

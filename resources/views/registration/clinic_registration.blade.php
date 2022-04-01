@@ -89,7 +89,7 @@
 
                         <!-- /.col -->
                         <div class="col-4 float-right">
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            <button type="submit" id="register" class="btn btn-primary btn-block">Register</button>
                         </div>
                         <!-- /.col -->
                     </form>

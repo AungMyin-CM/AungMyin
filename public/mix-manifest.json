@@ -2,5 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/js/user.js": "/js/user.js",
     "/js/dictionary.js": "/js/dictionary.js",
-    "/js/patient.js": "/js/patient.js"
+    "/js/patient.js": "/js/patient.js",
+    "/js/search.js": "/js/search.js",
+    "/css/app.css": "/css/app.css"
 }

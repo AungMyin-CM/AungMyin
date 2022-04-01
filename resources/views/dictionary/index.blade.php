@@ -38,10 +38,12 @@
                             <div class="col-12">
                                 <div class="card">
                                     <!-- /.card-header -->
-                                    <div class="card-header">
-                                        <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right"><i
-                                                class="fas fa-plus"></i> Add new</a>
-                                    </div>
+                                    @if(Helper::checkPermission('d_create', $permissions))
+                                        <div class="card-header">
+                                            <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right"><i
+                                                    class="fas fa-plus"></i> Add new</a>
+                                        </div>
+                                    @endif
                                     <div class="card-body">
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
@@ -49,7 +51,7 @@
                                                     <th>#</th>
                                                     <th>Code</th>
                                                     <th>Meaning</th>
-                                                    <th colspan="2">Actions</th>
+                                                    <th colspan="2" style="width:15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -58,18 +60,24 @@
                                                     <tr>
                                                         <td>{{ $i++ }} </td>
                                                         <td>{{ $row->code }}</td>
-                                                        <td>{{ \Illuminate\Support\Str::limit($row->meaning, $limit = 100, $end = '...') }}
+                                                        <td>{{ Str::limit($row->meaning, $limit = 100, $end = '...') }}
                                                         </td>
-                                                        <td><a href="{{ route('dictionary.edit', $row->id) }}"
-                                                                class="btn btn-primary">Edit</a></td>
-                                                        <td>
-                                                            <form action="{{ route('dictionary.destroy', $row->id) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button class="btn btn-danger" type="submit">Delete</button>
-                                                            </form>
-                                                        </td>
+                                                        @if(Helper::checkPermission('d_update', $permissions))
+                                                            <td><a href="{{ route('dictionary.edit', $row->id) }}">
+                                                                 <i class="fas fa-edit fa-lg"></i></a>
+                                                            </td>
+                                                        @endif
+                                                        @if(Helper::checkPermission('d_delete', $permissions))
+                                                            <td>
+                                                                <form action="{{ route('dictionary.destroy', $row->id) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                                </form>
+                                                            </td>
+                                                            
+                                                        @endif
                                                     </tr>
                                                 @endforeach
 

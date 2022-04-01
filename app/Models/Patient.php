@@ -15,9 +15,16 @@ class Patient extends Model
         'user_id',
         'code',
         'name',
+        'father_name',
         'clinic_code',
         'age',
+        'phoneNumber',
         'address',
-        'gender'
+        'gender',
+        'summary',
+        'drug_allergy',
+        'status',
+        'Ref',
+        'delete_at'
     ];
 }

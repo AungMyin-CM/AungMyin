@@ -15,6 +15,8 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/user.js', 'public/js/user.js')
     .js('resources/js/dictionary.js', 'public/js/dictionary.js')
     .js('resources/js/patient.js', 'public/js/patient.js')
+    .js('resources/js/search.js', 'public/js/search.js')
+    .sass('resources/sass/app.scss', 'public/css')
 
 
 

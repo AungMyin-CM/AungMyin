@@ -21,7 +21,7 @@
                     </div><!-- /.container-fluid -->
                 </section>
 
-                <form action="{{ route('user.register') }}" method="POST">
+                <form action="{{ route('user.update', $user->id) }}" method="POST">
                     @csrf
 
                     <section class="content">
@@ -54,7 +54,7 @@
                                                     <div class="form-group">
                                                         <label for="code">Name</label>
                                                         <input type="text" class="form-control" id="username" name="name"
-                                                            placeholder="Name">
+                                                            placeholder="Name" value="{{ $user->name }}">
                                                     </div>
                                                 </div>
                                                 
@@ -63,7 +63,7 @@
                                                     <div class="form-group">
                                                         <label for="code">Code</label>
                                                         <input type="text" class="form-control" id="code" name="code"
-                                                            placeholder="Enter code" value="">
+                                                            placeholder="Enter code" value="{{ $user->code }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -72,8 +72,9 @@
                                                         <select class="form-control" id="sel1" name="role_type">
 
                                                             @foreach ($data as $key => $value)
-                                                                <option value="{{ $key }}">{{ $value }}
-                                                                </option>
+                                                            <option value="{{ $key }}" {{ $user->role_type == $key ? 'selected' : '' }}>{{ $value }}
+                                                            </option>
+                                                            
                                                             @endforeach
 
                                                         </select>
@@ -86,7 +87,7 @@
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Email address</label>
                                                         <input type="email" class="form-control" id="exampleInputEmail1"
-                                                            name="email" placeholder="example@gmail.com">
+                                                            name="email" placeholder="example@gmail.com" value="{{ $user->email }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -101,7 +102,7 @@
                                             <div class="form-group">
                                                 <label for="phNumber">Phone Number</label>
                                                 <input type="tel" class="form-control" placeholder="09xxxxxxxxx"
-                                                    name="phoneNumber" value={{ old('phoneNumber') }}>
+                                                    name="phoneNumber" value="{{ $user->phoneNumber }}">
                                             </div>
 
                                             <div class="row">
@@ -109,7 +110,7 @@
                                                     <div class="form-group">
                                                         <label for="city">Country</label>
                                                         <input type="text" class="form-control" id="country"
-                                                            name="country" placeholder="Country">
+                                                            name="country" placeholder="Country" value="{{ $user->country }}">
                                                     </div>
                                                 </div>
 
@@ -117,23 +118,34 @@
                                                     <div class="form-group">
                                                         <label for="city">City</label>
                                                         <input type="text" class="form-control" id="city" name="city"
-                                                            placeholder="City">
+                                                            placeholder="City" value="{{ $user->city }}">
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
+                                                <textarea class="form-control" placeholder="Address" name="address">{{ $user->address }}</textarea>
                                             </div>
 
                                             <label for="gender">Gender</label>
 
                                             <div class="row">
                                                 <div class="col-md-3">
+                                                    @if($user->gender == 1) 
+                                                    <?php 
+                                                        $m_checked = 'checked';
+                                                        $f_checked = '';
+                                                    ?>
+                                                @else
+                                                    <?php 
+                                                        $m_checked = '';
+                                                        $f_checked = 'checked';
+                                                    ?>
+                                                @endif
                                                     <div class="form-check">
                                                         <input class="form-check-input" id="gender" type="radio" value="1"
-                                                            name="gender">
+                                                            name="gender" <?php echo $m_checked;?>>
                                                         <label class="form-check-label" for="male">
                                                             Male
                                                         </label>
@@ -143,7 +155,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-check">
                                                         <input class="form-check-input" id="gender" type="radio" value="0"
-                                                            name="gender">
+                                                            name="gender" <?php echo $f_checked;?>>
                                                         <label class="form-check-label" for="female">
                                                             Female
                                                         </label>
@@ -166,32 +178,31 @@
                                             <div class="form-group">
                                                 <div class="">
                                                     <input id="p_view" id="p_permissions" type="checkbox" name="permission[]" value="p_view"
-                                                    >
+                                                    {{Helper::checkPermission('p_view', $permissions) ? 'checked' : ''}}>
 
                                                     <label for="p_view">Patients</label>
                                                 </div>
                                                 <div class="form-check" style="padding:6px !important;">
 
                                                     <div class="row">
-
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="p_create" name="permission[]"
-                                                                value="p_create">
+                                                                value="p_create" {{Helper::checkPermission('p_create', $permissions) ? 'checked' : ''}}>
                                                             <label for="p_create">Create</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="p_update" name="permission[]"
-                                                                value="p_update">
+                                                                value="p_update" {{Helper::checkPermission('p_update', $permissions) ? 'checked' : ''}}>
                                                             <label for="p_update">Update</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="p_delete" type="checkbox" name="permission[]"
-                                                                value="p_delete">
-                                                            <label for="p_delete">Delete</label>
+                                                                value="p_delete" {{Helper::checkPermission('p_delete', $permissions) ? 'checked' : ''}}>
+                                                            <label for="p_delete" >Delete</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="p_treatment" type="checkbox" name="permission[]"
-                                                                value="p_treatment">
+                                                                value="p_treatment" {{Helper::checkPermission('p_treatment', $permissions) ? 'checked' : ''}}>
                                                             <label for="p_treatment">Treatment</label>
                                                         </div>
                                                     </div>
@@ -204,7 +215,7 @@
 
                                             <div class="form-group">
                                                 <div class="">
-                                                    <input id="d_view" id="d_permissions" type="checkbox" name="permission[]"  value="d_view">
+                                                    <input id="d_view" id="d_permissions" type="checkbox" name="permission[]"  value="d_view" {{Helper::checkPermission('d_view', $permissions) ? 'checked' : ''}}>
                                                     <label for="d_view">Dictionary</label>
                                                 </div>
                                                 <div class="form-check" style="padding:6px !important;">
@@ -213,17 +224,17 @@
 
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="d_create" name="permission[]"
-                                                                value="d_create">
+                                                                value="d_create"{{Helper::checkPermission('d_create', $permissions) ? 'checked' : ''}}>
                                                             <label for="d_create">Create</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="d_update" name="permission[]"
-                                                                value="d_update">
+                                                                value="d_update" {{Helper::checkPermission('d_update', $permissions) ? 'checked' : ''}}>
                                                             <label for="d_update">Update</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="d_delete" type="checkbox" name="permission[]"
-                                                                value="d_delete">
+                                                                value="d_delete" {{Helper::checkPermission('d_delete', $permissions) ? 'checked' : ''}}>
                                                             <label for="d_delete">Delete</label>
                                                         </div>
                                                     </div>

@@ -13,6 +13,10 @@ use App\Models\Role;
 use App\Models\Master;
 use App\Models\Package;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
+use Illuminate\Support\Facades\Hash;
 
 
 class ClinicController extends Controller
@@ -33,14 +37,16 @@ class ClinicController extends Controller
         
         $id = Clinic::where('id', Auth::guard('clinic')->user()['id'])->pluck('package_id')->first();
        
-        $data = '["permission","{patient::create}"], ["staff", "{create}"], ["pharmacist","{create}"]]';
+        $data = ['1' => 'doctor','2' => 'pharmacist','3' => 'staff'];
 
-        return view('user/new')->with('data',$data);
+        return view('user/new')->with('data', $data);
     }
 
     public function registerUser(UserRegisterRequest $request)
     {
-        $role_id = Role::create(['role_type' => $request->role_type, 'permissions' => '1,2,3'])->id;
+        $permissions = json_encode($request->permission);
+
+        $role_id = Role::create(['role_type' => $request->role_type, 'permissions' => $permissions])->id;
         
         $user = new User();
 
@@ -62,6 +68,45 @@ class ClinicController extends Controller
 
     }
 
+    public function editUser($id)
+    {
+        $user = User::findOrfail($id);
+        $data = ['1' => 'doctor','2' => 'pharmacist','3' => 'staff'];
+        $permissions = Role::where('id',$user->role_id)->pluck('permissions');
+        return view('user/edit',compact('user','data','permissions'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+
+        $permissions = json_encode($request->permission);
+        $origin_password = User::where('id',$id)->pluck('password');
+
+        $role_id = Role::whereId($id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
+
+        $requests = ['name' => $request->name, 
+                        'clinic_id' => Auth::guard('clinic')->user()['id'],
+                        'code' => $request->code,
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'phoneNumber' => $request->phoneNumber,
+                        'city' => $request->city,
+                        'country' => $request->country,
+                        'address' => $request->address,
+                        'gender' => $request->gender
+                    ];
+
+        if ($request->password != null && trim($request->password) != '') {
+            $requests += ['password' => Hash::make($request->password)];
+        }
+
+        User::whereId($id)->update($requests);
+
+        return redirect('users')->with('success', 'Done !');
+
+    }
+
+
     public function stepOneRegister()
     {
 
@@ -74,7 +119,13 @@ class ClinicController extends Controller
     public function stepTwoRegister(Request $request)
     {
         $name = explode(' ',$request->clinic_name);
-        $package_id = $request->package_id;
+        
+        try {
+            $package_id = Crypt::decrypt($request->plan);
+
+        }catch(DecryptException $e){
+            abort(404);
+        }
         
         if(count($name)==1){
 
@@ -82,8 +133,7 @@ class ClinicController extends Controller
             $clinicCode2 = substr($name[0] ,0,4 ).$this->generateClinicCode();
             $clinicCode3 = substr($name[0] ,0,2 ).$this->generateClinicCode(6);
 
-        }
-        else{
+        }else{
             $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
             $clinicCode2 = substr($name[1] ,0,4 ).$this->generateClinicCode();
             $clinicCode3 = substr($name[0] ,0,1 ).substr($name[1] ,0,1 ).$this->generateClinicCode();

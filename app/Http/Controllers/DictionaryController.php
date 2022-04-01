@@ -6,23 +6,36 @@ use Illuminate\Http\Request;
 use App\Http\Requests\DictionaryRequest;
 use App\Models\Dictionary;
 
+
 use Auth;
 
 class DictionaryController extends Controller
 {
     public function index()
     {
-        $dictData = Dictionary::all();
+        if(!$this->checkPermission('d_view')){
+            abort(403);
+        }
+
+        $dictData = Dictionary::where("user_id",Auth::guard('user')->user()['id'])->get();
         return view('dictionary/index')->with('data',$dictData);
     }
 
     public function create()
     {
+        if(!$this->checkPermission('d_create')){
+            abort(403);
+        }
+
         return view('dictionary/new');
     }
 
     public function store(DictionaryRequest $request)
-    {   
+    { 
+        if(!$this->checkPermission('d_create')){
+            abort(403);
+        }
+
         if($request->validated()){
             $dict = new Dictionary();
 
@@ -37,6 +50,10 @@ class DictionaryController extends Controller
 
     public function edit($id)
     {
+        if(!$this->checkPermission('d_update')){
+            abort(403);
+        }
+
         $dictionary = Dictionary::findOrFail($id);
 
         return view('dictionary/edit', compact('dictionary'));
@@ -51,6 +68,11 @@ class DictionaryController extends Controller
      */
     public function update(DictionaryRequest $request, $id)
     {
+
+        if(!$this->checkPermission('d_update')){
+            abort(403);
+        }
+
         Dictionary::whereId($id)->update($request->validated());
 
         return redirect('dictionary')->with('success', 'Done !');
@@ -64,6 +86,11 @@ class DictionaryController extends Controller
      */
     public function destroy($id)
     {
+
+        if(!$this->checkPermission('d_delete')){
+            abort(403);
+        }
+
         $dict = Dictionary::findOrFail($id);
         $dict->delete();
 

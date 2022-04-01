@@ -26,8 +26,11 @@ class PatientRequest extends FormRequest
         return [
             'name' => 'required',
             'age' => 'required',
+            'father_name' => 'nullable',
             'address' => 'required',
-            'gender' => 'required'
+            'gender' => 'required',
+            'drug_allergy' => 'nullable',
+            'summary' => 'nullable',
         ];
     }
 }

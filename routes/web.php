@@ -5,8 +5,7 @@ use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\PatientController;
-
-
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,21 +20,13 @@ use App\Http\Controllers\PatientController;
 
 Route::get('/', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-// Route::get('clinic-name', function () {
-//     return view('registration.clinic_name');    
-// })->name('clinic-name');
-
 Route::get('clinic-name',[ClinicController::class, 'stepOneRegister'])->name('clinic.name');
 
-// Route::get('register-clinic', function () {
-//     return view('registration.clinic_registration');
-// })->name('register-clinic');
-
-Route::post('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
+Route::get('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
-})->name('login-clinic');
+})->name('login-clinic')->middleware('prevent-back-history');
 
 Route::post('register-clinic',[ClinicController::class, 'register'])->name('clinic.register');
 
@@ -43,34 +34,38 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('dictionary',DictionaryController::class);
 
-    Route::get('home', function () {
-        return view('clinic.home');
-    })->name('user.home');
+    Route::get('home', [HomeController::class, 'index'])->name('user.home');
 
     Route::post('userlogout', [LoginController::class, 'userLogout'])->name('user.logout');
 
     Route::resource('patient',PatientController::class);
 
+    Route::get('patient/{patient}/treatment',[PatientController::class, 'treatment'])->name('patient.treatment');
+
+    Route::post('patient/{patient}/treatment',[PatientController::class, 'saveTreatment'])->name('create.treatment');
+
     Route::post('/fetchDictionary',[PatientController::class, 'fetchDictionary'])->name('dictionary.get');
+
+    Route::post('/search',[PatientController::class, 'searchPatient']);
 
 });
 
 
 Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.logout');
 
-Route::group(['middleware' => 'prevent-back-history'],function(){
-    
-    Route::post('clinic-login',[LoginController::class, 'clinicLogin'])->name('clinic.login');
+Route::post('clinic-login',[LoginController::class, 'clinicLogin'])->name('clinic.login');
 
-    Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
-
-});
+Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
 
 Route::group(['middleware' => 'clinic.auth'], function() {
 
     Route::get('users',[ClinicController::class,'index'])->name('user.list');
 
     Route::get('user/create',[ClinicController::class,'newUser'])->name('user.create');
+
+    Route::get('user/{user}',[ClinicController::class,'editUser'])->name('user.edit');
+
+    Route::post('user/{user}',[ClinicController::class,'updateUser'])->name('user.update');
 
     Route::post('register-user',[ClinicController::class, 'registerUser'])->name('user.register');
 

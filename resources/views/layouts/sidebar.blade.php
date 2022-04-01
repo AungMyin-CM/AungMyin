@@ -12,7 +12,14 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     {{-- <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> --}}
-                    {{-- <p class="text-white">{{ Auth::guard('clinic')->user()['id'] }}</p> --}}
+                    <p class="text-white">
+                        @if(Auth::guard('clinic')->user())
+                            {{ Auth::guard('clinic')->user()['name'] }}
+                        @elseif(Auth::guard('user')->user())
+                            {{ Auth::guard('user')->user()['name'] }}
+                        @endif
+                    </p>
+
                 </div>
                 <div class="info">
                     {{-- <a href="#" class="d-block">{{  }}</a> --}}
@@ -38,20 +45,25 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                    <li class="nav-item">
-                        @if (Auth::guard('clinic')->user())
-                            <a href="{{ route('clinic.home') }}" class="nav-link">
-                            @elseif(Auth::guard('user')->user())
-                                <a href="#" class="nav-link">
-                        @endif
+                    @if (Auth::guard('clinic')->user())
 
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                        </a>
+                        <li class="nav-item">
+                                <a href="{{ route('clinic.home') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-home"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                                @elseif(Auth::guard('user')->user())
+                                <a href="{{ route('user.home') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-home"></i>
+                                    <p>
+                                        Dashboard
+                                    </p>
+                                </a>
+                        </li>
+                    @endif
 
-                    </li>
 
                     @if (Auth::guard('clinic')->user())
                         <li class="nav-item">
@@ -65,25 +77,35 @@
                         </li>
                     @endif
 
-                    <li class="nav-item">
-                        <a href="{{ route('dictionary.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p>
-                                Dictionary
-                            </p>
-                        </a>
 
-                    </li>
+                    @if (Auth::guard('user')->user())
+                        @if(Helper::checkPermission('p_view', $permissions))
 
-                    <li class="nav-item">
-                        <a href="{{ route('patient.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-user-md"></i>
-                            <p>
-                                Patients
-                            </p>
-                        </a>
+                            <li class="nav-item">
+                                <a href="{{ route('patient.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-user-md"></i>
+                                    <p>
+                                        Patients
+                                    </p>
+                                </a>
 
-                    </li>
+                            </li>
+                        @endif
+                    @endif
+
+                    @if (Auth::guard('user')->user())
+                       @if(Helper::checkPermission('d_view', $permissions))
+                            <li class="nav-item">
+                                <a href="{{ route('dictionary.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>
+                                        Dictionary
+                                    </p>
+                                </a>
+
+                            </li>
+                        @endif
+                    @endif
 
                     <li class="nav-item">
                         @if (Auth::guard('clinic')->user())

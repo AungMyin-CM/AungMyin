@@ -9,12 +9,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Users</h1>
+                                <h1>Patients</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">User</li>
+                                    <li class="breadcrumb-item active">Patient</li>
                                 </ol>
                             </div>
                         </div>
@@ -38,10 +38,12 @@
                             <div class="col-12">
                                 <div class="card">
                                     <!-- /.card-header -->
-                                    <div class="card-header">
-                                        <a href="{{ route('patient.create') }}" class="btn btn-primary float-right"><i
-                                                class="fas fa-plus"></i> Add new</a>
-                                    </div>
+                                     @if(Helper::checkPermission('p_create', $permissions))
+                                        <div class="card-header">
+                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right"><i
+                                            class="fas fa-plus"></i> Add new</a>
+                                        </div>
+                                    @endif
                                     <div class="card-body">
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
@@ -50,7 +52,7 @@
                                                     <th>Code</th>
                                                     <th>Age</th>
                                                     <th>Gender</th>
-                                                    <th>Actions</th>
+                                                    <th colspan="3" style="width:15%;">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -60,7 +62,24 @@
                                                         <td>{{ $row->code }}</td>
                                                         <td>{{ $row->age }}</td>
                                                         <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
-                                                        <td></td>
+                                                        @if(Helper::checkPermission('p_update', $permissions))
+                                                        <td><a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" >
+                                                                <i class="fas fa-edit fa-lg"></i></a></td>
+                                                        @endif
+                                                        @if(Helper::checkPermission('p_treatment', $permissions))
+                                                        <td><a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}"
+                                                            ><i class="fas fa-stethoscope fa-lg"></i></a></td>
+                                                            @endif
+                                                            @if(Helper::checkPermission('p_delete', $permissions))
+                                                        <td>
+                                                            <form action="{{ route('patient.destroy', $row->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('DELETE')   
+                                                                <button class="" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                            </form>
+                                                        </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
 
