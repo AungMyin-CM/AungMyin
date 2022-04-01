@@ -23,7 +23,7 @@ class CreateClinicTable extends Migration
             $table->text('address');
             $table->tinyInteger('status')->default('1');
             $table->integer('package_id');
-            $table->timestamp('package_purchased_date');
+            $table->timestamp('package_purchased_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('package_purchased_times')->default(0);
             $table->rememberToken();
             $table->timestamps();

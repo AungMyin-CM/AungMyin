@@ -28,8 +28,7 @@ class CreatePatientsTable extends Migration
             $table->longText('summary')->nullable();
             $table->longText('drug_allergy')->nullable();
             $table->integer('status')->default(1);
-            $table->integer('is_followup')->default(0);
-            $table->timestamp('followup_date')->nullable();
+            $table->longText('Ref');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });
