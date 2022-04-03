@@ -25,6 +25,7 @@ class Patient extends Model
         'drug_allergy',
         'status',
         'Ref',
+        'p_status',
         'delete_at'
     ];
 }

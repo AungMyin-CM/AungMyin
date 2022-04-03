@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\Dictionary;
 use App\Models\Clinic;
 use App\Models\Visit;
+use App\Models\Role;
 
 use Carbon\Carbon;
 
@@ -20,22 +21,28 @@ use File;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         if(!$this->checkPermission('p_view')){
             abort(403);
         }
 
-        $patientData = Patient::where("user_id",Auth::guard('user')->user()['id'])->get();
+        if($request->name)
+        {
+            $patientData =  Patient::where("user_id",Auth::guard('user')->user()['id'])->where('name', 'like', $request->name.'%')->where('status',1)->get();
+        }else{
+            $patientData = Patient::where("user_id",Auth::guard('user')->user()['id'])->where('status',1)->get();
+        }
         return view('patient/index')->with('data',$patientData);
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
         $code = $this->codeGenerator();
-        return view('patient/new')->with('code',$code);
+        return view('patient/new')->with('data' , ['code' => $code , 'name' => $request->name ? $request->name : '']);
+
     }
 
     public function store(PatientRequest $request)
@@ -49,9 +56,9 @@ class PatientController extends Controller
             $user_id = Auth::guard('user')->user()['id'];
 
             $clinic_code = Clinic::select('code')->where('id',$clinic_id)->first();
-
+            $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
             $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
-
+            $p_status = $role->role_type == 1 ? 4 : 1 ;
             $patient_id = $patient->create([
                           'user_id' => Auth::guard('user')->user()['id'],
                           'code' => $code,
@@ -64,6 +71,7 @@ class PatientController extends Controller
                           'clinic_code' => $clinic_code->code,
                           'drug_allergy' => $request->drug_allergy,
                           'summary' => $request->summary,
+                          'p_status' => $p_status,
                           'Ref' => $reference
             ])->id;
 
@@ -213,15 +221,21 @@ class PatientController extends Controller
                 where('clinic_code',$clinic_code)->
                 where('status',1)->
                 get();
-
-        $output = '<ul class="dropdown-menu" style="display:block; position:relative">';
-        foreach($data as $row)
+        
+        if(count($data) == 0)
         {
-            $output .= '
-            <li><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'">'.$row->name.'&#9;'.$row->age.'&#9;'.$row->father_name.'</a></li>
-            ';
+            $output = '';
+        }else{  
+            $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+            foreach($data as $row)
+            {
+                $output .= '
+                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'">Name: '.$row->name.''.'<span style= "margin:0rem 5rem 0rem 5rem;">Age: '.$row->age.'</span>'.'Father\'s Name: '.$row->father_name.'</a></li>
+                ';
+            }
+            $output .= '</ul>';
         }
-        $output .= '</ul>';
 
         echo $output;
 
@@ -230,7 +244,7 @@ class PatientController extends Controller
     private function codeGenerator()
     {
         $timestamp = Carbon::now();
-        $current_date = $timestamp->format('ymdhis');
+        $current_date = $timestamp->format('u');
         $clinic_id = Auth::guard('user')->user()['clinic_id'];
 
         $c_name = Clinic::select('name')->where('id',$clinic_id)->first();

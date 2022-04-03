@@ -27,7 +27,7 @@ class Controller extends BaseController
 
             if (Auth::guard('user')->user()){
 
-                $permissions = Role::where('id',Auth::guard('user')->user()['id'])->pluck('permissions');
+                $permissions = Role::where('id',Auth::guard('user')->user()['id'])->pluck('permissions')->first();
                 $this->permissions = $permissions;
                 view()->share('permissions',$permissions);   
             }

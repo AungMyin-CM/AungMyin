@@ -37,7 +37,7 @@ class ClinicController extends Controller
         
         $id = Clinic::where('id', Auth::guard('clinic')->user()['id'])->pluck('package_id')->first();
        
-        $data = ['1' => 'doctor','2' => 'pharmacist','3' => 'staff'];
+        $data = ['1' => 'doctor','2' => 'receptionist','3' => 'pharmacist', '4' => 'staff'];
 
         return view('user/new')->with('data', $data);
     }
@@ -71,9 +71,10 @@ class ClinicController extends Controller
     public function editUser($id)
     {
         $user = User::findOrfail($id);
-        $data = ['1' => 'doctor','2' => 'pharmacist','3' => 'staff'];
-        $permissions = Role::where('id',$user->role_id)->pluck('permissions');
-        return view('user/edit',compact('user','data','permissions'));
+        $data = ['1' => 'doctor','2' => 'receptionist','3' => 'pharmacist', '4' => 'staff'];
+        
+        $role = Role::where('id',$user->role_id)->get()->first();
+        return view('user/edit',compact('user','data', 'role'));
     }
 
     public function updateUser(Request $request, $id)

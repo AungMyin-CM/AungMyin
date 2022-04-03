@@ -6,7 +6,7 @@ class Helper
 {
     public static function checkPermission($string,$permissions)
     {
-        if (in_array($string,json_decode($permissions[0]))){
+        if (in_array($string,json_decode($permissions))){
             return true;
         }else{
             return false;
