@@ -45,46 +45,58 @@
                                         </div>
                                     @endif
                                     <div class="card-body">
-                                        <table id="example2" class="table table-bordered table-hover">
-                                            <thead>
+                                        <table id="datatable" class="table table-bordered table-striped">                                    
+                                          <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Code</th>
+                                                <th>Age</th>
+                                                <th>Gender</th>
+                                                <th>Actions</th>
+                                                {{-- <th></th>
+                                                <th></th> --}}
+                                                {{-- <th colspan="3" style="width:15%;">Actions</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($data as $row)
                                                 <tr>
-                                                    <th>Name</th>
-                                                    <th>Code</th>
-                                                    <th>Age</th>
-                                                    <th>Gender</th>
-                                                    <th colspan="3" style="width:15%;">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($data as $row)
-                                                    <tr>
-                                                        <td>{{ $row->name }}</td>
-                                                        <td>{{ $row->code }}</td>
-                                                        <td>{{ $row->age }}</td>
-                                                        <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
-                                                        @if(Helper::checkPermission('p_update', $permissions))
-                                                        <td><a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" >
-                                                                <i class="fas fa-edit fa-lg"></i></a></td>
-                                                        @endif
-                                                        @if(Helper::checkPermission('p_treatment', $permissions))
-                                                        <td><a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}"
-                                                            ><i class="fas fa-stethoscope fa-lg"></i></a></td>
-                                                            @endif
-                                                            @if(Helper::checkPermission('p_delete', $permissions))
-                                                        <td>
-                                                            <form action="{{ route('patient.destroy', $row->id) }}"
-                                                                method="post">
-                                                                @csrf
-                                                                @method('DELETE')   
-                                                                <button class="" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
-                                                            </form>
-                                                        </td>
-                                                        @endif
-                                                    </tr>
-                                                @endforeach
+                                                    <td>{{ $row->name }}</td>
+                                                    <td>{{ $row->code }}</td>
+                                                    <td>{{ $row->age }}</td>
+                                                    <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            @if(Helper::checkPermission('p_update', $permissions))
 
+                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
+                                                                <i class="fas fa-edit fa-lg"></i></a>
+
+                                                            @endif
+
+                                                            @if(Helper::checkPermission('p_treatment', $permissions))
+                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
+                                                                ><i class="fas fa-stethoscope fa-lg"></i></a>
+                                                            @endif
+
+                                                            @if(Helper::checkPermission('p_delete', $permissions))
+
+                                                                <form action="{{ route('patient.destroy', $row->id) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')   
+                                                                    <button class="" type="submit" style="margin:5px;"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                                </form>
+
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
                                         </table>
-                                    </div>
+                                      </div>
+                                    
                                     <!-- /.card-body -->
                                 </div>
                             </div>
@@ -95,3 +107,5 @@
         </div>
     </body>
 @endsection
+
+       

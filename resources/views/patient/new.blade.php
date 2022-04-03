@@ -7,37 +7,13 @@
             <div class="content-wrapper">
                 <form action="{{ route('patient.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <section class="content-header">
-                        <div class="container-fluid">
-                            <div class="row mb-2">
-                                <div class="col-sm-6">
-                                    <h1>Patient Form</h1>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ol class="breadcrumb float-sm-right">
-                                        <li class="breadcrumb-item"><a href="#">Patient</a></li>
-                                        <li class="breadcrumb-item active">New</li>
-                                    </ol>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center" id="followUp">
-                                <div class="form-check" style="padding:6px !important;">
-                                
-                                    <div class="icheck-primary d-inline mt-2">
-                                        <input type="checkbox" id="isFollowup" type="checkbox" name="is_followup">
-                                        <label for="isFollowup">Follow up</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div><!-- /.container-fluid -->
-                    </section>
+                    
                     <section class="content">
                         <div class="container-fluid">
+                            <span style="font-size: 100% !important;margin:5px 0px 5px 0px;"  class="badge badge-secondary">Code - {{ $data['code'] }}</span>
 
                             <div class="row">
                                 <div class="col-md-6">
-
                                     <div class="card card-primary">
                                         <div class="card-header">
                                             <h3 class="card-title">New Patient</h3>
@@ -59,8 +35,13 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="name">Name</label>
-                                                        <input type="text" class="form-control" id="patient_name"
-                                                            name="name" placeholder="Name" value=" {{ old('name') }}">
+                                                        @if($data['name'] != '')
+                                                            <input type="text" class="form-control" id="patient_name"
+                                                            name="name" placeholder="Name" value=" {{ $data['name'] }}">
+                                                        @else
+                                                            <input type="text" class="form-control" id="patient_name"
+                                                            name="name" placeholder="Name" value="{{ old('name') }}">
+                                                        @endif
 
                                                     </div>
                                                 </div>
@@ -194,22 +175,33 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                
-                                        </div>
-                                        <div class="card-footer">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
 
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
                                                         <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group float-right">
 
-                                                        <input type="submit" value="submit" class="btn btn-primary">
+                                                <div class="col-md-8">
+
+                                                    <div class="d-flex justify-content-center" id="followUp">
+                                                        <div class="form-check" style="padding:6px !important;">
+                                                            
+                                                            <div class="icheck-primary d-inline mt-2">
+                                                                <input type="checkbox" id="isFollowup" type="checkbox" name="is_followup">
+                                                                <label for="isFollowup">Follow up</label>
+                                                            </div>
+                                                        </div>
+                            
                                                     </div>
                                                 </div>
+                                            </div>
+                                                
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="form-group float-right">
+                                                <input type="submit" value="submit" class="btn btn-primary">
                                             </div>
                                         </div>
                                         <!-- Bootstrap Switch -->

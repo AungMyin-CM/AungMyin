@@ -27,7 +27,7 @@
             </div>
 
             <!-- SidebarSearch Form -->
-            <div class="form-inline">
+            {{-- <div class="form-inline">
                 <div class="input-group" data-widget="sidebar-search">
                     <input class="form-control form-control-sidebar" type="search" placeholder="Search"
                         aria-label="Search">
@@ -37,7 +37,7 @@
                         </button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -45,16 +45,15 @@
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                    @if (Auth::guard('clinic')->user())
-
                         <li class="nav-item">
+                            @if (Auth::guard('clinic')->user())
                                 <a href="{{ route('clinic.home') }}" class="nav-link">
                                     <i class="nav-icon fas fa-home"></i>
                                     <p>
                                         Dashboard
                                     </p>
                                 </a>
-                                @elseif(Auth::guard('user')->user())
+                            @elseif(Auth::guard('user')->user())
                                 <a href="{{ route('user.home') }}" class="nav-link">
                                     <i class="nav-icon fas fa-home"></i>
                                     <p>
@@ -76,8 +75,6 @@
 
                         </li>
                     @endif
-
-
                     @if (Auth::guard('user')->user())
                         @if(Helper::checkPermission('p_view', $permissions))
 
@@ -92,7 +89,6 @@
                             </li>
                         @endif
                     @endif
-
                     @if (Auth::guard('user')->user())
                        @if(Helper::checkPermission('d_view', $permissions))
                             <li class="nav-item">

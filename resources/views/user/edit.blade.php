@@ -72,7 +72,7 @@
                                                         <select class="form-control" id="sel1" name="role_type">
 
                                                             @foreach ($data as $key => $value)
-                                                            <option value="{{ $key }}" {{ $user->role_type == $key ? 'selected' : '' }}>{{ $value }}
+                                                            <option value="{{ $key }}" {{ $role->role_type == $key ? 'selected' : '' }}>{{ $value }}
                                                             </option>
                                                             
                                                             @endforeach
@@ -178,7 +178,7 @@
                                             <div class="form-group">
                                                 <div class="">
                                                     <input id="p_view" id="p_permissions" type="checkbox" name="permission[]" value="p_view"
-                                                    {{Helper::checkPermission('p_view', $permissions) ? 'checked' : ''}}>
+                                                    {{Helper::checkPermission('p_view', $role->permissions) ? 'checked' : ''}}>
 
                                                     <label for="p_view">Patients</label>
                                                 </div>
@@ -187,22 +187,22 @@
                                                     <div class="row">
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="p_create" name="permission[]"
-                                                                value="p_create" {{Helper::checkPermission('p_create', $permissions) ? 'checked' : ''}}>
+                                                                value="p_create" {{Helper::checkPermission('p_create', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="p_create">Create</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="p_update" name="permission[]"
-                                                                value="p_update" {{Helper::checkPermission('p_update', $permissions) ? 'checked' : ''}}>
+                                                                value="p_update" {{Helper::checkPermission('p_update', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="p_update">Update</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="p_delete" type="checkbox" name="permission[]"
-                                                                value="p_delete" {{Helper::checkPermission('p_delete', $permissions) ? 'checked' : ''}}>
+                                                                value="p_delete" {{Helper::checkPermission('p_delete', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="p_delete" >Delete</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="p_treatment" type="checkbox" name="permission[]"
-                                                                value="p_treatment" {{Helper::checkPermission('p_treatment', $permissions) ? 'checked' : ''}}>
+                                                                value="p_treatment" {{Helper::checkPermission('p_treatment', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="p_treatment">Treatment</label>
                                                         </div>
                                                     </div>
@@ -215,7 +215,7 @@
 
                                             <div class="form-group">
                                                 <div class="">
-                                                    <input id="d_view" id="d_permissions" type="checkbox" name="permission[]"  value="d_view" {{Helper::checkPermission('d_view', $permissions) ? 'checked' : ''}}>
+                                                    <input id="d_view" id="d_permissions" type="checkbox" name="permission[]"  value="d_view" {{Helper::checkPermission('d_view', $role->permissions) ? 'checked' : ''}}>
                                                     <label for="d_view">Dictionary</label>
                                                 </div>
                                                 <div class="form-check" style="padding:6px !important;">
@@ -224,17 +224,17 @@
 
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="d_create" name="permission[]"
-                                                                value="d_create"{{Helper::checkPermission('d_create', $permissions) ? 'checked' : ''}}>
+                                                                value="d_create"{{Helper::checkPermission('d_create', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="d_create">Create</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="d_update" name="permission[]"
-                                                                value="d_update" {{Helper::checkPermission('d_update', $permissions) ? 'checked' : ''}}>
+                                                                value="d_update" {{Helper::checkPermission('d_update', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="d_update">Update</label>
                                                         </div>
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input id="d_delete" type="checkbox" name="permission[]"
-                                                                value="d_delete" {{Helper::checkPermission('d_delete', $permissions) ? 'checked' : ''}}>
+                                                                value="d_delete" {{Helper::checkPermission('d_delete', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="d_delete">Delete</label>
                                                         </div>
                                                     </div>
