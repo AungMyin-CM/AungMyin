@@ -1,0 +1,46 @@
+<div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <div class="input-group">
+                                <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
+                                <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['clinic_id'] }}" >
+                                <div class="input-group-append">
+                                    <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                            <div id="patientList" style="display:none;">
+                            </div>
+                            {{ csrf_field() }}
+                        </div>
+                        @if($data != "")
+                            <div class="col-md-12">                    
+                                <section>                                    
+                                        <div class="rankings">
+                                            <ol>
+                                                @foreach ($data as $row )
+                                                    <li aria-labelledby="marker1 name1" class="rankingsItemLowfi">
+                                                        <div class="rankingsItem--inner">
+                                                            <div id="name1" class="rankingsItem--text">{{$row->name}}</div>
+                                                            <div class="rankingsItem--moveGroup">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+
+                                            </ol>
+                                        </div>
+                                </section>
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" class="visuallyHidden" focusable="false" aria-hidden="true">
+                                    <defs>
+                                        <symbol id="icon--up" viewBox="0 0 14 14">
+                                            <path fill="none" stroke="currentColor" stroke-width="2" d="M.7 10.1L7 3.8l6.3 6.3"/>
+                                        </symbol>
+                                        <symbol id="icon--down" viewBox="0 0 14 14">
+                                            <path fill="none" stroke="currentColor" stroke-width="2" d="M.7 3.8L7 10.1l6.3-6.3"/>
+                                        </symbol>
+                                    </defs>
+                                </svg>
+                            </div>
+                        @endif
+                    </div>

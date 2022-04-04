@@ -5,9 +5,13 @@
         <div class="content-wrapper">
             <section class="content">
                 <div class="container-fluid">
-                    <h2 class="text-center display-4">Search</h2>
                     <div class="row">
-                        <div class="col-md-8 offset-md-2">
+                        @if($data != "" && count($data) != 0)
+                            <div class="col-md-8 p-2">
+                        @else
+                            <div class="col-md-8 offset-md-2 p-2">
+                        @endif
+
                             <div class="input-group">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
                                 <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['clinic_id'] }}" >
@@ -19,11 +23,54 @@
                             </div>
                             {{ csrf_field() }}
                         </div>
-                        @if($data != "")
-                            <div class="col-md-4">                    
-                                @foreach ($data as $row)
-                                    <div>{{$row->name}}</div>
-                                @endforeach
+                        @if($data != "" && count($data) != 0)
+                            <div class="col-md-4 p-2">                    
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Waiting List</h3>
+                                    </div>
+                                    <div class="card-body"> 
+                                        @foreach ($data as $row)
+                                            <div class="card" style="background:#FFFFFF;">
+                                                <div class="card-header border-0">
+                                                    <h3 class="card-title bold">{{ $row->name }}&nbsp;&nbsp;&nbsp;
+                                                        @if($row->gender ==1)
+                                                       <i class="fas fa-male fa-lg" style="color:blue;"></i> 
+                                                       @else
+                                                        <i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>
+                                                        @endif
+                                                    </h3>
+                                                    <div class="card-tools">
+                                                        <a href="#" class="btn btn-sm btn-tool">
+                                                            <i class="fas fa-edit fa-lg" style="color:black;"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-tool">
+                                                            <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-tool">
+                                                            <i class="fas fa-trash fa-lg" style="color:rgb(239, 6, 6);"></i>
+                                                        </a>
+                                                    </div><br/>
+                                                    <div class="float-left">
+                                                        <div class="col-md-12">
+                                                            Age: {{ $row->age }}  
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            Father's Name: {{ $row->father_name }}   
+                                                        </div>  
+                                                        
+                                                    </div>
+                                                    <div class="float-right">
+                                                        <br/>
+                                                        <small>{{ $row->updated_at }}</small>
+                                                    </div>
+
+                                                   
+                                                </div>                                            
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     </div>

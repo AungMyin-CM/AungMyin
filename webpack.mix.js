@@ -16,6 +16,9 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/dictionary.js', 'public/js/dictionary.js')
     .js('resources/js/patient.js', 'public/js/patient.js')
     .js('resources/js/search.js', 'public/js/search.js')
+    .js('resources/js/draggable.js', 'public/js/draggable.js')
+    .sass('resources/sass/draggable.scss', 'public/css/draggable.css')
+
 
 
 

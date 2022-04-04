@@ -4,5 +4,6 @@
     "/js/dictionary.js": "/js/dictionary.js",
     "/js/patient.js": "/js/patient.js",
     "/js/search.js": "/js/search.js",
-    "/css/app.css": "/css/app.css"
+    "/js/draggable.js": "/js/draggable.js",
+    "/css/draggable.css": "/css/draggable.css"
 }

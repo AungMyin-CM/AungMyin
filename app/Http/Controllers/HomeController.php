@@ -15,8 +15,9 @@ class HomeController extends Controller
     {        
         $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
         $clinic_code = Clinic::where('id' , Auth::guard('user')->user()['clinic_id'])->pluck('code');
+        $user_id = Auth::guard('user')->user()['id'];
         if($role->role_type == 2) {     
-            $patientData = Patient::where('clinic_code' ,$clinic_code)->where('p_status' , 1)->where('status' , 1)->get();
+            $patientData = Patient::where('clinic_code' ,$clinic_code)->where('user_id',$user_id)->where('p_status' , 1)->where('status' , 1)->get();
         }else{
             $patientData = "";
         }
