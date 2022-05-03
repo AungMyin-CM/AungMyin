@@ -38,9 +38,9 @@
                             <div class="col-12">
                                 <div class="card">
                                     <!-- /.card-header -->
-                                     @if(Helper::checkPermission('p_create', $permissions))
+                                     @if(Helper::checkPermission('ph_create', $permissions))
                                         <div class="card-header">
-                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right"><i
+                                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif
@@ -49,7 +49,7 @@
                                           <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Code</th>
+                                                <th>Expire Date</th>
                                                 <th>Age</th>
                                                 <th>Gender</th>
                                                 <th>Actions</th>

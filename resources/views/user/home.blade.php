@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+    <div class="wrapper" id="mydiv">
         <div class="content-wrapper">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        @if($data != "" && count($data) != 0)
+                        @if($data['patientData'] != "" && count($data['patientData']) != 0)
                             <div class="col-md-8 p-2">
                         @else
                             <div class="col-md-8 offset-md-2 p-2">
@@ -23,14 +23,14 @@
                             </div>
                             {{ csrf_field() }}
                         </div>
-                        @if($data != "" && count($data) != 0)
+                        @if($data['patientData'] != "" && count($data['patientData']) != 0)
                             <div class="col-md-4 p-2">                    
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h3 class="card-title">Waiting List</h3>
                                     </div>
                                     <div class="card-body"> 
-                                        @foreach ($data as $row)
+                                        @foreach ($data['patientData'] as $row)
                                             <div class="card" style="background:#FFFFFF;">
                                                 <div class="card-header border-0">
                                                     <h3 class="card-title bold">{{ $row->name }}&nbsp;&nbsp;&nbsp;
@@ -41,13 +41,23 @@
                                                         @endif
                                                     </h3>
                                                     <div class="card-tools">
-                                                        <a href="#" class="btn btn-sm btn-tool">
+                                                        <a href="{{ route('patient.edit' , Crypt::encrypt($row->id)) }}" class="btn btn-sm btn-tool">
                                                             <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-sm btn-tool">
+                                                        @if($data['role'] == 2) 
+
+                                                        <a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="2" data-patient-id = "{{ $row->id }}">
                                                             <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
                                                         </a>
-                                                        <a href="#" class="btn btn-sm btn-tool">
+
+                                                        @elseif($data['role'] == 1)
+
+                                                        <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
+                                                            ><i class="fas fa-stethoscope fa-lg"></i></a>
+
+                                                        @endif
+                                                        
+                                                        <a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = "{{ $row->id }}">
                                                             <i class="fas fa-trash fa-lg" style="color:rgb(239, 6, 6);"></i>
                                                         </a>
                                                     </div><br/>
@@ -87,17 +97,17 @@
 
     $(document).ready(function(){
 
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $('#main_search').keyup(function(){ 
                 var query = $(this).val();
                 
                 var clinic_id = $("#clinic_code").val();
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                
                 $.ajax({
                     type: "POST",
                     url: '/search',
@@ -127,11 +137,30 @@
             });
         });
 
-        // $(document).on('click', 'li', function(){  
-        //     $('#country_name').val($(this).text());  
-        //     $('#countryList').fadeOut();  
-        // });  
+    });
 
+    function updateStatus(status){
+        var p_status = status.getAttribute('data-status');
+        var patient_id = status.getAttribute('data-patient-id');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
+                
+        $.ajax({
+            type: "POST",
+            url: '/updateStatus',
+            data: { status: p_status, patient_id: patient_id }
+        }).done(function( response ) {
+            if(response == 'changed')
+            {
+                $("#mydiv").load(location.href + " #mydiv>*","");
+            }else{
+                alert("Something Went Wrong");
+            }
+        });
+    };
 </script>
 @endsection

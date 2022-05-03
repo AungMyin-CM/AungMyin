@@ -11001,6 +11001,18 @@ __webpack_require__.r(__webpack_exports__);
         $("#d_view").prop('checked', true);
       }
     });
+    $("#ph_view").on("change", function () {
+      if (this.checked) {
+        $("#ph_create,#ph_delete,#ph_update").prop('checked', true);
+      } else {
+        $("#ph_create,#ph_delete,#ph_update").prop('checked', false);
+      }
+    });
+    $("#ph_create,#ph_delete,#ph_update").on('change', function () {
+      if (this.checked) {
+        $("#ph_view").prop('checked', true);
+      }
+    });
   });
 })((jquery__WEBPACK_IMPORTED_MODULE_0___default()));
 })();

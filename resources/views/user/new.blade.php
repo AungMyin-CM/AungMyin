@@ -230,6 +230,35 @@
 
                                                 </div>
                                             </div>
+                                            <hr/>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="ph_view" id="ph_permissions" type="checkbox" name="permission[]"  value="ph_view">
+                                                    <label for="ph_view">Pharmacy</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="ph_create" name="permission[]"
+                                                                value="ph_create">
+                                                            <label for="ph_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="ph_update" name="permission[]"
+                                                                value="ph_update">
+                                                            <label for="ph_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="ph_delete" type="checkbox" name="permission[]"
+                                                                value="ph_delete">
+                                                            <label for="ph_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer ">
                                             <button type="submit" class="btn btn-primary float-right">Submit</button>

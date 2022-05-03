@@ -6,6 +6,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PharmacyController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('patient',PatientController::class);
 
+    Route::resource('pharmacy',PharmacyController::class);
+
     Route::get('patient/{patient}/treatment',[PatientController::class, 'treatment'])->name('patient.treatment');
 
     Route::post('patient/{patient}/treatment',[PatientController::class, 'saveTreatment'])->name('create.treatment');
@@ -47,6 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/fetchDictionary',[PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
     Route::post('/search',[PatientController::class, 'searchPatient']);
+
+    Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
+
 
 });
 

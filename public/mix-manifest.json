@@ -3,7 +3,5 @@
     "/js/user.js": "/js/user.js",
     "/js/dictionary.js": "/js/dictionary.js",
     "/js/patient.js": "/js/patient.js",
-    "/js/search.js": "/js/search.js",
-    "/js/draggable.js": "/js/draggable.js",
-    "/css/draggable.css": "/css/draggable.css"
+    "/js/search.js": "/js/search.js"
 }

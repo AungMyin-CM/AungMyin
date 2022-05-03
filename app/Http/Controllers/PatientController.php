@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\QueryException;
 
 use File;
 
@@ -27,12 +28,16 @@ class PatientController extends Controller
         if(!$this->checkPermission('p_view')){
             abort(403);
         }
+        
+        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+
+        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
 
         if($request->name)
         {
-            $patientData =  Patient::where("user_id",Auth::guard('user')->user()['id'])->where('name', 'like', $request->name.'%')->where('status',1)->get();
+            $patientData =  Patient::where("clinic_code",$clinic_code)->where('name', 'like', $request->name.'%')->where('status',1)->get();
         }else{
-            $patientData = Patient::where("user_id",Auth::guard('user')->user()['id'])->where('status',1)->get();
+            $patientData = Patient::where("clinic_code",$clinic_code)->where('status',1)->get();
         }
         return view('patient/index')->with('data',$patientData);
     }
@@ -239,6 +244,24 @@ class PatientController extends Controller
 
         echo $output;
 
+    }
+
+    public function updatePatientStatus(Request $request)
+    {
+        $status = $request->status;
+        $patient_id = $request->patient_id;
+        $user_id = Auth::guard('user')->user()['id'];
+
+        try{
+        Patient::whereId($patient_id)->update(['p_status' => $status]);
+
+        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+        $clinic_code = Clinic::where('id' , Auth::guard('user')->user()['clinic_id'])->pluck('code');
+        $user_id = Auth::guard('user')->user()['id'];
+            echo "changed";
+        }catch(QueryException $e){
+            echo "false";
+        }
     }
 
     private function codeGenerator()

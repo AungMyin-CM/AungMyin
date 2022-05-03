@@ -126,89 +126,91 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">....</h3>
-                                        </div>
-                                        <div class="card-body">
-
-                                            <div class="form-group">
-                                                <label for="address">Prescription</label>
-                                                <textarea class="form-control" id="dictionary" rows="10" placeholder="Start Typing here..."
-                                                    name="prescription">{{ old('prescription') }}</textarea>
+                                @if($role_type == 1)
+                                    <div class="col-md-6">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">....</h3>
                                             </div>
+                                            <div class="card-body">
 
-                                            <div class="form-group">
-                                                <label for="address">Diagnosis</label>
-                                                <textarea class="form-control" id="diagnosis_dictionary" rows="6" placeholder="Start Typing here..."
-                                                    name="diag">{{ old('diag') }}</textarea>
-
-                                            </div>
-
-                                            <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
-                                            <label class="file_upload" for="upload">Choose file</label>
-                                        
-                                            <div id="myModal" class="modal">
-                                                <span class="close">&times;</span>
-                                                <img class="modal-content" id="img01">
-                                                <div id="caption"></div>
-                                              </div>
-
-                                            <div class="form-group" id="image">
-                                                {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="address">Investigation</label>
-                                                        <textarea class="form-control" rows="5" placeholder="Start Typing here..."
-                                                            name="investigation">{{ old('investigation') }}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="address">Procedure</label>
-                                                        <textarea class="form-control" rows="5" placeholder="Start Typing here..."
-                                                            name="procedure">{{ old('procedure') }}</textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
-                                                    </div>
+                                                <div class="form-group">
+                                                    <label for="address">Prescription</label>
+                                                    <textarea class="form-control" id="dictionary" rows="10" placeholder="Start Typing here..."
+                                                        name="prescription">{{ old('prescription') }}</textarea>
                                                 </div>
 
-                                                <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label for="address">Diagnosis</label>
+                                                    <textarea class="form-control" id="diagnosis_dictionary" rows="6" placeholder="Start Typing here..."
+                                                        name="diag">{{ old('diag') }}</textarea>
 
-                                                    <div class="d-flex justify-content-center" id="followUp">
-                                                        <div class="form-check" style="padding:6px !important;">
-                                                            
-                                                            <div class="icheck-primary d-inline mt-2">
-                                                                <input type="checkbox" id="isFollowup" type="checkbox" name="is_followup">
-                                                                <label for="isFollowup">Follow up</label>
-                                                            </div>
+                                                </div>
+
+                                                <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
+                                                <label class="file_upload" for="upload">Choose file</label>
+                                            
+                                                <div id="myModal" class="modal">
+                                                    <span class="close">&times;</span>
+                                                    <img class="modal-content" id="img01">
+                                                    <div id="caption"></div>
+                                                </div>
+
+                                                <div class="form-group" id="image">
+                                                    {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="address">Investigation</label>
+                                                            <textarea class="form-control" rows="5" placeholder="Start Typing here..."
+                                                                name="investigation">{{ old('investigation') }}</textarea>
                                                         </div>
-                            
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="address">Procedure</label>
+                                                            <textarea class="form-control" rows="5" placeholder="Start Typing here..."
+                                                                name="procedure">{{ old('procedure') }}</textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-8">
+
+                                                        <div class="d-flex justify-content-center" id="followUp">
+                                                            <div class="form-check" style="padding:6px !important;">
+                                                                
+                                                                <div class="icheck-primary d-inline mt-2">
+                                                                    <input type="checkbox" id="isFollowup" type="checkbox" name="is_followup">
+                                                                    <label for="isFollowup">Follow up</label>
+                                                                </div>
+                                                            </div>
+                                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    
                                             </div>
-                                                
-                                        </div>
-                                        <div class="card-footer">
-                                            <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary">
+                                            <div class="card-footer">
+                                                <div class="form-group float-right">
+                                                    <input type="submit" value="submit" class="btn btn-primary">
+                                                </div>
                                             </div>
+                                            <!-- Bootstrap Switch -->
+                                            <!-- /.card -->
                                         </div>
-                                        <!-- Bootstrap Switch -->
-                                        <!-- /.card -->
+                                        <!-- /.col (right) -->
                                     </div>
-                                    <!-- /.col (right) -->
-                                </div>
+                                @endif
                             </div>
                     </section>
                 </form>

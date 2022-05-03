@@ -103,6 +103,20 @@
                         @endif
                     @endif
 
+                    @if (Auth::guard('user')->user())
+                       @if(Helper::checkPermission('ph_view', $permissions))
+                            <li class="nav-item">
+                                <a href="{{ route('pharmacy.index') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-medkit"></i>
+                                    <p>
+                                        Pharmacy
+                                    </p>
+                                </a>
+
+                            </li>
+                        @endif
+                    @endif
+
                     <li class="nav-item">
                         @if (Auth::guard('clinic')->user())
                             <form action="{{ route('clinic.logout') }}" method="post">

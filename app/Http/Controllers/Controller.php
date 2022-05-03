@@ -19,17 +19,27 @@ class Controller extends BaseController
 
     protected $permissions;
 
+    protected $role_type;
+
     public function __construct()
     {
         $permissions = '';
+
+        $role_type = '';
 
         $this->middleware(function ($request, $next) {
 
             if (Auth::guard('user')->user()){
 
                 $permissions = Role::where('id',Auth::guard('user')->user()['id'])->pluck('permissions')->first();
+
+                $role_type = Role::where('id',Auth::guard('user')->user()['id'])->pluck('role_type')->first();
+
                 $this->permissions = $permissions;
-                view()->share('permissions',$permissions);   
+                $this->role_type = $role_type;
+
+                view()->share(['permissions' => $permissions, 'role_type' => $role_type]);   
+                
             }
             return $next($request);
         });
