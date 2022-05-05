@@ -27,6 +27,7 @@ class Pharmacy extends Model
         'vendor_phoneNumber',
         'status',
         'storage_place',
+        'Ref',
         'delete_at'
     ];
     

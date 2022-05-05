@@ -7,6 +7,8 @@ use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PharmacyController;
+use App\Http\Controllers\SearchController;
+
 
 
 /*
@@ -50,10 +52,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/fetchDictionary',[PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
-    Route::post('/search',[PatientController::class, 'searchPatient']);
+    Route::post('/search',[SearchController::class, 'searchPatient']);
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
+    Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
 });
 
