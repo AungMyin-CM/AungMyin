@@ -80,7 +80,6 @@ class PatientController extends Controller
                           'Ref' => $reference
             ])->id;
 
-
             $images = [];
 
             if($request->hasfile('images'))
@@ -211,39 +210,6 @@ class PatientController extends Controller
         }else{
             echo $data;
         }
-    }
-
-    public function searchPatient(Request $request)
-    {
-        $ref = str_replace(' ','_',$request->key);
-
-        $clinic_id = $request->clinic_id;
-
-        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
-
-        $data = Patient::select('id','name','age','father_name')->
-                where('Ref', 'like', '%'.$ref.'%')->
-                where('clinic_code',$clinic_code)->
-                where('status',1)->
-                get();
-        
-        if(count($data) == 0)
-        {
-            $output = '';
-        }else{  
-            $output = '<ul class="list-group" style="display:block; position:relative;">';
-
-            foreach($data as $row)
-            {
-                $output .= '
-                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'">Name: '.$row->name.''.'<span style= "margin:0rem 5rem 0rem 5rem;">Age: '.$row->age.'</span>'.'Father\'s Name: '.$row->father_name.'</a></li>
-                ';
-            }
-            $output .= '</ul>';
-        }
-
-        echo $output;
-
     }
 
     public function updatePatientStatus(Request $request)

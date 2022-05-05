@@ -24,7 +24,7 @@ class HomeController extends Controller
 
             $patientData = Patient::where('clinic_code' ,$clinic_code)
                             ->where('user_id',$user_id)
-                            ->where('p_status' , 1)->where('status' , 1)
+                            ->where('p_status' , 1)
                             ->where('updated_at' , '>=' ,$now->format('ymd') )
                             ->where('status', 1)->get();
 
