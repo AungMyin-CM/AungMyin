@@ -241,6 +241,64 @@
 
                                                 </div>
                                             </div>
+                                            <hr/>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="ph_view" id="ph_permissions" type="checkbox" name="permission[]"  value="ph_view" {{Helper::checkPermission('ph_view', $role->permissions) ? 'checked' : ''}}>
+                                                    <label for="ph_view">Pharmacy</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="ph_create" name="permission[]"
+                                                                value="ph_create" {{Helper::checkPermission('ph_create', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="ph_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="ph_update" name="permission[]"
+                                                                value="ph_update" {{Helper::checkPermission('ph_update', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="ph_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="ph_delete" type="checkbox" name="permission[]"
+                                                                value="ph_delete" {{Helper::checkPermission('ph_delete', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="ph_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]"  value="pos_view" {{Helper::checkPermission('pos_view', $role->permissions) ? 'checked' : ''}}>
+                                                    <label for="pos_view">POS</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="pos_create" name="permission[]"
+                                                                value="pos_create" {{Helper::checkPermission('pos_create', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="pos_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="pos_update" name="permission[]"
+                                                                value="pos_update" {{Helper::checkPermission('pos_update', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="pos_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="pos_delete" type="checkbox" name="permission[]"
+                                                                value="pos_delete" {{Helper::checkPermission('pos_delete', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="pos_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer ">
                                             <button type="submit" class="btn btn-primary float-right">Submit</button>

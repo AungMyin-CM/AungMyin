@@ -123,6 +123,11 @@
 
                                             </div>
                                         </div>
+                                        <div class="card-footer">
+                                            <div class="form-group float-right">
+                                                <input type="submit" value="submit" class="btn btn-primary">
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -200,11 +205,7 @@
                                                 </div>
                                                     
                                             </div>
-                                            <div class="card-footer">
-                                                <div class="form-group float-right">
-                                                    <input type="submit" value="submit" class="btn btn-primary">
-                                                </div>
-                                            </div>
+                                            
                                             <!-- Bootstrap Switch -->
                                             <!-- /.card -->
                                         </div>

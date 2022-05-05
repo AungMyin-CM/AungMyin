@@ -259,6 +259,35 @@
 
                                                 </div>
                                             </div>
+                                        <hr/>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]"  value="ph_view">
+                                                    <label for="pos_view">POS</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="pos_create" name="permission[]"
+                                                                value="pos_create">
+                                                            <label for="pos_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="pos_update" name="permission[]"
+                                                                value="pos_update">
+                                                            <label for="pos_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="pos_delete" type="checkbox" name="permission[]"
+                                                                value="pos_delete">
+                                                            <label for="pos_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer ">
                                             <button type="submit" class="btn btn-primary float-right">Submit</button>

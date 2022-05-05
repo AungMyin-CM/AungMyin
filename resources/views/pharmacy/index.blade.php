@@ -49,9 +49,10 @@
                                           <thead>
                                             <tr>
                                                 <th>Name</th>
+                                                <th>Code</th>
                                                 <th>Expire Date</th>
-                                                <th>Age</th>
-                                                <th>Gender</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                                 {{-- <th></th>
                                                 <th></th> --}}
@@ -63,25 +64,21 @@
                                                 <tr>
                                                     <td>{{ $row->name }}</td>
                                                     <td>{{ $row->code }}</td>
-                                                    <td>{{ $row->age }}</td>
-                                                    <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
+                                                    <td>{{ $row->expire_date }}</td>
+                                                    <td>{{ $row->quantity }}</td>
+                                                    <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
                                                     <td>
                                                         <div class="row">
-                                                            @if(Helper::checkPermission('p_update', $permissions))
+                                                            @if(Helper::checkPermission('ph_update', $permissions))
 
-                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
+                                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
                                                                 <i class="fas fa-edit fa-lg"></i></a>
 
                                                             @endif
 
-                                                            @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 )
-                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
-                                                                ><i class="fas fa-stethoscope fa-lg"></i></a>
-                                                            @endif
+                                                            @if(Helper::checkPermission('ph_delete', $permissions))
 
-                                                            @if(Helper::checkPermission('p_delete', $permissions))
-
-                                                                <form action="{{ route('patient.destroy', $row->id) }}"
+                                                                <form action="{{ route('pharmacy.destroy', $row->id) }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')   

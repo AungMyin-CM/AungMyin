@@ -5,7 +5,7 @@
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
             <div class="content-wrapper">
-                <form method="post" action="{{ route('patient.update', $patient->id) }}" >
+                <form method="post" action="{{ route('pharmacy.update', $pharmacy->id) }}" >
                     @csrf
                     @method('PATCH')
 
@@ -13,11 +13,11 @@
                         <div class="container-fluid">
                             <div class="row mb-2">
                                 <div class="col-sm-6">
-                                    <h1>Patient Form</h1>
+                                    <h1>Edit form</h1>
                                 </div>
                                 <div class="col-sm-6">
                                     <ol class="breadcrumb float-sm-right">
-                                        <li class="breadcrumb-item"><a href="#">Patient</a></li>
+                                        <li class="breadcrumb-item"><a href="#">Pharmacy</a></li>
                                         <li class="breadcrumb-item active">Edit</li>
                                     </ol>
                                 </div>
@@ -29,11 +29,11 @@
                         <div class="container-fluid">
 
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
 
                                     <div class="card card-primary">
                                         <div class="card-header">
-                                            <h3 class="card-title">Edit Patient</h3>
+                                            <h3 class="card-title">Edit Medicine</h3>
                                         </div>
                                         @if ($errors->any())
                                             <div class="alert alert-danger">
@@ -49,105 +49,151 @@
                                             </p><br /> --}}
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
                                                         <label for="name">Name</label>
-                                                        <input type="text" class="form-control" id="patient_name"
-                                                            name="name" placeholder="Name" value=" {{ $patient->name }}">
+                                                            <input type="text" class="form-control" id="name"
+                                                            name="name" placeholder="Name" value="{{ $pharmacy->name }}">
 
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <div class="form-group">
-                                                        <label for="father_name">Father name</label>
-                                                        <input type="text" class="form-control" id="f-name"
-                                                            name="father_name" placeholder="Father name"
-                                                            value="{{ $patient->father_name }}">
+                                                        <label for="code">Code</label>
+                                                        <input class="form-control" placeholder="Code" name="code" value="{{ $pharmacy->code }}"/>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="expire_date">Expire Date</label>
+                                                        <input type="date" class="form-control" id="expire_date"
+                                                            name="expire_date"
+                                                            value="{{ $pharmacy->expire_date }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label for="quantity">Quantity</label>
+                                                        <input type="number" class="form-control" id="quantity" name="quantity"
+                                                            min="1" max="100" placeholder="Quantity" value="{{ $pharmacy->quantity }}">
+                                                    </div>
+                                                </div>
+                                               
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="age">Age</label>
-                                                        <input type="number" class="form-control" id="age" name="age"
-                                                            min="1" max="100" placeholder="Age" value="{{ $patient->age }}">
+                                                        <label for="phoneNumber">Act Price</label>
+                                                        <input type="text" class="form-control" id="act_price"
+                                                            name="act_price" placeholder="Act Price"
+                                                            value={{ $pharmacy->act_price }}>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="phoneNumber">Phone Number</label>
-                                                        <input type="text" class="form-control" id="phoneNumber"
-                                                            name="phoneNumber" placeholder="09xxxxxxxxx"
-                                                            value={{ $patient->phoneNumber }}>
+                                                        <label for="address">Sell price</label>
+                                                        <input class="form-control" id="sell_price" placeholder="Sell price" name="sell_price" value="{{ $pharmacy->sell_price }}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="address">Margin</label>
+                                                        <input class="form-control" id="margin" placeholder="Margin" name="margin" value="{{ $pharmacy->margin }}"/>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="address">Address</label>
-                                                <textarea class="form-control" placeholder="Address" name="address">{{ $patient->address }}</textarea>
-                                            </div>
+                                            
 
-                                            <div class="form-group">
-
-                                                <label for="gender">Gender</label>
-                                                @if($patient->gender == 1) 
-                                                    <?php 
-                                                        $m_checked = 'checked';
-                                                        $f_checked = '';
-                                                    ?>
-                                                @else
-                                                    <?php 
-                                                        $m_checked = '';
-                                                        $f_checked = 'checked';
-                                                    ?>
-                                                @endif
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" id="female" type="radio"
-                                                                value="0" name="gender" <?php echo $m_checked;?>>
-                                                            <label class="form-check-label" for="male">
-                                                                Male
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" id="female" type="radio"
-                                                                value="0" name="gender" <?php echo $f_checked;?>>
-                                                            <label class="form-check-label" for="female">
-                                                                Female
-                                                            </label>
-                                                        </div>
+                                            <div class="row">
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="address">Unit</label>
+                                                        <input class="form-control" placeholder="Unit" name="unit" value="{{ $pharmacy->unit }}"/>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="address">Vendor</label>
+                                                        <input class="form-control" placeholder="Vendor" rows="4" name="vendor" value="{{ $pharmacy->vendor }}"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="address">Vendor Phone-Number</label>
+                                                        <input class="form-control" placeholder="Vendor Phone-number" rows="4" name="vendor_phoneNumber"  value="{{ $pharmacy->vendor_phoneNumber }}">                                       
+                                                    </div>
+                                                </div>
+
+                                            
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="address">Drug Allergy</label>
-                                                        <textarea class="form-control" placeholder="Drug Allergy" rows="4"
-                                                            name="drug_allergy">{{ $patient->drug_allergy }}</textarea>
+                                                        <label for="address">Description</label>
+                                                        <textarea class="form-control" placeholder="Description" rows="4"
+                                                            name="description">{{ $pharmacy->description }}</textarea>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="address">Summary</label>
-                                                        <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ $patient->summary }}</textarea>
+                                                        <label for="address">Storage Place</label>
+                                                        <input class="form-control" placeholder="Storage Place" rows="4" name="storage_place" value="{{ $pharmacy->storage_place }}"/>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+
+                                                        <label for="gender">Status</label>
+                                                        @if($pharmacy->status == 1) 
+                                                            <?php 
+                                                                $m_checked = 'checked';
+                                                                $f_checked = '';
+                                                            ?>
+                                                        @else
+                                                            <?php 
+                                                                $m_checked = '';
+                                                                $f_checked = 'checked';
+                                                            ?>
+                                                        @endif
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" id="active" type="radio"
+                                                                        value="1" name="status" <?php echo $m_checked;?>>
+                                                                    <label class="form-check-label" for="active">
+                                                                        Active
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" id="inactive" type="radio"
+                                                                        value="0" name="status" <?php echo $f_checked;?>>
+                                                                    <label class="form-check-label" for="inactive">
+                                                                        Inactive
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                            </div>
                                         </div>
 
-                                        <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        <div class="card-footer" style="background:rgb(221, 231, 207);">
+                                            <div class="form-group float-right">
+                                                <input type="submit" value="submit" class="btn btn-primary">
+                                            </div>
                                         </div>
 
                                     </div>
@@ -161,14 +207,6 @@
             </div>
         </div>
     </body>
-    <script src="{{ asset('js/dictionary.js') }}"></script>
-    <script src="{{ asset('js/patient.js') }}"></script>
-    <script>
-        var loadFile = function(event) {
-            var image = document.getElementById('output');
-            image.src = URL.createObjectURL(event.target.files[0]);
-        };
-
-    </script>
+    <script src="{{ asset('js/pharmacy.js') }}"></script>
+    
 @endsection
-{{-- @include('layouts.js') --}}

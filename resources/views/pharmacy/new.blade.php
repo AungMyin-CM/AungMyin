@@ -5,7 +5,7 @@
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
             <div class="content-wrapper">
-                <form action="{{ route('patient.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pharmacy.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     
                     <section class="content">
@@ -63,14 +63,6 @@
                                             </div>
 
                                             <div class="row">
-                                                
-
-                                                
-                                            </div>
-
-                                            
-
-                                            <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="phoneNumber">Act Price</label>
@@ -82,13 +74,13 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="address">Sell price</label>
-                                                        <input class="form-control" placeholder="Sell price" name="sell_price" value="{{ old('sell_price') }}"/>
+                                                        <input class="form-control" id="sell_price" placeholder="Sell price" name="sell_price" value="{{ old('sell_price') }}"/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="address">Margin</label>
-                                                        <input class="form-control" placeholder="Margin" name="margin" value="{{ old('margin') }}"/>
+                                                        <input class="form-control" id="margin" placeholder="Margin" name="margin" value="{{ old('margin') }}"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,7 +89,6 @@
 
                                             <div class="row">
                                                 
-
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="address">Unit</label>
@@ -156,41 +147,6 @@
             </div>
         </div>
     </body>
-    <script src="{{ asset('js/dictionary.js') }}"></script>
-    <script src="{{ asset('js/patient.js') }}"></script>
-    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/pharmacy.js') }}"></script>
 
-    <script>
-        var loadFile = function(event) {
-            for(var i =0; i< event.target.files.length; i++){
-                var src = URL.createObjectURL(event.target.files[i]);
-                $("#image").append("<img id='myImg"+i+"' onclick='showImage("+i+")' src="+src+" style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
-
-            }
-        };
-
-        var modal = document.getElementById("myModal");
-
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        function showImage(id)
-        {
-            var origin_image = document.getElementById("myImg"+id);
-            modal.style.display = "block";
-            modalImg.src = origin_image.src;
-            console.log(modalImg.src);
-            captionText.innerHTML = origin_image.alt;
-        }
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() { 
-            modal.style.display = "none";
-        }
-        
-    </script>
 @endsection
-{{-- @include('layouts.js') --}}
