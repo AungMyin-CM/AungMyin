@@ -11013,6 +11013,18 @@ __webpack_require__.r(__webpack_exports__);
         $("#ph_view").prop('checked', true);
       }
     });
+    $("#pos_view").on("change", function () {
+      if (this.checked) {
+        $("#pos_create,#pos_delete,#pos_update").prop('checked', true);
+      } else {
+        $("#pos_create,#pos_delete,#pos_update").prop('checked', false);
+      }
+    });
+    $("#pos_create,#pos_delete,#pos_update").on('change', function () {
+      if (this.checked) {
+        $("#pos_view").prop('checked', true);
+      }
+    });
   });
 })((jquery__WEBPACK_IMPORTED_MODULE_0___default()));
 })();

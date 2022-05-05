@@ -55,6 +55,23 @@ $(function() {
         }
     });
 
+    $("#pos_view").on("change",function() {
+        if(this.checked)
+        {
+            $("#pos_create,#pos_delete,#pos_update").prop('checked', true);
+        }else{
+            $("#pos_create,#pos_delete,#pos_update").prop('checked', false);
+
+        }
+    });
+
+    $("#pos_create,#pos_delete,#pos_update").on('change', function() {
+        if(this.checked)
+        {
+            $("#pos_view").prop('checked', true);
+        }
+    });
+
     
 });
 
