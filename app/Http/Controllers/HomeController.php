@@ -33,6 +33,12 @@ class HomeController extends Controller
             $patientData = Patient::where('clinic_code' ,$clinic_code)
                             ->where('p_status' , 2)->where('status' , 1)
                             ->where('updated_at' , '>=' ,$now->format('ymd') )
+                            ->where('status', 1)->get();    
+        }elseif($role->role_type == 3){
+
+            $patientData = Patient::where('clinic_code' ,$clinic_code)
+                            ->where('p_status' , 3)->where('status' , 1)
+                            ->where('updated_at' , '>=' ,$now->format('ymd') )
                             ->where('status', 1)->get();           
         }else{
             $patientData = "";

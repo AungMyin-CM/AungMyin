@@ -262,13 +262,12 @@
                                         <hr/>
                                             <div class="form-group">
                                                 <div class="">
-                                                    <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]"  value="ph_view">
+                                                    <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]"  value="pos_view">
                                                     <label for="pos_view">POS</label>
                                                 </div>
                                                 <div class="form-check" style="padding:6px !important;">
 
                                                     <div class="row">
-
                                                         <div class="col md-4 icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="pos_create" name="permission[]"
                                                                 value="pos_create">

@@ -17,6 +17,9 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/patient.js', 'public/js/patient.js')
     .js('resources/js/search.js', 'public/js/search.js')
     .js('resources/js/pharmacy.js', 'public/js/pharmacy.js')
+    .js('resources/js/pos.js', 'public/js/pos.js')
+    .css('resources/css/app.css', 'public/css/selectize.css')
+
     
 
 

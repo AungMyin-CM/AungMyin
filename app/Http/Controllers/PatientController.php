@@ -80,6 +80,9 @@ class PatientController extends Controller
                           'Ref' => $reference
             ])->id;
 
+            if($role->role_type == 1)
+            {
+
             $images = [];
 
             if($request->hasfile('images'))
@@ -94,18 +97,21 @@ class PatientController extends Controller
                 }
             }
 
+
             Visit::create([
                 'patient_id' => $patient_id,
                 'prescription' => $request->prescription,
                 'diag' => $request->diag,
                 'images' => json_encode($images),
-                'fees' => $request->fees,
+                'fees' => $request->fees == null ? 0.00 : $request->fees,
                 'doctor_id' => $user_id,
                 'investigation' => $request->investigation,
                 'procedure' => $request->procedure,
                 'is_followup' => $request->is_followup,
                 'followup_date' => $request->followup_date
             ]);
+
+            }
 
             return redirect('patient')->with('success', "Done!");
         }
@@ -131,7 +137,9 @@ class PatientController extends Controller
      */
     public function update(PatientRequest $request, $id)
     {
-        Patient::whereId($id)->update($request->validated());
+        $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
+
+        Patient::whereId($id)->update([$request->validated(), 'Ref' => $reference ]);
 
         return redirect('patient')->with('success', 'Done !');
     }
@@ -168,6 +176,8 @@ class PatientController extends Controller
             }
         }
 
+        Patient::whereId($id)->update(['p_status' => '3']);
+
         Visit::create([
             'patient_id' => $id,
             'prescription' => $request->prescription,
@@ -193,8 +203,7 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        $dict = Patient::findOrFail($id);
-        $dict->delete();
+        Patient::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('patient')->with('success', 'Done !');
     }
@@ -221,7 +230,6 @@ class PatientController extends Controller
         try{
         Patient::whereId($patient_id)->update(['p_status' => $status]);
 
-        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
         $clinic_code = Clinic::where('id' , Auth::guard('user')->user()['clinic_id'])->pluck('code');
         $user_id = Auth::guard('user')->user()['id'];
             echo "changed";

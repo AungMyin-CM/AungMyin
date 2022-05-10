@@ -111,7 +111,7 @@
                        @if(Helper::checkPermission('pos_view', $permissions))
                             <li class="nav-item">
                                 <a href="{{ route('pos.index') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-medkit"></i>
+                                    <i class="nav-icon fas fa-desktop"></i>
                                     <p>
                                         POS
                                     </p>

@@ -36,6 +36,11 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/selectize.css') }}">
+
+
 </head>
 
 

@@ -20,7 +20,7 @@ class CreateVisitsTable extends Migration
             $table->longText('prescription')->nullable();
             $table->longText('diag')->nullable();
             $table->longText('images')->nullable();
-            $table->float('fees')->default(0);
+            $table->float('fees')->nullable()->default(0.00);
             $table->integer('doctor_id');
             $table->longText('investigation')->nullable();
             $table->longText('procedure')->nullable();

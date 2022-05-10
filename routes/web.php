@@ -8,6 +8,8 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\PosController;
+
 
 
 
@@ -54,9 +56,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/search',[SearchController::class, 'searchPatient']);
 
+    Route::post('/searchMed',[SearchController::class, 'searchMedicine']);
+
+
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
+
+    Route::resource('/pos',PosController::class);
+
+    Route::post('/medData',[PosController::class, 'getMedData']);
+
 
 });
 

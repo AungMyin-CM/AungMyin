@@ -4,5 +4,7 @@
     "/js/dictionary.js": "/js/dictionary.js",
     "/js/patient.js": "/js/patient.js",
     "/js/search.js": "/js/search.js",
-    "/js/pharmacy.js": "/js/pharmacy.js"
+    "/js/pharmacy.js": "/js/pharmacy.js",
+    "/js/pos.js": "/js/pos.js",
+    "/css/selectize.css": "/css/selectize.css"
 }
