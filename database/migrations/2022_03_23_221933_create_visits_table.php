@@ -17,11 +17,13 @@ class CreateVisitsTable extends Migration
             $table->id();
             $table->bigInteger('patient_id')->unsigned();
             $table->foreign('patient_id')->references('id')->on('patient')->onDelete('cascade');
+            $table->integer('pos_id')->nullable();
             $table->longText('prescription')->nullable();
             $table->longText('diag')->nullable();
+            $table->longText('assigned_medicines')->nullable();
             $table->longText('images')->nullable();
             $table->float('fees')->nullable()->default(0.00);
-            $table->integer('doctor_id');
+            $table->integer('user_id');
             $table->longText('investigation')->nullable();
             $table->longText('procedure')->nullable();
             $table->integer('is_followup')->default(0);

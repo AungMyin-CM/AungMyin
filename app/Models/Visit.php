@@ -11,11 +11,13 @@ class Visit extends Model
 
     protected $fillable = [
         'patient_id',
+        'pos_id',
         'prescription',
         'diag',
+        'assigned_medicines',
         'images',
         'fees',
-        'doctor_id',
+        'user_id',
         'investigation',
         'procedure',
         'is_folloup',

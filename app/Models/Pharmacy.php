@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Pharmacy extends Model
 {
     use HasFactory;
@@ -30,5 +31,6 @@ class Pharmacy extends Model
         'Ref',
         'delete_at'
     ];
-    
+
+   
 }

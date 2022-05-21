@@ -26,6 +26,7 @@ class PosRequest extends FormRequest
         return [
             'invoice_code' => 'required',
             'patient_id' => 'nullable',
+            'pos_id' => 'nullable',
             'med_id' => 'required',
             'med_name' => 'required',
             'customer_name' => 'nullable',

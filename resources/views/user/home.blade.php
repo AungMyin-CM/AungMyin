@@ -68,7 +68,7 @@
                                                             </a>
 
                                                         @elseif($data['role'] == 3)
-                                                            <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
+                                                            <a href="{{ route('pos-patient', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
                                                                 ><i class="fas fa-receipt fa-lg"></i>
                                                             </a>
                                 
@@ -106,6 +106,9 @@
                             </div>
                         @endif
                     </div>
+                </div>
+                <div class="float-right" style="position: absolute;right:0;bottom:0; ">
+                    <a href="{{ route('feedback.create') }}" class="btn btn-primary float-right">Feedback <i class="fas fa-comments"></i></a>
                 </div>
             </section>
         </div>

@@ -9,12 +9,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Pharmacy</h1>
+                                <h1>History</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Patient</li>
+                                    <li class="breadcrumb-item active">History</li>
                                 </ol>
                             </div>
                         </div>
@@ -37,22 +37,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
-                                    <!-- /.card-header -->
-                                     @if(Helper::checkPermission('ph_create', $permissions))
-                                        <div class="card-header">
-                                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right"><i
-                                            class="fas fa-plus"></i> Add new</a>
-                                        </div>
-                                    @endif
                                     <div class="card-body">
                                         <table id="datatable" class="table table-bordered table-striped">                                    
                                           <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Code</th>
-                                                <th>Expire Date</th>
-                                                <th>Quantity</th>
-                                                <th>Status</th>
+                                                <th>Invoice code</th>
+                                                <th>Patient name</th>
+                                                <th>Total price</th>
+                                                <th>Payment status</th>
                                                 <th>Actions</th>
                                                 {{-- <th></th>
                                                 <th></th> --}}
@@ -60,25 +52,23 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($data as $row)
+                                            @foreach ($history_list as $row)
                                                 <tr>
-                                                    <td>{{ $row->name }}</td>
-                                                    <td>{{ $row->code }}</td>
-                                                    <td>{{ $row->expire_date }}</td>
-                                                    <td>{{ $row->quantity }}</td>
-                                                    <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
+                                                    <td>{{ $row->invoice_code }}</td>
+                                                    <td>{{ $row->customer_name }}</td>
+                                                    <td>{{ $row->total_price }}</td>
+                                                    <td>  {{$row->payment_status == 1 ? "Paid" : ( $row->payment_status == 2 ? "Partial Paid" : "FOC" )  }}</td>
                                                     <td>
                                                         <div class="row">
-                                                            @if(Helper::checkPermission('ph_update', $permissions))
+                                                            @if(Helper::checkPermission('pos_update', $permissions))
 
-                                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
+                                                                <a href="{{ route('pos.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
                                                                 <i class="fas fa-edit fa-lg"></i></a>
 
                                                             @endif
+                                                            @if(Helper::checkPermission('pos_delete', $permissions))
 
-                                                            @if(Helper::checkPermission('ph_delete', $permissions))
-
-                                                                <form action="{{ route('pharmacy.destroy', $row->id) }}"
+                                                                <form action="{{ route('pos.destroy', $row->id) }}"
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')   

@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Pharmacy;
+
 class PosItem extends Model
 {
     use HasFactory;
@@ -24,4 +26,11 @@ class PosItem extends Model
         'total_price',
         'discount',
     ];
+
+    public function pharmacy()
+    {
+        return $this->hasOne(Pharmacy::class, 'id', 'med_id');
+        
+    }
+    
 }

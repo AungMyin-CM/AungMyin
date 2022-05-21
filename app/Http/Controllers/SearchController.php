@@ -90,4 +90,51 @@ class SearchController extends Controller
 
     }
 
+    public function searchMedPatient(Request $request)
+    {
+        $ref = str_replace(' ','_',$request->key);
+
+        $clinic_id = $request->clinic_id;
+
+        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+
+        $data = Patient::select('*')->
+                where('Ref', 'like', '%'.$ref.'%')->
+                where('clinic_code',$clinic_code)->
+                where('p_status',4)->
+                where('status',1)->
+                get();
+
+        if(count($data) == 0)
+        {
+            $output = '';
+        }else{  
+            $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+            foreach($data as $row)
+            {
+                $output .= '
+                    <li class="list-group-item" onclick="getPatientData('.$row->id.')">
+                        <div class="row" id="p_data_'.$row->id.'"> 
+                            <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">Name: '.$row->name.'</span>
+                            <span class="col-md-4" data-age= "'.$row->age.'"  id= "age_'.$row->id.'">Age: '.$row->age.'</span>
+                            <span class="col-md-4" data-f_name= "'.$row->father_name.'"  id= "father_name_'.$row->id.'">Father\'s Name: '.$row->father_name.'</span>
+                            <span hidden  id= "patient_id_'.$row->id.'">'.$row->id.'</span>
+                            <span hidden  id= "gender_'.$row->id.'">'.$row->gender.'</span>
+                            <span hidden  id= "phoneNumber_'.$row->id.'">'.$row->phoneNumber.'</span>
+                            <span hidden  id= "address_'.$row->id.'">'.$row->address.'</span>
+                            <span hidden  id= "allergy_'.$row->id.'">'.$row->drug_allergy.'</span>
+                        </div>
+                    </li>';
+            }
+            $output .= '</ul>';
+        }
+
+        echo $output;
+
+
+    }
+
+    
+
 }

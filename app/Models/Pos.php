@@ -14,6 +14,7 @@ class Pos extends Model
     protected $fillable = [
         'invoice_code',
         'user_id',
+        'clinic_id',
         'patient_id',
         'customer_name',
         'total_price',

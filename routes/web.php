@@ -9,6 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\FeedBackController;
+
 
 
 
@@ -58,12 +60,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/searchMed',[SearchController::class, 'searchMedicine']);
 
+    Route::post('/searchMedPatient',[SearchController::class, 'searchMedPatient']);
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
     Route::resource('/pos',PosController::class);
+
+    Route::get('/pos-history',[PosController::class, 'history'])->name('pos.history');
+
+    Route::get('/pos-patient/{patient_id}',[PosController::class, 'index'])->name('pos-patient');
 
     Route::post('/medData',[PosController::class, 'getMedData']);
 
@@ -76,6 +83,11 @@ Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.lo
 Route::post('clinic-login',[LoginController::class, 'clinicLogin'])->name('clinic.login');
 
 Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
+
+Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
+
+Route::get('/feedback',[FeedBackController::class, 'create'])->name('feedback.create');
+
 
 Route::group(['middleware' => 'clinic.auth'], function() {
 

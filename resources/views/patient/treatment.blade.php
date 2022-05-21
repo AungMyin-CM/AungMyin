@@ -81,11 +81,11 @@
 
                                                         <ul>
                                                             @if($row['prescription'] != '')
-                                                                <li>{{ Str::limit($row['diag'], $limit = 20, $end = '...') }}</li>
+                                                                <li><?php echo Str::limit($row['prescription'], $limit = 100, $end = '...') ;?></li>
                                                             @endif
 
                                                             @if($row['diag'] != '')
-                                                                <li>{{ Str::limit($row['diag'], $limit = 20, $end = '...') }}</li>
+                                                                <li>{{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
                                                             @endif
 
                                                         </ul>
@@ -128,14 +128,21 @@
 
                                             </div>
 
-                                                <input type="file" multiple="multiple" onchange="loadFile(event)" class="form-control float-right" name="images[]" />
+                                            <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
+                                            <label class="file_upload" for="upload" 
+                                            style="background: gray;
+                                            padding: 8px;
+                                            border-radius: 5px;
+                                            cursor: pointer;">Upload Images</label>
+                                        
+                                            <div id="myModal" class="modal">
+                                                <span class="close">&times;</span>
+                                                <img class="modal-content" id="img01">
+                                                <div id="caption"></div>
+                                            </div>
 
-                                            {{-- <div class="form-group">
-                                                <label for="address">Image</label>
-                                            </div> --}}
-
-                                            <div calss="form-group">
-                                                <img id="output" width="200" />
+                                            <div class="form-group" id="image">
+                                                {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
                                             </div>
 
                                             <div class="row">
@@ -196,12 +203,39 @@
     </body>
     <script src="{{ asset('js/dictionary.js') }}"></script>
     <script src="{{ asset('js/patient.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
     <script>
         var loadFile = function(event) {
-            var image = document.getElementById('output');
-            image.src = URL.createObjectURL(event.target.files[0]);
+            for(var i =0; i< event.target.files.length; i++){
+                var src = URL.createObjectURL(event.target.files[i]);
+                $("#image").append("<img id='myImg"+i+"' onclick='showImage("+i+")' src="+src+" style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
+
+            }
         };
 
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        function showImage(id)
+        {
+            var origin_image = document.getElementById("myImg"+id);
+            modal.style.display = "block";
+            modalImg.src = origin_image.src;
+            console.log(modalImg.src);
+            captionText.innerHTML = origin_image.alt;
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+        
     </script>
 @endsection
 {{-- @include('layouts.js') --}}

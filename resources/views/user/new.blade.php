@@ -165,7 +165,7 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <div class="">
-                                                    <input id="p_view" id="p_permissions" type="checkbox" name="permission[]" value="p_view"
+                                                    <input id="p_view"  type="checkbox" name="permission[]" value="p_view"
                                                     >
 
                                                     <label for="p_view">Patients</label>

@@ -18,6 +18,7 @@ class CreatePosTable extends Migration
             $table->string('invoice_code')->unique();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->bigInteger('clinic_id');
             $table->bigInteger('patient_id')->nullable();
             $table->string('customer_name')->nullable();
             $table->float('total_price');

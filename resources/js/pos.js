@@ -11,8 +11,10 @@ $(function() {
         var row_id = count_table_tbody_tr + 1;
         var html = '<tr id="row_'+row_id+'">'+
             '<td>'+ 
+
             '<input type="search" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" class="form-control" placeholder="Type your keywords here">'+
             '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'">'+
+            '<input type = "hidden" name = "pos_detail_id[]" id = "pos_detail_id_new_'+row_id+'" value="p_new_'+row_id+'">'+
             '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:22.5%;"></div>'+
                 '<span id="product_status'+row_id+'" class="label label-danger"></span>'+ 
             '</td>'+ 
@@ -24,7 +26,6 @@ $(function() {
             '<input type="hidden" name="unit[]" id="unit_'+row_id+'"" class="form-control">'+
             '<input type="hidden" name="margin[]" id="margin_'+row_id+'"" class="form-control">'+
             '</td>'+
-
             '<td><input type="text" name="discount[]" id="discount_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')"></td>'+
             '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control"  readonly><input type="hidden" name="amount_value[]"  id="amount_value_'+row_id+'" class="form-control"></td>'+
             '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
@@ -37,11 +38,11 @@ $(function() {
         $("#product_info_table tbody").html(html);
         }
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
     function searchMed() {
 

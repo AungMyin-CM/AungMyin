@@ -31,7 +31,7 @@ class CreatePharmaciesTable extends Migration
             $table->string('vendor')->nullable();
             $table->string('vendor_phoneNumber')->nullable();
             $table->integer('status')->default(1);
-            $table->integer('storage_place')->nullable();
+            $table->text('storage_place')->nullable();
             $table->longText('Ref');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
