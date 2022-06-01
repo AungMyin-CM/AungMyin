@@ -30,22 +30,34 @@ class DictionaryController extends Controller
         return view('dictionary/new');
     }
 
-    public function store(DictionaryRequest $request)
+    public function store(Request $request)
     { 
         if(!$this->checkPermission('d_create')){
             abort(403);
         }
-
-        if($request->validated()){
+ 
+     
             $dict = new Dictionary();
-
-            $dict->create(['code' => $request->code,
-                          'meaning' => $request->meaning,
-                          'user_id' => Auth::guard('user')->user()['id']
-            ]);
-            return redirect('dictionary')->with('success', "Done!");
-
-        }
+            if($request->is_med == 1){
+                $count_product = count($request->med_id);
+                $assign_medicines = '';
+                for($x = 0; $x < $count_product; $x++) {
+                    $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.  $request->quantity[$x].'^'.$request->days[$x].'<br>';
+                }
+                $dict->create(['code' => $request->code,
+                'meaning' => $assign_medicines,
+                'user_id' => Auth::guard('user')->user()['id'],
+                'isMed'  => 1
+                ]);
+            }
+            else{
+                $dict->create(['code' => $request->code,
+                'meaning' => $request->meaning,
+                'user_id' => Auth::guard('user')->user()['id'],
+                'isMed'  => 0
+                ]);
+            }
+             return redirect('dictionary')->with('success', "Done!");
     }
 
     public function edit($id)
@@ -66,14 +78,14 @@ class DictionaryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DictionaryRequest $request, $id)
+    public function update(Request $request, $id)
     {
 
         if(!$this->checkPermission('d_update')){
             abort(403);
         }
 
-        Dictionary::whereId($id)->update($request->validated());
+        Dictionary::whereId($id)->update(['code' => $request->code,'meaning' => $request->meaning, 'isMed' => $request->isMed]);
 
         return redirect('dictionary')->with('success', 'Done !');
     }

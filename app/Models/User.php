@@ -27,6 +27,8 @@ class User extends Authenticatable
         'name',
         'clinic_id',
         'role_id',
+        'speciality',
+        'credentials',
         'email',
         'password',
         'phoneNumber',
@@ -34,6 +36,8 @@ class User extends Authenticatable
         'country',
         'address',
         'gender',
+        'short_bio',
+        'fees',
         'status',
         'lastest_ip',
     ];

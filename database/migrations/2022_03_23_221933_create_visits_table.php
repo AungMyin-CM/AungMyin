@@ -23,10 +23,11 @@ class CreateVisitsTable extends Migration
             $table->longText('assigned_medicines')->nullable();
             $table->longText('images')->nullable();
             $table->float('fees')->nullable()->default(0.00);
+            $table->integer('is_foc')->default(false)->nullable();
             $table->integer('user_id');
             $table->longText('investigation')->nullable();
             $table->longText('procedure')->nullable();
-            $table->integer('is_followup')->default(0);
+            $table->integer('is_followup')->default(0)->nullable();
             $table->timestamp('followup_date')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();

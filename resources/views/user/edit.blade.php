@@ -66,10 +66,13 @@
                                                             placeholder="Enter code" value="{{ $user->code }}">
                                                     </div>
                                                 </div>
+
+                                                
+
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="sel1">Role</label>
-                                                        <select class="form-control" id="sel1" name="role_type">
+                                                        <select class="form-control" id="role_type" name="role_type">
 
                                                             @foreach ($data as $key => $value)
                                                             <option value="{{ $key }}" {{ $role->role_type == $key ? 'selected' : '' }}>{{ $value }}
@@ -78,6 +81,60 @@
                                                             @endforeach
 
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <label for="gender">Gender</label>
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    @if($user->gender == 1) 
+                                                    <?php 
+                                                        $m_checked = 'checked';
+                                                        $f_checked = '';
+                                                    ?>
+                                                @else
+                                                    <?php 
+                                                        $m_checked = '';
+                                                        $f_checked = 'checked';
+                                                    ?>
+                                                @endif
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="1"
+                                                            name="gender" <?php echo $m_checked;?>>
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="0"
+                                                            name="gender" <?php echo $f_checked;?>>
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+
+                                            </div><br/>
+
+                                            <div class="row" id="doctor_section" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="speciality">Speciality</label>
+                                                        <input type="text" class="form-control" id="speciality"
+                                                            name="speciality" placeholder="Speciality" value="{{ $user->speciality }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label for="credentials">Credentials</label>
+                                                        <textarea class="form-control" name="credentials" row="10">{{ $user->credentials }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -128,42 +185,21 @@
                                                 <textarea class="form-control" placeholder="Address" name="address">{{ $user->address }}</textarea>
                                             </div>
 
-                                            <label for="gender">Gender</label>
 
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    @if($user->gender == 1) 
-                                                    <?php 
-                                                        $m_checked = 'checked';
-                                                        $f_checked = '';
-                                                    ?>
-                                                @else
-                                                    <?php 
-                                                        $m_checked = '';
-                                                        $f_checked = 'checked';
-                                                    ?>
-                                                @endif
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="1"
-                                                            name="gender" <?php echo $m_checked;?>>
-                                                        <label class="form-check-label" for="male">
-                                                            Male
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="0"
-                                                            name="gender" <?php echo $f_checked;?>>
-                                                        <label class="form-check-label" for="female">
-                                                            Female
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-
+                                        
+                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                                <label for="short_bio">Short Bio</label>
+                                                <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ $user->short_bio }}</textarea>
                                             </div>
+
+                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                                <div class="form-group">
+                                                    <label class="fees">Fees</label>
+                                                    <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" />
+                                                </div>
+                                            </div>
+
+
                                             <!-- /.card-body -->
                                         </div>
                                     </div>

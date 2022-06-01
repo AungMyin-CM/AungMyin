@@ -80,7 +80,7 @@ class SearchController extends Controller
             foreach($data as $row)
             {
                 $output .= '
-                    <li class="list-group-item" id="item_options" data-id ='.$row->id.' row-id='.$row_id.' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>Name: '.$row->name.'</span><span class="float-right">Code: '.$row->code.'</span></li>
+                    <li class="list-group-item" id="item_options" data-id ='.$row->id.'  data-name ='.$row->name.' row-id='.$row_id.' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>Name: '.$row->name.'</span><span class="float-right">Code: '.$row->code.'</span></li>
                 ';
             }
             $output .= '</ul>';

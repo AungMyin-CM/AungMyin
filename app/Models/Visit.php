@@ -16,11 +16,12 @@ class Visit extends Model
         'diag',
         'assigned_medicines',
         'images',
+        'is_foc',
         'fees',
         'user_id',
         'investigation',
         'procedure',
-        'is_folloup',
+        'is_followup',
         'followup_date',
         'status'
     ];

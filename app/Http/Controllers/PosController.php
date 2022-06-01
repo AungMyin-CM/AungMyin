@@ -31,17 +31,29 @@ class PosController extends Controller
         $invoice_code = $this->posCodeGenerator();     
         $patient_data = null;
         $visit_data = null;
+        $med_data = null;
         if($id != null)
         {
             try {
             $id = Crypt::decrypt($id);
             $patient_data = Patient::findOrfail($id);
-            $visit_data = Visit::where('patient_id',$id)->orderBy('updated_at','desc')->get()->first();
-            }catch(DecryptException $e){
+            $visit_data = Visit::where('patient_id',$id)->orderBy('updated_at','desc')->get()->first();  
+            $assigned_med = $visit_data['assigned_medicines'];
+            if($assigned_med != ""){
+             $medList = explode("<br>", $assigned_med);
+             foreach($medList as $row){
+                $medInfo = explode("^", $row);
+                if(!empty($medInfo[0])){
+                $med_data[] = Pharmacy::where('id',$medInfo[0])->get();
+                }
+             }        
+            }
+             }catch(DecryptException $e){
                 abort(404);
             }
         }
-        return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data]);
+
+        return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data]);
     }
 
     public function getMedData(Request $request)
@@ -179,9 +191,7 @@ class PosController extends Controller
 
 
         }
-
-
-            
+        
         return redirect('/pos-history')->with('success', "Done!");
 
     }

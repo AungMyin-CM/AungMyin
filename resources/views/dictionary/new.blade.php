@@ -1,7 +1,6 @@
 @extends("layouts.app")
 
 @section('content')
-
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
             <div class="content-wrapper">
@@ -43,22 +42,55 @@
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <form action="{{ route('dictionary.store') }}" method="POST">
-
                                         @csrf
-
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
-                                                <input type="text" class="form-control" id="code" name="code"
+                                                <input type="text" class="form-control" id="code" name="code" required
                                                     placeholder="Code">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group float-right">
+                                                <input type="checkbox" id="is_med" name="is_med" value="1">
+                                                <label for="med">Is Medicine</label>    
+                                            </div>
+                                            <div class="form-group" id= "dictonary_div">
                                                 <label for="meaing">Meaning</label>
                                                 <textarea class="form-control" placeholder="Meaning" name="meaning" rows="7">{{ old('meaning') }}</textarea>
                                             </div>
+                                            <div id = "med_div" hidden="hidden">
+                                                <section class="content">
+                                                    <div class="container-fluid">
+                                                        <table class="table table-bordered" id="product_info_table">
+                                                            <thead>
+                                                              <tr>
+                                                                <th style="width:45%">Name</th>                                                   
+                                                                <th style="width:25%">Qty</th>
+                                                                <th style="width:20%">Days</th>
+                                                                <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                                                              </tr>
+                                                            </thead>   
+                                                             <tbody>
+                                                               <tr id="row_1">
+                                                                 <td>
+                                                                      <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                      <input type = "hidden" name = "med_id[]" id = "med_id_1">
+                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;">
+                                                                    </div>
+                                                                </td>
+                                                                  
+                                                                  <td>
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control"></td>           
+                                                                  <td>
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" >  
+                                                                  </td>
+                                                                  
+                                                               </tr>
+                                                             </tbody>
+                                                          </table>              
+                                                  </section>
+                                            </div>          
                                         </div>
                                         <!-- /.card-body -->
-
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -71,5 +103,52 @@
             </div>
         </div>
     </body>
+    <script src="{{ asset('js/dictionary.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            }); 
+        });
+
+        function searchMed(rowid) {
+            var query = $("#product_search_"+rowid).val();
+            var clinic_id = {{ Auth::guard('user')->user()['clinic_id'] }}
+            $.ajax({
+                type: "POST",
+                url: '/searchMed',
+                data: { key: query, clinic_id: clinic_id, rowid: rowid}
+            }).done(function( response ) {         
+            if(query != '')
+            {
+                $('#medList_'+rowid).css("display","block");  
+                $('#medList_'+rowid).html(response);
+            }
+            else{
+                $('#medList_'+rowid).css("display","none");  
+                $('#medList_'+rowid).html("");
+            }
+            });
+        };
+        function s_option(rowid)
+        {
+            var med_id = rowid.getAttribute("data-id");
+            var med_name = rowid.getAttribute("data-name");
+            var row_id = rowid.getAttribute("row-id");
+            $("#product_search_"+row_id).val(med_name);
+            $("#med_id_"+row_id).val(med_id);      
+            $('#medList_'+row_id).css("display","none");  
+            $('#medList_'+row_id).html("");
+            
+        }
+        function removeRow(tr_id)
+        {
+            $("#product_info_table tbody tr#row_"+tr_id).remove();
+        }
+
+    </script>
 @endsection
 {{-- @include('layouts.js') --}}

@@ -20,6 +20,8 @@ class CreateUserTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinic')->onDelete('cascade');
             $table->bigInteger('role_id')->unsigned();
             $table->foreign('role_id')->references('id')->on('role');
+            $table->string('speciality')->nullable();
+            $table->text('credentials')->nullable();
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('password');
@@ -28,6 +30,8 @@ class CreateUserTable extends Migration
             $table->string('country')->nullable();
             $table->longText('address');
             $table->tinyInteger('gender');
+            $table->text('short_bio')->nullable();
+            $table->float('fees')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('lastest_ip')->nullable();
             $table->rememberToken();

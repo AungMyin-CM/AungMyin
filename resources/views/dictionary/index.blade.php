@@ -60,7 +60,7 @@
                                                     <tr>
                                                         <td>{{ $i++ }} </td>
                                                         <td>{{ $row->code }}</td>
-                                                        <td>{{ Str::limit($row->meaning, $limit = 100, $end = '...') }}
+                                                        <td><?php echo Str::limit(str_replace("^" , " " ,$row->meaning ) , $limit = 100, $end = '...') ?>
                                                         </td>
                                                         @if(Helper::checkPermission('d_update', $permissions))
                                                             <td><a href="{{ route('dictionary.edit', $row->id) }}">

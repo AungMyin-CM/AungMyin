@@ -53,6 +53,8 @@ class ClinicController extends Controller
         $user->create(['name' => $request->name, 
                         'clinic_id' => Auth::guard('clinic')->user()['id'],
                         'role_id' => $role_id,
+                        'speciality' => $request->speciality,
+                        'credentials' => $request->credentials,
                         'code' => $request->code,
                         'name' => $request->name,
                         'email' => $request->email,
@@ -61,6 +63,8 @@ class ClinicController extends Controller
                         'city' => $request->city,
                         'country' => $request->country,
                         'address' => $request->address,
+                        'short_bio' => $request->short_bio,
+                        'fees' => $request->fees,
                         'gender' => $request->gender
                     ]);
         
@@ -88,13 +92,17 @@ class ClinicController extends Controller
         $requests = ['name' => $request->name, 
                         'clinic_id' => Auth::guard('clinic')->user()['id'],
                         'code' => $request->code,
+                        'speciality' => $request->speciality,
+                        'credentials' => $request->credentials,
                         'name' => $request->name,
                         'email' => $request->email,
                         'phoneNumber' => $request->phoneNumber,
                         'city' => $request->city,
                         'country' => $request->country,
                         'address' => $request->address,
-                        'gender' => $request->gender
+                        'gender' => $request->gender,
+                        'short_bio' => $request->short_bio,
+                        'fees' => $request->fees,
                     ];
 
         if ($request->password != null && trim($request->password) != '') {

@@ -11025,6 +11025,17 @@ __webpack_require__.r(__webpack_exports__);
         $("#pos_view").prop('checked', true);
       }
     });
+    $('#role_type').on('change', function () {
+      if (this.value != 1) {
+        document.getElementById("doctor_section").setAttribute('hidden', 'hidden');
+        document.getElementById("short_bio").setAttribute('hidden', 'hidden');
+        document.getElementById("fees").setAttribute('hidden', 'hidden');
+      } else {
+        document.getElementById("doctor_section").removeAttribute('hidden');
+        document.getElementById("short_bio").removeAttribute('hidden');
+        document.getElementById("fees").removeAttribute('hidden');
+      }
+    });
   });
 })((jquery__WEBPACK_IMPORTED_MODULE_0___default()));
 })();

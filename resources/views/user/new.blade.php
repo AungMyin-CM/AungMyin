@@ -69,7 +69,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="sel1">Role</label>
-                                                        <select class="form-control" id="sel1" name="role_type">
+                                                        <select class="form-control" id="role_type" name="role_type">
 
                                                             @foreach ($data as $key => $value)
                                                                 <option value="{{ $key }}">{{ $value }}
@@ -77,6 +77,49 @@
                                                             @endforeach
 
                                                         </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <label for="gender">Gender</label>
+
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="1"
+                                                            name="gender">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="0"
+                                                            name="gender">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+
+                                            </div><br/>
+
+                                            <div class="row" id="doctor_section">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="speciality">Speciality</label>
+                                                        <input type="text" class="form-control" id="speciality"
+                                                            name="speciality" placeholder="Speciality">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label for="credentials">Credentials</label>
+                                                        <textarea class="form-control" name="credentials" row="10"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,31 +170,18 @@
                                                 <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
                                             </div>
 
-                                            <label for="gender">Gender</label>
-
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="1"
-                                                            name="gender">
-                                                        <label class="form-check-label" for="male">
-                                                            Male
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="0"
-                                                            name="gender">
-                                                        <label class="form-check-label" for="female">
-                                                            Female
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-
+                                            <div class="form-group" id="short_bio">
+                                                <label for="short_bio">Short Bio</label>
+                                                <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ old('short_bio') }}</textarea>
                                             </div>
+
+                                            <div class="col-md-6" id="fees">
+                                                <div class="form-group">
+                                                    <label class="fees">Fees</label>
+                                                    <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
+                                                </div>
+                                            </div>
+                                            
                                             <!-- /.card-body -->
                                         </div>
                                     </div>
@@ -303,5 +333,8 @@
         </div>
     </body>
     <script src="{{ asset('js/user.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+
 @endsection
 {{-- @include('layouts.js') --}}

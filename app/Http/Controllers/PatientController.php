@@ -104,6 +104,7 @@ class PatientController extends Controller
                 'diag' => $request->diag,
                 'images' => json_encode($images),
                 'fees' => $request->fees == null ? 0.00 : $request->fees,
+                'is_foc' => $request->is_foc,
                 'user_id' => $user_id,
                 'investigation' => $request->investigation,
                 'procedure' => $request->procedure,
@@ -149,7 +150,7 @@ class PatientController extends Controller
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
-            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->get();
+            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at','DESC')->get();
             return view('patient/treatment')->with('data' , [ 'patient' => $patient , 'visit' => $visit]);
 
         }catch(DecryptException $e){
@@ -175,17 +176,26 @@ class PatientController extends Controller
                 $images[] = $name;  
             }
         }
-
         Patient::whereId($id)->update(['p_status' => '3']);
+        $assign_medicines = '';
+        if($request->med_id){
+            $count_product = count($request->med_id);
+            for($x = 0; $x < $count_product; $x++) {
+                $assign_medicines .= $request->med_id[$x].'^'. $request->med_qty[$x].'^'.$request->days[$x].'<br>';
+            }
+        }
+      
 
         Visit::create([
             'patient_id' => $id,
             'prescription' => $request->prescription,
             'diag' => $request->diag,
+            'assigned_medicines' =>  $assign_medicines,
             'images' => json_encode($images),
             'fees' => $request->fees,
+            'is_foc' => $request->is_foc,
             'user_id' => $user_id,
-            'investigation' => $request->investigation,
+            'investigation' => $request->investigation,      
             'procedure' => $request->procedure,
             'is_followup' => $request->is_followup,
             'followup_date' => $request->followup_date
@@ -212,7 +222,20 @@ class PatientController extends Controller
     {
         $text = $request->key;
 
-        $data = Dictionary::select('code','meaning')->where('code',$text)->first();
+        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '0'])->first();
+
+        if($data == ''){
+            echo '';
+        }else{
+            echo $data;
+        }
+    }
+
+    public function fetchIsmedData(Request $request)
+    {
+        $text = $request->key;
+
+        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '1'])->first();
 
         if($data == ''){
             echo '';

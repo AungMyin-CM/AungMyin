@@ -56,6 +56,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/fetchDictionary',[PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
+    Route::post('/fetchIsmed',[PatientController::class, 'fetchIsmedData']);
+
     Route::post('/search',[SearchController::class, 'searchPatient']);
 
     Route::post('/searchMed',[SearchController::class, 'searchMedicine']);

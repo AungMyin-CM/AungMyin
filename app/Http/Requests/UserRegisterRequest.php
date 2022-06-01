@@ -27,10 +27,14 @@ class UserRegisterRequest extends FormRequest
             'code' => 'required|unique:user',
             'email' => 'email',
             'name' => 'required',
+            'speciality' => 'nullable',
+            'credentials' => 'nullable',
             'password' => 'required|min:8',
             'role_id' => 'nullable',
             'phoneNumber' => 'required|min:10|max:15',
             'address' => 'required',
+            'short_bio' => 'nullable',
+            'fees' => 'nullable',
             'gender' => 'required',
         ];
     }

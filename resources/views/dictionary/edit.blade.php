@@ -57,6 +57,11 @@
                                                 <label for="meaning">Meaning</label>
                                                 <textarea class="form-control" rows="7" placeholder="Meaning" name="meaning">{{ $dictionary->meaning }}</textarea>
                                             </div>
+                                            <div class="form-group">
+                                                <input type="checkbox" id="med" name="isMed"
+                                                value="1" {{ $dictionary->isMed == 1 ? 'checked' : ''}}>
+                                                <label for="med">Is Medicine</label>    
+                                            </div> 
                                         </div>
                                         <!-- /.card-body -->
 
