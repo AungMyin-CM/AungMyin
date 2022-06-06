@@ -44,16 +44,23 @@ class PosController extends Controller
              foreach($medList as $row){
                 $medInfo = explode("^", $row);
                 if(!empty($medInfo[0])){
+                    $qty = explode("-",  $medInfo[1]);
+                    $days = $medInfo[2];
+
                 $med_data[] = Pharmacy::where('id',$medInfo[0])->get();
+
+                $total_qty[] = ($qty[0] + $qty[1]+  $qty[2]) * $days ;
+
+              
                 }
-             }        
+             }       
             }
              }catch(DecryptException $e){
                 abort(404);
             }
         }
 
-        return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data]);
+       return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data ,"total_qty" => $total_qty]);
     }
 
     public function getMedData(Request $request)

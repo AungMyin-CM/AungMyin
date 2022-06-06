@@ -100,34 +100,33 @@
           
                              <tbody>
                                @if ($med_data)                    
-                               @foreach ($med_data as $md)
+                               @foreach ($med_data as $key => $md)
                                <tr id="row_1">                                 
                                 <td>
-                                     <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Type your keywords here" value="{{$md[0]['name']}}" required>
-                                     <input type = "hidden" name = "med_id[]" id = "med_id_1">
-                                     <div id="medList_1" style="display:none;position:absolute;width:22.5%;">
+                                     <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Type your keywords here" value="{{$md[0]['name']}}" required>
+                                     <input type = "hidden" name = "med_id[]" id = "med_id_{{$key+1}}">
+                                     <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
                                       
                                      </div>
                                    <span id="product_status1" class="label label-danger"></span> 
                                  </td>
                                  <td>
-                                   <input type="text" name="expire_date[]" id="expire_date_1" value="{{$md[0]['expire_date']}}"  readonly class="form-control"></td>
+                                   <input type="text" name="expire_date[]" id="expire_date_{{$key+1}}" value="{{$md[0]['expire_date']}}"  readonly class="form-control"></td>
                                  <td>
-                                   <input type="text" name="remain_qty[]" id="remain_qty_1" value="{{$md[0]['quantity']}}"  readonly class="form-control"></td>
+                                   <input type="text" name="remain_qty[]" id="remain_qty_{{$key+1}}" value="{{$md[0]['quantity']}}"  readonly class="form-control"></td>
                                  <td>
-                                   <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)"></td>
+                                   <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key]}}"></td>
                                  <td>
-                                   <input type="text" name="sell_price[]" id="sell_price_1" value="{{$md[0]['name']}}"  class="form-control" readonly>
-                                   <input type="hidden" name="act_price[]" id="act_price_1" value="{{$md[0]['name']}}"  class="form-control">
-                                   <input type="hidden" name="unit[]" id="unit_1" value="{{$md[0]['name']}}"  class="form-control">
-                                   <input type="hidden" name="margin[]" id="margin_1" value="{{$md[0]['name']}}"  class="form-control" >
+                                   <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}"  class="form-control" readonly>
+                                   <input type="hidden" name="act_price[]" id="act_price_{{$key+1}}" value="{{$md[0]['act_price']}}"  class="form-control">
+                                   <input type="hidden" name="unit[]" id="unit_{{$key+1}}" value="{{$md[0]['unit']}}"  class="form-control">
+                                   <input type="hidden" name="margin[]" id="margin_{{$key+1}}" value="{{$md[0]['margin']}}"  class="form-control" >
                                  </td>
                                  <td>
-                                   <input type="discount" name="discount[]" id="discount_1" class="form-control" onkeyup="getTotal(1)">  
+                                   <input type="discount" name="discount[]" id="discount_{{$key+1}}" class="form-control" onkeyup="getTotal({{$key+1}})">  
                                  </td>
                                  <td>
-                                   <input type="text" name="amount[]" id="amount_1" class="form-control" readonly style="width: 90px;">
-                                   <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">
+                                   <input type="text" name="amount[]" id="amount_{{$key+1}}" class="form-control" readonly style="width: 90px;">
                                  </td>
                               </tr>                     
                               @endforeach             
@@ -158,7 +157,6 @@
                                   </td>
                                   <td>
                                     <input type="text" name="amount[]" id="amount_1" class="form-control" readonly style="width: 90px;">
-                                    <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">
                                   </td>
                                </tr>
                                @endif
@@ -202,13 +200,20 @@
 
                     <script>
 
-                      $(document).ready(function() {
+                      $(window).load(function() {
 
                         $.ajaxSetup({
                               headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                               }
                           });
+
+                          var tableProductLength = $("#product_info_table tbody tr").length;
+
+                          for(x = 1; x <= tableProductLength; x++) {
+                            alert(x);
+                            getTotal(x);
+                          } 
                         
                       });
 
