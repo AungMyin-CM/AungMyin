@@ -16,22 +16,21 @@ class CreateUserTable extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->bigInteger('clinic_id')->unsigned();
-            $table->foreign('clinic_id')->references('id')->on('clinic')->onDelete('cascade');
-            $table->bigInteger('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('role');
+            $table->integer('clinic_id')->nullable();
             $table->string('speciality')->nullable();
             $table->text('credentials')->nullable();
             $table->string('name');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->string('password');
-            $table->string('phoneNumber')->nullable();
+            $table->string('phoneNumber');
             $table->string('city')->nullable();
             $table->string('country')->nullable();
-            $table->longText('address');
+            $table->longText('address')->nullable();
             $table->tinyInteger('gender');
             $table->text('short_bio')->nullable();
             $table->float('fees')->nullable();
+            $table->integer('email_verified')->default(false);
+            $table->timestamp('email_verified_at')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('lastest_ip')->nullable();
             $table->rememberToken();

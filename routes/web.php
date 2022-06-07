@@ -10,6 +10,7 @@ use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\FeedBackController;
+use App\Http\Controllers\UserController;
 
 
 
@@ -31,6 +32,8 @@ Route::get('/', [LoginController::class, 'index'])->name('user-login')->middlewa
 Route::get('clinic-name',[ClinicController::class, 'stepOneRegister'])->name('clinic.name');
 
 Route::get('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
+Route::get('payment',[ClinicController::class, 'payment'])->name('payment');
+
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
@@ -82,9 +85,16 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.logout');
 
-Route::post('clinic-login',[LoginController::class, 'clinicLogin'])->name('clinic.login');
+Route::post('login',[LoginController::class, 'login'])->name('login');
 
-Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
+Route::get('register',[UserController::class, 'index'])->name('register.user');
+
+Route::post('user-register',[UserController::class, 'register'])->name('user.register');
+
+Route::get('/verify', [UserController::class, 'verify'])->name('verify');
+
+
+// Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
 
 Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
@@ -101,7 +111,7 @@ Route::group(['middleware' => 'clinic.auth'], function() {
 
     Route::post('user/{user}',[ClinicController::class,'updateUser'])->name('user.update');
 
-    Route::post('register-user',[ClinicController::class, 'registerUser'])->name('user.register');
+    // Route::post('register-user',[ClinicController::class, 'registerUser'])->name('user.register');
 
     Route::get('dashboard', function () {
         return view('clinic.dashboard');

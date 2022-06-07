@@ -30,10 +30,20 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('user.login') }}" method="post">
+                    @if (Session::has('success'))
+                        <div class="alert alert-success" id="alert-message">
+                            <ul class="list-unstyled">
+                                <li>
+                                    {{ Session::get('success') }}
+                                </li>
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Code" name="code"
+                            <input type="text" class="form-control" placeholder="Username" name="code"
                                 value="{{ old('code') }}">
                             <div class="input-group-append">
                                 <div class="input-group-text">
@@ -66,8 +76,11 @@
                         </div>
                     </form>
 
+                    <p class="mb-1">
+                        <a href="forgot-password.html">I forgot my password</a>
+                    </p>
                     <p class="mb-0">
-                        <a href="{{ route('clinic.login') }}" class="text-center">Login as clinic</a>
+                        <a href="{{ route('register.user') }}" class="text-center">Register</a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->

@@ -23,7 +23,7 @@ class ClinicController extends Controller
 {
     public function index()
     {
-        $userData = User::where('clinic_id', Auth::guard('clinic')->user()['id'])->get();
+        $userData = User::where('clinic_id', Auth::guard('user')->user()['id'])->get();
         return view('user/index')->with('data',$userData);
     }
 
@@ -35,7 +35,7 @@ class ClinicController extends Controller
 
     public function newUser(){
         
-        $id = Clinic::where('id', Auth::guard('clinic')->user()['id'])->pluck('package_id')->first();
+        $id = Clinic::where('id', Auth::guard('user')->user()['id'])->pluck('package_id')->first();
        
         $data = ['1' => 'doctor','2' => 'receptionist','3' => 'pharmacist', '4' => 'staff'];
 
@@ -51,7 +51,7 @@ class ClinicController extends Controller
         $user = new User();
 
         $user->create(['name' => $request->name, 
-                        'clinic_id' => Auth::guard('clinic')->user()['id'],
+                        'clinic_id' => Auth::guard('user')->user()['id'],
                         'role_id' => $role_id,
                         'speciality' => $request->speciality,
                         'credentials' => $request->credentials,
@@ -90,7 +90,7 @@ class ClinicController extends Controller
         $role_id = Role::whereId($id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
 
         $requests = ['name' => $request->name, 
-                        'clinic_id' => Auth::guard('clinic')->user()['id'],
+                        'clinic_id' => Auth::guard('user')->user()['id'],
                         'code' => $request->code,
                         'speciality' => $request->speciality,
                         'credentials' => $request->credentials,
@@ -127,29 +127,57 @@ class ClinicController extends Controller
 
     public function stepTwoRegister(Request $request)
     {
-        $name = explode(' ',$request->clinic_name);
+        // $name = explode(' ',$request->clinic_name);
         
-        try {
-            $package_id = Crypt::decrypt($request->plan);
+        // try {
+        //     $package_id = Crypt::decrypt($request->plan);
 
-        }catch(DecryptException $e){
-            abort(404);
-        }
+        // }catch(DecryptException $e){
+        //     abort(404);
+        // }
         
-        if(count($name)==1){
+        // if(count($name)==1){
 
-            $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
-            $clinicCode2 = substr($name[0] ,0,4 ).$this->generateClinicCode();
-            $clinicCode3 = substr($name[0] ,0,2 ).$this->generateClinicCode(6);
+        //     $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode2 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode3 = substr($name[0] ,0,2 ).$this->generateClinicCode(6);
 
-        }else{
-            $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
-            $clinicCode2 = substr($name[1] ,0,4 ).$this->generateClinicCode();
-            $clinicCode3 = substr($name[0] ,0,1 ).substr($name[1] ,0,1 ).$this->generateClinicCode();
+        // }else{
+        //     $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode2 = substr($name[1] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode3 = substr($name[0] ,0,1 ).substr($name[1] ,0,1 ).$this->generateClinicCode();
 
-        }
-            
-        return view('registration/clinic_registration')->with('data',['name' => $request->clinic_name, 'package_id' => $package_id, 'clinicCode1' => $clinicCode1, 'clinicCode2' => $clinicCode2, 'clinicCode3' => $clinicCode3 , 'style' => 'font-size: 100% !important; cursor: pointer;']);
+        // }
+        return redirect('payment')->with('message', "");
+        // return view('registration/clinic_registration')->with('data',['name' => $request->clinic_name, 'package_id' => $package_id, 'clinicCode1' => $clinicCode1, 'clinicCode2' => $clinicCode2, 'clinicCode3' => $clinicCode3 , 'style' => 'font-size: 100% !important; cursor: pointer;']);
+    }
+
+
+    public function payment()
+    {
+        // $name = explode(' ',$request->clinic_name);
+        
+        // try {
+        //     $package_id = Crypt::decrypt($request->plan);
+
+        // }catch(DecryptException $e){
+        //     abort(404);
+        // }
+        
+        // if(count($name)==1){
+
+        //     $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode2 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode3 = substr($name[0] ,0,2 ).$this->generateClinicCode(6);
+
+        // }else{
+        //     $clinicCode1 = substr($name[0] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode2 = substr($name[1] ,0,4 ).$this->generateClinicCode();
+        //     $clinicCode3 = substr($name[0] ,0,1 ).substr($name[1] ,0,1 ).$this->generateClinicCode();
+
+        // }
+        return view('register/payment')->with('message', "");
+        // return view('registration/clinic_registration')->with('data',['name' => $request->clinic_name, 'package_id' => $package_id, 'clinicCode1' => $clinicCode1, 'clinicCode2' => $clinicCode2, 'clinicCode3' => $clinicCode3 , 'style' => 'font-size: 100% !important; cursor: pointer;']);
     }
 
 

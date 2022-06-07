@@ -1,4 +1,4 @@
-@if (Auth::guard('clinic')->user() || Auth::guard('user')->user())
+@if (Auth::guard('user')->user() || Auth::guard('user')->user())
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
         <!-- Left navbar links -->

@@ -24,36 +24,18 @@ class LoginController extends Controller
         return view('login/user');
     }
 
-    public function clinicLogin(LoginRequest $request)
+
+    public function login(LoginRequest $request)
     {
         if($request->validated())
         {
-            $data = Clinic::where("code",'=',$request->code)->get();
+            $data = User::where("code",'=',$request->code)->get()->first();
 
-            if(count($data) == 0)
-            {
-                return redirect('clinic-login')->with('message', "User does not exists");
-            }else{
-                $userCredentials = $request->only('code', 'password');
-
-                if(Auth::guard('clinic')->attempt($userCredentials)){
-                    return redirect('dashboard')->with('message', "");
-                }else{
-                    return redirect('clinic-login')->with('message', "Invalid Credentials");
-                }
-            }
-        }
-    }
-
-    public function userLogin(LoginRequest $request)
-    {
-        if($request->validated())
-        {
-            $data = User::where("code",'=',$request->code)->get();
-
-            if(count($data) == 0)
+            if($data == null)
             {
                 return redirect('/')->with('message', "User does not exists");
+            }elseif($data->email_verified == 0){
+                return redirect('/')->with('message', "Please verify your email");
             }else{
                 $userCredentials = $request->only('code', 'password');
 
@@ -68,18 +50,11 @@ class LoginController extends Controller
 
     } 
 
-    public function clinicLogout()
+    public function logout()
     {        
-        Auth::guard('clinic')->logout();
+        Auth::guard('user')->logout();
 
-        return redirect('/clinic-login');
-    }
-
-    public function userLogout(Request $request)
-    {                
         Session::flush();
-
-        Auth::logout();
 
         return redirect(\URL::previous());
 

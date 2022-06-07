@@ -44,7 +44,8 @@
 </head>
 
 
-@include('layouts.navbar')
+{{-- @include('layouts.navbar') --}}
+
 
 @include('layouts.sidebar')
 

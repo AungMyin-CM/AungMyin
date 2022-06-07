@@ -26,7 +26,6 @@ class User extends Authenticatable
         'code',
         'name',
         'clinic_id',
-        'role_id',
         'speciality',
         'credentials',
         'email',

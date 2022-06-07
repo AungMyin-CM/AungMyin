@@ -25,7 +25,7 @@ class FeedBackController extends Controller
             $user_id ='';
 
             if(Auth::check()){
-                $user_id = Auth::guard('user')->user()['id'] != null ? Auth::guard('user')->user()['id']: Auth::guard('clinic')->user()['id'];
+                $user_id = Auth::guard('user')->user()['id'] != null ? Auth::guard('user')->user()['id']: Auth::guard('user')->user()['id'];
             }
             
             $feedback->create([

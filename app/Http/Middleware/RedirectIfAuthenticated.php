@@ -21,10 +21,8 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard('user')->check()) {
             return redirect('home');
-        }elseif(Auth::guard('clinic')->check()) {
-            return redirect('dashboard');
         }
-
+        
         return $next($request);
     }
 }
