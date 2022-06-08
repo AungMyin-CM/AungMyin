@@ -14,8 +14,8 @@ class Clinic extends Authenticatable
 
     protected $guard = 'clinic';
 
-    protected $fillable = [ 
-        'code','name','email','password','phoneNumber','address','package_id'
+    protected $fillable = [
+        'name', 'email', 'phoneNumber',  'package_id'
     ];
 
     protected $hidden = [
