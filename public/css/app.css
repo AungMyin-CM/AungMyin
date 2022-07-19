@@ -148,3 +148,21 @@
   white-space: nowrap;
   width: 1px;
 }
+@media only screen and (min-width: 1139px) {
+
+#user-submit{
+    position: relative;
+    bottom: 23em;
+    right: 4px;
+
+}
+
+}
+
+sup.text-danger{
+  font-size: 14px;
+}
+
+.content-wrapper{
+  background: #fff !important;
+}

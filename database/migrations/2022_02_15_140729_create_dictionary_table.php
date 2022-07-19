@@ -20,7 +20,7 @@ class CreateDictionaryTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->tinyInteger('isCommon')->default('0');
-            $table->tinyInteger('isMed')->default('0');
+            $table->tinyInteger('isMed')->default('0')->nullable();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

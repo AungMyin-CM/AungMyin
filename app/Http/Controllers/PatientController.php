@@ -9,6 +9,7 @@ use App\Models\Dictionary;
 use App\Models\Clinic;
 use App\Models\Visit;
 use App\Models\Role;
+use App\Models\UserClinic;
 
 use Carbon\Carbon;
 
@@ -19,6 +20,7 @@ use Illuminate\Database\QueryException;
 
 use File;
 
+use Session;
 
 class PatientController extends Controller
 {
@@ -29,15 +31,13 @@ class PatientController extends Controller
             abort(403);
         }
         
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
-
-        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+        $clinic_id = session()->get('cc_id');
 
         if($request->name)
         {
-            $patientData =  Patient::where("clinic_code",$clinic_code)->where('name', 'like', $request->name.'%')->where('status',1)->get();
+            $patientData =  Patient::where("clinic_code",$clinic_id)->where('name', 'like', $request->name.'%')->where('status',1)->get();
         }else{
-            $patientData = Patient::where("clinic_code",$clinic_code)->where('status',1)->get();
+            $patientData = Patient::where("clinic_code",$clinic_id)->where('status',1)->get();
         }
         return view('patient/index')->with('data',$patientData);
     }
@@ -57,10 +57,9 @@ class PatientController extends Controller
 
             $code = $this->codeGenerator();
 
-            $clinic_id = Auth::guard('user')->user()['clinic_id'];
+            $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
 
-            $clinic_code = Clinic::select('code')->where('id',$clinic_id)->first();
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
             $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
             $p_status = $role->role_type == 1 ? 4 : 1 ;
@@ -73,7 +72,7 @@ class PatientController extends Controller
                           'age' => $request->age,
                           'address' => $request->address,
                           'gender' => $request->gender,
-                          'clinic_code' => $clinic_code->code,
+                          'clinic_code' => $clinic_id,
                           'drug_allergy' => $request->drug_allergy,
                           'summary' => $request->summary,
                           'p_status' => $p_status,
@@ -114,7 +113,7 @@ class PatientController extends Controller
 
             }
 
-            return redirect('patient')->with('success', "Done!");
+            return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
 
@@ -140,9 +139,18 @@ class PatientController extends Controller
     {
         $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
 
-        Patient::whereId($id)->update([$request->validated(), 'Ref' => $reference ]);
+        Patient::whereId($id)->update([
+                             'name' => $request->name,
+                             'age' => $request->age,
+                             'father_name' => $request->father_name,
+                             'address' => $request->address,
+                             'gender' => $request->gender,
+                             'phoneNumber' => $request->phoneNumber,
+                             'drug_allergy' => $request->drug_allergy,
+                             'summary' => $request->summary,
+                             'Ref' => $reference ]);
 
-        return redirect('patient')->with('success', 'Done !');
+        return redirect('clinic-system/patient')->with('success', 'Done !');
     }
 
     public function treatment($id)
@@ -201,7 +209,7 @@ class PatientController extends Controller
             'followup_date' => $request->followup_date
         ]);
 
-        return redirect('patient')->with('success', "Done!");
+        return redirect('clinic-system/patient')->with('success', "Done!");
     }
 
 
@@ -215,7 +223,7 @@ class PatientController extends Controller
     {
         Patient::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('patient')->with('success', 'Done !');
+        return redirect('clinic-system/patient')->with('success', 'Done !');
     }
 
     public function fetchDictionary(Request $request)
@@ -265,7 +273,7 @@ class PatientController extends Controller
     {
         $timestamp = Carbon::now();
         $current_date = $timestamp->format('u');
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+        $clinic_id = session()->get('cc_id');
 
         $c_name = Clinic::select('name')->where('id',$clinic_id)->first();
 

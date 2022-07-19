@@ -59,19 +59,39 @@
                                                         <td>{{ $row->name }}</td>
                                                         <td>{{ $row->code }}</td>
                                                         <td>{{ $row->phoneNumber }}</td>
-                                                        <td>{{ $row->roleType['role_type'] }}</td>
-                                                        <td><a href="{{ route('user.edit' ,  $row->id)}}" >
-                                                                <i class="fas fa-edit fa-lg"></i></a>
+                                                        <td>
+                                                            @switch($row->roleType->role_type)
+                                                                @case('1')
+                                                                    doctor
+                                                                @break
+                                                                @case('2')
+                                                                    receptionist
+                                                                @break
+                                                                @case('3')
+                                                                    pharmacist
+                                                                @break
+                                                                @case('4')
+                                                                    staff
+                                                                @break
+                                                                @case(5)
+                                                                    admin
+                                                                @break
+                                                            
+                                                                @default
+                                                            @endswitch
+                                                        </td>
+                                                            
+                                                        <td><a href="{{route('user.edit', $row->id)}}">
+                                                            <i class="fas fa-edit fa-lg"></i></a>
                                                         </td>
                                                           
-                                                            <td>
-                                                                <form action="{{ route('patient.destroy', $row->id) }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    @method('DELETE')   
-                                                                    <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
-                                                                </form>
-                                                            </td>
+                                                        <td>
+                                                            <form action="{{ route('user.destroy', $row->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
 

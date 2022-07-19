@@ -44,7 +44,7 @@
                         @csrf
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Username" name="code"
-                                value="{{ old('code') }}">
+                                value="{{ old('code') }}" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>

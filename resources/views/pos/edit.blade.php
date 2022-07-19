@@ -174,7 +174,7 @@
 
           $.ajax({
               type: "POST",
-              url: '/searchMedPatient',
+              url: 'clinic-system/searchMedPatient',
               data: { key: query, clinic_id: clinic_id}
           }).done(function( response ) {
             
@@ -233,11 +233,11 @@
 
           var query = $("#product_search_"+rowid).val();
   
-          var clinic_id = {{ Auth::guard('user')->user()['clinic_id'] }}
+          var clinic_id = {{ session()->get('cc_id') }}
 
           $.ajax({
               type: "POST",
-              url: '/searchMed',
+              url: '/clinic-system/searchMed',
               data: { key: query, clinic_id: clinic_id, rowid: rowid}
           }).done(function( response ) {
             
@@ -260,7 +260,7 @@
 
         $.ajax({
             type: "POST",
-            url: '/medData',
+            url: '/clinic-system/medData',
             data: { med_id: med_id}
         }).done(function( response ) {
 

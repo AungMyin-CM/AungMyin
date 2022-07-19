@@ -17,15 +17,12 @@ class CreateClinicTable extends Migration
             $table->id();
             $table->string('code')->nullable();
             $table->string('name');
-            $table->string('email');
-            $table->string('password')->nullable();
             $table->string('phoneNumber');
             $table->text('address')->nullable();
             $table->tinyInteger('status')->default('1');
             $table->integer('package_id');
             $table->timestamp('package_purchased_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('package_purchased_times')->default(0);
-            $table->rememberToken();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

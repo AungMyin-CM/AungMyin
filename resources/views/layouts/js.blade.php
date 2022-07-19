@@ -40,3 +40,13 @@
     }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
     
 </script>
+
+{{-- <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+  window.OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "738d1c05-22b0-4052-b4a9-34cef47024a5",
+    });
+  });
+</script> --}}

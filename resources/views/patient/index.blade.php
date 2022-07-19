@@ -74,7 +74,7 @@
 
                                                             @endif
 
-                                                            @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 )
+                                                            @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 || $role_type == 5)
                                                                 <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
                                                                 ><i class="fas fa-stethoscope fa-lg"></i></a>
                                                             @endif

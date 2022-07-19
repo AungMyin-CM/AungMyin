@@ -133,10 +133,10 @@
                                 class="nav-icon fas fa-sign-out-alt"></i> Logout</button>
                         </form>
                         {{-- @if (Auth::guard('clinic')->user())
-              <a href="{{ route('clinic.logout')}}" class="nav-link">
-           @elseif(Auth::guard('user')->user())
-              <a href="{{ route('user.logout')}}" class="nav-link">
-            @endif --}}
+                        <a href="{{ route('clinic.logout')}}" class="nav-link">
+                    @elseif(Auth::guard('user')->user())
+                        <a href="{{ route('user.logout')}}" class="nav-link">
+                        @endif --}}
                     </li>
                 </ul>
             </nav>

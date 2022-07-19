@@ -357,55 +357,59 @@
             if(key ==8){
                 dictCode = dictCode.slice(0,-1);
             }
-       }
-       if(evtType == 'keypress'){
-     
-        if(key == 13 || key == 32) 
-        {   
-            if(dictCode != '') {
+        }
+        if(evtType == 'keypress'){
+        
+                if(key == 13 || key == 32) 
+                {   
+                    if(dictCode != '') {
 
-                document.getElementById('medtable').innerHTML = '';
+                        document.getElementById('medtable').innerHTML = '';
 
-            $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-
-            
-            $.ajax({
-                type: "POST",
-                url: '/fetchIsmed',
-                data: { key: dictCode}
-            }).done(function( response ) {
-                if(response != ''){
-                    var obj = JSON.parse(response);
-                    const res = obj.meaning.split("<br>");
-
-                    var table_str =  '<table class="table table-bordered">';
-                        for (i =0; i<res.length ; i++){
-                            data = res[i].split('^');
-                            table_str +=
-                                        '<tr id="row_'+i+'">'+
-                                            '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
-                                            '<input type="text" name="med_name[]" class="form-control" value="'+data[1]+'" readonly /> </td>'+
-                                            '<td><input type="text"  name="med_qty[]" class="form-control" value="'+data[2]+'" /></td>'+
-                                            '<td><input type="text"   name="days[]"  class="form-control" value="'+data[3]+'"/></td>'+
-                                            '</td>'+
-                                        '</tr>';
+                    $.ajaxSetup({
+                        headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                        table_str +=  '</table >';
-                       
-                    $('#medtable').append(table_str);
-                }
-            });
-            }
-            dictCode = '';
-        }else{
-            dictCode += event.key;
-        }        
-       }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/clinic-system/fetchIsmed',
+                        data: { key: dictCode}
+                    }).done(function( response ) {
+                        if(response != ''){
+                            var obj = JSON.parse(response);
+                            const res = obj.meaning.split("<br>");
+
+                            var fil_res = res.filter(function (el) {
+                                return el != "";
+                            });
+
+                            var table_str = '<table class="table table-bordered">';
+                                for (i =0; i<fil_res.length ; i++){
+
+                                    data = res[i].split('^');
+                                
+                                    table_str +=
+                                    '<tr id="row_'+i+'">'+
+                                        '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
+                                        '<input type="text" name="med_name[]" class="form-control" value="'+data[1]+'" readonly /> </td>'+
+                                        '<td><input type="text"  name="med_qty[]" class="form-control" value="'+data[2]+'" /></td>'+
+                                        '<td><input type="text"   name="days[]"  class="form-control" value="'+data[3]+'"/></td>'+
+                                        '</td>'+
+                                    '</tr>';
+                                }
+                                table_str +=  '</table >';
+                            
+                            $('#medtable').append(table_str);
+                        }
+                    });
+                    }
+                    dictCode = '';
+                }else{
+                    dictCode += event.key;
+                }        
+        }
     });
 
     function removeRow(id)

@@ -6,15 +6,29 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRegisterRequest;
 
 use Carbon\Carbon;
-
-
 use App\Models\User;
+use App\Models\UserClinic;
+
+
+use Auth;
 
 class UserController extends Controller
 {
     public function index()
     {
         return view('registration/user');
+    }
+
+    public function userList()
+    {
+
+        $clinic_id = session()->get('cc_id');
+
+        $user_id = UserClinic::where('clinic_id', $clinic_id)->pluck('user_id');
+
+        $userData = User::whereIn('id',$user_id)->where('status','1')->get();
+
+        return view('user/index')->with('data',$userData);
     }
 
     public function register(UserRegisterRequest $request)

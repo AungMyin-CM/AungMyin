@@ -60,7 +60,7 @@ class PosController extends Controller
             }
         }
 
-       return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data ,"total_qty" => $total_qty]);
+       return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data ,"total_qty" => '0']);
     }
 
     public function getMedData(Request $request)
@@ -74,7 +74,7 @@ class PosController extends Controller
     {
         $pos = new Pos();
         $user_id = Auth::guard('user')->user()['id'];
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+        $clinic_id = session()->get('cc_id');
         $pos_id = $pos->create([
             'invoice_code' => $request->invoice_code,
             'user_id' => $user_id,
@@ -123,7 +123,7 @@ class PosController extends Controller
                 ]);
             }
         }
-        return redirect('pos')->with('success', "Done!");
+        return redirect('/clinic-system/pos')->with('success', "Done!");
     }
     public function edit($id)
     {
@@ -199,13 +199,13 @@ class PosController extends Controller
 
         }
         
-        return redirect('/pos-history')->with('success', "Done!");
+        return redirect('clinic-system/pos-history')->with('success', "Done!");
 
     }
 
     public function history()
     {
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];   
+        $clinic_id = session()->get('cc_id');   
         $history_List = POS::where("clinic_id",$clinic_id)->where('status',1)->get();
         return view('pos/history')->with(['history_list' => $history_List]);
     }
@@ -214,7 +214,7 @@ class PosController extends Controller
     {
         POS::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('pos-history')->with('success', 'Done !');
+        return redirect('clinic-system/pos-history')->with('success', 'Done !');
     }
     private function posCodeGenerator()
     {

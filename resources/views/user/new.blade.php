@@ -8,22 +8,29 @@
                 <section class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <h1>Register Form</h1>
+                                
                             </div>
-                            <div class="col-sm-6">
+                            <div class="text-danger mt-2 col-sm-3">
+                                <ul>
+                                    <i class="fa fa-info-circle d-none" id="alert"> Please fill out all requried fields.</i>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-sm-6 text-right">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">User</a></li>
                                     <li class="breadcrumb-item active">New</li>
                                 </ol>
                             </div>
                         </div>
+                        
                     </div><!-- /.container-fluid -->
                 </section>
 
-                <form action="{{ route('user.register') }}" method="POST">
+                <form id="form-user">
                     @csrf
-
                     <section class="content">
                         <div class="container-fluid">
                             <div class="row">
@@ -34,41 +41,25 @@
                                         <div class="card-header">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div><br />
-                                        @endif
+                                           
                                         <!-- /.card-header -->
                                         <!-- form start -->
 
 
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
 
                                                     <div class="form-group">
-                                                        <label for="code">Name</label>
+                                                        <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
                                                         <input type="text" class="form-control" id="username" name="name"
-                                                            placeholder="Name">
+                                                            placeholder="Name" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
                                                 
-
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="code">Code</label>
-                                                        <input type="text" class="form-control" id="code" name="code"
-                                                            placeholder="Enter code" value="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="sel1">Role</label>
+                                                        <label for="sel1">Role<b><sup class="text-danger">*</sup></b></label>
                                                         <select class="form-control" id="role_type" name="role_type">
 
                                                             @foreach ($data as $key => $value)
@@ -81,7 +72,7 @@
                                                 </div>
                                             </div>
 
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
 
                                             <div class="row">
                                                 <div class="col-md-3">
@@ -112,14 +103,14 @@
                                                     <div class="form-group">
                                                         <label for="speciality">Speciality</label>
                                                         <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality">
+                                                            name="speciality" placeholder="Speciality" value="{{ old('speciality') }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
 
                                                     <div class="form-group">
                                                         <label for="credentials">Credentials</label>
-                                                        <textarea class="form-control" name="credentials" row="10"></textarea>
+                                                        <textarea class="form-control" name="credentials" row="10">{{ old('credentials') }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -127,22 +118,22 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1">Email address</label>
+                                                        <label for="exampleInputEmail1">Email address <b><sup class="text-danger">*</sup></b></label>
                                                         <input type="email" class="form-control" id="exampleInputEmail1"
-                                                            name="email" placeholder="example@gmail.com">
+                                                            name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
 
                                                     <div class="form-group">
-                                                        <label for="password">Password</label>
+                                                        <label for="password">Password <b><sup class="text-danger">*</sup></b></label>
                                                         <input type="password" class="form-control" id="password" name="password"
                                                             placeholder="Password">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="phNumber">Phone Number</label>
+                                                <label for="phNumber">Phone Number <b><sup class="text-danger">*</sup></b></label>
                                                 <input type="tel" class="form-control" placeholder="09xxxxxxxxx"
                                                     name="phoneNumber" value={{ old('phoneNumber') }}>
                                             </div>
@@ -152,7 +143,7 @@
                                                     <div class="form-group">
                                                         <label for="city">Country</label>
                                                         <input type="text" class="form-control" id="country"
-                                                            name="country" placeholder="Country">
+                                                            name="country" placeholder="Country" value="{{ old('country') }}">
                                                     </div>
                                                 </div>
 
@@ -166,7 +157,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="address">Address</label>
+                                                <label for="address">Address <b><sup class="text-danger">*</sup></b></label>
                                                 <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
                                             </div>
 
@@ -177,7 +168,7 @@
 
                                             <div class="col-md-6" id="fees">
                                                 <div class="form-group">
-                                                    <label class="fees">Fees</label>
+                                                    <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
                                                     <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
                                                 </div>
                                             </div>
@@ -190,7 +181,8 @@
                                 <div class="col-md-6">
                                     <div class="card card-primary">
                                         <div class="card-header">
-                                            <h3 class="card-title">Permissions</h3>
+                                            <h3 class="card-title">Permissions<sup class="text-warning"> (Please check at least one property) </sup></h3>
+                                            <input type="hidden" id="permission_check">
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
@@ -318,9 +310,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                        <div class="card-footer">
                                         </div>
+
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->
                                     </div>
@@ -328,12 +320,50 @@
                             </div>
                     </section>
                 </form>
+                <button type="submit" class="btn btn-primary float-right" id="user-submit" onclick="submitForm()">Submit</button>
+
 
             </div>
         </div>
     </body>
     <script src="{{ asset('js/user.js') }}"></script>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+    <script>
+
+    function submitForm() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        if ($('#form-user :checkbox:checked').length > 0){
+            $.ajax({
+                url: '{{route('clinic-user.register')}}',
+                type: 'post',
+                dataType: 'application/json',
+                data: $("#form-user").serialize(),
+                success: function(data) {
+                    window.location = 'clinic-system/user';
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("#alert").removeClass('d-none');
+                    $("#alert").show().delay(5000).fadeOut();
+
+                }
+        });
+        }
+        else{
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("#alert").removeClass('d-none');
+            $("#alert").show().delay(5000).fadeOut();
+
+        }
+    }
+    </script>
 
 
 @endsection

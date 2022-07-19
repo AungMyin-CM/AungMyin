@@ -24,13 +24,12 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|unique:user',
             'email' => 'email|unique:user',
             'name' => 'required',
             'speciality' => 'nullable',
             'credentials' => 'nullable',
-            'password' => 'required|min:8|confirmed',
-            'role_id' => 'nullable',
+            'password' => 'required|min:8',
+            'role_type' => 'nullable',
             'phoneNumber' => 'required|min:10|max:15',
             'city' => 'nullable',
             'country' => 'nullable',

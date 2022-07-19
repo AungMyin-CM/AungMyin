@@ -43,9 +43,9 @@
 
 </head>
 
-
-{{-- @include('layouts.navbar') --}}
-
+@if(Request::is('clinic-system/*'))
+@include('layouts.navbar')
+@endif
 
 @include('layouts.sidebar')
 

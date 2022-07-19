@@ -29,25 +29,25 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('clinic-name',[ClinicController::class, 'stepOneRegister'])->name('clinic.name');
+Route::get('package-selection',[ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
 
-Route::get('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
-Route::get('payment',[ClinicController::class, 'payment'])->name('payment');
+Route::get('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info')->middleware('auth');
+Route::get('payment',[ClinicController::class, 'payment'])->name('payment')->middleware('auth');
+
+Route::post('register-clinic',[ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
 
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
 })->name('login-clinic')->middleware('prevent-back-history');
 
-Route::post('register-clinic',[ClinicController::class, 'register'])->name('clinic.register');
+Route::get('home', [HomeController::class, 'index'])->name('user.home')->middleware('auth');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function(){
+
+    Route::post('userlogout', [LoginController::class, 'logout'])->name('user.logout');
 
     Route::resource('dictionary',DictionaryController::class);
-
-    Route::get('home', [HomeController::class, 'index'])->name('user.home');
-
-    Route::post('userlogout', [LoginController::class, 'userLogout'])->name('user.logout');
 
     Route::resource('patient',PatientController::class);
 
@@ -69,8 +69,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
-    Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
-
     Route::resource('/pos',PosController::class);
 
     Route::get('/pos-history',[PosController::class, 'history'])->name('pos.history');
@@ -79,9 +77,23 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/medData',[PosController::class, 'getMedData']);
 
+    Route::get('users',[UserController::class,'userList'])->name('user.list');
+
+    Route::get('user/create',[ClinicController::class,'newUser'])->name('user.create');
+
+    Route::get('user/{user}',[ClinicController::class,'editUser'])->name('user.edit');
+
+    Route::post('user/{user}',[ClinicController::class,'updateUser'])->name('user.update');
+
+    Route::post('user-delete/{user}',[ClinicController::class,'deleteUser'])->name('user.destroy');
+
+    Route::post('register-user',[ClinicController::class, 'registerUser'])->name('clinic-user.register');
 
 });
 
+Route::middleware(['auth', 'second'])->group(function () {
+    
+});
 
 Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.logout');
 
@@ -101,21 +113,10 @@ Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedb
 Route::get('/feedback',[FeedBackController::class, 'create'])->name('feedback.create');
 
 
-Route::group(['middleware' => 'clinic.auth'], function() {
+Route::group(['middleware' => 'auth'], function() {
 
-    Route::get('users',[ClinicController::class,'index'])->name('user.list');
+    Route::get('/clinic-system/{code}',[ClinicController::class, 'index'])->name('user.clinic');
 
-    Route::get('user/create',[ClinicController::class,'newUser'])->name('user.create');
-
-    Route::get('user/{user}',[ClinicController::class,'editUser'])->name('user.edit');
-
-    Route::post('user/{user}',[ClinicController::class,'updateUser'])->name('user.update');
-
-    // Route::post('register-user',[ClinicController::class, 'registerUser'])->name('user.register');
-
-    Route::get('dashboard', function () {
-        return view('clinic.dashboard');
-    })->name('clinic.home');
-
-
+    Route::get('dashboard',[ClinicController::class, 'dashboard'])->name('clinic.home');
+    
 });

@@ -36,7 +36,6 @@ class DictionaryController extends Controller
             abort(403);
         }
  
-     
             $dict = new Dictionary();
             if($request->is_med == 1){
                 $count_product = count($request->med_id);
@@ -57,7 +56,7 @@ class DictionaryController extends Controller
                 'isMed'  => 0
                 ]);
             }
-             return redirect('dictionary')->with('success', "Done!");
+             return redirect('clinic-system/dictionary')->with('success', "Done!");
     }
 
     public function edit($id)
@@ -85,9 +84,26 @@ class DictionaryController extends Controller
             abort(403);
         }
 
-        Dictionary::whereId($id)->update(['code' => $request->code,'meaning' => $request->meaning, 'isMed' => $request->isMed]);
+        if($request->isMed == 1){
+                $count_product = count($request->med_id);
+                $assign_medicines = '';
+                for($x = 0; $x < $count_product; $x++) {
+                    $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.$request->med_qty[$x].'^'.$request->days[$x].'<br>';
+                }
+                Dictionary::whereId($id)->update(['code' => $request->code,
+                'meaning' => $assign_medicines,
+                'user_id' => Auth::guard('user')->user()['id'],
+                'isMed'  => 1
+                ]);
+            
+        }else{
+            echo "ldskjf";
+            $med_data = null;
+            Dictionary::whereId($id)->update(['code' => $request->code,'meaning' => $request->meaning, 'isMed' => $med_data]);
+        }
 
-        return redirect('dictionary')->with('success', 'Done !');
+
+        return redirect('clinic-system/dictionary')->with('success', 'Done !');
     }
 
     /**
@@ -106,7 +122,7 @@ class DictionaryController extends Controller
         $dict = Dictionary::findOrFail($id);
         $dict->delete();
 
-        return redirect('dictionary')->with('success', 'Done !');
+        return redirect('clinic-system/dictionary')->with('success', 'Done !');
     }
 
 }

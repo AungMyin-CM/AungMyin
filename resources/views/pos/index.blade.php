@@ -12,7 +12,7 @@
                     
                     <div class="input-group col-md-6 text-center m-auto">
                       <input type="search" id="main_search" class="form-control" placeholder="Type your keywords here">
-                      <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['clinic_id'] }}" >
+                      <input type="hidden" id="clinic_code" value="{{ session()->get('cc_id') }}" >
                       <div class="input-group-append">
                           <a class="btn btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                       </div>
@@ -200,7 +200,7 @@
 
                     <script>
 
-                      $(window).load(function() {
+                      $(window).on('load',function() {
 
                         $.ajaxSetup({
                               headers: {
@@ -211,7 +211,6 @@
                           var tableProductLength = $("#product_info_table tbody tr").length;
 
                           for(x = 1; x <= tableProductLength; x++) {
-                            alert(x);
                             getTotal(x);
                           } 
                         
@@ -224,7 +223,7 @@
 
                           $.ajax({
                               type: "POST",
-                              url: '/searchMedPatient',
+                              url: '/clinic-system/searchMedPatient',
                               data: { key: query, clinic_id: clinic_id}
                           }).done(function( response ) {
                             
@@ -280,11 +279,11 @@
 
                           var query = $("#product_search_"+rowid).val();
                   
-                          var clinic_id = {{ Auth::guard('user')->user()['clinic_id'] }}
+                          var clinic_id = {{ session()->get('cc_id') }}
 
                           $.ajax({
                               type: "POST",
-                              url: '/searchMed',
+                              url: '/clinic-system/searchMed',
                               data: { key: query, clinic_id: clinic_id, rowid: rowid}
                           }).done(function( response ) {
                             
@@ -307,7 +306,7 @@
 
                         $.ajax({
                             type: "POST",
-                            url: '/medData',
+                            url: '/clinic-system/medData',
                             data: { med_id: med_id}
                         }).done(function( response ) {
 

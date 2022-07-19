@@ -6,29 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\Clinic;
 use App\Models\Patient;
 use App\Models\Pharmacy;
+use App\Models\UserClinic;
 
 use Carbon\Carbon;
-
 
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
 
-
 class SearchController extends Controller
 {
-
     public function searchPatient(Request $request)
     {
         $ref = str_replace(' ','_',$request->key);
 
-        $clinic_id = $request->clinic_id;
-
-        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+        $clinic_id = UserClinic::where('user_id',$request->clinic_id)->pluck('clinic_id')->first();
 
         $data = Patient::select('id','name','age','father_name')->
                 where('Ref', 'like', '%'.$ref.'%')->
-                where('clinic_code',$clinic_code)->
+                where('clinic_code',$clinic_id)->
                 where('status',1)->
                 get();
 
@@ -96,12 +92,9 @@ class SearchController extends Controller
 
         $clinic_id = $request->clinic_id;
 
-        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
-
         $data = Patient::select('*')->
                 where('Ref', 'like', '%'.$ref.'%')->
-                where('clinic_code',$clinic_code)->
-                where('p_status',4)->
+                where('clinic_code',$clinic_id)->
                 where('status',1)->
                 get();
 

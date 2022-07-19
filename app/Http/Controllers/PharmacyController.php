@@ -7,11 +7,15 @@ use App\Http\Requests\PharmacyRequest;
 
 use App\Models\Clinic;
 use App\Models\Pharmacy;
+use App\Models\UserClinic;
+
 use Illuminate\Support\Facades\Crypt;
 
 use Carbon\Carbon;
 
 use Auth;
+
+use Session;
 
 class PharmacyController extends Controller
 {
@@ -22,9 +26,9 @@ class PharmacyController extends Controller
             abort(403);
         }
         
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+        $clinic_id = session()->get('cc_id');
 
-        $pharmacyData =  Pharmacy::where("clinic_id",$clinic_id)->where('status',1)->get();
+        $pharmacyData = Pharmacy::where("clinic_id",$clinic_id)->where('status',1)->get();
         
         return view('pharmacy/index')->with('data',$pharmacyData);
     }
@@ -43,7 +47,7 @@ class PharmacyController extends Controller
         if($request->validated()){
             $pharmacy = new Pharmacy();
 
-            $clinic_id = Auth::guard('user')->user()['clinic_id'];
+            $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             
             $reference = str_replace(' ','_',$request->name)."_".$request->code."_".str_replace(' ','_',$request->quantity);
@@ -65,7 +69,7 @@ class PharmacyController extends Controller
                           'Ref' => $reference
             ]);
 
-            return redirect('pharmacy')->with('success', "Done!");
+            return redirect('clinic-system/pharmacy')->with('success', "Done!");
         }
     }
 
@@ -85,7 +89,7 @@ class PharmacyController extends Controller
     {
         $reference = str_replace(' ','_',$request->name)."_".$request->code."_".str_replace(' ','_',$request->quantity);
 
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+        $clinic_id = session()->get('cc_id');
         $user_id = Auth::guard('user')->user()['id'];
         
         if($request->validated())
@@ -109,7 +113,7 @@ class PharmacyController extends Controller
                             'Ref' => $reference 
                         ]);
 
-        return redirect('pharmacy')->with('success', 'Done !');
+        return redirect('clinic-system/pharmacy')->with('success', 'Done !');
 
 
         };
@@ -118,7 +122,6 @@ class PharmacyController extends Controller
 
     public function destroy($id)
     {        
-        
         Pharmacy::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('pharmacy')->with('success', 'Done !');

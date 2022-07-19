@@ -16,7 +16,7 @@ class CreateUserTable extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->integer('clinic_id')->nullable();
+            $table->integer('role_id')->nullabel();
             $table->string('speciality')->nullable();
             $table->text('credentials')->nullable();
             $table->string('name');
@@ -33,6 +33,7 @@ class CreateUserTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->string('lastest_ip')->nullable();
+            $table->tinyInteger('user_type')->default('1');
             $table->rememberToken();
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

@@ -57,7 +57,7 @@
                                                 <label for="meaing">Meaning</label>
                                                 <textarea class="form-control" placeholder="Meaning" name="meaning" rows="7">{{ old('meaning') }}</textarea>
                                             </div>
-                                            <div id = "med_div" hidden="hidden">
+                                            <div id="med_div" hidden="hidden">
                                                 <section class="content">
                                                     <div class="container-fluid">
                                                         <table class="table table-bordered" id="product_info_table">
@@ -103,8 +103,8 @@
             </div>
         </div>
     </body>
-    <script src="{{ asset('js/dictionary.js') }}"></script>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/dictionary.js') }}"></script>
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -116,10 +116,10 @@
 
         function searchMed(rowid) {
             var query = $("#product_search_"+rowid).val();
-            var clinic_id = {{ Auth::guard('user')->user()['clinic_id'] }}
+            var clinic_id = {{ session()->get('cc_id') }}
             $.ajax({
                 type: "POST",
-                url: '/searchMed',
+                url: '/clinic-system/searchMed',
                 data: { key: query, clinic_id: clinic_id, rowid: rowid}
             }).done(function( response ) {         
             if(query != '')
