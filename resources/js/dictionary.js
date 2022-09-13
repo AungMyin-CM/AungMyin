@@ -29,7 +29,7 @@ $(function() {
                 
                 $.ajax({
                     type: "POST",
-                    url: '/fetchDictionary',
+                    url: '/clinic-system/fetchDictionary',
                     data: { key: dictCode}
                 }).done(function( response ) {
                     if(response != ''){
@@ -71,7 +71,7 @@ $(function() {
             
             $.ajax({
                 type: "POST",
-                url: '/fetchDictionary',
+                url: '/clinic-system/fetchDictionary',
                 data: { key: dictCode}
             }).done(function( response ) {
                 if(response != ''){

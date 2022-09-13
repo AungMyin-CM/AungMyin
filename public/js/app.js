@@ -2067,6 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
 
 $("input").on('keyup change', function () {
   $("#alert-message").remove();
+  $("input").removeClass('is-invalid');
 });
 
 /***/ }),

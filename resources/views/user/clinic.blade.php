@@ -36,7 +36,8 @@
                                     </div>
                                     <div class="card-body"> 
                                         @foreach ($data['patientData'] as $row)
-                                            <div class="card" style="background:#FFFFFF;">
+                                            <input type="text" id="patient_waiting_card{{$row->id}}" value="{{$row->id}}">
+                                            <div class="card" id="card_waiting{{$row->id}}" style="background:#FFFFFF;">
                                                 <div class="card-header border-0">
                                                     <h3 class="card-title bold">{{ $row->name }}&nbsp;&nbsp;&nbsp;
                                                         @if($row->gender ==1)
@@ -94,7 +95,7 @@
                                                     </div>
                                                     <div class="float-right">
                                                         <br/>
-                                                        <small>{{ $row->updated_at }}</small>
+                                                        <small id="time_{{$row->id}}">{{ $row->updated_at->diffForHumans() }}</small>
                                                     </div>
 
                                                    
@@ -107,9 +108,9 @@
                         @endif
                     </div>
                 </div>
-                <div class="float-right" style="position: absolute;right:0;bottom:0;">
+                {{-- <div class="float-right" style="position: absolute;right:0;bottom:0;">
                     <a href="{{ route('feedback.create') }}" class="btn btn-primary float-right">Feedback <i class="fas fa-comments"></i></a>
-                </div>
+                </div> --}}
             </section>
         </div>
     </div>
@@ -159,6 +160,7 @@
     function updateStatus(status){
         var p_status = status.getAttribute('data-status');
         var patient_id = status.getAttribute('data-patient-id');
+    
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -172,7 +174,7 @@
         }).done(function( response ) {
             if(response == 'changed')
             {
-                $("#mydiv").load(location.href + " #mydiv>*","");
+                $("#card_waiting"+patient_id).slideUp();
             }else{
                 alert("Something Went Wrong");
             }

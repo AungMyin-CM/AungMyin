@@ -12,9 +12,9 @@
                                 <h1>Register Form</h1>
                                 
                             </div>
-                            <div class="text-danger mt-2 col-sm-3">
+                            <div class="text-danger col-sm-3">
                                 <ul>
-                                    <i class="fa fa-info-circle d-none" id="alert"> Please fill out all requried fields.</i>
+                                    <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
                                 </ul>
                             </div>
                             
@@ -48,7 +48,7 @@
 
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
 
                                                     <div class="form-group">
                                                         <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
@@ -56,8 +56,17 @@
                                                             placeholder="Name" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="code">Username<b><sup class="text-danger">*</sup></b></label>
+                                                        <input type="text" class="form-control" id="code" name="code" required
+                                                            placeholder="Code" value="{{ old('code') }}">
+                                                        <span class="small" id="a-text"></span>
+                                                    </div>
+                                                </div>
                                                 
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="sel1">Role<b><sup class="text-danger">*</sup></b></label>
                                                         <select class="form-control" id="role_type" name="role_type">
@@ -70,6 +79,8 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                
                                             </div>
 
                                             <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
@@ -102,8 +113,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="speciality">Speciality</label>
-                                                        <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality" value="{{ old('speciality') }}">
+                                                        <textarea class="form-control" name="speciality" row="10">{{ old('speciality') }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -309,8 +319,37 @@
 
                                                 </div>
                                             </div>
+
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="user_view" id="pos_permissions" type="checkbox" name="permission[]"  value="user_view">
+                                                    <label for="user_view">User</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_create" name="permission[]"
+                                                                value="user_create">
+                                                            <label for="user_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_update" name="permission[]"
+                                                                value="user_update">
+                                                            <label for="user_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="user_delete" type="checkbox" name="permission[]"
+                                                                value="user_delete">
+                                                            <label for="user_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer">
+                                            <input type="button" class="btn btn-primary float-right"  onclick="submitForm()" value="Submit">
                                         </div>
 
                                         <!-- Bootstrap Switch -->
@@ -320,7 +359,6 @@
                             </div>
                     </section>
                 </form>
-                <button type="submit" class="btn btn-primary float-right" id="user-submit" onclick="submitForm()">Submit</button>
 
 
             </div>
@@ -342,19 +380,28 @@
         if ($('#form-user :checkbox:checked').length > 0){
             $.ajax({
                 url: '{{route('clinic-user.register')}}',
-                type: 'post',
-                dataType: 'application/json',
+                type: 'POST',
                 data: $("#form-user").serialize(),
-                success: function(data) {
-                    window.location = 'clinic-system/user';
+                beforeSend: function(){
+                    $('.wrapper').css('opacity','0.1');
+                    $('.middle').css('opacity','1');
                 },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    $("html, body").animate({ scrollTop: 0 }, "slow");
-                    $("#alert").removeClass('d-none');
-                    $("#alert").show().delay(5000).fadeOut();
-
-                }
-        });
+                success: function(response){
+                    if(response == 1){
+                        window.location = '/clinic-system/users'
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    alert(err.Message);
+                    alert("hello");
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    $('.wrapper').css('opacity','0.1');
+                    $('.middle').css('opacity','1');
+                },
+               
+            })
         }
         else{
             $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -363,6 +410,56 @@
 
         }
     }
+
+    $("#code").blur(function(){
+
+    var username = $('#code').val();
+    var _token = $('input[name="_token"]').val();
+
+    if(username.length >= 5){
+
+        $.ajax({
+            url:"{{ route('username_available.check') }}",
+            method:"POST",
+            data:{username:username, _token:_token},
+            success:function(result)
+            {
+                if(result == 'unique')
+                {
+                $('#a-text').removeClass('text-danger');
+                $('#a-text').removeClass('text-warning');
+                $('#a-text').addClass('text-success');
+                $('#a-text').text('Username available');
+                setTimeout(function(){
+                    $('#a-text').tooltip('hide');
+                }, 5000);
+                
+                }
+                else
+                {
+                $('#a-text').removeClass('text-danger');
+                $('#a-text').removeClass('text-success');
+                $('#a-text').addClass('text-warning');
+                $('#a-text').text('Username Already taken');
+                setTimeout(function(){
+                    $('#a-text').tooltip('hide');
+                }, 5000);
+
+                }
+            }
+        });
+        }else{
+
+            $('#a-text').removeClass('text-warning');
+            $('#a-text').removeClass('text-success');
+            $('#a-text').addClass('text-danger');
+            $('#a-text').text('Must have at leat 5 characters');
+            setTimeout(function(){
+                $('#a-text').tooltip('hide');
+            }, 5000);
+
+        }
+    });
     </script>
 
 

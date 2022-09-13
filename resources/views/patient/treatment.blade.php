@@ -155,15 +155,15 @@
                                        
                                         <div class="card-body"> 
                                             @foreach ($data['visit'] as $row)
-                                                <div class="card" style="background:#a19090;">
+                                                <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
                                                     <div class="card-header border-0">
-                                                    <h3 class="card-title">{{ $row['updated_at'] }}</h3>
+                                                        <h3 class="card-title" title="{{$row['update_at']}}">{{ $row['updated_at']->diffForHumans() }}</h3>
                                                         <div class="card-tools">
-                                                            <a href="#" class="btn btn-sm btn-tool">
-                                                                <i class="fas fa-edit" style="color:black;"></i>
+                                                            <a class="btn btn-sm btn-tool">
+                                                                <i class="fas fa-copy" style="color:black;" onclick="copyData({{$row['id']}})"></i>
                                                             </a>
-                                                            <a href="#" class="btn btn-sm btn-tool">
-                                                                <i class="fas fa-trash" style="color:black;"></i>
+                                                            <a class="btn btn-sm btn-tool">
+                                                                <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row['id']}})"></i>
                                                             </a>
                                                         </div><br/>
 
@@ -176,6 +176,15 @@
                                                                 <li>{{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
                                                             @endif
 
+                                                            @if($row['investigation'] != '')
+                                                                <li>{{ Str::limit($row['investigation'], $limit = 100, $end = '...') }}</li>
+                                                            @endif
+
+                                                            @if($row['procedure'] != '')
+                                                                <li>{{ Str::limit($row['procedure'], $limit = 100, $end = '...') }}</li>
+                                                            @endif
+
+                                                
                                                         </ul>
 
                                                         <div class="float-left">
@@ -187,8 +196,28 @@
                                                                 <small>follow up: {{ date('d-m-Y', strtotime($row['followup_date'])) }}</small>  
                                                             </div>
                                                         @endif
+                                                        
                                                     </div>
-                                                    
+                                                    <div class="card-footer">
+                                                        <div class="row">
+                                                            <?php
+                                                                $images_r = substr($row['images'],1,-1);
+
+                                                                $images = explode(",", $images_r);
+
+                                                                for($i=0; $i < count($images); $i++){
+                                                                    if($images[$i] != ''){
+                                                                        // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
+                                                                        echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                                                                    }
+                                                                }
+                                                                
+                                                            ?>
+                                                          
+
+                                                            
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -205,13 +234,13 @@
 
                                             <div class="form-group">
                                                 <label for="address">Prescription</label>
-                                                <textarea class="form-control" id="dictionary" rows="10" placeholder="Start Typing here..."
+                                                <textarea class="form-control c-field" id="dictionary" rows="10" placeholder="Start Typing here..."
                                                     name="prescription">{{ old('prescription') }}</textarea>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="address">Diagnosis</label>
-                                                <textarea class="form-control" id="diagnosis_dictionary" rows="6" placeholder="Start Typing here..."
+                                                <textarea class="form-control c-field" id="diagnosis_dictionary" rows="6" placeholder="Start Typing here..."
                                                     name="diag">{{ old('diag') }}</textarea>
 
                                             </div>
@@ -247,27 +276,27 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="address">Investigation</label>
-                                                        <textarea class="form-control" id="dictionary" rows="5" placeholder="Start Typing here..."
+                                                        <textarea class="form-control c-field" id="investigation" rows="5" placeholder="Start Typing here..."
                                                             name="investigation">{{ old('investigation') }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="address">Procedure</label>
-                                                        <textarea class="form-control" id="dictionary" rows="5" placeholder="Start Typing here..."
+                                                        <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..."
                                                             name="procedure">{{ old('procedure') }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                {{-- <div class="col-md-4">
                                                     <div class="form-group">
-                                                       <label for="address">Fees</label>
-                                                        <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value={{Auth::user()->fees}} readonly />
+                                                       <label for="address" class="d-none">Fees</label>
+                                                        <input type="number" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value={{Auth::user()->fees}} readonly />
                                                     </div>
-                                                </div>
-                                                <div class="col-md-2">
+                                                </div> --}}
+                                                <div class="col-md-6">
                                                     <div class="d-flex justify-content-center">
                                                         <div class="form-check" style="padding:6px !important;">
                                                             
@@ -348,7 +377,6 @@
 
         var dictCode = '';
 
-
         $("#medicine_dictionary").on('keypress keydown',function(event) {
         var key = event.keyCode;
         var evtType = event.type;
@@ -417,7 +445,51 @@
         $("#medtable table tr#row_"+id).remove();
     }
 
-        
+    function copyData(id)
+    {
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '/clinic-system/copy-data',
+            data: { id: id},
+        beforeSend: function(){
+            console.log("HEllo");
+            $('.c-field').attr('style','opacity:0.1');
+        },
+        success: function( response ) {
+            $("#dictionary").text(response.prescription);
+            $("#diagnosis_dictionary").text(response.diag);
+            $("#investigation").text(response.investigation);
+            $("#procedure").text(response.procedure);
+        },
+        complete: function(response) {
+            $('.c-field').removeAttr('style','opacity:0.1');
+        }
+        });
+    }
+
+    function removeData(id)
+    {
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '/clinic-system/remove-data',
+            data: { id: id}
+        }).done(function( response ) {
+            $("#treatment_data_"+id).slideUp();
+        });
+    }
+
     </script>
 @endsection
 {{-- @include('layouts.js') --}}

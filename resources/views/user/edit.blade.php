@@ -122,12 +122,12 @@
 
                                             </div><br/>
 
-                                            <div class="row" id="doctor_section" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="row" id="doctor_section" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="speciality">Speciality</label>
-                                                        <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality" value="{{ $user->speciality }}">
+                                                        <textarea class="form-control" name="speciality" row="10">{{ $user->speciality }}</textarea>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -187,12 +187,12 @@
 
 
                                         
-                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <label for="short_bio">Short Bio</label>
                                                 <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ $user->short_bio }}</textarea>
                                             </div>
 
-                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <div class="form-group">
                                                     <label class="fees">Fees</label>
                                                     <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" />
@@ -330,6 +330,35 @@
                                                             <input id="pos_delete" type="checkbox" name="permission[]"
                                                                 value="pos_delete" {{Helper::checkPermission('pos_delete', $role->permissions) ? 'checked' : ''}}>
                                                             <label for="pos_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="user_view" id="pos_permissions" type="checkbox" name="permission[]"  value="user_view" 
+                                                    {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                    <label for="user_view">User</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_create" name="permission[]"
+                                                                value="user_create" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_update" name="permission[]"
+                                                                value="user_update" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="user_delete" type="checkbox" name="permission[]"
+                                                                value="user_delete" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_delete">Delete</label>
                                                         </div>
                                                     </div>
 

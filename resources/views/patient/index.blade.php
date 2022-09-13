@@ -61,7 +61,7 @@
                                         <tbody>
                                             @foreach ($data as $row)
                                                 <tr>
-                                                    <td>{{ $row->name }}</td>
+                                                    <td>{{ $row->name }}<span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span></td>
                                                     <td>{{ $row->code }}</td>
                                                     <td>{{ $row->age }}</td>
                                                     <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
@@ -69,13 +69,13 @@
                                                         <div class="row">
                                                             @if(Helper::checkPermission('p_update', $permissions))
 
-                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
+                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px;">
                                                                 <i class="fas fa-edit fa-lg"></i></a>
 
                                                             @endif
 
                                                             @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 || $role_type == 5)
-                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
+                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px;"
                                                                 ><i class="fas fa-stethoscope fa-lg"></i></a>
                                                             @endif
 

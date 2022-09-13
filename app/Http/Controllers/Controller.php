@@ -10,6 +10,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Role;
+use App\Models\Notification;
+
 
 use App\Helpers\Helper;
 
@@ -29,7 +31,6 @@ class Controller extends BaseController
 
         $this->middleware(function ($request, $next) {
 
-
             if(Auth::check())
             {
 
@@ -37,10 +38,12 @@ class Controller extends BaseController
 
             $role_type = Role::where('id',Auth::guard('user')->user()['role_id'])->pluck('role_type')->first();
 
+            $notifications = Notification::where(['receiver_id' => Auth::guard('user')->user()['id'], 'is_read' => 0])->get();
+
             $this->permissions = $permissions;
             $this->role_type = $role_type;
 
-            view()->share(['permissions' => $permissions, 'role_type' => $role_type]);
+            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications]);
 
             }
             

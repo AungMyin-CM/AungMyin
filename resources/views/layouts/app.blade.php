@@ -36,12 +36,20 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
-
     <link rel="stylesheet" href="{{ asset('css/selectize.css') }}">
 
 
 </head>
+<div class="middle">
+    <div class="bar bar1"></div>
+    <div class="bar bar2"></div>
+    <div class="bar bar3"></div>
+    <div class="bar bar4"></div>
+    <div class="bar bar5"></div>
+    <div class="bar bar6"></div>
+    <div class="bar bar7"></div>
+    <div class="bar bar8"></div>
+</div>
 
 @if(Request::is('clinic-system/*'))
 @include('layouts.navbar')

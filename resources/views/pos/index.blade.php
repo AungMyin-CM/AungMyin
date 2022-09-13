@@ -101,10 +101,11 @@
                              <tbody>
                                @if ($med_data)                    
                                @foreach ($med_data as $key => $md)
-                               <tr id="row_1">                                 
+                               <tr id="row_1">          
+                                  
                                 <td>
                                      <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Type your keywords here" value="{{$md[0]['name']}}" required>
-                                     <input type = "hidden" name = "med_id[]" id = "med_id_{{$key+1}}">
+                                     <input type = "hidden" name = "med_id[]" id = "med_id_{{$key+1}}" value={{$md[0]['id']}}>
                                      <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
                                       
                                      </div>

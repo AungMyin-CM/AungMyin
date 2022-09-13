@@ -16,15 +16,23 @@
                             @if($data['clinic'] == 0)
 
                                 <div class="col-md-4">
-                                    <div class="card">
-                                        
-                                        <div class="card-header">
-                                            Create Your New Clinic
-                                        </div>
-                                        <div class="card-body">
-                                            <a href="{{route('package.selection')}}" class="btn btn-default">New</a>
+                                    <a href="{{route('package.selection')}}">
+
+                                    <div class="card mb-3" style="cursor:pointer;" id="clinic-card">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4" style="background:url({{asset('images/web-photos/clinic.jpg')}})">
+                                            
+                                            </div>
+                                            <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title m-1 text-black"><span class="fas fa-clinic-medical"></span>  New Clinic</h5>
+                                                <p class="card-text"><small class="text-muted">Start using free.</small></p>
+
+                                            </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    </a>
                                 </div>
                             @else
                                 @foreach($data['user_clinic'] as $key => $data)

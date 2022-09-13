@@ -22,6 +22,10 @@ class UserController extends Controller
     public function userList()
     {
 
+        if(!$this->checkPermission("user_view")){
+            abort(404);
+        }
+
         $clinic_id = session()->get('cc_id');
 
         $user_id = UserClinic::where('clinic_id', $clinic_id)->pluck('user_id');
@@ -35,7 +39,7 @@ class UserController extends Controller
     {        
         $user = new User();
 
-        $user_id = $user->create(['name' => $request->name, 
+        $user_id = $user->create([
                 'code' => $request->code,
                 'name' => $request->name,
                 'email' => $request->email,
@@ -97,6 +101,43 @@ class UserController extends Controller
                 } else {
                     return redirect('/')->with('success', 'Your email already verified successfully. You can now login')->with('verifiedEmail', $verifyUser->email);
                     // return 'Already Verified';
+                }
+            }
+        }
+
+        public function checkUsername(Request $request)
+        {
+            if($request->get('username'))
+            {
+                $username = $request->get('username');
+                $data = User::where('code', $username)
+                ->count();
+                if($data > 0)
+                {
+                    echo 'not_unique';
+                }
+                else
+                {
+                    echo 'unique';
+                }
+            }
+        }
+
+
+        public function checkEmail(Request $request)
+        {
+            if($request->get('email'))
+            {
+                $email = $request->get('email');
+                $data = User::where('email', $email)
+                ->count();
+                if($data > 0)
+                {
+                    echo 'not_unique';
+                }
+                else
+                {
+                    echo 'unique';
                 }
             }
         }

@@ -1,4 +1,7 @@
+<audio id="myaudio" src="{{asset('audio/noti.wav')}}"></audio>
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+<script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
@@ -38,15 +41,117 @@
       "responsive": true, "lengthChange": false, "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
-    
-</script>
 
-{{-- <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
-<script>
-  window.OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "738d1c05-22b0-4052-b4a9-34cef47024a5",
-    });
-  });
-</script> --}}
+    
+    function readAction(action){
+      var id = action.getAttribute('data-id');
+
+      $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+                
+        $.ajax({
+            type: "POST",
+            url: '/clinic-system/change-status',
+            data: { is_read: '1' , id: id }
+        }).done(function( response ) {
+            if(response == 'changed')
+            {
+              window.location = '{{route('user.clinic', Crypt::encrypt(session()->get('cc_id')))}}'
+            }else{
+                alert("Something Went Wrong");
+            }
+        });
+
+    }
+
+    $(document).ready(function(){
+
+      $('form').on('submit',function(){
+        $('.wrapper').css('opacity','0.1');
+        $('.middle').css('opacity','1');
+      })
+
+      if($("#auth").text() == 'true')
+      {
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '/clinic-system/check-noti',
+        }).done(function( response ) {
+            if(response != 'no-data'){
+              var noti_number = Object.keys(response).length;
+              if(noti_number > 0) {
+                  $(".noti-number").text(Object.keys(response).length);
+                    $.each(response, function(i, data){
+                      $("#p_notis").append(
+                      '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">  '+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
+                      );
+                    });
+              }
+            }else{
+              $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
+            }
+        });
+                
+        setInterval(function()
+        {
+
+            $.ajax({
+            type: "GET",
+            url: '/clinic-system/check-noti',
+        
+              success: function( response ) {
+                console.log(response);
+                if(response != 'no-data'){
+
+                  var noti_number = Object.keys(response).length;
+                  if(noti_number > 0) {
+                    $(".noti-number").text(Object.keys(response).length);
+                      $.each(response, function(i, data){
+                          if(document.getElementById('patient_noti'+data.id) != null){
+                            $("[id='time_"+data.id+"']").text(' '+data.time);
+                            $("[id='time_"+data.patient_id+"']").text(' '+data.time);
+                          }else{
+                            if(document.getElementById('no_noti') != null){
+                                $("#no_noti").remove();
+                            }
+                            $("#p_notis").append(
+                              '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">  '+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
+                            );                       
+                          }
+                          
+                      });
+
+                    }else{
+                        $("[id='time_"+data.id+"']").text(' '+data.time);
+                        $("[id='time_"+data.patient_id+"']").text(' '+data.time);
+                        $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
+                    }
+                }else if(response == 'no-session') {
+                  console.log("Hello");
+                }
+
+              },
+              error: function(httpObj, textStatus) {       
+                  if(httpObj.status==401)
+                    location.reload();
+                  else
+                    alert("not-danger");
+                },
+            });
+        // console.log($("[id='time_"+data.patient_id).text());
+        }, 5000);//time in milliseconds 
+
+
+      }
+
+})
+</script>

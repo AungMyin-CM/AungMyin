@@ -10,6 +10,7 @@ use App\Models\Clinic;
 use App\Models\Visit;
 use App\Models\Role;
 use App\Models\UserClinic;
+use App\Models\Notification;
 
 use Carbon\Carbon;
 
@@ -28,7 +29,7 @@ class PatientController extends Controller
     {
 
         if(!$this->checkPermission('p_view')){
-            abort(403);
+            abort(404);
         }
         
         $clinic_id = session()->get('cc_id');
@@ -45,6 +46,10 @@ class PatientController extends Controller
 
     public function create(Request $request)
     {
+        if(!$this->checkPermission('p_create')){
+            abort(404);
+        }
+
         $code = $this->codeGenerator();
         return view('patient/new')->with('data' , ['code' => $code , 'name' => $request->name ? $request->name : '']);
 
@@ -52,6 +57,10 @@ class PatientController extends Controller
 
     public function store(PatientRequest $request)
     {   
+        if(!$this->checkPermission('p_create')){
+            abort(404);
+        }
+
         if($request->validated()){
             $patient = new Patient();
 
@@ -119,6 +128,10 @@ class PatientController extends Controller
 
     public function edit($id)
     {
+        if(!$this->checkPermission('p_update')){
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
@@ -137,6 +150,10 @@ class PatientController extends Controller
      */
     public function update(PatientRequest $request, $id)
     {
+        if(!$this->checkPermission('p_update')){
+            abort(404);
+        }
+
         $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
 
         Patient::whereId($id)->update([
@@ -155,12 +172,18 @@ class PatientController extends Controller
 
     public function treatment($id)
     {
+        if(!$this->checkPermission('p_treatment')){
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at','DESC')->get();
+            
+            
             return view('patient/treatment')->with('data' , [ 'patient' => $patient , 'visit' => $visit]);
-
+            
         }catch(DecryptException $e){
             abort(404);
         }
@@ -168,6 +191,10 @@ class PatientController extends Controller
 
     public function saveTreatment(Request $request, $id)
     {
+
+        if(!$this->checkPermission('p_treatment')){
+            abort(404);
+        }
         
         $user_id = Auth::guard('user')->user()['id'];
         $code = $request->code;
@@ -209,6 +236,41 @@ class PatientController extends Controller
             'followup_date' => $request->followup_date
         ]);
 
+
+        switch ('3') {
+            case '1':
+                $action = 'waiting';
+                break;
+            case '2':
+                $action = 'treatment';
+                break;
+            case '3':
+                $action = 'pos';
+                break;
+            case '4':
+                $action = 'completed';
+                break;
+            case '5':
+                $action = 'no-action';
+                break;
+            
+            default:
+                $action = 'none';
+                break;
+        }
+
+        if($action != 'no-action'){
+
+            Notification::create([
+                'sender_id' => $user_id,
+                'receiver_id' => 34,
+                'clinic_id' => session()->get('cc_id'),
+                'patient_id' => $id,
+                'is_sent' => '1',
+                'action_on_sent' => $action
+            ]);
+        }
+
         return redirect('clinic-system/patient')->with('success', "Done!");
     }
 
@@ -229,8 +291,9 @@ class PatientController extends Controller
     public function fetchDictionary(Request $request)
     {
         $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
 
-        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '0'])->first();
+        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '0', 'user_id' =>  $user_id])->first();
 
         if($data == ''){
             echo '';
@@ -242,8 +305,9 @@ class PatientController extends Controller
     public function fetchIsmedData(Request $request)
     {
         $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
 
-        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '1'])->first();
+        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '1' , 'user_id' =>  $user_id])->first();
 
         if($data == ''){
             echo '';
@@ -261,14 +325,122 @@ class PatientController extends Controller
         try{
         Patient::whereId($patient_id)->update(['p_status' => $status]);
 
-        $clinic_code = Clinic::where('id' , Auth::guard('user')->user()['clinic_id'])->pluck('code');
-        $user_id = Auth::guard('user')->user()['id'];
+        switch ($status) {
+            case '1':
+                $action = 'waiting';
+                break;
+            case '2':
+                $action = 'treatment';
+                break;
+            case '3':
+                $action = 'pos';
+                break;
+            case '4':
+                $action = 'completed';
+                break;
+            case '5':
+                $action = 'no-action';
+                break;
+            
+            default:
+                $action = 'none';
+                break;
+        }
+
+        if($action != 'no-action'){
+
+            Notification::create([
+                'sender_id' => $user_id,
+                'receiver_id' => 32,
+                'clinic_id' => session()->get('cc_id'),
+                'patient_id' => $patient_id,
+                'is_sent' => '1',
+                'action_on_sent' => $action
+            ]);
+        }
+
+
             echo "changed";
         }catch(QueryException $e){
             echo "false";
         }
     }
 
+    public function addQueue($id)
+    {
+        $user_id = Auth::guard('user')->user()['id'];
+
+        try{
+        Patient::whereId($id)->update(['p_status' => '1','user_id' => $user_id]);
+
+        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+
+        $clinic_id = session()->get('cc_id');
+        $now = new Carbon;
+        
+
+        if($role->role_type == 2 || $role->role_type == 5) {     
+
+            $patientData = Patient::where('clinic_code' ,$clinic_id)
+                            ->where('user_id',$user_id)
+                            ->where('p_status' , 1)
+                            ->where('updated_at' , '>=' ,$now->format('ymd'))
+                            ->where('status', 1)->get();
+
+        }elseif($role->role_type == 1 || $role->role_type == 5){
+
+            $patientData = Patient::where('clinic_code' ,$clinic_id)
+                            ->where('p_status' , 2)->where('status' , 1)
+                            ->where('updated_at' , '>=' ,$now->format('ymd') )
+                            ->where('status', 1)->get();    
+        }elseif($role->role_type == 3 || $role->role_type == 5){
+
+            $patientData = Patient::where('clinic_code' ,$clinic_id)
+                            ->where('p_status' , 3)->where('status' , 1)
+                            ->where('updated_at' , '>=' ,$now->format('ymd') )
+                            ->where('status', 1)->get();           
+        }else{
+            $patientData = "";
+        }
+        return redirect()->route('user.clinic', Crypt::encrypt(session()->get('cc_id')));
+
+        }catch(QueryException $e){
+            echo "false";
+        }
+    }
+
+    public function copyTreatment(Request $request)
+    {
+        if(!$this->checkPermission('p_treatment')){
+            abort(404);
+        }
+
+        $id = $request->id;
+
+        try {
+            $data = Visit::whereId($id)->get()->first();
+            return  $data;
+        } catch (QueryException $e) {
+            echo "false";
+        }
+    }
+
+    public function removeTreatment(Request $request)
+    {
+        if(!$this->checkPermission('p_treatment')){
+            abort(404);
+        }
+
+        $id = $request->id;
+
+        try {
+            Visit::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
+            echo "updated";
+        } catch (QueryException $e) {
+            echo "false";
+        }
+    }
+   
     private function codeGenerator()
     {
         $timestamp = Carbon::now();

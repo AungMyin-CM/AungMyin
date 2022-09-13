@@ -7,12 +7,15 @@ use App\Models\Clinic;
 use App\Models\Patient;
 use App\Models\Pharmacy;
 use App\Models\UserClinic;
+use App\Models\Role;
 
 use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
+
+use Auth;
 
 class SearchController extends Controller
 {
@@ -27,20 +30,57 @@ class SearchController extends Controller
                 where('clinic_code',$clinic_id)->
                 where('status',1)->
                 get();
+        
+        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
-        if(count($data) == 0)
-        {
-            $output = '';
-        }else{  
-            $output = '<ul class="list-group" style="display:block; position:relative;">';
+        if($role->role_type == 1){
 
-            foreach($data as $row)
+            if(count($data) == 0)
             {
-                $output .= '
-                    <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
-                ';
+                $output = '';
+            }else{  
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach($data as $row)
+                {
+                    $output .= '
+                        <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                    ';
+                }
+                $output .= '</ul>';
             }
-            $output .= '</ul>';
+
+        }elseif($role->role_type == 2){
+
+            if(count($data) == 0)
+            {
+                $output = '';
+            }else{  
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach($data as $row)
+                {
+                    $output .= '
+                        <li class="list-group-item"><a href="'.route('add.queue', $row->id).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                    ';
+                }
+                $output .= '</ul>';
+            }
+        }else if($role->role_type == 3){
+            if(count($data) == 0)
+            {
+                $output = '';
+            }else{  
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach($data as $row)
+                {
+                    $output .= '
+                        <li class="list-group-item"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                    ';
+                }
+                $output .= '</ul>';
+            }
         }
 
         echo $output;
@@ -76,7 +116,7 @@ class SearchController extends Controller
             foreach($data as $row)
             {
                 $output .= '
-                    <li class="list-group-item" id="item_options" data-id ='.$row->id.'  data-name ='.$row->name.' row-id='.$row_id.' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>Name: '.$row->name.'</span><span class="float-right">Code: '.$row->code.'</span></li>
+                    <li class="list-group-item" id="item_options" data-id ='.$row->id.'  data-name ='.$row->name.' row-id='.$row_id.' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>'.$row->name.'</span></li>
                 ';
             }
             $output .= '</ul>';

@@ -25,6 +25,11 @@ use Carbon\Carbon;
 
 use Session;
 
+use Response;
+
+require_once 'phpseclib/Crypt/RSA.php';
+
+
 class ClinicController extends Controller
 {
 
@@ -62,13 +67,13 @@ class ClinicController extends Controller
             }elseif($role->role_type == 1 || $role->role_type == 5){
 
                 $patientData = Patient::where('clinic_code' ,$clinic_id)
-                                ->where('p_status' , 2)->where('status' , 1)
+                                ->where('p_status' , 2)
                                 ->where('updated_at' , '>=' ,$now->format('ymd') )
                                 ->where('status', 1)->get();    
             }elseif($role->role_type == 3 || $role->role_type == 5){
 
                 $patientData = Patient::where('clinic_code' ,$clinic_id)
-                                ->where('p_status' , 3)->where('status' , 1)
+                                ->where('p_status' , 3)
                                 ->where('updated_at' , '>=' ,$now->format('ymd') )
                                 ->where('status', 1)->get();           
             }else{
@@ -87,47 +92,89 @@ class ClinicController extends Controller
     public function register(Request $request)
     {
 
-        $user_id = Auth::guard('user')->user()['id'];
-        $clinic = new Clinic();
-        $package = Package::find($request->package_id)->first();
+        // $user_id = Auth::guard('user')->user()['id'];
+        // $clinic = new Clinic();
+        // $package = Package::find($request->package_id)->first();
 
-        $permissions = ["p_view","p_create","p_update","p_delete","p_treatment","d_view","d_create",
-        "d_update","d_delete","ph_view",
-        "ph_create","ph_update","ph_delete","pos_view","pos_create","pos_update","pos_delete"];
+        // $permissions = [
+        // "p_view","p_create","p_update","p_delete","p_treatment",
+        // "d_view","d_create","d_update","d_delete",
+        // "ph_view","ph_create","ph_update","ph_delete",
+        // "pos_view","pos_create","pos_update","pos_delete",
+        // "user_view","user_create","user_update","user_delete"];
 
-        $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
+        // $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
-        $clinic_id = $clinic->create([
-            'code' => $request->clinic_name.'-'.$this->generateClinicCode(),
-            'name' => $request->clinic_name,
-            'email' => Auth::user()->email,
-            'phoneNumber' => Auth::user()->phoneNumber,
-            'package_id' => $request->package_id,
-            'address' => $request->address,
-            'package_purchased_data' => Carbon::now(),
-        ])->id;
+        // $clinic_id = $clinic->create([
+        //     'code' => $request->clinic_name.'-'.$this->generateClinicCode(),
+        //     'name' => $request->clinic_name,
+        //     'email' => Auth::user()->email,
+        //     'phoneNumber' => Auth::user()->phoneNumber,
+        //     'package_id' => $request->package_id,
+        //     'address' => $request->address,
+        //     'package_purchased_data' => Carbon::now(),
+        // ])->id;
 
-        $now = Carbon::now()->format('Y-m-d');
+        // $now = Carbon::now()->format('Y-m-d');
 
-        PackagePurchase::create([
-            'user_id' => $user_id,
-            'clinic_id' => $clinic_id,
-            'price' => $package['price'],
-            'expire_at' => Carbon::parse($now)->addMonths(1),
-        ]);
+        // PackagePurchase::create([
+        //     'user_id' => $user_id,
+        //     'clinic_id' => $clinic_id,
+        //     'price' => $package['price'],
+        //     'expire_at' => Carbon::parse($now)->addMonths(1),
+        // ]);
 
-        UserClinic::create([
-            'user_id' => $user_id,
-            'clinic_id' => $clinic_id,
-        ]);
+        // UserClinic::create([
+        //     'user_id' => $user_id,
+        //     'clinic_id' => $clinic_id,
+        // ]);
 
-        User::where('id',$user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
+        // User::where('id',$user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
 
-        return redirect('home')->with('success', "Clinic successfully registered.");
+        $items_data = array(
+            "name" => "Gold",
+            "amount" => "1000",
+            "quantity" => "1"
+        );
+
+        $data_pay = json_encode(array(
+            "clientId" => "83827e60-4a02-364c-bec0-e1322a7f3d09",
+            "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRDTH6f7tgAak9ISOINFz6Kczi62IlZYJIQ4EZn89g2F58c6R/kVuhJTlLpYXksmKb81n+9oViTzpt1Zo/GV4WlnjIBz6CJ5D5qWULtGOzc2s1jdEigIQyiXUvTjXbZZLJToXWJlUACNfsb6snBl1fDaQxADcNQKG8EFaFXYZBuwIDAQAB",
+            "items" => json_encode(array($items_data)),
+            "customerName" => 'kyaw',
+            "totalAmount" => "1000",
+            "merchantOrderId" => "ss-ss-ss",
+            "merchantKey" => "dk8g0dc.lI-AGxqYxk8HB9ARVtWoQ0aK7lU",
+            "projectName" => "Clinic-manager",
+            "merchantName" => "Krishna"
+        ));
+
+
+        $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
+
+        $rsa = new \phpseclib\Crypt\RSA();
+
+        extract($rsa->createKey(1024));
+        $rsa->loadKey($publicKey); // public key
+        $rsa->setEncryptionMode(2);
+        $ciphertext = $rsa->encrypt($data_pay);
+        $value = base64_encode($ciphertext);
+
+        $urlencode_value = urlencode($value);
+
+        $encryptedHashValue = hash_hmac('sha256', $data_pay, '4be99707a334fe8880e8f8b067e7df43');
+
+        $redirect_url = "https://prebuilt.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+
+        return redirect($redirect_url);
     }
 
     public function newUser()
     {
+
+        if(!$this->checkPermission("user_create")){
+            abort(404);
+        }
 
         $id = Clinic::where('id', session()->get('cc_id'))->pluck('package_id')->first();
 
@@ -138,6 +185,11 @@ class ClinicController extends Controller
 
     public function registerUser(UserRegisterRequest $request)
     {
+
+        if(!$this->checkPermission("user_create")){
+            abort(404);
+        }
+
         $permissions = json_encode($request->permission);
 
         $role_id = Role::create(['role_type' => $request->role_type, 'permissions' => $permissions])->id;
@@ -162,7 +214,8 @@ class ClinicController extends Controller
             'short_bio' => $request->short_bio,
             'fees' => $request->fees,
             'user_type' => 2, // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
-            'gender' => $request->gender
+            'gender' => $request->gender,
+            'email_verified' => '1'
         ])->id;
 
         UserClinic::create([
@@ -170,11 +223,16 @@ class ClinicController extends Controller
             'clinic_id' => $clinic_id,
         ]);
 
-        return redirect('/clinic-system/users')->with('success', "Registered Successfully");
+        return Response::json('1');
     }
 
     public function editUser($id)
     {
+
+        if(!$this->checkPermission("user_update")){
+            abort(404);
+        }
+
         $user = User::findOrfail($id);
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
@@ -184,6 +242,10 @@ class ClinicController extends Controller
 
     public function updateUser(Request $request, $id)
     {
+
+        if(!$this->checkPermission("user_update")){
+            abort(404);
+        }
 
         $permissions = json_encode($request->permission);
         $origin_password = User::where('id', $id)->pluck('password');
@@ -216,6 +278,10 @@ class ClinicController extends Controller
 
     public function deleteUser($id)
     {
+        if(!$this->checkPermission("user_delete")){
+            abort(404);
+        }
+
         User::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('clinic-system/users')->with('success', 'Done !');

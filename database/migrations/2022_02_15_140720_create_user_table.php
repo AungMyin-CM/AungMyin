@@ -26,12 +26,13 @@ class CreateUserTable extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->longText('address')->nullable();
-            $table->tinyInteger('gender');
+            $table->tinyInteger('gender')->nullable();
             $table->text('short_bio')->nullable();
             $table->float('fees')->nullable();
             $table->integer('email_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('super_admin')->default(0);
             $table->string('lastest_ip')->nullable();
             $table->tinyInteger('user_type')->default('1');
             $table->rememberToken();

@@ -28,10 +28,15 @@ class PosController extends Controller
 {
     public function index($id=null)
     {
+        if(!$this->checkPermission('pos_create')){
+            abort(404);
+        }
+
         $invoice_code = $this->posCodeGenerator();     
         $patient_data = null;
         $visit_data = null;
         $med_data = null;
+        $total_qty = 0;
         if($id != null)
         {
             try {
@@ -49,7 +54,9 @@ class PosController extends Controller
 
                 $med_data[] = Pharmacy::where('id',$medInfo[0])->get();
 
-                $total_qty[] = ($qty[0] + $qty[1]+  $qty[2]) * $days ;
+                
+
+                $total_qty = array( ($qty[0] + $qty[1]+  $qty[2]) * $days) ;
 
               
                 }
@@ -60,11 +67,15 @@ class PosController extends Controller
             }
         }
 
-       return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data ,"total_qty" => '0']);
+       return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data , "med_data" => $med_data ,"total_qty" => $total_qty]);
     }
 
     public function getMedData(Request $request)
     {
+        if(!$this->checkPermission('pos_create')){
+            abort(404);
+        }
+
         $med_id = $request->med_id;
         $data =  Pharmacy::where('id',$med_id)->get();
         echo json_encode($data);
@@ -72,6 +83,10 @@ class PosController extends Controller
 
     public function store(PosRequest $request)
     {
+        if(!$this->checkPermission('pos_create')){
+            abort(404);
+        }
+
         $pos = new Pos();
         $user_id = Auth::guard('user')->user()['id'];
         $clinic_id = session()->get('cc_id');
@@ -115,18 +130,35 @@ class PosController extends Controller
             if($request->visit_id != null)
             {
                 Visit::whereId($request->visit_id)->update(['pos_id' => $pos_id ]);
+
+                $id = $request->visit_id;
             }else{
-                Visit::create([
+                $id = Visit::create([
                     'patient_id' => $request->patient_id,
                     'user_id' => $user_id,
                     'assigned_medicines' => $assign_medicines
-                ]);
+                ])->id;
             }
-        }
+
+
+            $pos_detail = PosItem::where("pos_id" , $pos_id)->get();
+            $pos = Pos::findOrfail($pos_id);
+            $patient_data = Patient::findOrfail($pos->patient_id);
+            $visit_data = Visit::where('pos_id',$pos_id)->get()->first();
+            $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+
+            return view('patient.summary',compact(['pos','pos_detail','payment_types','patient_data','visit_data']));
+
+        }else{
         return redirect('/clinic-system/pos')->with('success', "Done!");
+        }
     }
     public function edit($id)
     {
+        if(!$this->checkPermission('pos_update')){
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $pos = Pos::findOrfail($id);
@@ -148,6 +180,10 @@ class PosController extends Controller
 
     public function update(Request $request,$id)
     {
+        if(!$this->checkPermission('pos_update')){
+            abort(404);
+        }
+
         Pos::whereId($id)->update(['payment_status' => $request->payment_status,'total_price' => $request->total_med_price]);
 
         $count_product = count($request->med_id);
@@ -205,6 +241,10 @@ class PosController extends Controller
 
     public function history()
     {
+        if(!$this->checkPermission('pos_view')){
+            abort(404);
+        }
+
         $clinic_id = session()->get('cc_id');   
         $history_List = POS::where("clinic_id",$clinic_id)->where('status',1)->get();
         return view('pos/history')->with(['history_list' => $history_List]);
@@ -216,8 +256,19 @@ class PosController extends Controller
 
         return redirect('clinic-system/pos-history')->with('success', 'Done !');
     }
+
+    public function summary()
+    {
+        
+
+    }
+
     private function posCodeGenerator()
     {
+        if(!$this->checkPermission('pos_create')){
+            abort(404);
+        }
+        
         $timestamp = Carbon::now();
         $current_date = $timestamp->format('u');
         $clinic_id = Auth::guard('user')->user()['clinic_id'];
@@ -229,5 +280,6 @@ class PosController extends Controller
         return $patient_code;
 
     }
+    
 
 }

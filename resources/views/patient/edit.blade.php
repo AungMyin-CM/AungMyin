@@ -108,8 +108,8 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" id="female" type="radio"
-                                                                value="0" name="gender" <?php echo $m_checked;?>>
+                                                            <input class="form-check-input" id="male" type="radio"
+                                                                value="1" name="gender" <?php echo $m_checked;?>>
                                                             <label class="form-check-label" for="male">
                                                                 Male
                                                             </label>

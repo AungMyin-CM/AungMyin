@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\Clinic;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Session;
 use Auth;
@@ -39,16 +40,17 @@ class LoginController extends Controller
             }else{
                 $userCredentials = $request->only('code', 'password');
 
-                if(Auth::guard('user')->attempt($userCredentials)){
-                    return redirect('home')->with('message', "");
-                }else{
-                    return redirect('/')->with('message', "Invalid Credentials");
+                    if(Auth::guard('user')->attempt($userCredentials)){
+                        
+                        return redirect('home')->with('message', "");
+                    }else{
+                        return redirect('/')->with('message', "Invalid Credentials");
+                    }
                 }
             }
             
         }
 
-    } 
 
     public function logout()
     {        

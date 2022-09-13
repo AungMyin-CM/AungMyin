@@ -37,7 +37,7 @@
                                                     <span class="text-black">+95</span>
                                                 </div>
                                             </div>
-                                            <input type="tel" class="form-control" placeholder="Eg: 09123456789" name="phoneNumber" required
+                                            <input type="tel" class="form-control" placeholder="09xxxxxxx" name="phoneNumber" required
                                                 value={{ old('phoneNumber') }} >
                                             <div class="input-group-append">
                                                 <div class="input-group-text">

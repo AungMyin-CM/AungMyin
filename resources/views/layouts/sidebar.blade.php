@@ -53,15 +53,19 @@
                     @if(Request::is('clinic-system/*'))
 
                         @if (Auth::guard('user')->user())
-                            <li class="nav-item">
-                                <a href="{{ route('user.list') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-user"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
+                            @if(Helper::checkPermission('user_view', $permissions))
 
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('user.list') }}" class="nav-link">
+                                        <i class="nav-icon fas fa-user"></i>
+                                        <p>
+                                            Users
+                                        </p>
+                                    </a>
+
+                                </li>
+                                
+                            @endif
                         @endif
                         @if (Auth::guard('user')->user())
                             @if(Helper::checkPermission('p_view', $permissions))

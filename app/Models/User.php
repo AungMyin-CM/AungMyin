@@ -35,7 +35,7 @@ class User extends Authenticatable
         'city',
         'country',
         'address',
-        'gender',
+        'email_verified',
         'short_bio',
         'fees',
         'status',

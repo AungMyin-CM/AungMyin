@@ -11,10 +11,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\FeedBackController;
 use App\Http\Controllers\UserController;
-
-
-
-
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +66,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function(
 
     Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
 
+    Route::get('/addQueue/{id}',[PatientController::class, 'addQueue'])->name('add.queue');
+
     Route::resource('/pos',PosController::class);
 
     Route::get('/pos-history',[PosController::class, 'history'])->name('pos.history');
@@ -89,10 +88,23 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function(
 
     Route::post('register-user',[ClinicController::class, 'registerUser'])->name('clinic-user.register');
 
+    Route::post('change-status',[NotificationController::class, 'readStatus']);
+
+    Route::post('copy-data',[PatientController::class,'copyTreatment']);
+
+    Route::post('remove-data',[PatientController::class,'removeTreatment']);
+
+    Route::get('/summary',[PosController::class,'summary'])->name('summary');
+
+    Route::get('check-noti',[NotificationController::class, 'getNoti']);
+    
 });
 
-Route::middleware(['auth', 'second'])->group(function () {
-    
+Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth','isAdmin']], function(){
+
+    Route::post('login',[LoginController::class, 'login'])->name('login');
+
+
 });
 
 Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.logout');
@@ -101,17 +113,19 @@ Route::post('login',[LoginController::class, 'login'])->name('login');
 
 Route::get('register',[UserController::class, 'index'])->name('register.user');
 
+Route::post('email_available/check',[UserController::class, 'checkEmail'])->name('email_available.check');
+
+Route::post('username_available/check',[UserController::class, 'checkUsername'])->name('username_available.check');
+
 Route::post('user-register',[UserController::class, 'register'])->name('user.register');
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
-
 
 // Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
 
 Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback',[FeedBackController::class, 'create'])->name('feedback.create');
-
 
 Route::group(['middleware' => 'auth'], function() {
 
