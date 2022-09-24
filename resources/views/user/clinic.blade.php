@@ -36,7 +36,6 @@
                                     </div>
                                     <div class="card-body"> 
                                         @foreach ($data['patientData'] as $row)
-                                            <input type="text" id="patient_waiting_card{{$row->id}}" value="{{$row->id}}">
                                             <div class="card" id="card_waiting{{$row->id}}" style="background:#FFFFFF;">
                                                 <div class="card-header border-0">
                                                     <h3 class="card-title bold">{{ $row->name }}&nbsp;&nbsp;&nbsp;

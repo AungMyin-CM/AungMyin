@@ -74,13 +74,6 @@
         $('.middle').css('opacity','1');
       })
 
-      if($("#auth").text() == 'true')
-      {
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
         $.ajax({
             type: "GET",
@@ -109,7 +102,6 @@
             url: '/clinic-system/check-noti',
         
               success: function( response ) {
-                console.log(response);
                 if(response != 'no-data'){
 
                   var noti_number = Object.keys(response).length;
@@ -137,6 +129,9 @@
                     }
                 }else if(response == 'no-session') {
                   console.log("Hello");
+                }else{
+                  if($("#time_"))
+
                 }
 
               },
@@ -151,7 +146,7 @@
         }, 5000);//time in milliseconds 
 
 
-      }
+      
 
 })
 </script>

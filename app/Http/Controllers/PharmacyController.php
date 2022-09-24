@@ -126,4 +126,23 @@ class PharmacyController extends Controller
 
         return redirect('pharmacy')->with('success', 'Done !');
     }
+
+    public function checkMedCode(Request $request)
+    {
+        if($request->get('code'))
+        {
+            $code = $request->get('code');
+            $data = Pharmacy::where('clinic_id', $request->get('clinic_id'))->where('code',$code)
+            ->count();
+            if($data > 0)
+            {
+                echo 'not_unique';
+            }
+            else
+            {
+                echo 'unique';
+            }
+        }
+    }
+
 }

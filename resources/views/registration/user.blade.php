@@ -9,9 +9,22 @@
             <div class="card">
                 <div class="card-body register-card-body">
                    
-                    <form action="{{ route('user.register') }}" method="POST">
+                    <form action="{{ route('user.register') }}" method="POST" enctype="multipart/form-data">
 
                         @csrf
+
+                        <div class="input-group m-auto">
+                            <input type="file" class="@error('avatar') is-invalid @enderror" onchange="loadFile(event)" name="avatar" id="upload" hidden/>
+                            <label class="file_upload m-auto hover" for="upload" id="image_upload">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHDRlp-KGr_M94k_oor4Odjn2UzbAS7n1YoA&usqp=CAU" alt="Avatar" class="avatar mb-2" id="image_logo">
+                            </label>
+                            @error('avatar')
+                            <span class="invalid-feedback" role="alert" id="alert-message">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        
 
                         <div class="input-group mb-3">
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Name"
@@ -90,9 +103,9 @@
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                    <select name="" id="" class="form-input">
-                                        <option value="mm">+95 (MM)</option>
-                                    </select>
+                                <select name="" id="" class="form-input">
+                                    <option value="mm">+95 (MM)</option>
+                                </select>
                             </div>
                             <input type="tel" class="form-control @error('phoneNumber') is-invalid @enderror" placeholder="09xxxxxxxx" name="phoneNumber"
                                 value={{ old('phoneNumber') }}>
@@ -107,32 +120,7 @@
                             </span>
                             @enderror
                         </div>
-                        {{-- <div class="input-group">
-                           
-                                <div class="form-check  mr-3">
-                                    <input class="form-check-input @error('gender') is-invalid @enderror" id="male" type="radio"
-                                        value="1" name="gender">
-                                    <label class="form-check-label" for="male">
-                                        Male
-                                    </label>
-                                    
-                                </div>
-                                
-                                <div class="form-check">
-                                    <input class="form-check-input @error('gender') is-invalid @enderror" id="female" type="radio"
-                                        value="0" name="gender">
-                                    <label class="form-check-label" for="female">
-                                        Female
-                                    </label>
-                                    
-                                </div> 
-                                @error('gender')
-                                <span class="invalid-feedback" role="alert" id="alert-message">
-                                    <strong>Please select one option</strong>
-                                </span>
-                                @enderror
-                        </div><br> --}}
-
+                       
                         <!-- /.col -->
                         <div class="col-8 float-left">
                             <a href="/"><i class="fas fa-arrow-left">  Back to login</i></a>
@@ -155,62 +143,72 @@
 
 $(document).ready(function(){
 
+    $('form').on('submit',function(){
+        $('.register-box').css('opacity','0.1');
+        $('.middle').css('opacity','1');
+    })
+
   $(function () {
     $('[data-toggle="tooltip"]').tooltip();
   });
 
-$('#email').blur(function(){
- var error_email = '';
- var email = $('#email').val();
- var _token = $('input[name="_token"]').val();
- var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
- if(!filter.test(email))
- {    
-  $('#en_icon').removeClass('text-success');
-  $('#en_icon').removeClass('text-warning');
-  $('#en_icon').addClass('text-danger');
-  $('#en_icon').attr('data-original-title', 'Invalid Email');
-  $('#en_icon').tooltip('show');
-    setTimeout(function(){
-        $('[data-toggle="tooltip"]').tooltip('hide');
-    }, 5000);
-
- }
- else
- {
-  $.ajax({
-   url:"{{ route('email_available.check') }}",
-   method:"POST",
-   data:{email:email, _token:_token},
-   success:function(result)
-   {
-    if(result == 'unique')
-    {
-     $('#en_icon').removeClass('text-danger');
-     $('#en_icon').removeClass('text-warning');
-     $('#en_icon').addClass('text-success');
-     $('#en_icon').attr('data-original-title', 'Email Available');
-     $('#en_icon').tooltip('show');
+    $('#email').blur(function(){
+    var error_email = '';
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+    $('#en_icon').removeClass('text-success');
+    $('#en_icon').removeClass('text-warning');
+    $('#en_icon').addClass('text-danger');
+    $('#en_icon').attr('data-original-title', 'Invalid Email');
+    $('#en_icon').tooltip('show');
         setTimeout(function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
         }, 5000);
+
     }
     else
     {
-     $('#en_icon').removeClass('text-danger');
-     $('#en_icon').removeClass('text-success');
-     $('#en_icon').addClass('text-warning');
-     $('#en_icon').attr('data-original-title', 'Email Already taken');
-     $('#en_icon').tooltip('show');
-        setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('hide');
-        }, 5000);
+    $.ajax({
+    url:"{{ route('email_available.check') }}",
+    method:"POST",
+    data:{email:email, _token:_token},
+    success:function(result)
+    {
+        if(result == 'unique')
+        {
+        $('#en_icon').removeClass('text-danger');
+        $('#en_icon').removeClass('text-warning');
+        $('#en_icon').addClass('text-success');
+        $('#en_icon').attr('data-original-title', 'Email Available');
+        $('#en_icon').tooltip('show');
+            setTimeout(function(){
+                $('[data-toggle="tooltip"]').tooltip('hide');
+            }, 5000);
+        }
+        else
+        {
+        $('#en_icon').removeClass('text-danger');
+        $('#en_icon').removeClass('text-success');
+        $('#en_icon').addClass('text-warning');
+        $('#en_icon').attr('data-original-title', 'Email Already taken');
+        $('#en_icon').tooltip('show');
+            setTimeout(function(){
+                $('[data-toggle="tooltip"]').tooltip('hide');
+            }, 5000);
 
+        }
     }
-   }
-  })
- }
-});
+    })
+    }
+    });
+
+    $('form').on('submit',function(){
+        $('.wrapper').css('opacity','0.1');
+        $('.middle').css('opacity','1');
+    })
 
 $("#username").blur(function(){
 
@@ -267,5 +265,14 @@ $("#username").blur(function(){
 });
 
 });
+
+    var loadFile = function(event) {
+        for(var i =0; i< event.target.files.length; i++){
+            var src = URL.createObjectURL(event.target.files[i]);
+            $("#image_logo").remove();
+            $("#image_upload").append("<img id='image_logo' onclick='showImage("+i+")' src="+src+" class='avatar mb-3' alt='img' />");
+
+        }
+    };
     </script>
 @endsection

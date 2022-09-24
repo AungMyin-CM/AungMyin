@@ -128,9 +128,11 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1">Email address <b><sup class="text-danger">*</sup></b></label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                                        <label for="email">Email address <b><sup class="text-danger">*</sup></b></label>
+                                                        <input type="email" class="form-control" id="email"
                                                             name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
+                                                        <span class="small" id="em-text"></span>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -430,9 +432,6 @@
                 $('#a-text').removeClass('text-warning');
                 $('#a-text').addClass('text-success');
                 $('#a-text').text('Username available');
-                setTimeout(function(){
-                    $('#a-text').tooltip('hide');
-                }, 5000);
                 
                 }
                 else
@@ -441,11 +440,11 @@
                 $('#a-text').removeClass('text-success');
                 $('#a-text').addClass('text-warning');
                 $('#a-text').text('Username Already taken');
-                setTimeout(function(){
-                    $('#a-text').tooltip('hide');
-                }, 5000);
-
+              
                 }
+                setTimeout(function(){
+                    $('#a-text').hide();
+                }, 5000);
             }
         });
         }else{
@@ -455,10 +454,59 @@
             $('#a-text').addClass('text-danger');
             $('#a-text').text('Must have at leat 5 characters');
             setTimeout(function(){
-                $('#a-text').tooltip('hide');
+                $('#a-text').hide();
             }, 5000);
 
         }
+    });
+
+    $('#email').blur(function(){
+
+    var error_email = '';
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-success');
+        $('#em-text').addClass('text-warning');
+        $('#em-text').text('Invaid Email');
+        setTimeout(function(){
+            $('#em-text').hide();
+        }, 5000);
+
+    }
+    else
+    {
+    $.ajax({
+    url:"{{ route('email_available.check') }}",
+    method:"POST",
+    data:{email:email, _token:_token},
+    success:function(result)
+    {
+        if(result == 'unique')
+        {
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-warning');
+        $('#em-text').addClass('text-success');
+        $('#em-text').text('Valid Email');
+        
+        }
+        else
+        {
+            $('#em-text').removeClass('text-danger');
+            $('#em-text').removeClass('text-success');
+            $('#em-text').addClass('text-warning');
+            $('#em-text').text('Email Already taken');
+            
+        }
+        setTimeout(function(){
+            $('#em-text').hide();
+        }, 5000);
+    }
+    })
+    }
     });
     </script>
 

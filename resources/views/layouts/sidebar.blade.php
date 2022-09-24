@@ -1,27 +1,34 @@
 @if ( Auth::guard('user')->user())
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
-            <img src="https://cdn.vox-cdn.com/thumbor/Pkmq1nm3skO0-j693JTMd7RL0Zk=/0x0:2012x1341/1200x800/filters:focal(0x0:2012x1341)/cdn.vox-cdn.com/uploads/chorus_image/image/47070706/google2.0.0.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AungMyin</span>
-        </a>
+        {{-- <a href="index3.html" class="brand-link">
+            <span class="brand-text font-weight-light"><img src="{{asset('images/web-photos/aung-myin-logo.png')}}" alt="AdminLTE Logo" style="opacity: .8;width:5em;height:20px;">
+            </span>
+        </a> --}}
 
       
         <div class="sidebar">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image text-center">
-                    <p class="text-white">
-                        @if(Auth::guard('user')->user())
-                             {{ Auth::guard('user')->user()['name'] }}<br>
-                        @endif
-                       
-                    </p>
-
+                <div class="image">
+                    @if(Auth::guard('user')->user()['avatar'] != null)
+                        <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-circle elevation-2" alt="User Image">
+                    @else
+                        <img src="https://media.istockphoto.com/vectors/profile-placeholder-image-gray-silhouette-no-photo-vector-id1016744004?k=20&m=1016744004&s=612x612&w=0&h=Z4W8y-2T0W-mQM-Sxt41CGS16bByUo4efOIJuyNBHgI=" class="img-circle elevation-2" alt="User Image">
+                    @endif
                 </div>
                 <div class="info">
-                    {{-- <a href="#" class="d-block">{{  }}</a> --}}
+                    <a href="#" class="d-block">{{ Auth::guard('user')->user()['name'] }}</a>
                 </div>
+
             </div>
+            {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                  <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                  <a href="#" class="d-block">Alexander Pierce</a>
+                </div>
+              </div> --}}
 
         @auth      <!-- Sidebar Menu -->
             <nav class="mt-2">
@@ -62,9 +69,7 @@
                                             Users
                                         </p>
                                     </a>
-
                                 </li>
-                                
                             @endif
                         @endif
                         @if (Auth::guard('user')->user())
@@ -110,7 +115,7 @@
                         @endif
 
                         @if (Auth::guard('user')->user())
-                        @if(Helper::checkPermission('pos_view', $permissions))
+                            @if(Helper::checkPermission('pos_view', $permissions))
                                 <li class="nav-item">
                                     <a href="{{ route('pos.index') }}" class="nav-link">
                                         <i class="nav-icon fas fa-desktop"></i>
@@ -123,12 +128,20 @@
                             @endif
                         @endif
 
-                        <li class="nav-item">
-                        
+                        <hr size="30" style="border-top:1px solid red !important;">
 
+                        <li class="nav-item">
+                            <a href="{{ route('clinic.settings') }}" class="nav-link">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Settings
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i> Switch Other Clinic</a>
-                      
                         </li>
                     @endif
                     <li class="nav-item">
@@ -142,8 +155,6 @@
                         </form>
                        
                     </li>
-
-                   
                 </ul>
             </nav>
         </div>

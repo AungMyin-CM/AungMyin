@@ -15,7 +15,7 @@ class CreatePharmaciesTable extends Migration
     {
         Schema::create('pharmacy', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->bigInteger('clinic_id')->unsigned();

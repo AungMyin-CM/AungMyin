@@ -246,6 +246,10 @@
                                                         name="medicines"></textarea>
                                                 </div>
 
+                                                <div class="form-group" id="medtable">
+                                                
+                                                </div>
+
                                                 <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
                                                 <label class="file_upload" for="upload" 
                                                     style="background: gray;
@@ -351,6 +355,9 @@
         span.onclick = function() { 
             modal.style.display = "none";
         }
+
+        var dictCode = '';
+
 
         $("#medicine_dictionary").on('keypress keydown',function(event) {
         var key = event.keyCode;

@@ -206,7 +206,7 @@ class PatientController extends Controller
             foreach($request->file('images') as $file)
             {
                 $name = $this->imageNameGenerate($id).'.'.$file->extension();
-                $path = public_path().'/images/'.$code;
+                $path = public_path('images/treatment-images');
                 $file->move($path, $name);  
                 $images[] = $name;  
             }

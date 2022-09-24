@@ -92,44 +92,44 @@ class ClinicController extends Controller
     public function register(Request $request)
     {
 
-        // $user_id = Auth::guard('user')->user()['id'];
-        // $clinic = new Clinic();
-        // $package = Package::find($request->package_id)->first();
+        $user_id = Auth::guard('user')->user()['id'];
+        $clinic = new Clinic();
+        $package = Package::find($request->package_id)->first();
 
-        // $permissions = [
-        // "p_view","p_create","p_update","p_delete","p_treatment",
-        // "d_view","d_create","d_update","d_delete",
-        // "ph_view","ph_create","ph_update","ph_delete",
-        // "pos_view","pos_create","pos_update","pos_delete",
-        // "user_view","user_create","user_update","user_delete"];
+        $permissions = [
+        "p_view","p_create","p_update","p_delete","p_treatment",
+        "d_view","d_create","d_update","d_delete",
+        "ph_view","ph_create","ph_update","ph_delete",
+        "pos_view","pos_create","pos_update","pos_delete",
+        "user_view","user_create","user_update","user_delete"];
 
-        // $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
+        $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
-        // $clinic_id = $clinic->create([
-        //     'code' => $request->clinic_name.'-'.$this->generateClinicCode(),
-        //     'name' => $request->clinic_name,
-        //     'email' => Auth::user()->email,
-        //     'phoneNumber' => Auth::user()->phoneNumber,
-        //     'package_id' => $request->package_id,
-        //     'address' => $request->address,
-        //     'package_purchased_data' => Carbon::now(),
-        // ])->id;
+        $clinic_id = $clinic->create([
+            'code' => $request->clinic_name.'-'.$this->generateClinicCode(),
+            'name' => $request->clinic_name,
+            'email' => Auth::user()->email,
+            'phoneNumber' => Auth::user()->phoneNumber,
+            'package_id' => $request->package_id,
+            'address' => $request->address,
+            'package_purchased_data' => Carbon::now(),
+        ])->id;
 
-        // $now = Carbon::now()->format('Y-m-d');
+        $now = Carbon::now()->format('Y-m-d');
 
-        // PackagePurchase::create([
-        //     'user_id' => $user_id,
-        //     'clinic_id' => $clinic_id,
-        //     'price' => $package['price'],
-        //     'expire_at' => Carbon::parse($now)->addMonths(1),
-        // ]);
+        PackagePurchase::create([
+            'user_id' => $user_id,
+            'clinic_id' => $clinic_id,
+            'price' => $package['price'],
+            'expire_at' => Carbon::parse($now)->addMonths(1),
+        ]);
 
-        // UserClinic::create([
-        //     'user_id' => $user_id,
-        //     'clinic_id' => $clinic_id,
-        // ]);
+        UserClinic::create([
+            'user_id' => $user_id,
+            'clinic_id' => $clinic_id,
+        ]);
 
-        // User::where('id',$user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
+        User::where('id',$user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
 
         $items_data = array(
             "name" => "Gold",
@@ -203,7 +203,7 @@ class ClinicController extends Controller
             'role_id' => $role_id,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
-            'code' => $this->userCodeGenerator(),
+            'code' => $request->code,
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
@@ -249,8 +249,9 @@ class ClinicController extends Controller
 
         $permissions = json_encode($request->permission);
         $origin_password = User::where('id', $id)->pluck('password');
+        $role_id = User::where('id', $id)->pluck('role_id');
 
-        $role_id = Role::whereId($id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
+        $role_id = Role::where('id',$role_id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
 
         $requests = [
             'name' => $request->name,

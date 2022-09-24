@@ -20,6 +20,7 @@ class CreateUserTable extends Migration
             $table->string('speciality')->nullable();
             $table->text('credentials')->nullable();
             $table->string('name');
+            $table->longText('avatar')->nullable();
             $table->string('email');
             $table->string('password');
             $table->string('phoneNumber');

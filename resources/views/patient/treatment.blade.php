@@ -208,7 +208,7 @@
                                                                 for($i=0; $i < count($images); $i++){
                                                                     if($images[$i] != ''){
                                                                         // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
-                                                                        echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                                                                        echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
                                                                     }
                                                                 }
                                                                 

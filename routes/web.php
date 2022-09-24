@@ -97,6 +97,11 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function(
     Route::get('/summary',[PosController::class,'summary'])->name('summary');
 
     Route::get('check-noti',[NotificationController::class, 'getNoti']);
+
+    Route::get('settings',[ClinicController::class, 'settings'])->name('clinic.settings');
+
+    Route::post('pharma_code/check',[PharmacyController::class, 'checkMedCode'])->name('pharma_code.check');
+
     
 });
 

@@ -26,6 +26,7 @@ class UserRegisterRequest extends FormRequest
         return [
             'email' => 'email|unique:user',
             'name' => 'required',
+            'avatar' => 'nullable|image|max:5000', // only 5MB is allowed
             'code' => 'required|min:5|unique:user',
             'speciality' => 'nullable',
             'credentials' => 'nullable',
@@ -37,7 +38,6 @@ class UserRegisterRequest extends FormRequest
             'address' => 'nullable',
             'short_bio' => 'nullable',
             'fees' => 'nullable',
-            'gender' => 'required',
         ];
     }
 }

@@ -39,9 +39,17 @@ class UserController extends Controller
     {        
         $user = new User();
 
-        $user_id = $user->create([
+            if($request->file('avatar') != '')
+            {
+                $file= $request->file('avatar');
+                $filename= date('YmdHi').'-'.$file->getClientOriginalName();    
+                $file->move(public_path('images/avatars'), $filename);
+            }
+
+            $user_id = $user->create([
                 'code' => $request->code,
                 'name' => $request->name,
+                'avatar' => $filename,
                 'email' => $request->email,
                 'password' => $request->password,
                 'phoneNumber' => $request->phoneNumber,
@@ -51,7 +59,6 @@ class UserController extends Controller
                 'gender' => $request->gender
             ])->id;
 
-        
             $hash = $this->generateTokenVerify();
             $token = $user_id.$hash;
             $verifyURL = route('verify',['token'=>$hash,'value'=>$user_id,'service'=>'Email_verification']);
@@ -73,7 +80,7 @@ class UserController extends Controller
             });
             
             return redirect('/')->with('success','You need to verify your account. We have sent you an activation link, please check your mail');
-            } 
+    } 
     
         public function generateTokenVerify()
         {

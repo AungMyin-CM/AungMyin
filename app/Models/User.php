@@ -25,6 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'code',
         'name',
+        'avatar',
         'role_id',
         'clinic_id',
         'speciality',
@@ -39,6 +40,7 @@ class User extends Authenticatable
         'short_bio',
         'fees',
         'status',
+        'gender',
         'lastest_ip',
     ];
 
