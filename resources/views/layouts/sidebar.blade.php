@@ -1,12 +1,11 @@
 @if ( Auth::guard('user')->user())
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
         <!-- Brand Logo -->
-        {{-- <a href="index3.html" class="brand-link">
-            <span class="brand-text font-weight-light"><img src="{{asset('images/web-photos/aung-myin-logo.png')}}" alt="AdminLTE Logo" style="opacity: .8;width:5em;height:20px;">
-            </span>
-        </a> --}}
+        <a  href="{{ route('user.home') }}" class="brand-link" style="background-color: #0077B6">
+            <img src="{{ asset('images/web-photos/aung-myin-logo.png') }}" alt="AdminLTE Logo" class="brand-image"  >
+            <span class="brand-text font-weight-white text-white">AungMyin</span>
+        </a>
 
-      
         <div class="sidebar">
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
@@ -141,7 +140,7 @@
 
                         <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
-                                    class="nav-icon fas fa-sign-out-alt"></i> Switch Other Clinic</a>
+                                    class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
                         </li>
                     @endif
                     <li class="nav-item">
@@ -149,12 +148,12 @@
                             <form action="{{ route('user.logout') }}" method="post">
                         @endif
                         @csrf
-
-                        <button class="nav-link" type="submit" style=""><i
-                                class="nav-icon fas fa-sign-out-alt"></i> Logout</button>
-                        </form>
-                       
-                    </li>
+                        <button class="nav-link" type="submit" style="">
+                            <i class="nav-icon fas fa-sign-out-alt text-red"></i> 
+                            Logout
+                        </button>
+                        </form>            
+                    </li>   
                 </ul>
             </nav>
         </div>

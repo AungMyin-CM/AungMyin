@@ -128,9 +128,8 @@
                         $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
                     }
                 }else if(response == 'no-session') {
-                  console.log("Hello");
+                  console.log("Session expired");
                 }else{
-                  if($("#time_"))
 
                 }
 

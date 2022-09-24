@@ -27,7 +27,7 @@ use Session;
 
 use Response;
 
-require_once 'phpseclib/Crypt/RSA.php';
+// require_once 'phpseclib/Crypt/RSA.php';
 
 
 class ClinicController extends Controller
@@ -36,12 +36,11 @@ class ClinicController extends Controller
     public function dashboard()
     {
         return view('clinic.dashboard');
-
     }
 
     public function index(Request $request)
-    {        
-        if(Auth::user()->role_id != null){
+    {
+        if (Auth::user()->role_id != null) {
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
@@ -50,42 +49,38 @@ class ClinicController extends Controller
                 session()->put('cc_id', $clinic_id);
             } catch (DecryptException $e) {
                 abort(404);
-            }            
-            
-            $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+            }
+
+            $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
             $user_id = Auth::guard('user')->user()['id'];
             $now = new Carbon;
 
-            if($role->role_type == 2 || $role->role_type == 5) {     
+            if ($role->role_type == 2 || $role->role_type == 5) {
 
-                $patientData = Patient::where('clinic_code' ,$clinic_id)
-                                ->where('user_id',$user_id)
-                                ->where('p_status' , 1)
-                                ->where('updated_at' , '>=' ,$now->format('ymd'))
-                                ->where('status', 1)->get();
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('user_id', $user_id)
+                    ->where('p_status', 1)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } elseif ($role->role_type == 1 || $role->role_type == 5) {
 
-            }elseif($role->role_type == 1 || $role->role_type == 5){
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('p_status', 2)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
-                $patientData = Patient::where('clinic_code' ,$clinic_id)
-                                ->where('p_status' , 2)
-                                ->where('updated_at' , '>=' ,$now->format('ymd') )
-                                ->where('status', 1)->get();    
-            }elseif($role->role_type == 3 || $role->role_type == 5){
-
-                $patientData = Patient::where('clinic_code' ,$clinic_id)
-                                ->where('p_status' , 3)
-                                ->where('updated_at' , '>=' ,$now->format('ymd') )
-                                ->where('status', 1)->get();           
-            }else{
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('p_status', 3)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } else {
                 $patientData = "";
             }
-            return view('user/clinic')->with('data',['patientData' => $patientData, 'role' => $role->role_type]);
+            return view('user/clinic')->with('data', ['patientData' => $patientData, 'role' => $role->role_type]);
+        } else {
 
-        }else{
-
-            return view('user/clinic')->with('data',['patientData' => 0]);
-
-        
+            return view('user/clinic')->with('data', ['patientData' => 0]);
         }
     }
 
@@ -106,7 +101,7 @@ class ClinicController extends Controller
         $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
         $clinic_id = $clinic->create([
-            'code' => $request->clinic_name.'-'.$this->generateClinicCode(),
+            'code' => $request->clinic_name . '-' . $this->generateClinicCode(),
             'name' => $request->clinic_name,
             'email' => Auth::user()->email,
             'phoneNumber' => Auth::user()->phoneNumber,
@@ -122,6 +117,7 @@ class ClinicController extends Controller
             'clinic_id' => $clinic_id,
             'price' => $package['price'],
             'expire_at' => Carbon::parse($now)->addMonths(1),
+            'status' => 1
         ]);
 
         UserClinic::create([
@@ -129,50 +125,50 @@ class ClinicController extends Controller
             'clinic_id' => $clinic_id,
         ]);
 
-        User::where('id',$user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
+        User::where('id', $user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
+        return redirect('home')->with('success', "Clinic successfully registered.");
+        // $items_data = array(
+        //     "name" => "Gold",
+        //     "amount" => "1000",
+        //     "quantity" => "1"
+        // );
 
-        $items_data = array(
-            "name" => "Gold",
-            "amount" => "1000",
-            "quantity" => "1"
-        );
-
-        $data_pay = json_encode(array(
-            "clientId" => "83827e60-4a02-364c-bec0-e1322a7f3d09",
-            "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRDTH6f7tgAak9ISOINFz6Kczi62IlZYJIQ4EZn89g2F58c6R/kVuhJTlLpYXksmKb81n+9oViTzpt1Zo/GV4WlnjIBz6CJ5D5qWULtGOzc2s1jdEigIQyiXUvTjXbZZLJToXWJlUACNfsb6snBl1fDaQxADcNQKG8EFaFXYZBuwIDAQAB",
-            "items" => json_encode(array($items_data)),
-            "customerName" => 'kyaw',
-            "totalAmount" => "1000",
-            "merchantOrderId" => "ss-ss-ss",
-            "merchantKey" => "dk8g0dc.lI-AGxqYxk8HB9ARVtWoQ0aK7lU",
-            "projectName" => "Clinic-manager",
-            "merchantName" => "Krishna"
-        ));
+        // $data_pay = json_encode(array(
+        //     "clientId" => "83827e60-4a02-364c-bec0-e1322a7f3d09",
+        //     "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRDTH6f7tgAak9ISOINFz6Kczi62IlZYJIQ4EZn89g2F58c6R/kVuhJTlLpYXksmKb81n+9oViTzpt1Zo/GV4WlnjIBz6CJ5D5qWULtGOzc2s1jdEigIQyiXUvTjXbZZLJToXWJlUACNfsb6snBl1fDaQxADcNQKG8EFaFXYZBuwIDAQAB",
+        //     "items" => json_encode(array($items_data)),
+        //     "customerName" => 'kyaw',
+        //     "totalAmount" => "1000",
+        //     "merchantOrderId" => "ss-ss-ss",
+        //     "merchantKey" => "dk8g0dc.lI-AGxqYxk8HB9ARVtWoQ0aK7lU",
+        //     "projectName" => "Clinic-manager",
+        //     "merchantName" => "Krishna"
+        // ));
 
 
-        $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
+        // $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
 
-        $rsa = new \phpseclib\Crypt\RSA();
+        // $rsa = new \phpseclib\Crypt\RSA();
 
-        extract($rsa->createKey(1024));
-        $rsa->loadKey($publicKey); // public key
-        $rsa->setEncryptionMode(2);
-        $ciphertext = $rsa->encrypt($data_pay);
-        $value = base64_encode($ciphertext);
+        // extract($rsa->createKey(1024));
+        // $rsa->loadKey($publicKey); // public key
+        // $rsa->setEncryptionMode(2);
+        // $ciphertext = $rsa->encrypt($data_pay);
+        // $value = base64_encode($ciphertext);
 
-        $urlencode_value = urlencode($value);
+        // $urlencode_value = urlencode($value);
 
-        $encryptedHashValue = hash_hmac('sha256', $data_pay, '4be99707a334fe8880e8f8b067e7df43');
+        // $encryptedHashValue = hash_hmac('sha256', $data_pay, '4be99707a334fe8880e8f8b067e7df43');
 
-        $redirect_url = "https://prebuilt.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+        // $redirect_url = "https://prebuilt.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
-        return redirect($redirect_url);
+        // return redirect($redirect_url);
     }
 
     public function newUser()
     {
 
-        if(!$this->checkPermission("user_create")){
+        if (!$this->checkPermission("user_create")) {
             abort(404);
         }
 
@@ -186,7 +182,7 @@ class ClinicController extends Controller
     public function registerUser(UserRegisterRequest $request)
     {
 
-        if(!$this->checkPermission("user_create")){
+        if (!$this->checkPermission("user_create")) {
             abort(404);
         }
 
@@ -229,7 +225,7 @@ class ClinicController extends Controller
     public function editUser($id)
     {
 
-        if(!$this->checkPermission("user_update")){
+        if (!$this->checkPermission("user_update")) {
             abort(404);
         }
 
@@ -243,7 +239,7 @@ class ClinicController extends Controller
     public function updateUser(Request $request, $id)
     {
 
-        if(!$this->checkPermission("user_update")){
+        if (!$this->checkPermission("user_update")) {
             abort(404);
         }
 
@@ -279,7 +275,7 @@ class ClinicController extends Controller
 
     public function deleteUser($id)
     {
-        if(!$this->checkPermission("user_delete")){
+        if (!$this->checkPermission("user_delete")) {
             abort(404);
         }
 
@@ -307,7 +303,7 @@ class ClinicController extends Controller
 
         $free_month = $request->value;
 
-        $payments = ['1_k' => 'kpay', '2_w' => 'wpay', '3_c' => 'cod' ];
+        $payments = ['1_k' => 'kpay', '2_w' => 'wpay', '3_c' => 'cod'];
 
         return view('registration/clinic_registration')->with('data', ['package_id' => $package_id, 'payment_types' => $payments, 'free_month' => $free_month]);
     }
@@ -325,11 +321,10 @@ class ClinicController extends Controller
         $current_date = $timestamp->format('u');
         $clinic_id = session()->get('cc_id');
 
-        $c_name = Clinic::select('name')->where('id',$clinic_id)->first();
+        $c_name = Clinic::select('name')->where('id', $clinic_id)->first();
 
-        $patient_code = str_replace(' ','',$c_name->name).":u:".$current_date;
+        $patient_code = str_replace(' ', '', $c_name->name) . ":u:" . $current_date;
 
         return $patient_code;
-
     }
 }

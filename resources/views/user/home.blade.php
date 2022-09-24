@@ -39,13 +39,11 @@
                                 <?php
                                     $string_data = new DateTime($data[0]->created_at);
                                     $date = $string_data->format('d-m-Y');
-
                                 ?>
 
                                     <div class="col-md-4">
-                                        <div class="card-deck">
+                                        <div class=" ">
                                             <a href="{{route('user.clinic',Crypt::encrypt($data[0]->id))}}">
-
                                                 <div class="card mb-3" style="cursor:pointer;hover">
                                                     <div class="row no-gutters">
                                                     <div class="col-md-4">
@@ -53,7 +51,6 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
-                                                            
                                                         <h5 class="card-title m-1 ">{{$data[0]->name}}</h5>
                                                         <p class="card-text"><small class="text-muted">Register on <b>{{$date}}</b></small></p>
                                                         </div>
@@ -65,7 +62,6 @@
                                         </div>
                                     </div> 
                                 @endforeach
-
                                     <div class="col-md-4">
                                         <a href="{{route('package.selection')}}">
 
