@@ -12,7 +12,7 @@
                                 <div class="col-md-8 offset-md-2 p-2">
                             @endif
 
-                            <div class="input-group">
+                            <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
                                 <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['id'] }}" >
                                 <div class="input-group-append">
