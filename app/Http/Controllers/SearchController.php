@@ -81,6 +81,23 @@ class SearchController extends Controller
                 }
                 $output .= '</ul>';
             }
+        }else if($role->role_type == 5){
+
+            if(count($data) == 0)
+            {
+                $output = '';
+            }else{  
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach($data as $row)
+                {
+                    $output .= '
+                        <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                    ';
+                }
+                $output .= '</ul>';
+            }
+
         }
 
         echo $output;

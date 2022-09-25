@@ -59,4 +59,6 @@
 
 @yield('content')
 
+@if(Request::is('clinic-system/*'))
 @include('layouts.js')
+@endif

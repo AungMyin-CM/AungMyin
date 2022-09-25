@@ -74,26 +74,6 @@
         $('.middle').css('opacity','1');
       })
 
-
-        $.ajax({
-            type: "GET",
-            url: '/clinic-system/check-noti',
-        }).done(function( response ) {
-            if(response != 'no-data'){
-              var noti_number = Object.keys(response).length;
-              if(noti_number > 0) {
-                  $(".noti-number").text(Object.keys(response).length);
-                    $.each(response, function(i, data){
-                      $("#p_notis").append(
-                      '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">  '+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
-                      );
-                    });
-              }
-            }else{
-              $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
-            }
-        });
-                
         setInterval(function()
         {
 
@@ -143,9 +123,6 @@
             });
         // console.log($("[id='time_"+data.patient_id).text());
         }, 5000);//time in milliseconds 
-
-
-      
 
 })
 </script>

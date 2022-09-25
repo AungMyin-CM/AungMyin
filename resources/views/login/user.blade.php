@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <body class="login-page ">
-        <div class="login-box row" >
+    <body class="login-page">
+        <div class="login-box row">
             <div class="card text-center">
                 <div class="card-body">
-                    <form action="{{ route('login') }}" method="post"  > 
+                    <form action="{{ route('login') }}" method="post"> 
                         @csrf
                         <div>
                             <p class="h1">Login</p>

@@ -210,61 +210,61 @@ $(document).ready(function(){
         $('.middle').css('opacity','1');
     })
 
-$("#username").blur(function(){
+    $("#username").blur(function(){
 
-    var username = $('#username').val();
-    var _token = $('input[name="_token"]').val();
+        var username = $('#username').val();
+        var _token = $('input[name="_token"]').val();
 
-    if(username.length >= 5){
+        if(username.length >= 5){
 
-        $.ajax({
-            url:"{{ route('username_available.check') }}",
-            method:"POST",
-            data:{username:username, _token:_token},
-            success:function(result)
-            {
-                if(result == 'unique')
+            $.ajax({
+                url:"{{ route('username_available.check') }}",
+                method:"POST",
+                data:{username:username, _token:_token},
+                success:function(result)
                 {
-                $('#uc_icon').removeClass('text-danger');
-                $('#uc_icon').removeClass('text-warning');
-                $('#uc_icon').addClass('text-success');
-                $('#uc_icon').attr('data-original-title', 'Username available');
-                $('#uc_icon').tooltip('show');
-                setTimeout(function(){
-                    $('[data-toggle="tooltip"]').tooltip('hide');
-                }, 5000);
-                
+                    if(result == 'unique')
+                    {
+                    $('#uc_icon').removeClass('text-danger');
+                    $('#uc_icon').removeClass('text-warning');
+                    $('#uc_icon').addClass('text-success');
+                    $('#uc_icon').attr('data-original-title', 'Username available');
+                    $('#uc_icon').tooltip('show');
+                    setTimeout(function(){
+                        $('[data-toggle="tooltip"]').tooltip('hide');
+                    }, 5000);
+                    
+                    }
+                    else
+                    {
+                    $('#uc_icon').removeClass('text-danger');
+                    $('#uc_icon').removeClass('text-success');
+                    $('#uc_icon').addClass('text-warning');
+                    $('#uc_icon').attr('data-original-title', 'Username Already taken');
+                    $('#uc_icon').tooltip('show');
+                    setTimeout(function(){
+                        $('[data-toggle="tooltip"]').tooltip('hide');
+                    }, 5000);
+
+                    }
                 }
-                else
-                {
-                $('#uc_icon').removeClass('text-danger');
-                $('#uc_icon').removeClass('text-success');
-                $('#uc_icon').addClass('text-warning');
-                $('#uc_icon').attr('data-original-title', 'Username Already taken');
-                $('#uc_icon').tooltip('show');
-                setTimeout(function(){
-                    $('[data-toggle="tooltip"]').tooltip('hide');
-                }, 5000);
+            });
+        }else{
 
-                }
-            }
-        });
-    }else{
+            $('#uc_icon').removeClass('text-success');
+            $('#uc_icon').removeClass('text-warning');
+            $('#uc_icon').addClass('text-danger');
+            $('#uc_icon').attr('data-original-title', 'Username must have at leat 5 characters');
+            $('#uc_icon').removeProp('data-original-title');
+            $('#uc_icon').tooltip('show');
+            setTimeout(function(){
+                $('[data-toggle="tooltip"]').tooltip('hide');
+            }, 5000);
 
-        $('#uc_icon').removeClass('text-success');
-        $('#uc_icon').removeClass('text-warning');
-        $('#uc_icon').addClass('text-danger');
-        $('#uc_icon').attr('data-original-title', 'Username must have at leat 5 characters');
-        $('#uc_icon').removeProp('data-original-title');
-        $('#uc_icon').tooltip('show');
-        setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('hide');
-        }, 5000);
+        }
+    });
 
-    }
-});
-
-});
+    });
 
     var loadFile = function(event) {
         for(var i =0; i< event.target.files.length; i++){

@@ -150,7 +150,9 @@
                         @csrf
                         <button class="nav-link" type="submit" style="">
                             <i class="nav-icon fas fa-sign-out-alt text-red"></i> 
+                            <p>
                             Logout
+                            </p>
                         </button>
                         </form>            
                     </li>   
