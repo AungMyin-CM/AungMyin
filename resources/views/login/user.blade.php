@@ -5,6 +5,19 @@
         <div class="login-box row">
             <div class="card text-center">
                 <div class="card-body">
+                    @if(Session::has('message'))
+                        <div class="alert alert-danger" id="alert-message">
+                             {{Session::get('message')}}
+                        </div><br />
+                    @elseif(Session::has('alert'))
+                        <div class="alert alert-warning" id="alert-message">
+                             {{Session::get('alert')}}
+                        </div><br />
+                    @elseif(Session::has('success'))
+                        <div class="alert alert-info" id="alert-message">
+                             {{Session::get('success')}}
+                        </div><br />
+                    @endif
                     <form action="{{ route('login') }}" method="post"> 
                         @csrf
                         <div>
@@ -35,3 +48,12 @@
         </div>
     </body>
 @endsection
+
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script>
+    $(document).ready(function(){
+        $("input").keypress(function(){
+            $("#alert-message").hide();
+        });
+    });
+    </script>

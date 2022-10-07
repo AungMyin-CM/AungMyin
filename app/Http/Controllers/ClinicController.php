@@ -25,6 +25,8 @@ use Carbon\Carbon;
 
 use Session;
 
+use DB;
+
 use Response;
 
 // require_once 'phpseclib/Crypt/RSA.php';
@@ -52,7 +54,9 @@ class ClinicController extends Controller
             }
 
             $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
+            $clinic_name = Clinic::where('id', $clinic_id)->value('name');
             $user_id = Auth::guard('user')->user()['id'];
+            $available_doctors = DB::table('user')->select('role_id')->join('role','role.id', '=', 'user.role_id')->join('user_clinic','user_clinic.user_id','=','user.id')->where('role.role_type','1')->where('user_clinic.clinic_id',$clinic_id)->count();
             $now = new Carbon;
 
             if ($role->role_type == 2 || $role->role_type == 5) {
@@ -64,10 +68,12 @@ class ClinicController extends Controller
                     ->where('status', 1)->get();
             } elseif ($role->role_type == 1 || $role->role_type == 5) {
 
-                $patientData = Patient::where('clinic_code', $clinic_id)
-                    ->where('p_status', 2)
-                    ->where('updated_at', '>=', $now->format('ymd'))
-                    ->where('status', 1)->get();
+               
+                $patientData = DB::table('patient')->select('*')->join('patient_doctor','patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id',Auth::user()->id )
+                ->where('patient.updated_at', '>=', $now->format('ymd'))
+                ->where('patient.status', 1)->get();
+
+
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
@@ -77,10 +83,10 @@ class ClinicController extends Controller
             } else {
                 $patientData = "";
             }
-            return view('user/clinic')->with('data', ['patientData' => $patientData, 'role' => $role->role_type]);
+            return view('user/clinic')->with('data', ['patientData' => $patientData, 'role' => $role->role_type, 'a_doctors' => $available_doctors, 'name' => $clinic_name]);
         } else {
 
-            return view('user/clinic')->with('data', ['patientData' => 0]);
+            return view('user/clinic')->with('data', ['patientData' => 0,'name' => $clinic_name]);
         }
     }
 
@@ -315,6 +321,27 @@ class ClinicController extends Controller
         return $code;
     }
 
+    public function fetchDoctors()
+    {
+       
+        if(session()->has('cc_id')){
+            $available_doctors = DB::table('user')->select('*')->join('role','role.id', '=', 'user.role_id')->join('user_clinic','user_clinic.user_id','=','user.id')->where('role.role_type','1')->where('user_clinic.clinic_id',session()->get('cc_id'))->get();
+
+                if(count($available_doctors) > 0 ){
+                    foreach($available_doctors as $d)
+                    {
+                        $data[] = ['id' => $d->user_id,'name' => $d->name, 
+                                'speciality' => $d->speciality] ;
+                    }
+                    return Response::json($data);
+
+                }
+                
+        }else{
+            return Response::json('no-session');
+        }
+    }
+
     private function userCodeGenerator()
     {
         $timestamp = Carbon::now();
@@ -327,4 +354,6 @@ class ClinicController extends Controller
 
         return $patient_code;
     }
+
+
 }

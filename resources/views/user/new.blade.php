@@ -432,20 +432,24 @@
                 $('#a-text').removeClass('text-warning');
                 $('#a-text').addClass('text-success');
                 $('#a-text').text('Username available');
-                
-                }
-                else
+                $('#a-text').show();
+                setTimeout(function(){
+                    $('#a-text').hide();
+                }, 5000);
+                }else
                 {
                 $('#a-text').removeClass('text-danger');
                 $('#a-text').removeClass('text-success');
                 $('#a-text').addClass('text-warning');
                 $('#a-text').text('Username Already taken');
-              
-                }
+                $('#a-text').show();
                 setTimeout(function(){
                     $('#a-text').hide();
                 }, 5000);
+                }
             }
+                
+                
         });
         }else{
 
@@ -453,6 +457,7 @@
             $('#a-text').removeClass('text-success');
             $('#a-text').addClass('text-danger');
             $('#a-text').text('Must have at leat 5 characters');
+            $('#a-text').show();
             setTimeout(function(){
                 $('#a-text').hide();
             }, 5000);
@@ -472,6 +477,7 @@
         $('#em-text').removeClass('text-success');
         $('#em-text').addClass('text-warning');
         $('#em-text').text('Invaid Email');
+        $('#a-text').show();
         setTimeout(function(){
             $('#em-text').hide();
         }, 5000);
@@ -491,19 +497,23 @@
         $('#em-text').removeClass('text-warning');
         $('#em-text').addClass('text-success');
         $('#em-text').text('Valid Email');
-        
-        }
-        else
-        {
-            $('#em-text').removeClass('text-danger');
-            $('#em-text').removeClass('text-success');
-            $('#em-text').addClass('text-warning');
-            $('#em-text').text('Email Already taken');
-            
-        }
+        $('#a-text').show();
         setTimeout(function(){
             $('#em-text').hide();
         }, 5000);
+        }
+        else
+        {
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-success');
+        $('#em-text').addClass('text-warning');
+        $('#em-text').text('Email Already taken');
+        $('#a-text').show();
+        setTimeout(function(){
+        $('#em-text').hide();
+        }, 5000);
+        }
+       
     }
     })
     }

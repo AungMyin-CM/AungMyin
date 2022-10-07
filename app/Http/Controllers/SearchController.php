@@ -39,12 +39,14 @@ class SearchController extends Controller
             {
                 $output = '';
             }else{  
-                $output = '<ul class="list-group" style="display:block; position:relative;">';
+                $output = '<ul class="list-group" style="display:block;">';
+                            // <li class="list-group-item search-get-results-1-result"><span class="col-md-4 float-left">Name</span><span class="col-md-4">Age</span><span class="col-md-4 float-right">Father\'s Name</span></li>';
 
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        
+                        <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">'.$row->name.'</span>'.'<span class="col-md-4">'.$row->age.'</span>'.'<span class="col-md-4">'.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -61,7 +63,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item"><a href="'.route('add.queue', $row->id).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item"><a href="'.route('add.queue', $row->id).'"><div class="row"><span class="col-md-4">'.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';

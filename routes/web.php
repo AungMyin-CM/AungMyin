@@ -102,6 +102,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function(
 
     Route::post('pharma_code/check',[PharmacyController::class, 'checkMedCode'])->name('pharma_code.check');
 
+    Route::get('getDoctors',[ClinicController::class,'fetchDoctors'])->name('get.doctors');
     
 });
 

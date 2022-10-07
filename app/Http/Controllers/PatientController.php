@@ -11,6 +11,7 @@ use App\Models\Visit;
 use App\Models\Role;
 use App\Models\UserClinic;
 use App\Models\Notification;
+use App\Models\PatientDoctor;
 
 use Carbon\Carbon;
 
@@ -20,6 +21,8 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
 
 use File;
+
+use DB;
 
 use Session;
 
@@ -201,6 +204,8 @@ class PatientController extends Controller
 
         $images = [];
 
+        $receiver_ids = DB::table('user')->select('*')->join('role','role.id', '=', 'user.role_id')->join('user_clinic','user_clinic.user_id','=','user.id')->where('role.role_type','3')->where('user_clinic.clinic_id',session()->get('cc_id'))->get();
+
         if($request->hasfile('images'))
         {
             foreach($request->file('images') as $file)
@@ -261,14 +266,18 @@ class PatientController extends Controller
 
         if($action != 'no-action'){
 
-            Notification::create([
-                'sender_id' => $user_id,
-                'receiver_id' => 34,
-                'clinic_id' => session()->get('cc_id'),
-                'patient_id' => $id,
-                'is_sent' => '1',
-                'action_on_sent' => $action
-            ]);
+            
+            foreach($receiver_ids as $rd){
+               
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $rd->id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action
+                ]);
+            }
         }
 
         return redirect('clinic-system/patient')->with('success', "Done!");
@@ -321,6 +330,7 @@ class PatientController extends Controller
         $status = $request->status;
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
+        $receiver_id = $request->receiver_id;
 
         try{
         Patient::whereId($patient_id)->update(['p_status' => $status]);
@@ -349,15 +359,24 @@ class PatientController extends Controller
 
         if($action != 'no-action'){
 
-            Notification::create([
-                'sender_id' => $user_id,
-                'receiver_id' => 32,
-                'clinic_id' => session()->get('cc_id'),
-                'patient_id' => $patient_id,
-                'is_sent' => '1',
-                'action_on_sent' => $action
-            ]);
-        }
+            if($action == 'treatment'){
+                PatientDoctor::create([
+                    'patient_id' => $patient_id,
+                    'user_id' => $receiver_id,
+                    'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+
+                ]);
+            }
+
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $receiver_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $patient_id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action,
+                ]);
+            }
 
 
             echo "changed";

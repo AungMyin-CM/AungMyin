@@ -12592,9 +12592,9 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   width: 0;
 }
 
-.sidebar:hover {
+/* .sidebar:hover {
   scrollbar-width: thin;
-}
+} */
 
 .sidebar:hover::-webkit-scrollbar {
   width: .5rem;

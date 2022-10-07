@@ -36,7 +36,7 @@ class LoginController extends Controller
             {
                 return redirect('/')->with('message', "User does not exists");
             }elseif($data->email_verified == 0){
-                return redirect('/')->with('message', "Please verify your email");
+                return redirect('/')->with('alert', "Please verify your email");
             }else{
                 $userCredentials = $request->only('code', 'password');
 
@@ -49,7 +49,8 @@ class LoginController extends Controller
                 }
             }
             
-        }
+    }
+       
 
 
     public function logout()

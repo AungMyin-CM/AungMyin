@@ -245,3 +245,45 @@ sup.text-danger{
   border-radius: 50%;
   margin: 0 auto;
 }
+
+.center-screen{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 60vh;
+  margin: auto;
+}
+
+.search-get-results{
+
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 77%;
+    left: 0;
+    right: 0;
+  }
+  
+  .search-get-results div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
+  }
+  
+  /*when hovering an item:*/
+  .search-get-results div:hover {
+    background-color: #e9e9e9; 
+  }
+
+
+.search-get-results-1-result{
+  height: 46px;
+  background: grey;
+}
+

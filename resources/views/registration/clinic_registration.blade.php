@@ -3,7 +3,7 @@
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper" id="mydiv">
             <div class="content-wrapper">
-                <section class="content">
+                <section class="content m-auto">
                     <div class="container-fluid">   
                         <form action="{{ route('clinic.register') }}" method="POST">
                             @csrf  

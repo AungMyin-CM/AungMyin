@@ -39,6 +39,8 @@ class UserController extends Controller
     {        
         $user = new User();
 
+            $filename = null;
+
             if($request->file('avatar') != '')
             {
                 $file= $request->file('avatar');

@@ -115,10 +115,7 @@
 
               },
               error: function(httpObj, textStatus) {       
-                  if(httpObj.status==401)
                     location.reload();
-                  else
-                    alert("not-danger");
                 },
             });
         // console.log($("[id='time_"+data.patient_id).text());

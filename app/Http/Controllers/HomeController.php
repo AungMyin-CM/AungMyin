@@ -25,7 +25,7 @@ class HomeController extends Controller
         {
             foreach($clinic_data as $clinic)
             {
-               $user_clinic[$clinic->clinic_id] = Clinic::where('id',$clinic->clinic_id)->get();
+               $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
             }
 
            return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);

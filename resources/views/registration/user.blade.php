@@ -51,7 +51,7 @@
                                 </div>
                                 @error('code')
                                     <span class="invalid-feedback" role="alert" id="alert-message">
-                                        <strong>Username is required</strong>
+                                        <strong>{{$message}}</strong>
                                     </span>
                                     
                                 @enderror
@@ -87,6 +87,7 @@
                                 </span>
                             @enderror
                         </div>
+
                         <div class="input-group mb-3">
                             <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
                                 placeholder="Retype password">
@@ -101,6 +102,7 @@
                                 </span>
                             @enderror
                         </div>
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <select name="" id="" class="form-input">
@@ -125,6 +127,7 @@
                         <div class="col-8 float-left">
                             <a href="/"><i class="fas fa-arrow-left">  Back to login</i></a>
                         </div>
+                        
                         <div class="col-4 float-right">
                             <button type="submit" id="register" class="btn btn-primary btn-block">Register</button>
                         </div>
@@ -139,18 +142,26 @@
 
     </body>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+
+
     <script>
+
+$(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
 
 $(document).ready(function(){
 
     $('form').on('submit',function(){
         $('.register-box').css('opacity','0.1');
         $('.middle').css('opacity','1');
-    })
+    });
 
-  $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
+    $("input").keypress(function(){
+        $("#alert-message").hide();
+        $("input").removeClass('is-invalid')
+    });
 
     $('#email').blur(function(){
     var error_email = '';
@@ -162,10 +173,10 @@ $(document).ready(function(){
     $('#en_icon').removeClass('text-success');
     $('#en_icon').removeClass('text-warning');
     $('#en_icon').addClass('text-danger');
-    $('#en_icon').attr('data-original-title', 'Invalid Email');
-    $('#en_icon').tooltip('show');
+    $('#en_icon').attr('data-title', 'Invalid Email');
+    $('#en_icon').tooltip('option','show');
         setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('hide');
+            $('[data-toggle="tooltip"]').tooltip('option','hide');
         }, 5000);
 
     }
@@ -183,9 +194,9 @@ $(document).ready(function(){
         $('#en_icon').removeClass('text-warning');
         $('#en_icon').addClass('text-success');
         $('#en_icon').attr('data-original-title', 'Email Available');
-        $('#en_icon').tooltip('show');
+        $('#en_icon').tooltip('option','show');
             setTimeout(function(){
-                $('[data-toggle="tooltip"]').tooltip('hide');
+                $('[data-toggle="tooltip"]').tooltip('option','hide');
             }, 5000);
         }
         else
@@ -194,9 +205,9 @@ $(document).ready(function(){
         $('#en_icon').removeClass('text-success');
         $('#en_icon').addClass('text-warning');
         $('#en_icon').attr('data-original-title', 'Email Already taken');
-        $('#en_icon').tooltip('show');
+        $('#en_icon').tooltip('option','show');
             setTimeout(function(){
-                $('[data-toggle="tooltip"]').tooltip('hide');
+                $('[data-toggle="tooltip"]').tooltip('option','hide');
             }, 5000);
 
         }
@@ -204,11 +215,6 @@ $(document).ready(function(){
     })
     }
     });
-
-    $('form').on('submit',function(){
-        $('.wrapper').css('opacity','0.1');
-        $('.middle').css('opacity','1');
-    })
 
     $("#username").blur(function(){
 
@@ -229,9 +235,9 @@ $(document).ready(function(){
                     $('#uc_icon').removeClass('text-warning');
                     $('#uc_icon').addClass('text-success');
                     $('#uc_icon').attr('data-original-title', 'Username available');
-                    $('#uc_icon').tooltip('show');
+                    $('#uc_icon').tooltip('option','show');
                     setTimeout(function(){
-                        $('[data-toggle="tooltip"]').tooltip('hide');
+                        $('[data-toggle="tooltip"]').tooltip('option','hide');
                     }, 5000);
                     
                     }
@@ -243,7 +249,7 @@ $(document).ready(function(){
                     $('#uc_icon').attr('data-original-title', 'Username Already taken');
                     $('#uc_icon').tooltip('show');
                     setTimeout(function(){
-                        $('[data-toggle="tooltip"]').tooltip('hide');
+                        $('[data-toggle="tooltip"]').tooltip('option','hide');
                     }, 5000);
 
                     }
@@ -258,7 +264,7 @@ $(document).ready(function(){
             $('#uc_icon').removeProp('data-original-title');
             $('#uc_icon').tooltip('show');
             setTimeout(function(){
-                $('[data-toggle="tooltip"]').tooltip('hide');
+                $('[data-toggle="tooltip"]').tooltip('option','hide');
             }, 5000);
 
         }
