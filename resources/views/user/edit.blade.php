@@ -31,7 +31,7 @@
                                 <div class="col-md-6">
                                     <!-- general form elements -->
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style=" background-color: #0077B6">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
                                         @if ($errors->any())
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style=" background-color: #0077B6">
                                             <h3 class="card-title">Permissions</h3>
                                         </div>
                                         <div class="card-body">
@@ -366,7 +366,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                            <button type="submit" class="btn btn-primary float-right" style=" background-color: #0077B6">Submit</button>
                                         </div>
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->

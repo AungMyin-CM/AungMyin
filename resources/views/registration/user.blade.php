@@ -125,11 +125,11 @@
                        
                         <!-- /.col -->
                         <div class="col-8 float-left">
-                            <a href="/"><i class="fas fa-arrow-left">  Back to login</i></a>
+                            <a href="/"><i class="fas fa-arrow-left" style="color: #0077B6">  Back to login</i></a>
                         </div>
                         
                         <div class="col-4 float-right">
-                            <button type="submit" id="register" class="btn btn-primary btn-block">Register</button>
+                            <button type="submit" id="register" class="btn btn-primary btn-block" style="background-color: #0077B6">Register</button>
                         </div>
                         <!-- /.col -->
                     </form>
