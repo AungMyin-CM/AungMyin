@@ -40,7 +40,7 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('ph_create', $permissions))
                                         <div class="card-header">
-                                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right"><i
+                                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif
@@ -71,7 +71,7 @@
                                                         <div class="row">
                                                             @if(Helper::checkPermission('ph_update', $permissions))
 
-                                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
+                                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default" style="margin:5px ;color: {{config('app.color')}}">
                                                                 <i class="fas fa-edit fa-lg"></i></a>
 
                                                             @endif
@@ -82,7 +82,8 @@
                                                                     method="post">
                                                                     @csrf
                                                                     @method('DELETE')   
-                                                                    <button class="" type="submit" style="margin:5px;"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                                
+                                                                    <button class="btn btn-default " type="submit"  style=" margin:5px ;"><i class="fas fa-trash" style="color:#E95A4A; "></i></button>
                                                                 </form>
 
                                                             @endif

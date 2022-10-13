@@ -103,7 +103,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header"  style="  background-color: #0077B6">
+                                        <div class="card-header"  style="  background-color:{{config('app.color')}}">
                                             <h3 class="card-title">New Patient</h3>
                                         </div>
                                         @if ($errors->any())
@@ -213,7 +213,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary" style=" background-color: #0077B6">
+                                                <input type="submit" value="submit" class="btn btn-primary" style=" background-color:{{config('app.color')}}">
                                             </div>
                                         </div>
                                     </div>
@@ -222,7 +222,7 @@
                                 @if($role_type == 1 || $role_type == 5)
                                     <div class="col-md-6">
                                         <div class="card card-primary">
-                                            <div class="card-header"  style=" background-color: #0077B6">
+                                            <div class="card-header"  style=" background-color: {{config('app.color')}}">
                                                 <h3 class="card-title">....</h3>
                                             </div>
                                             <div class="card-body">

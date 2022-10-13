@@ -28,7 +28,7 @@
                             <div class="col-md-6">
                                 <!-- general form elements -->
                                 <div class="card card-primary">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: {{config('app.color')}}">
                                         <h3 class="card-title">Please fill out form</h3>
                                     </div>
                                     @if ($errors->any())
@@ -81,7 +81,7 @@
                                         <!-- /.card-body -->
 
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">Submit</button>
                                         </div>
                                     </form>
                                 </div>

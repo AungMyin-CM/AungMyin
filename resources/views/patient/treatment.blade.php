@@ -149,7 +149,7 @@
                                 <div class="col-md-4">
 
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Patient Treatment</h3>
                                         </div>
                                        
@@ -226,7 +226,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">....</h3>
                                             
                                         </div>
@@ -325,7 +325,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary">
+                                                <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                             </div>
                                         </div>
                                         <!-- Bootstrap Switch -->

@@ -8,7 +8,7 @@
                         <form action="{{ route('clinic.register') }}" method="POST">
                             @csrf  
                             <div class="container">
-                                <div class="row">
+                                <div class="row mt-5">
                                     <div class="col-md-6">
                                         <label>Clinic Information</label>
 
@@ -55,7 +55,7 @@
                 
                                         <!-- /.col -->
                                         <div class="col-4 float-right">
-                                            <button type="submit" id="register" class="btn btn-primary btn-block">Register</button>
+                                            <button type="submit" id="register" class="btn btn-primary btn-block" style="background-color: {{config('app.color')}}">Register</button>
                                         </div>
                                             <!-- /.col -->
                                     </div>

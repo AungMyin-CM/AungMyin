@@ -1,7 +1,7 @@
 @if ( Auth::guard('user')->user())
     <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
         <!-- Brand Logo -->
-        <a  href="{{ route('user.home') }}" class="brand-link" style="background-color: #0077B6">
+        <a  href="{{ route('user.home') }}" class="brand-link" style="background-color: {{config('app.color')}}">
             <img src="{{ asset('images/logo.png') }}" class="brand-image"  >
             <span class="brand-text font-weight-white text-white">AungMyin</span>
         </a>

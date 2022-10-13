@@ -38,7 +38,7 @@
                                 <div class="col-md-6">
                                     <!-- general form elements -->
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header"  style="  background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
                                            
@@ -192,7 +192,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header "  style="  background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Permissions<sup class="text-warning"> (Please check at least one property) </sup></h3>
                                             <input type="hidden" id="permission_check">
                                         </div>
@@ -351,7 +351,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <input type="button" class="btn btn-primary float-right"  onclick="submitForm()" value="Submit">
+                                            <input type="button" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}" onclick="submitForm()" value="Submit">
                                         </div>
 
                                         <!-- Bootstrap Switch -->

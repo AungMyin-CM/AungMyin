@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="login-page bg-light">
     <div class="container">
@@ -7,7 +6,7 @@
             <div class="col-lg-10 offset-lg-1"> 
                 <div class="bg-white shadow rounded">
                     <div class="row">
-                        <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: #0077B6">
+                        <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: {{config('app.color')}}">
                             <div class="form-right  h-100  text-white text-center pt-5">
                                 <img src="{{ asset('images/web-photos/aung-myin-logo.png') }}" class="brand-image" style="width:20%;" >
                                 <h2 class="fs-1">Aung Myin</h2>
@@ -56,11 +55,11 @@
                                         </div> --}}
 
                                         <div class="col-12  text-right">
-                                            <button type="submit" class="btn btn-primary px-4 float-end mt-4" style="background-color: #0077B6">Login</button>
+                                            <button type="submit" class="btn btn-primary px-4 float-end mt-4" style="background-color: {{config('app.color')}}">Login</button>
                                         </div>
                                 </form>
-                                <div class="card-footer text-muted text-center">
-                                    New user?<a href="{{ route('register.user') }}" class=""> Create an account</a>
+                                <div class="card-footer text-muted text-center" >
+                                    New user?<a href="{{ route('register.user') }}" class="" style="color:  {{config('app.color')}}"> Create an account</a>
                                   </div>
                             </div>
                         </div>

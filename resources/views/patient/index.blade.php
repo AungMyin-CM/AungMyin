@@ -40,7 +40,7 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('p_create', $permissions))
                                         <div class="card-header">
-                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right"><i
+                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right" style= "background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif
@@ -69,13 +69,13 @@
                                                         <div class="row">
                                                             @if(Helper::checkPermission('p_update', $permissions))
 
-                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px;">
+                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px; color: {{config('app.color')}}">
                                                                 <i class="fas fa-edit fa-lg"></i></a>
 
                                                             @endif
 
                                                             @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 || $role_type == 5)
-                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px;"
+                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px; color: {{config('app.color')}}"
                                                                 ><i class="fas fa-stethoscope fa-lg"></i></a>
                                                             @endif
 

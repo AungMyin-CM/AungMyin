@@ -25,7 +25,7 @@
                                             </div>
                                             <div class="col-md-8">
                                             <div class="card-body">
-                                                <h5 class="card-title m-1 text-black"><span class="fas fa-clinic-medical"></span>  New Clinic</h5>
+                                                <h5 class="card-title m-1 text-black"  style="color: {{config('app.color')}}"><span class="fas fa-clinic-medical"></span>  New Clinic</h5>
                                                 <p class="card-text"><small class="text-muted">Start using free.</small></p>
 
                                             </div>
@@ -51,7 +51,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
-                                                        <h5 class="card-title m-1 ">{{$data[0]->name}}</h5>
+                                                        <h5 class="card-title m-1 "  style="color: {{config('app.color')}}">{{$data[0]->name}}</h5>
                                                         <p class="card-text"><small class="text-muted">Register on <b>{{$date}}</b></small></p>
                                                         </div>
                                                     </div>
@@ -72,7 +72,7 @@
                                                 </div>
                                                 <div class="col-md-8">
                                                 <div class="card-body">
-                                                    <h5 class="card-title m-1 text-black"><span class="fas fa-clinic-medical"></span>  New Clinic</h5>
+                                                    <h5 class="card-title m-1 text-black" style="color: {{config('app.color')}}"><span class="fas fa-clinic-medical"></span>  New Clinic</h5>
                                                     <p class="card-text"><small class="text-muted">Start using free.</small></p>
 
                                                 </div>
