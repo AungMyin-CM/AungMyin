@@ -82,7 +82,7 @@
                   <section class="content">
                     
                     <div class="container-fluid">
-                      <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" ><i id="search" class="fa fa-history"></i> History</a> 
+                      <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}"><i id="search" class="fa fa-history" ></i> History</a> 
                       <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">Code - {{ $invoice_code }}</span>
                         <table class="table table-bordered" id="product_info_table">
                             <thead>
@@ -186,7 +186,7 @@
                               </select>
                               </div>
                            </div>
-                            <input type="submit" value="submit" class="btn btn-primary">
+                            <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                       </div>    
                   </section>
                 </form>

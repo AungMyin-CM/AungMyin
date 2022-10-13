@@ -32,7 +32,7 @@
                                 <div class="col-md-6">
 
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Edit Patient</h3>
                                         </div>
                                         @if ($errors->any())
@@ -147,7 +147,7 @@
                                         </div>
 
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">Submit</button>
                                         </div>
 
                                     </div>

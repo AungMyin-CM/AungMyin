@@ -25,7 +25,7 @@
                                                         <span>1 concurrent build</span> <span>1 team member:</span>
                                                         <span>100 GB/mo</span>
                                                         <span>1 concurrent build</span>
-                                                        <a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="btn btn-info m-auto">Start Your Free Trial</a>
+                                                        <a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="btn btn-info m-auto" style="background-color: {{config('app.color')}}">Start Your Free Trial</a>
                                                     </span>
                                                 </label>
 

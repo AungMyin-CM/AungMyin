@@ -39,7 +39,7 @@
                                 <div class="card">
                                     <!-- /.card-header -->
                                     <div class="card-header">
-                                        <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: #0077B6"><i
+                                        <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                                 class="fas fa-plus"></i> Add new</a>
                                     </div>
                                     <div class="card-body">
@@ -82,7 +82,7 @@
                                                         </td>
                                                             
                                                         <td><a href="{{route('user.edit', $row->id)}}" class="btn btn-default">
-                                                            <i class="fas fa-edit fa-lg" style=" color: #0077B6"></i></a>
+                                                            <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i></a>
                                                         </td>
                                                           
                                                         <td>

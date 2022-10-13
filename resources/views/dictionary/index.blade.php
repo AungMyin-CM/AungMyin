@@ -40,7 +40,7 @@
                                     <!-- /.card-header -->
                                     @if(Helper::checkPermission('d_create', $permissions))
                                         <div class="card-header">
-                                            <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right"><i
+                                            <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                                     class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif
@@ -63,8 +63,8 @@
                                                         <td><?php echo Str::limit(str_replace("^" , " " ,$row->meaning ) , $limit = 100, $end = '...') ?>
                                                         </td>
                                                         @if(Helper::checkPermission('d_update', $permissions))
-                                                            <td><a href="{{ route('dictionary.edit', $row->id) }}">
-                                                                 <i class="fas fa-edit fa-lg"></i></a>
+                                                            <td><a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
+                                                                 <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i></a>
                                                             </td>
                                                         @endif
                                                         @if(Helper::checkPermission('d_delete', $permissions))

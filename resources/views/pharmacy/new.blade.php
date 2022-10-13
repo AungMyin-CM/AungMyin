@@ -13,7 +13,7 @@
                             <div class="row">
                                 <div class="col-md-12 py-2">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color:  {{config('app.color')}}">
                                             <h3 class="card-title">New Medicine</h3>
                                         </div>
                                         @if ($errors->any())
@@ -134,7 +134,7 @@
 
                                         <div class="card-footer" style="background:rgb(221, 231, 207);">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary">
+                                                <input type="submit" value="submit" class="btn btn-primary" style="background-color:  {{config('app.color')}}">
                                             </div>
                                         </div>
                                     </div>
