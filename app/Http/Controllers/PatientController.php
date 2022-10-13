@@ -271,7 +271,7 @@ class PatientController extends Controller
                
                 Notification::create([
                     'sender_id' => $user_id,
-                    'receiver_id' => $rd->id,
+                    'receiver_id' => $rd->user_id,
                     'clinic_id' => session()->get('cc_id'),
                     'patient_id' => $id,
                     'is_sent' => '1',

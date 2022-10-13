@@ -38,7 +38,7 @@ class LoginController extends Controller
             }elseif($data->email_verified == 0){
                 return redirect('/')->with('alert', "Please verify your email");
             }else{
-                $userCredentials = $request->only('code', 'password');
+                    $userCredentials = $request->only('code', 'password');
 
                     if(Auth::guard('user')->attempt($userCredentials)){
                         

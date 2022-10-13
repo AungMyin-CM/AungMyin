@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: #0077B6">
                             <div class="form-right  h-100  text-white text-center pt-5">
-                                <img src="{{ asset('images/logo.png') }}" class="brand-image"  >
+                                <img src="{{ asset('images/web-photos/aung-myin-logo.png') }}" class="brand-image" style="width:20%;" >
                                 <h2 class="fs-1">Aung Myin</h2>
                                 <p class="fs-1">Clinic Manager</p>
                             </div>

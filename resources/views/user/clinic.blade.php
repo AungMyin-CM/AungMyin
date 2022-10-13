@@ -46,7 +46,7 @@
                                 <tbody>
                                     @foreach ($data['patientData'] as $row)
                                         <tr>
-                                            <td>{{ $row->name }}<span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span>&nbsp;&nbsp;&nbsp;
+                                            <td>{{ $row->name }}<span class="text-muted small float-right"></span>&nbsp;&nbsp;&nbsp;
                                                 @if($row->gender ==1)
                                                 <i class="fas fa-male fa-lg" style="color:blue;"></i> 
                                            @else

@@ -54,8 +54,6 @@ class PosController extends Controller
 
                 $med_data[] = Pharmacy::where('id',$medInfo[0])->get();
 
-                
-
                 $total_qty = array( ($qty[0] + $qty[1]+  $qty[2]) * $days) ;
 
               
