@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: {{config('app.color')}}">
                             <div class="form-right  h-100  text-white text-center pt-5">
-                                <img src="{{ asset('images/logo.png') }}" class="brand-image"  >
+                                <img src="{{ asset('images/logo3.png') }}" class="brand-image"  >
                                 <h2 class="fs-1">Aung Myin</h2>
                                 <p class="fs-1">Clinic Manager</p>
                             </div>
@@ -55,7 +55,7 @@
                                         </div> --}}
 
                                         <div class="col-12  text-right">
-                                            <button type="submit" class="btn btn-primary px-4 float-end mt-4" style="background-color: {{config('app.color')}}">Login</button>
+                                            <button type="submit" class="btn px-4 float-end mt-4" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Login</button>
                                         </div>
                                 </form>
                                 <div class="card-footer text-muted text-center" >
