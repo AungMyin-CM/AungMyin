@@ -40,7 +40,7 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('p_create', $permissions))
                                         <div class="card-header">
-                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right" style= "background-color: {{config('app.color')}}"><i
+                                            <a href="{{ route('patient.create') }}" class="btn float-right" style= "color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif

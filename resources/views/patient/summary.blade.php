@@ -155,16 +155,64 @@
 	</head>
     
 	<body>
-		<header>
-			<h1>Invoice</h1>
-			<address contenteditable>
-				<p>Jonathan Neal</p>
-				<p>101 E. Chapman Ave<br>Orange, CA 92866</p>
-				<p>(800) 555-1234</p>
-			</address>
-			<span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span>
-		</header>
+
         @if($patient_data != null)
+
+          {{-- <h1>Invoice</h1>
+          <address contenteditable>
+            <p>{{ $patient_data['name'] }}</p>
+            <p>{{ $patient_data['address'] }}</p>
+            <p>{{ $patient_data['phoneNumber'] }}</p>
+          </address>
+          <span><img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png"><input type="file" accept="image/*"></span> --}}
+          <section class="content-header">
+                 
+            <div class="container-fluid">
+          <div class="card card-primary {{$patient_data != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+            <div class="card-body" style="padding: 0.9rem !important;" > 
+                <div class="row mb-2">
+                    <div class="col-sm-2">
+                        <h6><b>Name :</b> <span id="p_name">{{$patient_data != null ? $patient_data['name']  : ""}}</span> </h6>
+                    </div>
+                    <div class="col-sm-2">
+                        <h6><b>Age :</b> <span id="p_age">{{$patient_data != null ? $patient_data['age'] : ""}}</span> </h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <h6><b>Father's Name :</b><span id="p_f_name"> {{ $patient_data != null ?$patient_data['father_name'] :"" }}</span> </h6>
+                    </div>
+                    <div class="col-sm-2">
+                        <h6><b>Gender :</b> <span id="p_gender">{{$patient_data != null ? $patient_data['gender'] == 1 ? 'Male' : 'Female' : ""}}</span> </h6>
+                    </div>
+                    <div class="col-sm-3">
+                        <h6><b>Phone-Number :</b> <span id="p_phoneNumber">{{$patient_data != null ? $patient_data['phoneNumber'] : ""}}</span> </h6>
+                    </div>
+                    
+                </div>
+                <div class="row mb-2">
+                   
+                    <div class="col-sm-12">
+                        <h6><b>Address :</b><span id="p_address"> {{ $patient_data != null ? $patient_data['address'] :"" }}</span> </h6>
+                    </div>
+                    
+                   
+                </div>
+                <div class="row mb-2">
+                   
+                    <div class="col-sm-10" >
+                        <h6><b>Allergy :</b><span id="p_allergy"> {{ $patient_data != null ?  $patient_data['drug_allergy'] : ""}}</span> </h6>
+                    </div>
+
+                    <div class="col-sm-2" {{ $patient_data != null ?"" :'hidden'}}>
+                      <h6><b>Fees :</b>{{ $visit_data != null ? $visit_data['fees'] : ""}} </h6>
+                  </div>
+                                   
+                </div>
+
+            </div>
+
+        </div>
+      </div>
+    </section>
                     <input type="hidden" name="patient_id" class="form-control" id="patient_id" value={{ $patient_data['id'] }}>
                     <input type="hidden" id="fees" class="form-control" value={{  $visit_data != null ? $visit_data['fees'] : "" }}>
                     <input type="hidden" id="customer_name" name = "customer_name" class="form-control" value={{ $patient_data['name'] }}>

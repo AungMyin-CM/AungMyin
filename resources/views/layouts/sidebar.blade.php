@@ -2,7 +2,7 @@
     <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
         <!-- Brand Logo -->
         <a  href="{{ route('user.home') }}" class="brand-link" style="background-color: {{config('app.color')}}">
-            <img src="{{ asset('images/logo.png') }}" class="brand-image"  >
+            <img src="{{ asset('images/logo3.png') }}" class="brand-image"  >
             <span class="brand-text font-weight-white text-white">AungMyin</span>
         </a>
 
@@ -15,9 +15,9 @@
                         <img src="https://media.istockphoto.com/vectors/profile-placeholder-image-gray-silhouette-no-photo-vector-id1016744004?k=20&m=1016744004&s=612x612&w=0&h=Z4W8y-2T0W-mQM-Sxt41CGS16bByUo4efOIJuyNBHgI=" class="img-circle elevation-2" alt="User Image">
                     @endif
                 </div>
-                <div class="info">
+                {{-- <div class="info">
                     <a href="#" class="d-block">{{ Auth::guard('user')->user()['name'] }}</a>
-                </div>
+                </div> --}}
 
             </div>
             {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -41,7 +41,7 @@
                                     <a href="{{ route('user.clinic', Crypt::encrypt(session()->get('cc_id'))) }}" class="nav-link">
                                         <i class="nav-icon fas fa-home"></i>
                                         <p>
-                                            Dashboard
+                                            Home
                                         </p>
                                     </a>
                                 @else
@@ -128,8 +128,8 @@
                         @endif
 
                         <hr size="30" style="border-top:1px solid red !important;">
-
-                        {{-- <li class="nav-item">
+{{-- 
+                        <li class="nav-item">
                             <a href="{{ route('clinic.settings') }}" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
                                 <p>
@@ -143,7 +143,7 @@
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
                         </li>
                     @endif
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         @if (Auth::guard('user')->user())
                             <form action="{{ route('user.logout') }}" method="post">
                         @endif
@@ -155,7 +155,7 @@
                             </p>
                         </button>
                         </form>            
-                    </li>   
+                    </li>    --}}
                 </ul>
             </nav>
         </div>

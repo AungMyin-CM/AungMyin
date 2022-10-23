@@ -7,8 +7,32 @@
                         <div class="container-fluid">
                             <div class="container">
                                     <div class="package-grid">
-                                        <div class="row m-auto">
-                                            @foreach ($data as $package)
+                                        <div class="row mt-5">
+                                            <div class="col-md-6 text-center" >
+                                                <label class="package-card " style="background-color: #d8d6d6">
+                                                    <p class="mt-2">Solo Practice </p>
+                                                    <p  class="m-2">ဆရာဝန်တစ်ဦးတည်းထိုင်တဲ့</p>
+                                                    <p> ဆေးခန်းအတွက်</p>
+                                                    
+                                                    <h3 class = "m-3 font-weight-bold ">၂၁၀၀၀ကျပ်/ဆေးခန်း</h3>
+                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
+                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt(1).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-6 text-center" >
+                                                <label class="package-card " style="background-color: #d8d6d6">
+                                                    <p class="m-3">Group Practice </p>
+                                                    <p  class="m-2">ဆရာဝန်အများထိုင်တဲ့</p>
+                                                    <p> ဆေးခန်းအတွက်</p>
+                                                    
+                                                    <h3 class = "m-3 font-weight-bold ">၄၉၀၀၀ကျပ်/ဆေးခန်း</h3>
+                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
+                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt(2).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
+                                                </label>
+                                            </div>
+
+                                            
+                                            {{-- @foreach ($data as $package)
 
                                                 <label class="package-card m-4">
                                                 
@@ -29,7 +53,7 @@
                                                     </span>
                                                 </label>
 
-                                            @endforeach
+                                            @endforeach --}}
                                         </div>
                                     </div>
                             </div>

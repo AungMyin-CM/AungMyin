@@ -147,7 +147,7 @@
                                         </div>
 
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">Submit</button>
+                                            <button type="submit" class="btn" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Submit</button>
                                         </div>
 
                                     </div>

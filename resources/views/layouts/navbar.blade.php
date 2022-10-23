@@ -39,8 +39,20 @@
                     <i class="fas fa-th-large"></i>
                 </a>
             </li>
+            <li class="nav-item"> 
+                @if (Auth::guard('user')->user())
+                    <form action="{{ route('user.logout') }}" method="post"  id="logout"> 
+                @endif
+                        @csrf
+                        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#"
+                            role="button">
+                            <i class="fas fa-sign-out-alt" title="Logout" id="logout_btn"></i>
+                        </a>
+                    </form>  
+            </li>
         </ul>
     </nav>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <script>
         var datetime = new Date();
         var day = datetime.toLocaleDateString('default', { weekday: 'long' });      
@@ -48,5 +60,10 @@
         var month = datetime.toLocaleString('default', { month: 'long' });
         var year = datetime.getFullYear();
         document.getElementById("time").textContent = date+" " + month +" " + year +", " + day;
+
+        $('#logout_btn').click(function(){ 
+   $('#logout').submit();
+});
+
         </script>
 @endif
