@@ -129,14 +129,14 @@
 
                         <hr size="30" style="border-top:1px solid red !important;">
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('clinic.settings') }}" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
                                 <p>
                                     Settings
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i

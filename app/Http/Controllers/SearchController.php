@@ -63,7 +63,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item"><a href="'.route('add.queue', $row->id).'"><div class="row"><span class="col-md-4">'.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary text-black"><a href="'.route('add.queue', $row->id).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -78,7 +78,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -94,7 +94,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';

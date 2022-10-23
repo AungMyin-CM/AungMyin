@@ -63,7 +63,7 @@
                                             <label>Code<span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-append">
-                                                    <div class="input-group-text"><span class="fas fa-user-circle hover"></span></div>
+                                                    <div class="input-group-text"><span class="fas fa-user-circle hover" id="uc_icon"></span></div>
                                                 </div>
                                                 <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" placeholder="Code"
                                                 value="{{ old('code') }}" id="username">
@@ -78,7 +78,7 @@
                                             <label>Email<span class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <div class="input-group-append">
-                                                    <div class="input-group-text"><span class="fas fa-user-circle hover"></span></div>
+                                                    <div class="input-group-text"><span class="fas fa-user-circle hover" id="en_icon"></span></div>
                                                 </div>
                                                 <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" placeholder="Email"
                                                 value="{{ old('email') }}" id="email">
@@ -95,13 +95,13 @@
                                                 <div class="input-group-append">
                                                     <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                                 </div>
-                                                <input type="password" class="form-control" name="password" placeholder="Password"  id="password">
+                                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password"  id="password">
                                             </div>
                                             @error('password')
-                                            <span class="invalid-feedback" role="alert" id="alert-message">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                                <span class="invalid-feedback" role="alert" id="alert-message">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                         <div class="col-12 mb-1">
                                             <label>Confirm Password<span class="text-danger">*</span></label>
@@ -168,7 +168,7 @@ $(function () {
 $(document).ready(function(){
 
 $('form').on('submit',function(){
-    $('.register-box').css('opacity','0.1');
+    $('.rounded').css('opacity','0.1');
     $('.middle').css('opacity','1');
 });
 
@@ -187,11 +187,8 @@ if(!filter.test(email))
 $('#en_icon').removeClass('text-success');
 $('#en_icon').removeClass('text-warning');
 $('#en_icon').addClass('text-danger');
-$('#en_icon').attr('data-title', 'Invalid Email');
-$('#en_icon').tooltip('option','show');
-    setTimeout(function(){
-        $('[data-toggle="tooltip"]').tooltip('option','hide');
-    }, 5000);
+$('#en_icon').attr('title', 'Invalid Email');
+   
 
 }
 else
@@ -202,27 +199,31 @@ method:"POST",
 data:{email:email, _token:_token},
 success:function(result)
 {
+    $("#en_icon").tooltip({
+        track: true,
+    });
+
     if(result == 'unique')
     {
     $('#en_icon').removeClass('text-danger');
     $('#en_icon').removeClass('text-warning');
     $('#en_icon').addClass('text-success');
-    $('#en_icon').attr('data-original-title', 'Email Available');
-    $('#en_icon').tooltip('option','show');
-        setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('option','hide');
-        }, 5000);
+    $('#en_icon').attr('title', 'Email Available');
+    $( "#en_icon" ).tooltip({
+        show: { effect: "blind", duration: 800 }
+    }); 
+
     }
     else
     {
     $('#en_icon').removeClass('text-danger');
     $('#en_icon').removeClass('text-success');
     $('#en_icon').addClass('text-warning');
-    $('#en_icon').attr('data-original-title', 'Email Already taken');
-    $('#en_icon').tooltip('option','show');
-        setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('option','hide');
-        }, 5000);
+    $('#en_icon').attr('title', 'Email Already taken');
+    $( "#en_icon" ).tooltip({
+        show: { effect: "blind", duration: 800 }
+    });  
+        
 
     }
 }
@@ -243,29 +244,28 @@ $("#username").blur(function(){
             data:{username:username, _token:_token},
             success:function(result)
             {
+                $("#uc_icon").tooltip({
+                    track: true,
+                });
                 if(result == 'unique')
                 {
                 $('#uc_icon').removeClass('text-danger');
                 $('#uc_icon').removeClass('text-warning');
                 $('#uc_icon').addClass('text-success');
-                $('#uc_icon').attr('data-original-title', 'Username available');
-                $('#uc_icon').tooltip('option','show');
-                setTimeout(function(){
-                    $('[data-toggle="tooltip"]').tooltip('option','hide');
-                }, 5000);
-                
+                $('#uc_icon').attr('title', 'Username available');
+                $( "#uc_icon" ).tooltip({
+                    show: { effect: "blind", duration: 800 }
+                });               
                 }
                 else
                 {
                 $('#uc_icon').removeClass('text-danger');
                 $('#uc_icon').removeClass('text-success');
                 $('#uc_icon').addClass('text-warning');
-                $('#uc_icon').attr('data-original-title', 'Username Already taken');
-                $('#uc_icon').tooltip('show');
-                setTimeout(function(){
-                    $('[data-toggle="tooltip"]').tooltip('option','hide');
-                }, 5000);
-
+                $('#uc_icon').attr('title', 'Username Already taken');
+                $( "#uc_icon" ).tooltip({
+                    show: { effect: "blind", duration: 800 }
+                });                
                 }
             }
         });
@@ -274,13 +274,10 @@ $("#username").blur(function(){
         $('#uc_icon').removeClass('text-success');
         $('#uc_icon').removeClass('text-warning');
         $('#uc_icon').addClass('text-danger');
-        $('#uc_icon').attr('data-original-title', 'Username must have at leat 5 characters');
-        $('#uc_icon').removeProp('data-original-title');
-        $('#uc_icon').tooltip('show');
-        setTimeout(function(){
-            $('[data-toggle="tooltip"]').tooltip('option','hide');
-        }, 5000);
-
+        $('#uc_icon').attr('title', 'Username must have at leat 5 characters');
+        $( "#uc_icon" ).tooltip({
+            show: { effect: "blind", duration: 800 }
+        });      
     }
 });
 

@@ -45,11 +45,14 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($data['patientData'] as $row)
-                                        <tr>
-                                            <td>{{ $row->name }}<span class="text-muted small float-right"></span>&nbsp;&nbsp;&nbsp;
+                                        <tr id="patient_row_{{$row->id}}">
+                                            <?php
+                                                $date = $row->updated_at->diffForHumans();
+                                                echo "<td>".$row->name."<span class='text-muted small float-right'>".$date."</span>&nbsp;&nbsp;&nbsp;";
+                                            ?>
                                                 @if($row->gender ==1)
                                                 <i class="fas fa-male fa-lg" style="color:blue;"></i> 
-                                           @else
+                                            @else
                                                 <i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>
                                             @endif
                                             </td>
@@ -102,8 +105,6 @@
                                                         <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
                                                     </a>
                                                 @endif
-
-
 
                                                 @elseif($data['role'] == 1 || $data['role'] == 5)
 
@@ -207,10 +208,9 @@
             url: '/clinic-system/updateStatus',
             data: { status: p_status, patient_id: patient_id, receiver_id: receiver_id }
         }).done(function( response ) {
-            alert(response);
             if(response == 'changed')
             {
-                $("#card_waiting"+patient_id).slideUp();
+                $("#patient_row_"+patient_id).remove();
                 $('#myModal').modal('hide');
             }else{
                 alert("Something Went Wrong");
