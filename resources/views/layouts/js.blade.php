@@ -72,7 +72,9 @@
       $('form').on('submit',function(){
         $('.wrapper').css('opacity','0.1');
         $('.middle').css('opacity','1');
-      })
+      });
+
+        
 
         setInterval(function()
         {

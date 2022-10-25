@@ -48,7 +48,10 @@ class ClinicController extends Controller
 
             try {
                 $clinic_id = Crypt::decrypt($request->code);
+                $clinic_name = Clinic::where('id', $clinic_id)->value('name');
+    
                 session()->put('cc_id', $clinic_id);
+                session()->put('cc_name', $clinic_name);
             } catch (DecryptException $e) {
                 abort(404);
             }

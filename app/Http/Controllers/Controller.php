@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Role;
 use App\Models\Notification;
+use App\Models\UserClinic;
+use App\Models\Clinic;
 
 
 use App\Helpers\Helper;
@@ -43,7 +45,24 @@ class Controller extends BaseController
             $this->permissions = $permissions;
             $this->role_type = $role_type;
 
-            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications]);
+            $clinic_data = UserClinic::where('user_id', Auth::guard('user')->user()['id'])->get();
+
+             if(!$clinic_data->isEmpty())
+                {
+                    foreach($clinic_data as $clinic)
+                    {
+                        $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
+                    }
+
+                view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
+
+
+                }else{
+
+                    return view('user/home')->with('data',['clinic' => 0]);
+
+                }
+
 
             }
             

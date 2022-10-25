@@ -8,7 +8,7 @@
                     <div class="row">
                         <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: {{config('app.color')}}">
                             <div class="form-right  h-100  text-white text-center pt-5">
-                                <img src="{{ asset('images/logo3.png') }}" class="brand-image"  >
+                                <img src="{{ asset('images/web-photos/aung-myin.png') }}" class="brand-image"  >
                                 <h2 class="fs-1">Aung Myin</h2>
                                 <p class="fs-1">Clinic Manager</p>
                             </div>

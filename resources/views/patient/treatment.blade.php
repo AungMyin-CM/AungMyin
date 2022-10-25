@@ -458,7 +458,6 @@
             url: '/clinic-system/copy-data',
             data: { id: id},
         beforeSend: function(){
-            console.log("HEllo");
             $('.c-field').attr('style','opacity:0.1');
         },
         success: function( response ) {
