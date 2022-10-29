@@ -124,14 +124,18 @@
                                     
                                    
                                 </div>
-                                <div class="row mb-2">
-                                   
+                                <div class="row mb-2">                         
                                     <div class="col-sm-12">
                                         <h6><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
                                     </div>
-                                   
-                                </div>
+                                   <div  style="position: absolute; right : 1px ;bottom :10px">
+                                    @if(Helper::checkPermission('p_update', $permissions))
 
+                                    <a href="{{ route('patient.edit' ,  Crypt::encrypt($data['patient']['id'])) }}" style="margin:10px; color: {{config('app.color')}}">
+                                    <i class="fas fa-edit fa-lg"></i></a>@endif
+                                   </div>
+                                </div>
+      
                             </div>
 
                         </div>

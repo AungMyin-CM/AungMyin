@@ -7,16 +7,22 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            <li class="nav-item" style="margin-top: 8px;"> Hello Dr. @if(Auth::guard('user')->user()){{ Auth::guard('user')->user()['name'] }} @endif
-            </li>
+            {{-- <li class="nav-item" style="margin-top: 8px;"> Hello Dr. @if(Auth::guard('user')->user()){{ Auth::guard('user')->user()['name'] }} @endif
+            </li> --}}
         </ul>
-
-        <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->
-            <li class="nav-item" style="margin-top: 8px; color:#0077B6">
-                <span id="time"> 
+            <li class="nav-item row" style="margin-top: 8px; color:#0077B6">
+                <div id="time"> </div> &nbsp;
+                <div class="clock">
+                    <div class="display"></div>
+                </div>
+             
             </li>
+        </ul>
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell noti-icon" id="noti-icon"></i>
@@ -61,9 +67,34 @@
         var year = datetime.getFullYear();
         document.getElementById("time").textContent = date+" " + month +" " + year +", " + day;
 
-        $('#logout_btn').click(function(){ 
-   $('#logout').submit();
-});
-
+    setInterval(function(){
+        const clock = document.querySelector(".display");
+        let time = new Date();
+        let sec = time.getSeconds();
+        let min = time.getMinutes();
+        let hr = time.getHours();
+        let day = 'AM';
+        if(hr > 12){
+          day = 'PM';
+          hr = hr - 12;
+        }
+        if(hr == 0){
+          hr = 12;
+        }
+        if(sec < 10){
+          sec = '0' + sec;
+        }
+        if(min < 10){
+          min = '0' + min;
+        }
+        if(hr < 10){
+          hr = '0' + hr;
+        }
+        clock.textContent = hr + ':' + min + ':' + sec + " " + day;
+      });
+      
+      $('#logout_btn').click(function(){ 
+         $('#logout').submit();
+        });
         </script>
 @endif

@@ -85,7 +85,7 @@
                                 <a href="{{ route('dictionary.index') }}" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>
-                                        Dictionary
+                                        Shorthand
                                     </p>
                                 </a>
 

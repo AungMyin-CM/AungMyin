@@ -7,8 +7,8 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-8 center-screen">
-                            <h1>{{Str::title('Welcome')}}</h1><br>
-
+                        
+                            <h1>{{Str::title($data['name'].' Clinic')}}</h1><br>
                             <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
                                 <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['id'] }}" >
