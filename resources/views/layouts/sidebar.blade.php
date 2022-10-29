@@ -14,7 +14,7 @@
                         
                         <select class="form-control" name="u_clinics" id="u_clinics">
                             @foreach($user_clinics as $u_c)
-                                <option value="{{$u_c[0]['id']}}">{{ Str::title($u_c[0]['name']) }}
+                                <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }}
                                 </option>
                             @endforeach
                         </select>

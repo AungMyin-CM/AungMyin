@@ -74,6 +74,21 @@
         $('.middle').css('opacity','1');
       });
 
+
+      $("#u_clinics").change(function(){
+        var id = this.value;
+        
+        $.ajax({
+            type: "GET",
+            url: '/clinic-system/'+id,
+            data: {code :id},
+        }).done(function( response ) {
+           
+            window.location = '/clinic-system/'+id;
+            
+        });
+      })
+
         
 
         setInterval(function()
