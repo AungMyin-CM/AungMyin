@@ -4,9 +4,9 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
-                <section class="content-header">
-                    <div class="container-fluid">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
+             <section class="content-header">
+                   {{--     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-3">
                                 <h1>Register Form</h1>
@@ -26,19 +26,19 @@
                             </div>
                         </div>
                         
-                    </div><!-- /.container-fluid -->
+                    </div><!-- /.container-fluid --> --}}
                 </section>
 
-                <form id="form-user">
+                <form id="form-user" >
                     @csrf
-                    <section class="content">
+                    <section class="content" >
                         <div class="container-fluid">
                             <div class="row">
                                 <!-- left column -->
                                 <div class="col-md-6">
                                     <!-- general form elements -->
-                                    <div class="card card-primary">
-                                        <div class="card-header"  style="  background-color:{{config('app.color')}}">
+                                    <div class="card card-primary" >
+                                        <div class="card-header"  style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
                                            

@@ -4,9 +4,9 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <section class="content-header">
-                    <div class="container-fluid">
+                    {{-- <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <h1>Register Form</h1>
@@ -18,7 +18,7 @@
                                 </ol>
                             </div>
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div><!-- /.container-fluid --> --}}
                 </section>
 
                 <form action="{{ route('user.update', $user->id) }}" method="POST">
@@ -31,7 +31,7 @@
                                 <div class="col-md-6">
                                     <!-- general form elements -->
                                     <div class="card card-primary">
-                                        <div class="card-header" style=" background-color: #0077B6">
+                                        <div class="card-header" style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
                                         @if ($errors->any())
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header" style=" background-color: #0077B6">
+                                        <div class="card-header" style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Permissions</h3>
                                         </div>
                                         <div class="card-body">
@@ -366,7 +366,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right" style=" background-color: #0077B6">Submit</button>
+                                            <button type="submit" class="btn btn-primary float-right"  style="background-color:{{config('app.color')}}">Submit</button>
                                         </div>
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->

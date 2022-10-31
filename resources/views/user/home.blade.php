@@ -7,9 +7,9 @@
     }
 
 </style>
-<body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper" id="mydiv">
-        <div class="content-wrapper">
+<body class="hold-transition sidebar-mini layout-fixed" style="background-color: {{config('app.bg_color')}}">
+    <div class="wrapper" id="mydiv" >
+        <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <section class="content">
                     <div class="container-fluid">
                         <div class="container py-5 row">
@@ -91,4 +91,5 @@
         </div>
     </div>
 </body>
+
 @endsection

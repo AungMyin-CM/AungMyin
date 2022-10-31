@@ -3,7 +3,7 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <div class="container-fluid">
@@ -36,14 +36,14 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <div class="card">
+                                <div class="card" >
                                     <!-- /.card-header -->
                                     <div class="card-header">
                                         <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                                 class="fas fa-plus"></i> Add new</a>
                                     </div>
                                     <div class="card-body">
-                                        <table id="example2" class="table table-bordered table-hover">
+                                        <table id="example2" class="table table-bordered table-hover" >
                                             <thead>
                                                 <tr>
                                                     <th>Name</th>

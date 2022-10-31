@@ -4,13 +4,13 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <form method="post" action="{{ route('patient.update', $patient->id) }}" >
                     @csrf
                     @method('PATCH')
 
                     <section class="content-header">
-                        <div class="container-fluid">
+                        {{-- <div class="container-fluid">
                             <div class="row mb-2">
                                 <div class="col-sm-6">
                                     <h1>Patient Form</h1>
@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             
-                        </div><!-- /.container-fluid -->
+                        </div><!-- /.container-fluid --> --}}
                     </section>
                     <section class="content">
                         <div class="container-fluid">
