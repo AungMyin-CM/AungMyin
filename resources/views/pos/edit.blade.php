@@ -3,7 +3,7 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper" style="background:#fff !important;">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
               
                 <!-- Content Header (Page header) -->
                 <section class="content-header">

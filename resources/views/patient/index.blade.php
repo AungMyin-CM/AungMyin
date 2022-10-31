@@ -3,10 +3,10 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
-                    <div class="container-fluid">
+                    {{-- <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <h1>Patients</h1>
@@ -18,7 +18,7 @@
                                 </ol>
                             </div>
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div><!-- /.container-fluid --> --}}
                 </section>
                 @if (Session::has('success'))
                     <div class="col-md-6">

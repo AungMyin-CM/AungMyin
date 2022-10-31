@@ -86,6 +86,8 @@ return [
 
     'secondary_color' => '#FFFFFF',
 
+    'bg_color' => '#fdfaf0',
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale

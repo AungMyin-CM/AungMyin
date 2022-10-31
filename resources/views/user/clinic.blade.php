@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" style="background-color: {{config('app.bg_color')}}>
     <div class="wrapper" id="mydiv">
-        <div class="content-wrapper">
+        <div class="content-wrapper"  style="background-color: {{config('app.bg_color')}} !important">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -147,6 +147,7 @@
 
 <script>
     $(document).ready(function(){
+        
         $('#dat').DataTable({
             dom: 'Bfrtip',
             buttons: [],
@@ -154,6 +155,9 @@
              paging: false,
              info: false
         });
+        $(document).ready(function(){
+   $('.middle').css('opacity','0');
+     });
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
