@@ -12,9 +12,11 @@
                     <div class="info d-flex">
                         <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" />
                         
-                        <select class="form-control" name="u_clinics" id="u_clinics">
+                        <select class="form-control " name="u_clinics" id="u_clinics">                          
                             @foreach($user_clinics as $u_c)
-                                <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }}
+                                {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
+                                <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
+                                    {{ Str::title($u_c[0]['name']) }}
                                 </option>
                             @endforeach
                         </select>
@@ -62,7 +64,7 @@
                                 <a href="{{ route('user.home') }}" class="nav-link">
                                     <i class="nav-icon fas fa-home"></i>
                                     <p>
-                                        Dashboard
+                                        Home
                                     </p>
                                 </a>
                                 @endif
@@ -105,7 +107,7 @@
                                     <a href="{{ route('dictionary.index') }}" class="nav-link">
                                         <i class="nav-icon fas fa-book"></i>
                                         <p>
-                                            Dictionary
+                                            Shorthand
                                         </p>
                                     </a>
 
@@ -151,11 +153,11 @@
                                 </p>
                             </a>
                         </li> --}}
-
+{{-- 
                         <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
-                        </li>
+                        </li> --}}
                     @endif
                     {{-- <li class="nav-item">
                         @if (Auth::guard('user')->user())
@@ -175,4 +177,22 @@
         </div>
     </aside>
 @endauth
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
+
+<script>
+    $(document).ready(function(){
+        
+        var someSession ={{ Session::get('cc_id') }}
+        $('select option[name='+someSession+']').attr('selected', true);
+        $("#u_clinics").change(function() {
+    var $option = $(this).find(':selected');
+    var url = $option.val();
+    if (url != "") {  
+      window.location.href = url;
+    }
+  });
+    });
+
+</script>
 @endif
