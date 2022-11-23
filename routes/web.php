@@ -127,8 +127,6 @@ Route::post('user-register',[UserController::class, 'register'])->name('user.reg
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
-// Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
-
 Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback',[FeedBackController::class, 'create'])->name('feedback.create');

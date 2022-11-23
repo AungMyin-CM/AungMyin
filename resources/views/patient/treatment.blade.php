@@ -157,73 +157,77 @@
                                             <h3 class="card-title">Patient Treatment</h3>
                                         </div>
                                        
-                                        <div class="card-body"> 
-                                            @foreach ($data['visit'] as $row)
-                                                <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
-                                                    <div class="card-header border-0">
-                                                        <h3 class="card-title" title="{{$row['update_at']}}">{{ $row['updated_at']->diffForHumans() }}</h3>
-                                                        <div class="card-tools">
-                                                            <a class="btn btn-sm btn-tool">
-                                                                <i class="fas fa-copy" style="color:black;" onclick="copyData({{$row['id']}})"></i>
-                                                            </a>
-                                                            <a class="btn btn-sm btn-tool">
-                                                                <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row['id']}})"></i>
-                                                            </a>
-                                                        </div><br/>
+                                        <div class="card-body">
+                                            @if($data['visit']->isEmpty() != 1)
+                                                @foreach ($data['visit'] as $row)
+                                                    <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
+                                                        <div class="card-header border-0">
+                                                            <h3 class="card-title" title="{{$row['update_at']}}">{{ $row['updated_at']->diffForHumans() }}</h3>
+                                                            <div class="card-tools">
+                                                                <a class="btn btn-sm btn-tool">
+                                                                    <i class="fas fa-copy" style="color:black;" onclick="copyData({{$row['id']}})"></i>
+                                                                </a>
+                                                                <a class="btn btn-sm btn-tool">
+                                                                    <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row['id']}})"></i>
+                                                                </a>
+                                                            </div><br/>
 
-                                                        <ul>
-                                                            @if($row['prescription'] != '')
-                                                                <li><?php echo Str::limit($row['prescription'], $limit = 100, $end = '...') ;?></li>
-                                                            @endif
+                                                            <ul>
+                                                                @if($row['prescription'] != '')
+                                                                    <li><?php echo Str::limit($row['prescription'], $limit = 100, $end = '...') ;?></li>
+                                                                @endif
 
-                                                            @if($row['diag'] != '')
-                                                                <li>{{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
-                                                            @endif
+                                                                @if($row['diag'] != '')
+                                                                    <li>{{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
 
-                                                            @if($row['investigation'] != '')
-                                                                <li>{{ Str::limit($row['investigation'], $limit = 100, $end = '...') }}</li>
-                                                            @endif
+                                                                @if($row['investigation'] != '')
+                                                                    <li>{{ Str::limit($row['investigation'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
 
-                                                            @if($row['procedure'] != '')
-                                                                <li>{{ Str::limit($row['procedure'], $limit = 100, $end = '...') }}</li>
-                                                            @endif
+                                                                @if($row['procedure'] != '')
+                                                                    <li>{{ Str::limit($row['procedure'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
 
-                                                
-                                                        </ul>
+                                                    
+                                                            </ul>
 
-                                                        <div class="float-left">
-                                                            <small>Fees:</small>  {{ $row['fees'] }}
-                                                            <input type="hidden" name="code" value="{{ $data['patient']['code'] }}" >
-                                                        </div>
-                                                        @if($row['is_followup'] == '1')
-                                                            <div class="float-right">
-                                                                <small>follow up: {{ date('d-m-Y', strtotime($row['followup_date'])) }}</small>  
+                                                            <div class="float-left">
+                                                                <small>Fees:</small>  {{ $row['fees'] }}
+                                                                <input type="hidden" name="code" value="{{ $data['patient']['code'] }}" >
                                                             </div>
-                                                        @endif
-                                                        
-                                                    </div>
-                                                    <div class="card-footer">
-                                                        <div class="row">
-                                                            <?php
-                                                                $images_r = substr($row['images'],1,-1);
-
-                                                                $images = explode(",", $images_r);
-
-                                                                for($i=0; $i < count($images); $i++){
-                                                                    if($images[$i] != ''){
-                                                                        // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
-                                                                        echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
-                                                                    }
-                                                                }
-                                                                
-                                                            ?>
-                                                          
-
+                                                            @if($row['is_followup'] == '1')
+                                                                <div class="float-right">
+                                                                    <small>follow up: {{ date('d-m-Y', strtotime($row['followup_date'])) }}</small>  
+                                                                </div>
+                                                            @endif
                                                             
                                                         </div>
+                                                        <div class="card-footer">
+                                                            <div class="row">
+                                                                <?php
+                                                                    $images_r = substr($row['images'],1,-1);
+
+                                                                    $images = explode(",", $images_r);
+
+                                                                    for($i=0; $i < count($images); $i++){
+                                                                        if($images[$i] != ''){
+                                                                            // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
+                                                                            echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                                                                        }
+                                                                    }
+                                                                    
+                                                                ?>
+                                                            
+
+                                                                
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            @endforeach
+                                                @endforeach
+                                            @else
+                                                    <p class="text-center">No records yet.</p>
+                                            @endif
                                         </div>
                                     </div>
 

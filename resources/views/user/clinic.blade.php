@@ -15,14 +15,15 @@
                                 <div class="input-group-append">
                                     <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
+                                <div id="patientList" class="search-get-results" style="display:none;">
+                                </div>
                             </div>
 
                             @if($errors->any())
                                 {!! implode('', $errors->all('<div>:message</div>')) !!}
                             @endif
 
-                            <div id="patientList" class="search-get-results" style="display:none;">
-                            </div>
+                          
                             {{ csrf_field() }}
                         </div>
                     </div>
@@ -47,7 +48,7 @@
                                     @foreach ($data['patientData'] as $row)
                                         <tr id="patient_row_{{$row->id}}">
                                             <?php
-                                                $date = $row->updated_at->diffForHumans();
+                                                $date = \Carbon\Carbon::parse($row->updated_at)->diffForHumans();
                                                 echo "<td>".$row->name."<span class='text-muted small float-right'>".$date."</span>&nbsp;&nbsp;&nbsp;";
                                             ?>
                                                 @if($row->gender ==1)
