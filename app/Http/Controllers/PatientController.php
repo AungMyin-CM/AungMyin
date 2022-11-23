@@ -118,7 +118,7 @@ class PatientController extends Controller
                     'followup_date' => $request->followup_date
                 ]);
             }
-            NoticeEvent::dispatch("New Patient Entry!!", "1_33");
+            NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $user_id);
             return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
