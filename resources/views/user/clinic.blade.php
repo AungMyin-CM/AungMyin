@@ -5,6 +5,25 @@
         <div class="content-wrapper"  style="background-color: {{config('app.bg_color')}} !important">
             <section class="content">
                 <div class="container-fluid">
+                    <a href="#" class="btn btn-sm btn-tool"  id="myModalBtn"  onclick="openVideo()" >
+                        <i class="fas fa-play fa-lg" style="color:blue;"></i>
+                    </a>
+    
+                                   <div class="modal fade" id="myModal2" role="dialog">
+                                    <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <iframe width="420" height="315" src="https://www.youtube.com/embed/cw21m2S5PXQ" frameborder="0" allowfullscreen autoplay></iframe>
+                                                </div>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
                     <div class="row">
                         <div class="col-md-8 center-screen">
                         
@@ -254,6 +273,11 @@
 
             })
         });
+    }
+    function openVideo(){
+        $('#myModal2').modal({
+                        backdrop: 'static',
+                    });    
     }
 </script>
 @endsection
