@@ -28,6 +28,15 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('ph_create', $permissions))
                                         <div class="card-header">
+                                            <span data-href="/clinic-system/exportMedCSV" id="export" class="btn btn-success btn-sm" onclick ="exportTasks(event.target);">Export</span>
+                                            <input type="file"   name= "flie" id="fileUpload" accept=".csv"  hidden/>
+                                            <label class="file_upload" for="fileUpload" 
+                                            class="btn btn-success btn-sm"
+                                            style="background: {{config('app.color')}};
+                                            color:white;
+                                            padding: 5px;
+                                            border-radius: 5px;
+                                            cursor: pointer;">Import</label>
                                             <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
@@ -92,6 +101,22 @@
             </div>
         </div>
     </body>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
+
+    <script>
+  $('#fileUpload').change(function (e) {
+
+            console.log(e.target.files[0])
+ 
+        });
+
+
+        function exportTasks(_this) {
+            let _url = $(_this).data('href');
+            window.location.href = _url;
+            }
+    </script>
 @endsection
 
        

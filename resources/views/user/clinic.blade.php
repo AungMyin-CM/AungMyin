@@ -1,29 +1,26 @@
 @extends('layouts.app')
 @section('content')
-<body class="hold-transition sidebar-mini layout-fixed" style="background-color: {{config('app.bg_color')}}>
+<body class="hold-transition sidebar-mini layout-fixed" style="background-color: {{config('app.bg_color')}}">
     <div class="wrapper" id="mydiv">
         <div class="content-wrapper"  style="background-color: {{config('app.bg_color')}} !important">
             <section class="content">
                 <div class="container-fluid">
-                    <a href="#" class="btn btn-sm btn-tool"  id="myModalBtn"  onclick="openVideo()" >
-                        <i class="fas fa-play fa-lg" style="color:blue;"></i>
+                    <a href="#" class="btn btn-sm btn-tool mt-1 float-right" title="play" id="myModalBtn"  onclick="openVideo()" >
+                        <i class="fas fa-play fa-lg" style="color:{{config('app.color')}}"></i>
+                        <p style="color:{{config('app.color')}}">How to?</p>
                     </a>
-    
-                                   <div class="modal fade" id="myModal2" role="dialog">
-                                    <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <iframe width="420" height="315" src="https://www.youtube.com/embed/cw21m2S5PXQ" frameborder="0" allowfullscreen autoplay></iframe>
-                                                </div>
-                                            </div>
-                                            <!-- /.modal-content -->
-                                        </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <!-- /.modal -->
+                    <div class="modal fade" id="myModal2" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe width="420" height="315" src="https://www.youtube.com/embed/cw21m2S5PXQ" frameborder="0" allowfullscreen autoplay></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-8 center-screen">
                         
@@ -66,8 +63,8 @@
                                     @foreach ($data['patientData'] as $row)
                                         <tr id="patient_row_{{$row->id}}">
                                             <?php
-                                                $date = $row->updated_at->diffForHumans();
-                                                echo "<td>".$row->name."<span class='text-muted small float-right'>".$date."</span>&nbsp;&nbsp;&nbsp;";
+                                             //  $date = $row->updated_at->diffForHumans();
+                                               echo "<td>".$row->name."<span class='text-muted small float-right'>". $row->updated_at."</span>&nbsp;&nbsp;&nbsp;";
                                             ?>
                                                 @if($row->gender ==1)
                                                 <i class="fas fa-male fa-lg" style="color:blue;"></i> 
@@ -231,13 +228,15 @@
             url: '/clinic-system/updateStatus',
             data: { status: p_status, patient_id: patient_id, receiver_id: receiver_id }
         }).done(function( response ) {
+            alert(response);
             if(response == 'changed')
             {
                 $("#patient_row_"+patient_id).remove();
-                $('#myModal').modal('hide');
+               
             }else{
                 alert("Something Went Wrong");
             }
+            $('#myModal').modal('hide');
         });
     };
 

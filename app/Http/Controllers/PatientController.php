@@ -118,7 +118,7 @@ class PatientController extends Controller
                     'followup_date' => $request->followup_date
                 ]);
             }
-            NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $user_id);
+
             return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
@@ -257,17 +257,19 @@ class PatientController extends Controller
 
         if ($action != 'no-action') {
 
-
+            $clinic_id = session()->get('cc_id');
             foreach ($receiver_ids as $rd) {
 
-                Notification::create([
-                    'sender_id' => $user_id,
-                    'receiver_id' => $rd->user_id,
-                    'clinic_id' => session()->get('cc_id'),
-                    'patient_id' => $id,
-                    'is_sent' => '1',
-                    'action_on_sent' => $action
-                ]);
+                // Notification::create([
+                //     'sender_id' => $user_id,
+                //     'receiver_id' => $rd->user_id,
+                //     'clinic_id' => session()->get('cc_id'),
+                //     'patient_id' => $id,
+                //     'is_sent' => '1',
+                //     'action_on_sent' => $action
+                // ]);
+
+                NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" .  $rd->user_id);
             }
         }
 
@@ -359,14 +361,17 @@ class PatientController extends Controller
                     ]);
                 }
 
-                Notification::create([
-                    'sender_id' => $user_id,
-                    'receiver_id' => $receiver_id,
-                    'clinic_id' => session()->get('cc_id'),
-                    'patient_id' => $patient_id,
-                    'is_sent' => '1',
-                    'action_on_sent' => $action,
-                ]);
+                $clinic_id = session()->get('cc_id');
+
+                NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
+                // Notification::create([
+                //     'sender_id' => $user_id,
+                //     'receiver_id' => $receiver_id,
+                //     'clinic_id' => session()->get('cc_id'),
+                //     'patient_id' => $patient_id,
+                //     'is_sent' => '1',
+                //     'action_on_sent' => $action,
+                // ]);
             }
 
 
