@@ -49,7 +49,7 @@ class ClinicController extends Controller
             try {
                 $clinic_id = Crypt::decrypt($request->code);
                 $clinic_name = Clinic::where('id', $clinic_id)->value('name');
-    
+
                 session()->put('cc_id', $clinic_id);
                 session()->put('cc_name', $clinic_name);
             } catch (DecryptException $e) {
@@ -59,7 +59,7 @@ class ClinicController extends Controller
             $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
             $clinic_name = Clinic::where('id', $clinic_id)->value('name');
             $user_id = Auth::guard('user')->user()['id'];
-            $available_doctors = DB::table('user')->select('role_id')->join('role','role.id', '=', 'user.role_id')->join('user_clinic','user_clinic.user_id','=','user.id')->where('role.role_type','1')->where('user_clinic.clinic_id',$clinic_id)->count();
+            $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
             $now = new Carbon;
 
             if ($role->role_type == 2 || $role->role_type == 5) {
@@ -71,12 +71,10 @@ class ClinicController extends Controller
                     ->where('status', 1)->get();
             } elseif ($role->role_type == 1 || $role->role_type == 5) {
 
-               
-                $patientData = DB::table('patient')->select('*')->join('patient_doctor','patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id',Auth::user()->id )
-                ->where('patient.updated_at', '>=', $now->format('ymd'))
-                ->where('patient.status', 1)->get();
 
-
+                $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
+                    ->where('patient.updated_at', '>=', $now->format('ymd'))
+                    ->where('patient.status', 2)->get();
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
@@ -89,7 +87,7 @@ class ClinicController extends Controller
             return view('user/clinic')->with('data', ['patientData' => $patientData, 'role' => $role->role_type, 'a_doctors' => $available_doctors, 'name' => $clinic_name]);
         } else {
 
-            return view('user/clinic')->with('data', ['patientData' => 0,'name' => $clinic_name]);
+            return view('user/clinic')->with('data', ['patientData' => 0, 'name' => $clinic_name]);
         }
     }
 
@@ -101,11 +99,12 @@ class ClinicController extends Controller
         $package = Package::find($request->package_id)->first();
 
         $permissions = [
-        "p_view","p_create","p_update","p_delete","p_treatment",
-        "d_view","d_create","d_update","d_delete",
-        "ph_view","ph_create","ph_update","ph_delete",
-        "pos_view","pos_create","pos_update","pos_delete",
-        "user_view","user_create","user_update","user_delete"];
+            "p_view", "p_create", "p_update", "p_delete", "p_treatment",
+            "d_view", "d_create", "d_update", "d_delete",
+            "ph_view", "ph_create", "ph_update", "ph_delete",
+            "pos_view", "pos_create", "pos_update", "pos_delete",
+            "user_view", "user_create", "user_update", "user_delete"
+        ];
 
         $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
@@ -255,7 +254,7 @@ class ClinicController extends Controller
         $origin_password = User::where('id', $id)->pluck('password');
         $role_id = User::where('id', $id)->pluck('role_id');
 
-        $role_id = Role::where('id',$role_id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
+        $role_id = Role::where('id', $role_id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
 
         $requests = [
             'name' => $request->name,
@@ -325,21 +324,20 @@ class ClinicController extends Controller
 
     public function fetchDoctors()
     {
-       
-        if(session()->has('cc_id')){
-            $available_doctors = DB::table('user')->select('*')->join('role','role.id', '=', 'user.role_id')->join('user_clinic','user_clinic.user_id','=','user.id')->where('role.role_type','1')->where('user_clinic.clinic_id',session()->get('cc_id'))->get();
 
-                if(count($available_doctors) > 0 ){
-                    foreach($available_doctors as $d)
-                    {
-                        $data[] = ['id' => $d->user_id,'name' => $d->name, 
-                                'speciality' => $d->speciality] ;
-                    }
-                    return Response::json($data);
+        if (session()->has('cc_id')) {
+            $available_doctors = DB::table('user')->select('*')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', session()->get('cc_id'))->get();
 
+            if (count($available_doctors) > 0) {
+                foreach ($available_doctors as $d) {
+                    $data[] = [
+                        'id' => $d->user_id, 'name' => $d->name,
+                        'speciality' => $d->speciality
+                    ];
                 }
-                
-        }else{
+                return Response::json($data);
+            }
+        } else {
             return Response::json('no-session');
         }
     }
@@ -356,6 +354,4 @@ class ClinicController extends Controller
 
         return $patient_code;
     }
-
-
 }

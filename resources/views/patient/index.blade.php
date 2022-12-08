@@ -40,6 +40,7 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('p_create', $permissions))
                                         <div class="card-header">
+                                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm" onclick ="exportTasks(event.target);">Export</span>
                                             <a href="{{ route('patient.create') }}" class="btn float-right" style= "color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>
@@ -106,6 +107,15 @@
             </div>
         </div>
     </body>
+        <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
+
+        <script>
+            function exportTasks(_this) {
+                let _url = $(_this).data('href');
+                window.location.href = _url;
+                }
+        </script>
 @endsection
 
        
