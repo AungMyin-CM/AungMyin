@@ -497,30 +497,10 @@ class PatientController extends Controller
                 return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
             }
             for ($i = 1; $i < count($importData); $i++) {
-                if (array_count_values($importData[$i]) < 12) {
+                if (array_count_values($importData[$i]) < 8) {
                     return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
                 }
-                // $reference = str_replace(' ', '_', $importData[$i][1]) . "_" . $importData[$i][0] . "_" . str_replace(' ', '_', $importData[$i][3]);
-                // $time = strtotime($importData[$i][2]);
-                // $expDate = date('Y-m-d', $time);
-                // $pharmacy = new Pharmacy();
-                // $pharmacy->create([
-                //     'code' => $importData[$i][0],
-                //     'user_id' => $user_id,
-                //     'clinic_id' => $clinic_id,
-                //     'name' => $importData[$i][1],
-                //     'expire_date' => $expDate,
-                //     'quantity' => $importData[$i][3],
-                //     'act_price' => $importData[$i][4],
-                //     'margin' => $importData[$i][5],
-                //     'sell_price' => $importData[$i][6],
-                //     'unit' => $importData[$i][7],
-                //     'description' => $importData[$i][8],
-                //     'vendor' => $importData[$i][9],
-                //     'vendor_phoneNumber' => $importData[$i][10],
-                //     'storage_place' => $importData[$i][11],
-                //     'Ref' => $reference
-                // ]);
+
                 $patient = new Patient();
 
                 $code = $this->codeGenerator();
