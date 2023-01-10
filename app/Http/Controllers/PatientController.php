@@ -502,11 +502,11 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             if (count($importData) <= 1) {
-                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
+                return redirect('clinic-system/patient')->with('error', 'Empty CSV');
             }
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
-                    return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
+                    return redirect('clinic-system/patient')->with('error', 'Invalid CSV');
                 }
 
                 $patient = new Patient();
