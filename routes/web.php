@@ -13,6 +13,7 @@ use App\Http\Controllers\FeedBackController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -106,6 +107,9 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('/exportPatientCSV', [DataController::class, 'exportPatientCSV']);
     Route::get('/exportMedCSV', [DataController::class, 'exportMedCSV']);
+
+    Route::post('/pharmacy', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
+    Route::post('/patient', [PatientController::class, 'patientImport'])->name('patient.import');
 });
 
 Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {

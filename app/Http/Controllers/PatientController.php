@@ -476,4 +476,78 @@ class PatientController extends Controller
 
         return $image_name;
     }
+    public  function patientImport(Request $request)
+    {
+        $importData = [];
+        if ($request->hasfile('importFile')) {
+
+            $file = $request->file('importFile');
+            if (($open = fopen($file, "r")) !== FALSE) {
+
+                while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+                    $importData[] = $data;
+                }
+
+                fclose($open);
+            }
+
+            $clinic_id = session()->get('cc_id');
+            $user_id = Auth::guard('user')->user()['id'];
+            if (count($importData) <= 1) {
+                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
+            }
+            for ($i = 1; $i < count($importData); $i++) {
+                if (array_count_values($importData[$i]) < 12) {
+                    return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
+                }
+                // $reference = str_replace(' ', '_', $importData[$i][1]) . "_" . $importData[$i][0] . "_" . str_replace(' ', '_', $importData[$i][3]);
+                // $time = strtotime($importData[$i][2]);
+                // $expDate = date('Y-m-d', $time);
+                // $pharmacy = new Pharmacy();
+                // $pharmacy->create([
+                //     'code' => $importData[$i][0],
+                //     'user_id' => $user_id,
+                //     'clinic_id' => $clinic_id,
+                //     'name' => $importData[$i][1],
+                //     'expire_date' => $expDate,
+                //     'quantity' => $importData[$i][3],
+                //     'act_price' => $importData[$i][4],
+                //     'margin' => $importData[$i][5],
+                //     'sell_price' => $importData[$i][6],
+                //     'unit' => $importData[$i][7],
+                //     'description' => $importData[$i][8],
+                //     'vendor' => $importData[$i][9],
+                //     'vendor_phoneNumber' => $importData[$i][10],
+                //     'storage_place' => $importData[$i][11],
+                //     'Ref' => $reference
+                // ]);
+                $patient = new Patient();
+
+                $code = $this->codeGenerator();
+
+                $clinic_id = session()->get('cc_id');
+                $user_id = Auth::guard('user')->user()['id'];
+
+                $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+                $reference = str_replace(' ', '_', $importData[$i][0]) . "_" . $importData[$i][2] . "_" . str_replace(' ', '_', $importData[$i][1]);
+                $p_status = $role->role_type == 1 ? 4 : 1;
+                $patient_id = $patient->create([
+                    'user_id' => Auth::guard('user')->user()['id'],
+                    'code' => $code,
+                    'name' => $importData[$i][0],
+                    'father_name' => $importData[$i][1],
+                    'phoneNumber' => $importData[$i][3],
+                    'age' => $importData[$i][2],
+                    'address' => $importData[$i][4],
+                    'gender' => $importData[$i][5],
+                    'clinic_code' => $clinic_id,
+                    'drug_allergy' => $importData[$i][7],
+                    'summary' => $importData[$i][6],
+                    'p_status' => $p_status,
+                    'Ref' => $reference
+                ])->id;
+            }
+            return redirect('clinic-system/patient')->with('success', 'Done !');
+        }
+    }
 }
