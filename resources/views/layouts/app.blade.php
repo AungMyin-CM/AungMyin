@@ -36,9 +36,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/selectize.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crjUZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('css/iziToast.css') }}" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{asset('js/iziToast.min.js') }}"></script>
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
@@ -53,7 +53,9 @@
       var userId = "<?php echo  Auth::guard('user')->user() ? Auth::guard('user')->user()['id'] : '0' ?>";
       var channel = pusher.subscribe('aungmyin_'+ clinicId + "_" + userId);
       channel.bind('notice', function(data) {
-       
+        var promise =   document.getElementById('myaudio').play();
+        if (promise !== undefined) {
+          promise.then(_ => {}).catch(error => {});}
         iziToast.show({
             position: 'topRight',
             titleColor: '#FFFFFF',
