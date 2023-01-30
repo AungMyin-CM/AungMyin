@@ -324,7 +324,6 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-        echo $request;
         try {
             Patient::whereId($patient_id)->update(['p_status' => $status]);
 
@@ -352,26 +351,33 @@ class PatientController extends Controller
 
             if ($action != 'no-action') {
 
-                if ($action == 'treatment') {
-                    PatientDoctor::create([
-                        'patient_id' => $patient_id,
-                        'user_id' => $receiver_id,
-                        'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+                    if ($action == 'treatment') {
 
-                    ]);
-                }
+                        $count = PatientDoctor::where('patient_id',$patient_id)->where('user_id',$receiver_id)->get()->count();
+
+                            if($count == 0){
+                                PatientDoctor::create([
+                                    'patient_id' => $patient_id,
+                                    'user_id' => $receiver_id,
+                                    'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+
+                                ]);
+                            }
+                    }
+                    
 
                 $clinic_id = session()->get('cc_id');
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-                // Notification::create([
-                //     'sender_id' => $user_id,
-                //     'receiver_id' => $receiver_id,
-                //     'clinic_id' => session()->get('cc_id'),
-                //     'patient_id' => $patient_id,
-                //     'is_sent' => '1',
-                //     'action_on_sent' => $action,
-                // ]);
+                
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $receiver_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $patient_id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action,
+                ]);
             }
 
 
@@ -475,5 +481,59 @@ class PatientController extends Controller
         $image_name = "p-" . $patient_id . '-' . $current_date;
 
         return $image_name;
+    }
+    public  function patientImport(Request $request)
+    {
+        $importData = [];
+        if ($request->hasfile('importFile')) {
+
+            $file = $request->file('importFile');
+            if (($open = fopen($file, "r")) !== FALSE) {
+
+                while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+                    $importData[] = $data;
+                }
+
+                fclose($open);
+            }
+
+            $clinic_id = session()->get('cc_id');
+            $user_id = Auth::guard('user')->user()['id'];
+            if (count($importData) <= 1) {
+                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
+            }
+            for ($i = 1; $i < count($importData); $i++) {
+                if (array_count_values($importData[$i]) < 8) {
+                    return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
+                }
+
+                $patient = new Patient();
+
+                $code = $this->codeGenerator();
+
+                $clinic_id = session()->get('cc_id');
+                $user_id = Auth::guard('user')->user()['id'];
+
+                $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+                $reference = str_replace(' ', '_', $importData[$i][0]) . "_" . $importData[$i][2] . "_" . str_replace(' ', '_', $importData[$i][1]);
+                $p_status = $role->role_type == 1 ? 4 : 1;
+                $patient_id = $patient->create([
+                    'user_id' => Auth::guard('user')->user()['id'],
+                    'code' => $code,
+                    'name' => $importData[$i][0],
+                    'father_name' => $importData[$i][1],
+                    'phoneNumber' => $importData[$i][3],
+                    'age' => $importData[$i][2],
+                    'address' => $importData[$i][4],
+                    'gender' => $importData[$i][5],
+                    'clinic_code' => $clinic_id,
+                    'drug_allergy' => $importData[$i][7],
+                    'summary' => $importData[$i][6],
+                    'p_status' => $p_status,
+                    'Ref' => $reference
+                ])->id;
+            }
+            return redirect('clinic-system/patient')->with('success', 'Done !');
+        }
     }
 }

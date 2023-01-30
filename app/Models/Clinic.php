@@ -15,4 +15,9 @@ class Clinic extends Model
     protected $fillable = [
         'user_id','code','name', 'address', 'phoneNumber','package_id','package_purchased_date','package_purchased_times'
     ];
+
+    public function expireDate()
+    {
+        return $this->hasOne(PackagePurchase::class,'clinic_id','id');
+    }
 }

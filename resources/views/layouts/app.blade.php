@@ -38,9 +38,9 @@
     <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/selectize.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crjUZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ asset('css/iziToast.css') }}" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{asset('js/iziToast.min.js') }}"></script>
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
@@ -55,7 +55,9 @@
       var userId = "<?php echo  Auth::guard('user')->user() ? Auth::guard('user')->user()['id'] : '0' ?>";
       var channel = pusher.subscribe('aungmyin_'+ clinicId + "_" + userId);
       channel.bind('notice', function(data) {
-       
+        var promise =   document.getElementById('myaudio').play();
+        if (promise !== undefined) {
+        promise.then(_ => {}).catch(error => {});}
         iziToast.show({
             position: 'topRight',
             titleColor: '#FFFFFF',
@@ -64,6 +66,49 @@
             backgroundColor: '#95bb72',        
             message: data.message
             });
+
+            $.ajax({
+            type: "GET",
+            url: '/clinic-system/check-noti',
+        
+              success: function( response ) {
+                if(response != 'no-data'){
+
+                  var noti_number = Object.keys(response).length;
+                  if(noti_number > 0) {
+                    $(".noti-number").text(Object.keys(response).length);
+                      $.each(response, function(i, data){
+                          if(document.getElementById('patient_noti'+data.id) != null){
+                            $("[id='time_"+data.id+"']").text(' '+data.time);
+                            $("[id='time_"+data.patient_id+"']").text(' '+data.time);
+                          }else{
+                            if(document.getElementById('no_noti') != null){
+                                $("#no_noti").remove();
+                            }
+                            $("#p_notis").append(
+                              '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">  '+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
+                            );                       
+                          }
+                          
+                      });
+
+                    }else{
+                        $("[id='time_"+data.id+"']").text(' '+data.time);
+                        $("[id='time_"+data.patient_id+"']").text(' '+data.time);
+                        $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
+                    }
+                }else if(response == 'no-session') {
+                  console.log("Session expired");
+                }else{
+
+                }
+
+              },
+              error: function(httpObj, textStatus) {       
+                    location.reload();
+                },
+            });
+        // console.log($("[id='time_"+data.patient_id).text());
       });
     </script>
 </head>
@@ -78,14 +123,12 @@
     <div class="bar bar8"></div>
 </div>
 
-@if(Request::is('clinic-system/*'))
 @include('layouts.navbar')
-@endif
 
 @include('layouts.sidebar')
 
 @yield('content')
 
-@if(Request::is('clinic-system/*'))
+@if(Request::is('clinic-system/*') || Request::is('home') || Request::is('package-selection'))
 @include('layouts.js')
 @endif

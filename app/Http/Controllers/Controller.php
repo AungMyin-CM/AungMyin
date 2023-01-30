@@ -47,27 +47,24 @@ class Controller extends BaseController
 
             $clinic_data = UserClinic::where('user_id', Auth::guard('user')->user()['id'])->get();
 
-             if(!$clinic_data->isEmpty())
+            if(count($clinic_data) == 1)
+            {
+                foreach($clinic_data as $clinic)
                 {
-                    foreach($clinic_data as $clinic)
-                    {
-                        $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
-                    }
-
-                view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
-
-
-                }else{
-
-                    return view('user/home')->with('data',['clinic' => 0]);
-
+                    $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
                 }
+
+            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
 
 
             }
-            
-            return $next($request);
 
+
+        }
+
+        return $next($request);
+
+            
         });
     }
 

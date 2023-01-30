@@ -9,13 +9,9 @@
                             @csrf  
                             <div class="container">
                                 <div class="row mt-5">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 m-auto">
                                         <label>Clinic Information</label>
-
-                                        <input type="hidden" class="form-control" name="package_id" id="package_id"
-                                        value="{{ $data['package_id'] }}">
                                         
-                    
                                         <div class="input-group mb-3">
                                             
                                             <input type="hidden" class="form-control" name="package_id" id="package_id"

@@ -1,6 +1,33 @@
 @extends("layouts.app")
 @section('content')
+<style>
+    .inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	 
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: white;
+    background-color: #003049;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left : 15px;
+}
 
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color:#003049;
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+</style>
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
             <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
@@ -40,7 +67,21 @@
                                     <!-- /.card-header -->
                                      @if(Helper::checkPermission('p_create', $permissions))
                                         <div class="card-header">
-                                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm" onclick ="exportTasks(event.target);">Export</span>
+                                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left" onclick ="exportTasks(event.target);">Export</span>
+
+                                            <form method="post" action="{{ route('patient.import') }}"   enctype="multipart/form-data"  class="float-left"  >
+                                                @csrf
+                                            <input type="file"   name= "importFile" id="importFile" accept=".csv"  class="inputfile"  required/>
+                                            <label for="importFile">Choose a file....</label>
+                                            <input type="submit"  value="Import" name="import" 
+                                            class="btn btn-success btn-sm"
+                                            style="background: {{config('app.color')}};
+                                            color:white;
+                                            border-radius: 5px;
+                                            cursor: pointer;"/> 
+                                            </form>
+
+
                                             <a href="{{ route('patient.create') }}" class="btn float-right" style= "color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i
                                             class="fas fa-plus"></i> Add new</a>
                                         </div>

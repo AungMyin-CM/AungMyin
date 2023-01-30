@@ -69,32 +69,7 @@
 
     $(document).ready(function(){
 
-      $('form').on('submit',function(){
-        $('.wrapper').css('opacity','0.1');
-        $('.middle').css('opacity','1');
-      });
-
-
-      $("#u_clinics").change(function(){
-        var id = this.value;
-        
-        $.ajax({
-            type: "GET",
-            url: '/clinic-system/'+id,
-            data: {code :id},
-        }).done(function( response ) {
-           
-            window.location = '/clinic-system/'+id;
-            
-        });
-      })
-
-        
-
-        setInterval(function()
-        {
-
-            $.ajax({
+      $.ajax({
             type: "GET",
             url: '/clinic-system/check-noti',
         
@@ -135,8 +110,27 @@
                     location.reload();
                 },
             });
-        // console.log($("[id='time_"+data.patient_id).text());
-        }, 5000);//time in milliseconds 
+
+      $('form').on('submit',function(){
+        $('.wrapper').css('opacity','0.1');
+        $('.middle').css('opacity','1');
+      });
+
+     
+      $("#u_clinics").change(function(){
+        var id = this.value;
+        
+        $.ajax({
+            type: "GET",
+            url: '/clinic-system/'+id,
+            data: {code :id},
+        }).done(function( response ) {
+           
+            window.location = '/clinic-system/'+id;
+            
+        });
+      })
+       
 
 })
 </script>

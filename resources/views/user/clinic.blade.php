@@ -229,7 +229,6 @@
             url: '/clinic-system/updateStatus',
             data: { status: p_status, patient_id: patient_id, receiver_id: receiver_id }
         }).done(function( response ) {
-            alert(response);
             if(response == 'changed')
             {
                 $("#patient_row_"+patient_id).remove();
@@ -237,7 +236,8 @@
             }else{
                 alert("Something Went Wrong");
             }
-            $('#myModal').modal('hide');
+            $(this).closest('.modal').modal('toggle');
+            $('.modal-backdrop').remove();
         });
     };
 
