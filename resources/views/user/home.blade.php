@@ -37,23 +37,23 @@
                             @else
                                 @foreach($data['user_clinic'] as $key => $data)
                                 <?php
-                                    $string_data = new DateTime($data->created_at);
-                                    $create_at = $string_data->format('d-m-Y');
+                                    // $string_data = new DateTime($data->created_at);
+                                    // $create_at = $string_data->format('d-m-Y');
 
-                                    $to = \Carbon\Carbon::createFromFormat('Y-m-d', $data->expire[0]->expire_at);
-                                    $from = \Carbon\Carbon::createFromFormat('Y-m-d', $data->created_at);
+                                    // $to = \Carbon\Carbon::createFromFormat('Y-m-d', $data->expire[0]->expire_at);
+                                    // $from = \Carbon\Carbon::createFromFormat('Y-m-d', $data->created_at);
 
-                                    $diff_in_days = $to->diffInDays($from);
+                                    // $diff_in_days = $to->diffInDays($from);
 
-                                    print_r($diff_in_days); // Output: 1
+                                    // print_r($diff_in_days); // Output: 1
 
                                     
 
                                 ?>
-
+ 
                                     <div class="col-md-4">
                                         <div class=" ">
-                                            <a href="{{route('user.clinic',Crypt::encrypt($data->id))}}">
+                                            <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
                                                 <div class="card mb-3" style="cursor:pointer;hover">
                                                     <div class="row no-gutters">
                                                     <div class="col-md-4">
@@ -63,7 +63,7 @@
                                                         <div class="card-body">
                                                         <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
                                                             
-                                                            <p class="card-text"><small class="text-muted">Register on <b>{{$create_at}}</b></small></p>
+                                                            {{-- <p class="card-text"><small class="text-muted">Register on <b>{{$create_at}}</b></small></p> --}}
                                                             <p class="card-text"><small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small></p>
 
                                                         </div>
