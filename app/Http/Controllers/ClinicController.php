@@ -36,7 +36,7 @@ use Response;
 
 class ClinicController extends Controller
 {
-
+    
     public function dashboard()
     {
         return view('clinic.dashboard');
@@ -82,6 +82,8 @@ class ClinicController extends Controller
                     ->groupBy()
                     ->orderBy('patient.updated_at', 'desc')
                     ->get();
+                    
+
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
@@ -179,6 +181,7 @@ class ClinicController extends Controller
         // $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
         return redirect('/home');
+
     }
 
     public function newUser()
@@ -311,10 +314,12 @@ class ClinicController extends Controller
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
         if ($clinic_data > 2) {
+            
         } else {
 
             return view('registration/clinic_name')->with('data', $data);
         }
+
     }
 
     public function stepTwoRegister(Request $request)
