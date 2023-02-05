@@ -69,7 +69,9 @@
 
     $(document).ready(function(){
 
-      $.ajax({
+   
+
+            $.ajax({
             type: "GET",
             url: '/clinic-system/check-noti',
         
