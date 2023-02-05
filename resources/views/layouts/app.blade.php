@@ -55,7 +55,7 @@
       channel.bind('notice', function(data) {
         var promise =   document.getElementById('myaudio').play();
         if (promise !== undefined) {
-          promise.then(_ => {}).catch(error => {});}
+        promise.then(_ => {}).catch(error => {});}
         iziToast.show({
             position: 'topRight',
             titleColor: '#FFFFFF',

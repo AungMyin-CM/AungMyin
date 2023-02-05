@@ -366,12 +366,12 @@ class PatientController extends Controller
                         ]);
                     }
                 }
+                    
 
 
                 $clinic_id = session()->get('cc_id');
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-
                 Notification::create([
                     'sender_id' => $user_id,
                     'receiver_id' => $receiver_id,
@@ -504,6 +504,7 @@ class PatientController extends Controller
             if (count($importData) <= 1) {
                 return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
             }
+         
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
                     return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
