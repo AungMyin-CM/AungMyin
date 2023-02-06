@@ -47,13 +47,19 @@ class PosController extends Controller
                     $medList = explode("<br>", $assigned_med);
 
                     foreach ($medList as $row) {
+
                         $medInfo = explode("^", $row);
                         if (!empty($medInfo[0])) {
                             $qty = explode("-",  $medInfo[1]);
                             $days = $medInfo[2];
-
-                            $med_data[] = Pharmacy::where('id', $medInfo[0])->get();
-
+                            $med = Pharmacy::where('id', $medInfo[0])->get();
+                            if ($med->count() > 0) {
+                                $med_data[] = $med;
+                            } else {
+                                $arr = new Pharmacy();
+                                $arr['name'] = $medInfo[0];
+                                $med_data[][] =   $arr;
+                            }
                             $total_qty[] = array(($qty[0] + $qty[1] +  $qty[2]) * $days);
                         }
                     }

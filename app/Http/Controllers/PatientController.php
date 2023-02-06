@@ -210,11 +210,11 @@ class PatientController extends Controller
         Patient::whereId($id)->update(['p_status' => '3']);
         $assign_medicines = '';
         if ($request->med_id) {
-
+            //   dd($request);
             $count_product = count($request->med_id);
             for ($x = 0; $x < $count_product; $x++) {
-                $med = $request->med_id == null ? $request->med_name[$x] : $request->med_id[$x];
-                $assign_medicines .= $med . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
+                $med = $request->med_id[$x] == null ? $request->med_name[$x] : $request->med_id[$x];
+                $assign_medicines .= $med . '^' . $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
             }
         }
 
