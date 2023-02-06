@@ -491,13 +491,18 @@
     function searchMed(rowid) {
             var query = $("#product_search_"+rowid).val();
         
-            var clinic_id = {{ session()->get('cc_id') }}
-            $.ajax({
+            var clinic_id = {{ session()->get('cc_id') }};
+            $.ajaxSetup({
+                        headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+             $.ajax({
                 type: "POST",
                 url: '/clinic-system/searchMed',
                 data: { key: query, clinic_id: clinic_id, rowid: rowid}
             }).done(function( response ) {        
-            
+          
             if(query != '')
             {
                 $('#medList_'+rowid).css("display","block");  

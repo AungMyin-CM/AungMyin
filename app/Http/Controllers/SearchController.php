@@ -103,7 +103,7 @@ class SearchController extends Controller
 
     public function searchMedicine(Request $request)
     {
-        dd($request);
+
         $ref = str_replace(' ', '_', $request->key);
 
         $clinic_id = $request->clinic_id;
