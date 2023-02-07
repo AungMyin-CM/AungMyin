@@ -395,12 +395,18 @@
                 },
                 error: function(xhr, status, error) {
                     var err = eval("(" + xhr.responseText + ")");
-                    alert(err.Message);
-                    alert("hello");
+                    var response = JSON.parse(xhr.responseText);
+                    var errorString = '';
+                    $.each( response.errors, function( key, value) {
+                        errorString += '->>' + value;
+                    });
+
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
                 },
                 complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                    $('.wrapper').css('opacity','0.1');
-                    $('.middle').css('opacity','1');
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
                 },
                
             })

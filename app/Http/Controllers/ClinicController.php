@@ -313,11 +313,13 @@ class ClinicController extends Controller
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
-        if ($clinic_data > 2) {
-            
-        } else {
+        if($clinic_data > 2)
+        {
+
+        }else{
 
             return view('registration/clinic_name')->with('data', $data);
+
         }
 
     }
