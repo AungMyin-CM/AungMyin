@@ -148,14 +148,9 @@ class PosController extends Controller
             $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
 
             return redirect(route('pos.index'));
-<<<<<<< HEAD
-        } else {
-            return redirect('/clinic-system/pos')->with('success', "Done!");
-=======
 
         }else{
         return redirect('/clinic-system/pos')->with('success', "Done!");
->>>>>>> a7f7b72 (Merge conflict solved)
         }
     }
     public function edit($id)
