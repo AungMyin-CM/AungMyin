@@ -398,8 +398,12 @@
                     var response = JSON.parse(xhr.responseText);
                     var errorString = '';
                     $.each( response.errors, function( key, value) {
-                        errorString += '->>' + value;
+                        errorString += '<p>' + value +'</p>';
                     });
+
+                    alertify.alert(errorString, function(){
+                        alertify.message('Please fill the fields with *');
+                    }).setHeader('<em>Some errors occured</em>');
 
                     $('.wrapper').css('opacity','1');
                     $('.middle').css('opacity','0.1');

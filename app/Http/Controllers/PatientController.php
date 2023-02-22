@@ -326,7 +326,6 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-        try {
             Patient::whereId($patient_id)->update(['p_status' => $status]);
 
             switch ($status) {
@@ -384,9 +383,7 @@ class PatientController extends Controller
 
 
             echo "changed";
-        } catch (QueryException $e) {
-            echo "false";
-        }
+       
     }
 
     public function addQueue($id)

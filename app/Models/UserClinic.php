@@ -29,6 +29,6 @@ class UserClinic extends Model
         return $this->hasMany(PackagePurchase::class,'clinic_id','clinic_id');
     }
 
-    protected $dateFormat = 'Y-m-d H:i:sO';
+    protected $dateFormat = 'Y-m-d H:i:s';
 
 }
