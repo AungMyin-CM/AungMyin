@@ -324,7 +324,6 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-        echo $request;
         try {
             Patient::whereId($patient_id)->update(['p_status' => $status]);
 
@@ -352,26 +351,33 @@ class PatientController extends Controller
 
             if ($action != 'no-action') {
 
-                if ($action == 'treatment') {
-                    PatientDoctor::create([
-                        'patient_id' => $patient_id,
-                        'user_id' => $receiver_id,
-                        'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+                    if ($action == 'treatment') {
 
-                    ]);
-                }
+                        $count = PatientDoctor::where('patient_id',$patient_id)->where('user_id',$receiver_id)->get()->count();
+
+                            if($count == 0){
+                                PatientDoctor::create([
+                                    'patient_id' => $patient_id,
+                                    'user_id' => $receiver_id,
+                                    'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+
+                                ]);
+                            }
+                    }
+                    
 
                 $clinic_id = session()->get('cc_id');
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-                // Notification::create([
-                //     'sender_id' => $user_id,
-                //     'receiver_id' => $receiver_id,
-                //     'clinic_id' => session()->get('cc_id'),
-                //     'patient_id' => $patient_id,
-                //     'is_sent' => '1',
-                //     'action_on_sent' => $action,
-                // ]);
+                
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $receiver_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $patient_id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action,
+                ]);
             }
 
 
@@ -494,11 +500,11 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             if (count($importData) <= 1) {
-                return redirect('clinic-system/patient')->with('error', 'Empty CSV');
+                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
             }
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
-                    return redirect('clinic-system/patient')->with('error', 'Invalid CSV');
+                    return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
                 }
 
                 $patient = new Patient();

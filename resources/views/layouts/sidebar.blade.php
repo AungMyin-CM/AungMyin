@@ -24,7 +24,7 @@
 
                 <div class="image">
                     @if(Auth::guard('user')->user()['avatar'] != null)
-                        <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-responsive" alt="User Image">
                     @else
                         <img src="{{ asset('images/web-photos/no-image.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     @endif

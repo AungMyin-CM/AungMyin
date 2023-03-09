@@ -19,21 +19,10 @@ class HomeController extends Controller
         $user_id = Auth::id();
         $now = new Carbon;
 
-        $clinic_data = UserClinic::where('user_id', $user_id)->get();
+        $user_clinic = UserClinic::where('user_id', $user_id)->with('expire')->with('clinic')->get();
 
-        if(!$clinic_data->isEmpty())
-        {
-            foreach($clinic_data as $clinic)
-            {
-               $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
-            }
-
-           return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);
-        }else{
-
-            return view('user/home')->with('data',['clinic' => 0]);
-
-        }
-}
+        return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);
+        
+    }
 
 }
