@@ -26,7 +26,7 @@
                     @if(Auth::guard('user')->user()['avatar'] != null)
                         <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-circle elevation-2" alt="User Image">
                     @else
-                        <img src="https://media.istockphoto.com/vectors/profile-placeholder-image-gray-silhouette-no-photo-vector-id1016744004?k=20&m=1016744004&s=612x612&w=0&h=Z4W8y-2T0W-mQM-Sxt41CGS16bByUo4efOIJuyNBHgI=" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ asset('images/web-photos/no-image.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     @endif
                 </div>
                 <div class="info">

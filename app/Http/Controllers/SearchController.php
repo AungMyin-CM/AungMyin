@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
 
+use Illuminate\Support\Str;
+
 use Auth;
 
 class SearchController extends Controller
@@ -63,7 +65,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"><a href="'.route('add.queue', $row->id).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary text-black"><a href="'.route('add.queue', $row->id).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -78,7 +80,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item bg-secondary"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -94,7 +96,7 @@ class SearchController extends Controller
                 foreach($data as $row)
                 {
                     $output .= '
-                        <li class="list-group-item bg-secondary"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">Name: '.$row->name.'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
+                        <li class="list-group-item bg-secondary"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
                     ';
                 }
                 $output .= '</ul>';
@@ -161,14 +163,14 @@ class SearchController extends Controller
         {
             $output = '';
         }else{  
-            $output = '<ul class="list-group" style="display:block; position:relative;">';
+            $output = '<ul class="list-group" id="patient_group" style="display:block; position:relative;">';
 
             foreach($data as $row)
             {
                 $output .= '
                     <li class="list-group-item" onclick="getPatientData('.$row->id.')">
                         <div class="row" id="p_data_'.$row->id.'"> 
-                            <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">Name: '.$row->name.'</span>
+                            <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">'.Str::title($row->name).'</span>
                             <span class="col-md-4" data-age= "'.$row->age.'"  id= "age_'.$row->id.'">Age: '.$row->age.'</span>
                             <span class="col-md-4" data-f_name= "'.$row->father_name.'"  id= "father_name_'.$row->id.'">Father\'s Name: '.$row->father_name.'</span>
                             <span hidden  id= "patient_id_'.$row->id.'">'.$row->id.'</span>

@@ -2,8 +2,8 @@
 @section('content')
 
     <body class="hold-transition sidebar-mini layout-fixed">
-        <div class="wrapper">
-            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
+        <div class="wrapper" style="background-color: {{config('app.bg_color')}} !important">
+            <div class="content-wrapper">
               
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -16,54 +16,102 @@
                       <div class="input-group-append">
                           <a class="btn btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                       </div>
+                        <div class="text-center m-auto" id="patientList" style="display:none;cursor:pointer;position: absolute;z-index:99;top:40px;width:98%;">
+                        </div>
                     </div>
-                    <div class="col-md-6 text-center m-auto" id="patientList" style="display:none;cursor:pointer">
-                    </div>
-                    
-                      <div class="card card-primary {{$patient_data != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+                  
+
+                      @if($patient_data != null)
+                      
+                        <div class="card card-primary {{$patient_data != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+                            <div class="card-body" style="padding: 0.9rem !important;" > 
                           <div class="card-body" style="padding: 0.9rem !important;" > 
-                              <div class="row mb-2">
-                                  <div class="col-sm-2">
-                                      <h6><b>Name :</b> <span id="p_name">{{$patient_data != null ? $patient_data['name']  : ""}}</span> </h6>
-                                  </div>
-                                  <div class="col-sm-2">
-                                      <h6><b>Age :</b> <span id="p_age">{{$patient_data != null ? $patient_data['age'] : ""}}</span> </h6>
-                                  </div>
-                                  <div class="col-sm-3">
-                                      <h6><b>Father's Name :</b><span id="p_f_name"> {{ $patient_data != null ?$patient_data['father_name'] :"" }}</span> </h6>
-                                  </div>
-                                  <div class="col-sm-2">
-                                      <h6><b>Gender :</b> <span id="p_gender">{{$patient_data != null ? $patient_data['gender'] == 1 ? 'Male' : 'Female' : ""}}</span> </h6>
-                                  </div>
-                                  <div class="col-sm-3">
-                                      <h6><b>Phone-Number :</b> <span id="p_phoneNumber">{{$patient_data != null ? $patient_data['phoneNumber'] : ""}}</span> </h6>
-                                  </div>
-                                  
-                              </div>
-                              <div class="row mb-2">
-                                 
-                                  <div class="col-sm-12">
-                                      <h6><b>Address :</b><span id="p_address"> {{ $patient_data != null ? $patient_data['address'] :"" }}</span> </h6>
-                                  </div>
-                                  
-                                 
-                              </div>
-                              <div class="row mb-2">
-                                 
-                                  <div class="col-sm-10" >
-                                      <h6><b>Allergy :</b><span id="p_allergy"> {{ $patient_data != null ?  $patient_data['drug_allergy'] : ""}}</span> </h6>
-                                  </div>
-
-                                  <div class="col-sm-2" {{ $patient_data != null ?"" :'hidden'}}>
-                                    <h6><b>Fees :</b>{{ $visit_data != null ? $visit_data['fees'] : ""}} </h6>
+                            <div class="card-body" style="padding: 0.9rem !important;" > 
+                                <div class="row mb-2">
+                                    <div class="col-sm-2">
+                                        <h6><b>Name :</b> <span id="p_name">{{$patient_data['name'] != null ? $patient_data['name']  : ""}}</span> </h6>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <h6><b>Age :</b> <span id="p_age">{{$patient_data['age'] != null ? $patient_data['age'] : ""}}</span> </h6>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h6><b>Father's Name :</b><span id="p_f_name"> {{ $patient_data['father_name'] != null ?$patient_data['father_name'] :"" }}</span> </h6>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <h6><b>Gender :</b> <span id="p_gender">{{$patient_data['gender'] != null ? $patient_data['gender'] == 1 ? 'Male' : 'Female' : ""}}</span> </h6>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h6><b>Phone-Number :</b> <span id="p_phoneNumber">{{$patient_data['phoneNumber'] != null ? $patient_data['phoneNumber'] : ""}}</span> </h6>
+                                    </div>
+                                    
                                 </div>
-                                                 
-                              </div>
+                                <div class="row mb-2">
+                                  
+                                    <div class="col-sm-12">
+                                        <h6><b>Address :</b><span id="p_address"> {{ $patient_data['address'] != null ? $patient_data['address'] :"" }}</span> </h6>
+                                    </div>
+                                    
+                                  
+                                </div>
+                                <div class="row mb-2">
+                                  
+                                    <div class="col-sm-10" >
+                                        <h6><b>Allergy :</b><span id="p_allergy"> {{ $patient_data['drug_allergy'] != null ?  $patient_data['drug_allergy'] : ""}}</span> </h6>
+                                    </div>
 
-                          </div>
+                                    <div class="col-sm-2" {{ $patient_data != null ?"" :'hidden'}}>
+                                      <h6><b>Fees :</b>{{ $visit_data['fees'] != null  ? $visit_data['fees'] : " FOC"}} </h6>
+                                  </div>
+                                                  
+                                </div>
 
-                      </div>
-                  </div>
+                            </div>
+
+                        </div>
+                      @else
+                      <div class="card card-primary d-none mt-2" id="p_detail">
+                        <div class="card-body" style="padding: 0.9rem !important;" > 
+                      <div class="card-body" style="padding: 0.9rem !important;" > 
+                        <div class="card-body" style="padding: 0.9rem !important;" > 
+                            <div class="row mb-2">
+                                <div class="col-sm-2">
+                                    <h6><b>Name :</b> <span id="p_name"></span> </h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h6><b>Age :</b> <span id="p_age"></span> </h6>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h6><b>Father's Name :</b><span id="p_f_name"> </span> </h6>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h6><b>Gender :</b> <span id="p_gender"></span> </h6>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h6><b>Phone-Number :</b> <span id="p_phoneNumber"></span> </h6>
+                                </div>
+                                
+                            </div>
+                            <div class="row mb-2">
+                              
+                                <div class="col-sm-12">
+                                    <h6><b>Address :</b><span id="p_address"></span> </h6>
+                                </div>
+                                
+                              
+                            </div>
+                            <div class="row mb-2">
+                              
+                                <div class="col-sm-10" >
+                                    <h6><b>Allergy :</b><span id="p_allergy"></span> </h6>
+                                </div>
+                                              
+                            </div>
+
+                        </div>
+
+                    </div>
+                      @endif
+                  </div>  
               </section>      
                 <form action="{{ route('pos.store') }}" method="POST">
                 
@@ -79,12 +127,12 @@
                   @endif
                   <input type="hidden" name="invoice_code" class="form-control"  value={{ $invoice_code }}>
                   @csrf
-                  <section class="content">
+                <section class="content">
                     
                     <div class="container-fluid">
                       <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}"><i id="search" class="fa fa-history" ></i> History</a> 
                       <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">Code - {{ $invoice_code }}</span>
-                        <table class="table table-bordered" id="product_info_table">
+                        <table class="table table-bordered mb-2" id="product_info_table">
                             <thead>
                               <tr>
                                 <th style="width:30%">Name</th>
@@ -184,9 +232,12 @@
                                 <option value="2">Partial Paid</option>
                                 <option value="3">FOC</option>
                               </select>
+                              </div><br>
+                              <div class="col-md-2">
+                                <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                               </div>
                            </div>
-                            <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                            
                       </div>    
                   </section>
                 </form>
@@ -253,6 +304,7 @@
 
                       function getPatientData(id)
                       {
+
                          var name = document.getElementById("name_"+id).getAttribute('data-name')
                          var age = document.getElementById("age_"+id).getAttribute('data-age')
                          var f_name = document.getElementById("father_name_"+id).getAttribute('data-f_name')

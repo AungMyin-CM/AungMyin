@@ -54,7 +54,7 @@
                                         <tbody>
                                             @foreach ($history_list as $row)
                                                 <tr>
-                                                    <td>{{ $row->invoice_code }}</td>
+                                                    <td>{{ $row->invoice_code }}<span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span></td>
                                                     <td>{{ $row->customer_name }}</td>
                                                     <td>{{ $row->total_price }}</td>
                                                     <td>  {{$row->payment_status == 1 ? "Paid" : ( $row->payment_status == 2 ? "Partial Paid" : "FOC" )  }}</td>

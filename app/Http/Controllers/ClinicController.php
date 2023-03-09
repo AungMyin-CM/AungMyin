@@ -134,43 +134,42 @@ class ClinicController extends Controller
         ]);
 
         User::where('id', $user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
-        return redirect('home')->with('success', "Clinic successfully registered.");
-        // $items_data = array(
-        //     "name" => "Gold",
-        //     "amount" => "1000",
-        //     "quantity" => "1"
-        // );
+        $items_data = array(
+            "name" => "Gold",
+            "amount" => "50",
+            "quantity" => "1"
+        );
 
-        // $data_pay = json_encode(array(
-        //     "clientId" => "83827e60-4a02-364c-bec0-e1322a7f3d09",
-        //     "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRDTH6f7tgAak9ISOINFz6Kczi62IlZYJIQ4EZn89g2F58c6R/kVuhJTlLpYXksmKb81n+9oViTzpt1Zo/GV4WlnjIBz6CJ5D5qWULtGOzc2s1jdEigIQyiXUvTjXbZZLJToXWJlUACNfsb6snBl1fDaQxADcNQKG8EFaFXYZBuwIDAQAB",
-        //     "items" => json_encode(array($items_data)),
-        //     "customerName" => 'kyaw',
-        //     "totalAmount" => "1000",
-        //     "merchantOrderId" => "ss-ss-ss",
-        //     "merchantKey" => "dk8g0dc.lI-AGxqYxk8HB9ARVtWoQ0aK7lU",
-        //     "projectName" => "Clinic-manager",
-        //     "merchantName" => "Krishna"
-        // ));
+        $data_pay = json_encode(array(
+            "clientId" => "bf0a61c0-2c64-3fe3-bea4-4904b2396685",
+            "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrnOykA9qFBy6h3OV9ZIJluF2zTWQoNDW2L7ZcYGfw+qBJYGKsZVyTD9eCuJJIFEQY6ztlOzp0OYxfGP4IAxy6KU94m7xdZRr1oIMcHWb1TRyKF1hy9tqbm9AY/hG2+wH8S/BUU1RZN1ZgphlADWMslS5kYIu9QbIZMQJvEB6hEwIDAQAB",
+            "items" => json_encode(array($items_data)),
+            "customerName" => 'kyaw',
+            "totalAmount" => "50",
+            "merchantOrderId" => "ss-ss-ss",
+            "merchantKey" => "s65cfbn.bdg8yh5i04X--occ_JoAkry_ocM",
+            "projectName" => "AungMyin",
+            "merchantName" => "Kyaw Soe"
+        ));
 
 
-        // $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
+        $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
 
-        // $rsa = new \phpseclib\Crypt\RSA();
+        $rsa = new \phpseclib\Crypt\RSA();
 
-        // extract($rsa->createKey(1024));
-        // $rsa->loadKey($publicKey); // public key
-        // $rsa->setEncryptionMode(2);
-        // $ciphertext = $rsa->encrypt($data_pay);
-        // $value = base64_encode($ciphertext);
+        extract($rsa->createKey(1024));
+        $rsa->loadKey($publicKey); // public key
+        $rsa->setEncryptionMode(2);
+        $ciphertext = $rsa->encrypt($data_pay);
+        $value = base64_encode($ciphertext);
 
-        // $urlencode_value = urlencode($value);
+        $urlencode_value = urlencode($value);
 
-        // $encryptedHashValue = hash_hmac('sha256', $data_pay, '4be99707a334fe8880e8f8b067e7df43');
+        $encryptedHashValue = hash_hmac('sha256', $data_pay, '130fb2878f107a57d8dfb637d4cb7d53');
 
-        // $redirect_url = "https://prebuilt.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+        $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
-        // return redirect($redirect_url);
+        return redirect($redirect_url);
     }
 
     public function newUser()

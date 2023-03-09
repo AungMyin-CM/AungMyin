@@ -31,14 +31,15 @@
                                 <div class="input-group-append">
                                     <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
+                                <div id="patientList" class="search-get-results" style="display:none;">
+                                </div>
                             </div>
 
                             @if($errors->any())
                                 {!! implode('', $errors->all('<div>:message</div>')) !!}
                             @endif
 
-                            <div id="patientList" class="search-get-results" style="display:none;">
-                            </div>
+                          
                             {{ csrf_field() }}
                         </div>
                     </div>

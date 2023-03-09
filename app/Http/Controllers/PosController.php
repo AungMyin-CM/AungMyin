@@ -145,7 +145,7 @@ class PosController extends Controller
             $visit_data = Visit::where('pos_id',$pos_id)->get()->first();
             $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
 
-            return view('patient.summary',compact(['pos','pos_detail','payment_types','patient_data','visit_data']));
+            return redirect(route('pos.index'));
 
         }else{
         return redirect('/clinic-system/pos')->with('success', "Done!");
