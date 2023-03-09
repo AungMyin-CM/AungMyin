@@ -27,9 +27,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell noti-icon" id="noti-icon"></i>
-                        <span class="badge badge-warning navbar-badge noti-number">{{count($notis)}}</span>
-                        <span hidden id="noti">{{count($notis)}}</span>
-
+                        <span class="badge badge-warning navbar-badge noti-number">{{isset($notis) ? count($notis) : '0'}}</span>
+                        <span hidden id="noti">{{isset($notis) ? count($notis) : '0'}}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="p_notis">
                         

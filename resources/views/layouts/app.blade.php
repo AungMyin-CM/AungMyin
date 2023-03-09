@@ -63,7 +63,7 @@
       var pusher = new Pusher('4477b1080cfccdc685cf', {
         cluster: 'ap1'
       });
-      var clinicId ={{ Session::get('cc_id') }};
+      var clinicId ={{ Session::has('cc_id') ? Session::get('cc_id') : 0 }};
       var userId = "<?php echo  Auth::guard('user')->user() ? Auth::guard('user')->user()['id'] : '0' ?>";
       var channel = pusher.subscribe('aungmyin_'+ clinicId + "_" + userId);
       channel.bind('notice', function(data) {
@@ -87,7 +87,7 @@
                 if(response != 'no-data'){
 
                   var noti_number = Object.keys(response).length;
-                  if(noti_number > 0) {
+                  if(noti_number > 0 && response != 'no-session') {
                     $(".noti-number").text(Object.keys(response).length);
                       $.each(response, function(i, data){
                           if(document.getElementById('patient_noti'+data.id) != null){
@@ -98,15 +98,15 @@
                                 $("#no_noti").remove();
                             }
                             $("#p_notis").append(
-                              '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">  '+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
+                              '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">'+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
                             );                       
                           }
                           
                       });
 
+
                     }else{
-                        $("[id='time_"+data.id+"']").text(' '+data.time);
-                        $("[id='time_"+data.patient_id+"']").text(' '+data.time);
+                       
                         $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
                     }
                 }else if(response == 'no-session') {
@@ -120,7 +120,27 @@
                     location.reload();
                 },
             });
-        // console.log($("[id='time_"+data.patient_id).text());
+
+            if(document.getElementById('on_home_page'))
+              {
+
+              $.ajax({
+                type: "GET",
+                url: "{{route('wait.list')}}",
+                data: {code: '{{ Crypt::encrypt('+userId+') }}'},
+                beforeSend: function(){
+                  $('.wrapper').css('opacity','0.1');
+                  $('.middle').css('opacity','1');
+                },
+
+                success: function(response){
+                  $("#waiting-list").empty();
+                  $("#waiting-list").append(response);
+                  $('.wrapper').css('opacity','1');
+                  $('.middle').css('opacity','0.1');
+                },
+              });
+            }
       });
     </script>
 </head>

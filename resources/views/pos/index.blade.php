@@ -252,14 +252,15 @@
 
                     <script>
 
-                      $(window).on('load',function() {
+                      $(document).ready(function(){
+
 
                         $.ajaxSetup({
                               headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                               }
                           });
-
+                          
                           var tableProductLength = $("#product_info_table tbody tr").length;
 
                           for(x = 1; x <= tableProductLength; x++) {
@@ -267,7 +268,7 @@
                           } 
                         
                       });
-
+                        
                       $('#main_search').keyup(function(){ 
                           var query = $(this).val();
                           

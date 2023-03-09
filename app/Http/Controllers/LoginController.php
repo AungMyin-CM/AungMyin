@@ -34,9 +34,9 @@ class LoginController extends Controller
 
             if($data == null)
             {
-                return redirect('/')->with('message', "User does not exists");
+                return redirect('/login')->with('message', "User does not exists");
             }elseif($data->email_verified == 0){
-                return redirect('/')->with('alert', "Please verify your email");
+                return redirect('/login')->with('alert', "Please verify your email");
             }else{
                     $userCredentials = $request->only('code', 'password');
 
@@ -44,7 +44,7 @@ class LoginController extends Controller
                         
                         return redirect('home')->with('message', "");
                     }else{
-                        return redirect('/')->with('message', "Invalid Credentials");
+                        return redirect('/login')->with('message', "Invalid Credentials");
                     }
                 }
             }

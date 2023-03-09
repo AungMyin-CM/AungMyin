@@ -178,6 +178,8 @@ class PatientController extends Controller
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
 
+            Notification::where('patient_id',$id)->update(['is_read'=>1]);
+               
 
             return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
         } catch (DecryptException $e) {
@@ -262,14 +264,14 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             foreach ($receiver_ids as $rd) {
 
-                // Notification::create([
-                //     'sender_id' => $user_id,
-                //     'receiver_id' => $rd->user_id,
-                //     'clinic_id' => session()->get('cc_id'),
-                //     'patient_id' => $id,
-                //     'is_sent' => '1',
-                //     'action_on_sent' => $action
-                // ]);
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $rd->user_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action
+                ]);
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" .  $rd->user_id);
             }

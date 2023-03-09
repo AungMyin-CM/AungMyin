@@ -15,7 +15,7 @@
                             <div class="text-danger col-sm-3">
                                 <ul>
                                     <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
-                                </ul>
+                                </ul>a
                             </div>
                             
                             <div class="col-sm-6 text-right">

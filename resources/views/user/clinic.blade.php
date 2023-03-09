@@ -24,10 +24,11 @@
                     <div class="row">
                         <div class="col-md-8 center-screen">
                      
-                            <h1>{{Str::title($data['name'].' Clinic')}}</h1><br>
+                            <h1>{{Str::title($data['name'])}}</h1><br>
                             <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
-                                <input type="hidden" id="clinic_code" value="{{ Auth::guard('user')->user()['id'] }}" >
+                                <input type="hidden" id="clinic_code" value="{{Session::get('cc_id') }}" >
+                                <input type="hidden" id="on_home_page" value="1">
                                 <div class="input-group-append">
                                     <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
@@ -43,118 +44,12 @@
                             {{ csrf_field() }}
                         </div>
                     </div>
-                    @if($data['patientData'] != "" && count($data['patientData']) != 0)
+                   
                     <div class="card">
-                        <div class="card-body">
-                         
-                            <table id="dat" class="table table-bordered table-striped">                                    
-                              <thead>
-                                <tr>
-                                    <th>Name</th>
-                                
-                                    <th>Age</th>
-                                    <th>Father's name</th>
-                                    <th>Actions</th>
-                                    {{-- <th></th>
-                                    <th></th> --}}
-                                    {{-- <th colspan="3" style="width:15%;">Actions</th> --}}
-                                </tr>
-                                </thead>
-                                <tbody>
-                                 
-                                    @foreach ($data['patientData'] as $row)
-                                       
-                                        <tr id="patient_row_{{$row->id}}">
-                                            <?php
-                                                $date = \Carbon\Carbon::parse($row->updated_at)->diffForHumans();                                           
-                                                echo "<td>".$row->name."<span class='text-muted small float-right'>".$date."</span>&nbsp;&nbsp;&nbsp;";
-                                            ?>
-                                                @if($row->gender ==1)
-                                                <i class="fas fa-male fa-lg" style="color:blue;"></i> 
-                                            @else
-                                                <i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>
-                                            @endif
-                                            </td>
-                                            
-                                            <td>{{ $row->age }}</td>
-                                            <td>{{ $row->father_name }}</td>
-                                            <td>
-                                                <div class="card-tools">
-                                                    @if($data['role'] == 1 || $data['role'] == 2 || $data['role'] == 5)
-
-                                                    <a href="{{ route('patient.edit' , Crypt::encrypt($row->id)) }}" class="btn btn-sm btn-tool">
-                                                        <i class="fas fa-edit fa-lg" style="color:black;"></i>
-                                                    </a>
-
-                                                @endif
-                                                @if($data['role'] == 2 || $data['role'] == 5)
-
-                                                @if($data['a_doctors'] > 1)
-                                                    <a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = "{{ $row->id }}">
-                                                        <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
-                                                    </a>
-                                                    <div class="modal fade" id="myModal" role="dialog">
-                                                        <div class="modal-dialog">
-                                            
-                                                            <!-- Modal content-->
-                                                            <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <p class="text-left">Doctors</p>
-                                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                               <table class="table table-bordered" id="data">
-                                                                    <tr>
-                                                                        <td>Name</td>
-                                                                        <td>Speciality</td>
-                                                                        <td>Action</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                       
-                                                                    </tr>
-                                                               </table>
-                                                            </div>
-                                                           
-                                                            </div>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                @else
-                                                    <a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="2" data-patient-id = "{{ $row->id }}">
-                                                        <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
-                                                    </a>
-                                                @endif
-
-                                                @elseif($data['role'] == 1 || $data['role'] == 5)
-
-                                                    <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px;"
-                                                        ><i class="fas fa-stethoscope fa-lg"></i>
-                                                    </a>
-
-                                                @elseif($data['role'] == 3 || $data['role'] == 5)
-                                                    <a href="{{ route('pos-patient', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
-                                                        ><i class="fas fa-receipt fa-lg"></i>
-                                                    </a>
-                        
-                                                @endif
-                                                    
-                                                @if($data['role'] == 1 || $data['role'] == 2 || $data['role'] == 5)
-
-                                                    <a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = "{{ $row->id }}">
-                                                        <i class="fas fa-trash fa-lg" style="color:rgb(239, 6, 6);"></i>
-                                                    </a>
-
-                                                @endif
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                        <div class="card-body" id="waiting-list">
                            
-                          </div>
+                        </div>
                     </div>
-                    @endif
                 </div>
             </section>
         </div>
@@ -176,13 +71,13 @@
              info: false
         });
         $(document).ready(function(){
-   $('.middle').css('opacity','0');
-     });
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+            $('.middle').css('opacity','0');
+                });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
 
         $('#main_search').keyup(function(){ 
@@ -230,17 +125,26 @@
         $.ajax({
             type: "POST",
             url: '/clinic-system/updateStatus',
-            data: { status: p_status, patient_id: patient_id, receiver_id: receiver_id }
-        }).done(function( response ) {
-            if(response == 'changed')
-            {
-                $("#patient_row_"+patient_id).remove();
-               
-            }else{
-                alert("Something Went Wrong");
-            }
-            $(this).closest('.modal').modal('toggle');
-            $('.modal-backdrop').remove();
+            data: { status: p_status, patient_id: patient_id, receiver_id: receiver_id },
+
+            beforeSend: function(){
+                $('.wrapper').css('opacity','0.1');
+                $('.middle').css('opacity','1');
+            },
+
+            success: function( response ) {
+                if(response == 'changed')
+                {
+                    $("#patient_row_"+patient_id).remove();
+                
+                }else{
+                    alert("Something Went Wrong");
+                }
+                $(this).closest('.modal').modal('toggle');
+                $('.modal-backdrop').remove();
+                $('.wrapper').css('opacity','1');
+                $('.middle').css('opacity','0.1');
+            },
         });
     };
 
@@ -276,10 +180,11 @@
             })
         });
     }
+    
     function openVideo(){
         $('#myModal2').modal({
-                        backdrop: 'static',
-                    });    
+            backdrop: 'static',
+        });    
     }
 </script>
 @endsection
