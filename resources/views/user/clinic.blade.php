@@ -23,7 +23,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-8 center-screen">
-                        
+                     
                             <h1>{{Str::title($data['name'].' Clinic')}}</h1><br>
                             <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
@@ -61,11 +61,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                 
                                     @foreach ($data['patientData'] as $row)
+                                       
                                         <tr id="patient_row_{{$row->id}}">
                                             <?php
                                              //  $date = $row->updated_at->diffForHumans();
                                                echo "<td>".$row->name."<span class='text-muted small float-right'>". $row->updated_at."</span>&nbsp;&nbsp;&nbsp;";
+                                               
                                             ?>
                                                 @if($row->gender ==1)
                                                 <i class="fas fa-male fa-lg" style="color:blue;"></i> 
@@ -166,6 +169,7 @@
     $(document).ready(function(){
         
         $('#dat').DataTable({
+            ordering : false,
             dom: 'Bfrtip',
             buttons: [],
             searching: false,
@@ -194,15 +198,15 @@
                    
                 if(query != '')
                 {
-                    if(response == ''){
+                    // if(response == ''){
                         $("#search").removeAttr("class","fa fa-search");
                         $("#search").attr("class","fa fa-plus");
                         $("#addRoute").attr("href", "{{ route('patient.create') }}"+"?name="+query);
-                    }else{
-                        $("#search").removeAttr("class","fa fa-plus");
-                        $("#search").attr("class","fa fa-search");
-                        $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
-                    }
+                    // }else{
+                    //     $("#search").removeAttr("class","fa fa-plus");
+                    //     $("#search").attr("class","fa fa-search");
+                    //     $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
+                    // }
                     $('#patientList').css("display","block");  
                     $('#patientList').html(response);
                 }

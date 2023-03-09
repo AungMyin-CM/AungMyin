@@ -36,7 +36,7 @@ use Response;
 
 class ClinicController extends Controller
 {
-    
+
     public function dashboard()
     {
         return view('clinic.dashboard');
@@ -70,23 +70,25 @@ class ClinicController extends Controller
                     ->where('user_id', $user_id)
                     ->where('p_status', 1)
                     ->where('updated_at', '>=', $now->format('ymd'))
-                    ->where('status', 1)->get();
+                    ->where('status', 1)
+                    ->orderBy('updated_at', 'desc')->get();
             } elseif ($role->role_type == 1 || $role->role_type == 5) {
 
 
                 $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
                     ->where('patient.updated_at', '>=', $now->format('ymd'))
                     ->where('patient.p_status', 2)
-                    ->where('patient.status',1)
+                    ->where('patient.status', 1)
                     ->groupBy()
+                    ->orderBy('patient.updated_at', 'desc')
                     ->get();
-
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
                     ->where('p_status', 3)
                     ->where('updated_at', '>=', $now->format('ymd'))
-                    ->where('status', 1)->get();
+                    ->where('status', 1)
+                    ->orderBy('updated_at', 'desc')->get();
             } else {
                 $patientData = "";
             }
@@ -177,7 +179,6 @@ class ClinicController extends Controller
         // $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
         return redirect('/home');
-
     }
 
     public function newUser()
@@ -309,15 +310,11 @@ class ClinicController extends Controller
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
-        if($clinic_data > 2)
-        {
-
-        }else{
+        if ($clinic_data > 2) {
+        } else {
 
             return view('registration/clinic_name')->with('data', $data);
-
         }
-
     }
 
     public function stepTwoRegister(Request $request)

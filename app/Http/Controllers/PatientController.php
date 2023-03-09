@@ -118,8 +118,8 @@ class PatientController extends Controller
                     'followup_date' => $request->followup_date
                 ]);
             }
-
-            return redirect('clinic-system/patient')->with('success', "Done!");
+            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");;
+            // return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
 
@@ -210,9 +210,11 @@ class PatientController extends Controller
         Patient::whereId($id)->update(['p_status' => '3']);
         $assign_medicines = '';
         if ($request->med_id) {
+
             $count_product = count($request->med_id);
             for ($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= $request->med_id[$x] . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
+                $med = $request->med_id == null ? $request->med_name[$x] : $request->med_id[$x];
+                $assign_medicines .= $med . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
             }
         }
 
@@ -351,25 +353,25 @@ class PatientController extends Controller
 
             if ($action != 'no-action') {
 
-                    if ($action == 'treatment') {
+                if ($action == 'treatment') {
 
-                        $count = PatientDoctor::where('patient_id',$patient_id)->where('user_id',$receiver_id)->get()->count();
+                    $count = PatientDoctor::where('patient_id', $patient_id)->where('user_id', $receiver_id)->get()->count();
 
-                            if($count == 0){
-                                PatientDoctor::create([
-                                    'patient_id' => $patient_id,
-                                    'user_id' => $receiver_id,
-                                    'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+                    if ($count == 0) {
+                        PatientDoctor::create([
+                            'patient_id' => $patient_id,
+                            'user_id' => $receiver_id,
+                            'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
 
-                                ]);
-                            }
+                        ]);
                     }
-                    
+                }
+
 
                 $clinic_id = session()->get('cc_id');
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-                
+
                 Notification::create([
                     'sender_id' => $user_id,
                     'receiver_id' => $receiver_id,
