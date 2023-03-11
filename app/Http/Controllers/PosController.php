@@ -43,6 +43,7 @@ class PosController extends Controller
                 $patient_data = Patient::findOrfail($id);
                 $visit_data = Visit::where('patient_id', $id)->orderBy('updated_at', 'desc')->get()->first();
                 $assigned_med = $visit_data['assigned_medicines'];
+            
                 if ($assigned_med != "") {
                     $medList = explode("<br>", $assigned_med);
 

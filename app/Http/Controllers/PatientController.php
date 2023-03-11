@@ -178,6 +178,8 @@ class PatientController extends Controller
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
 
+            Notification::where('patient_id',$id)->update(['is_read'=>1]);
+               
 
             return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
         } catch (DecryptException $e) {
@@ -262,14 +264,14 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             foreach ($receiver_ids as $rd) {
 
-                // Notification::create([
-                //     'sender_id' => $user_id,
-                //     'receiver_id' => $rd->user_id,
-                //     'clinic_id' => session()->get('cc_id'),
-                //     'patient_id' => $id,
-                //     'is_sent' => '1',
-                //     'action_on_sent' => $action
-                // ]);
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $rd->user_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action
+                ]);
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" .  $rd->user_id);
             }
@@ -326,7 +328,6 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-        try {
             Patient::whereId($patient_id)->update(['p_status' => $status]);
 
             switch ($status) {
@@ -384,9 +385,7 @@ class PatientController extends Controller
 
 
             echo "changed";
-        } catch (QueryException $e) {
-            echo "false";
-        }
+       
     }
 
     public function addQueue($id)
@@ -502,7 +501,7 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             if (count($importData) <= 1) {
-                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
+                return redirect('clinic-system/patient')->with('error', 'Empty CSV');
             }
          
             for ($i = 1; $i < count($importData); $i++) {

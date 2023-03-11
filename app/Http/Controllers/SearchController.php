@@ -141,21 +141,21 @@ class SearchController extends Controller
 
         if (count($data) == 0) {
             $output = '';
-        } else {
+        }else{  
             $output = '<ul class="list-group" id="patient_group" style="display:block; position:relative;">';
 
             foreach ($data as $row) {
                 $output .= '
-                    <li class="list-group-item" onclick="getPatientData(' . $row->id . ')">
-                        <div class="row" id="p_data_' . $row->id . '"> 
-                            <span class="col-md-4" data-name= "' . $row->name . '"  id= "name_' . $row->id . '">' . Str::title($row->name) . '</span>
-                            <span class="col-md-4" data-age= "' . $row->age . '"  id= "age_' . $row->id . '">Age: ' . $row->age . '</span>
-                            <span class="col-md-4" data-f_name= "' . $row->father_name . '"  id= "father_name_' . $row->id . '">Father\'s Name: ' . $row->father_name . '</span>
-                            <span hidden  id= "patient_id_' . $row->id . '">' . $row->id . '</span>
-                            <span hidden  id= "gender_' . $row->id . '">' . $row->gender . '</span>
-                            <span hidden  id= "phoneNumber_' . $row->id . '">' . $row->phoneNumber . '</span>
-                            <span hidden  id= "address_' . $row->id . '">' . $row->address . '</span>
-                            <span hidden  id= "allergy_' . $row->id . '">' . $row->drug_allergy . '</span>
+                    <li class="list-group-item" onclick="getPatientData('.$row->id.')">
+                        <div class="row" id="p_data_'.$row->id.'"> 
+                            <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">'.Str::title($row->name).'</span>
+                            <span class="col-md-4" data-age= "'.$row->age.'"  id= "age_'.$row->id.'">Age: '.$row->age.'</span>
+                            <span class="col-md-4" data-f_name= "'.$row->father_name.'"  id= "father_name_'.$row->id.'">Father\'s Name: '.$row->father_name.'</span>
+                            <span hidden  id= "patient_id_'.$row->id.'">'.$row->id.'</span>
+                            <span hidden  id= "gender_'.$row->id.'">'.$row->gender.'</span>
+                            <span hidden  id= "phoneNumber_'.$row->id.'">'.$row->phoneNumber.'</span>
+                            <span hidden  id= "address_'.$row->id.'">'.$row->address.'</span>
+                            <span hidden  id= "allergy_'.$row->id.'">'.$row->drug_allergy.'</span>
                         </div>
                     </li>';
             }

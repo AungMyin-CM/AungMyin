@@ -25,7 +25,9 @@ use App\Http\Controllers\DataController;
 |
 */
 
-Route::get('/', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
+Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
+
+Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
 
 Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
 
@@ -121,7 +123,7 @@ Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.lo
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
 
-Route::get('register', [UserController::class, 'index'])->name('register.user');
+Route::get('register', [UserController::class, 'index'])->name('register.user')->middleware('guest');
 
 Route::post('email_available/check', [UserController::class, 'checkEmail'])->name('email_available.check');
 
@@ -131,11 +133,11 @@ Route::post('user-register', [UserController::class, 'register'])->name('user.re
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
-// Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
-
-Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
+
+Route::get('/waiting',[ClinicController::class,'waitingList'])->name('wait.list');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -143,3 +145,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('dashboard', [ClinicController::class, 'dashboard'])->name('clinic.home');
 });
+
