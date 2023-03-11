@@ -63,8 +63,8 @@
                                                         <div class="card-body">
                                                         <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
                                                             
-                                                            {{-- <p class="card-text"><small class="text-muted">Register on <b>{{$create_at}}</b></small></p>
-                                                            <p class="card-text"><small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small></p> --}}
+                                                            {{-- <p class="card-text"><small class="text-muted">Register on <b>{{$create_at}}</b></small></p> --}}
+                                                            <p class="card-text"><small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small></p>
 
                                                         </div>
                                                     </div>
@@ -75,7 +75,7 @@
                                         </div>
                                     </div> 
                                 @endforeach
-                                    <div class="col-md-4">
+                                    {{-- <div class="col-md-4">
                                         <a href="{{route('package.selection')}}">
 
                                         <div class="card mb-3" style="cursor:pointer;" id="clinic-card">
@@ -93,7 +93,7 @@
                                             </div>
                                         </div>
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 
                             @endif
                         </div>

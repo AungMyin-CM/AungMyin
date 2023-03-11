@@ -177,13 +177,13 @@
              info: false
         });
         $(document).ready(function(){
-   $('.middle').css('opacity','0');
-     });
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        $('.middle').css('opacity','0');
+            });
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
 
         $('#main_search').keyup(function(){ 

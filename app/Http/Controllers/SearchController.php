@@ -56,7 +56,6 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-<<<<<<< HEAD
                         <li class="list-group-item bg-secondary text-black"> <div class="row">              
                         <a  class="col-md-11 row" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row->name) . '</span>' .
                         '<span class="col-lg-4">Age: ' . $row->age . '</span>' .
@@ -67,10 +66,6 @@ class SearchController extends Controller
                         </a>
                         </div>
                         </li>';
-=======
-                        <li class="list-group-item bg-secondary text-black"><a href="'.route('add.queue', $row->id).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
-                    ';
->>>>>>> a7f7b72 (Merge conflict solved)
                 }
                 $output .= '</ul>';
             }
@@ -82,11 +77,7 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-<<<<<<< HEAD
                         <li class="list-group-item bg-secondary"><a href="' . route('pos-patient', Crypt::encrypt($row->id)) . '" style="color:#000 !important;"><div class="row"><span class="col-md-4">' . Str::title($row->name) . '</span>' . '<span class="col-md-4">Age: ' . $row->age . '</span>' . '<span class="col-md-4">Father\'s Name: ' . $row->father_name . '</span></div></a></li>
-=======
-                        <li class="list-group-item bg-secondary"><a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
->>>>>>> a7f7b72 (Merge conflict solved)
                     ';
                 }
                 $output .= '</ul>';
@@ -100,11 +91,7 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-<<<<<<< HEAD
                         <li class="list-group-item bg-secondary"><a href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;"><div class="row"><span class="col-md-4">' . Str::title($row->name) . '</span>' . '<span class="col-md-4">Age: ' . $row->age . '</span>' . '<span class="col-md-4">Father\'s Name: ' . $row->father_name . '</span></div></a></li>
-=======
-                        <li class="list-group-item bg-secondary"><a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="color:#000 !important;"><div class="row"><span class="col-md-4">'.Str::title($row->name).'</span>'.'<span class="col-md-4">Age: '.$row->age.'</span>'.'<span class="col-md-4">Father\'s Name: '.$row->father_name.'</span></div></a></li>
->>>>>>> a7f7b72 (Merge conflict solved)
                     ';
                 }
                 $output .= '</ul>';
@@ -154,16 +141,11 @@ class SearchController extends Controller
 
         if (count($data) == 0) {
             $output = '';
-<<<<<<< HEAD
         } else {
-=======
-        }else{  
->>>>>>> a7f7b72 (Merge conflict solved)
             $output = '<ul class="list-group" id="patient_group" style="display:block; position:relative;">';
 
             foreach ($data as $row) {
                 $output .= '
-<<<<<<< HEAD
                     <li class="list-group-item" onclick="getPatientData(' . $row->id . ')">
                         <div class="row" id="p_data_' . $row->id . '"> 
                             <span class="col-md-4" data-name= "' . $row->name . '"  id= "name_' . $row->id . '">' . Str::title($row->name) . '</span>
@@ -174,18 +156,6 @@ class SearchController extends Controller
                             <span hidden  id= "phoneNumber_' . $row->id . '">' . $row->phoneNumber . '</span>
                             <span hidden  id= "address_' . $row->id . '">' . $row->address . '</span>
                             <span hidden  id= "allergy_' . $row->id . '">' . $row->drug_allergy . '</span>
-=======
-                    <li class="list-group-item" onclick="getPatientData('.$row->id.')">
-                        <div class="row" id="p_data_'.$row->id.'"> 
-                            <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">'.Str::title($row->name).'</span>
-                            <span class="col-md-4" data-age= "'.$row->age.'"  id= "age_'.$row->id.'">Age: '.$row->age.'</span>
-                            <span class="col-md-4" data-f_name= "'.$row->father_name.'"  id= "father_name_'.$row->id.'">Father\'s Name: '.$row->father_name.'</span>
-                            <span hidden  id= "patient_id_'.$row->id.'">'.$row->id.'</span>
-                            <span hidden  id= "gender_'.$row->id.'">'.$row->gender.'</span>
-                            <span hidden  id= "phoneNumber_'.$row->id.'">'.$row->phoneNumber.'</span>
-                            <span hidden  id= "address_'.$row->id.'">'.$row->address.'</span>
-                            <span hidden  id= "allergy_'.$row->id.'">'.$row->drug_allergy.'</span>
->>>>>>> a7f7b72 (Merge conflict solved)
                         </div>
                     </li>';
             }

@@ -48,6 +48,7 @@ class ClinicController extends Controller
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
+
             try {
                 $clinic_id = Crypt::decrypt($request->code);
                 $clinic_name = Clinic::where('id', $clinic_id)->value('name');
