@@ -74,7 +74,10 @@ class ClinicController extends Controller
 
                 $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
                     ->where('patient.updated_at', '>=', $now->format('ymd'))
-                    ->where('patient.status', 2)->get();
+                    ->where('patient.p_status', 2)
+                    ->groupBy()
+                    ->get();
+
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
