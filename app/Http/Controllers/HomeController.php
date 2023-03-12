@@ -24,13 +24,10 @@ class HomeController extends Controller
         return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);
         
     }
-<<<<<<< HEAD
-=======
 
     public function welcome()
     {
         return view('welcome');
     }
->>>>>>> v1.0.1-temp
 
 }
