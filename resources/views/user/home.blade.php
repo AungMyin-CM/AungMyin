@@ -13,7 +13,7 @@
             <section class="content">
                     <div class="container-fluid">
                         <div class="container py-5 row">
-                            @if($data['clinic'] == 0)
+                            @if(count($data['user_clinic']) == 0)
 
                                 <div class="col-md-4">
                                     <a href="{{route('package.selection')}}">

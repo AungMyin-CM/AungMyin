@@ -64,7 +64,7 @@
           <h5 data-aos-delay="400">Why you need to upgrade your clinic?</h5>
           <div data-aos="fade-up" data-aos-delay="600">
             <div class="text-center text-lg-start">
-              <a href="https://test.aungmyin.io/register" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+              <a href="{{route('register.user')}}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
                 <span>Get Started</span>
                 <i class="bi bi-arrow-right"></i>
               </a>
@@ -302,9 +302,7 @@
       <div class="copyright">
         &copy;2022 Copyright <strong><span>Aung Miyin</span></strong>. All Rights Reserved
       </div>
-      <div class="credits">
-        Designed by <a href="#">Treasa Ko</a>
-      </div>
+     
     </div>
   </footer><!-- End Footer -->
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

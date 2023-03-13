@@ -8,6 +8,7 @@
         position: relative;
         z-index: 2;
     }
+
 </style>
 <div class="login-page bg-light">
     <div class="container">
@@ -52,22 +53,46 @@
                                         </span>
                                         @enderror
                                     </div>
-                                    
-                                        <div class="col-12 mb-1">
-                                            <label>Name<span class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text"><span class="fas fa-user"></span></div>
+
+                                        <div class="row">
+
+                                            <div class="col-6">
+                                                <label for="gender">Hello</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text"><span class="fas fa-user"></span></div>
+                                                        </div>
+                                                        <select name="title" id="title" class="form-control @error('gender') is-invalid @enderror">
+                                                            <option value="Mr" selected>Mr</option>
+                                                            <option value="Mrs">Mrs</option>
+                                                            <option value="Miss">Miss</option>
+                                                            <option value="Ms">Ms</option>
+                                                        </select>
+                                                        @error('gender')
+                                                        <span class="invalid-feedback" role="alert" id="alert-message">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                    </div>
                                                 </div>
-                                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Name"
-                                                value="{{ old('name') }}" id="name">
-                                                @error('name')
-                                                <span class="invalid-feedback" role="alert" id="alert-message">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
+                                            </div>
+                                        
+                                            <div class="col-6 mb-1">
+                                                <label>Name<span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                   
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Name"
+                                                    value="{{ old('name') }}" id="name">
+                                                    @error('name')
+                                                    <span class="invalid-feedback" role="alert" id="alert-message">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
+                                         
                                         <div class="col-12 mb-1">
                                             <label>Code<span class="text-danger">*</span></label>
                                             <div class="input-group">
@@ -144,9 +169,9 @@
                                                 <input type="tel" class="form-control @error('phoneNumber') is-invalid @enderror" placeholder="09xxxxxxxx" name="phoneNumber"
                                                     value={{ old('phoneNumber') }}>
                                                     @error('phoneNumber')
-                                                    <span class="invalid-feedback" role="alert" id="alert-message">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
+                                                        <span class="invalid-feedback" role="alert" id="alert-message">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
                                                     @enderror
                                             </div>
                                         </div>
