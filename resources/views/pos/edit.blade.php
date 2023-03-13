@@ -285,8 +285,8 @@
 
           var tableProductLength = $("#product_info_table tbody tr").length;
           var totalSubAmount = 0;
-          for(x = 0; x < tableProductLength; x++) {
-            var tr = $("#product_info_table tbody tr")[x];
+          for(let y = 0;y  < tableProductLength;y ++) {
+            var tr = $("#product_info_table tbody tr")[y];
             var count = $(tr).attr('id');
             count = count.substring(4);
 
