@@ -25,7 +25,7 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'email' => 'email|unique:user',
-            'gender' => 'required|in:1,0',
+            'gender' => 'in:1,0',
             'name' => 'required',
             'avatar' => 'nullable|image|max:5000', // only 5MB is allowed
             'code' => 'required|string|unique:user',

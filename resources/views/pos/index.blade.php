@@ -265,7 +265,6 @@
 
                           for(x = 1; x <= tableProductLength; x++) {
                             getTotal(x);
-                            alert(x);
                           } 
                         
                       });

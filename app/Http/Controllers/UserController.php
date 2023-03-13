@@ -48,7 +48,15 @@ class UserController extends Controller
             $file->move(public_path('images/avatars'), $filename);
         }
 
+        if($request->title == 'Mr')
+        {
+            $gender = 1;
+        }else{
+            $gender = 0;
+        }
+
         $user_id = $user->create([
+            'title' => $request->title,
             'code' => $request->code,
             'name' => $request->name,
             'avatar' => $filename,
@@ -58,7 +66,7 @@ class UserController extends Controller
             'city' => $request->city,
             'country' => $request->country,
             'address' => $request->address,
-            'gender' => $request->gender
+            'gender' => $gender
         ])->id;
 
         $hash = $this->generateTokenVerify();
@@ -81,7 +89,7 @@ class UserController extends Controller
                 ->subject($mail_data['subject']);
         });
 
-        return redirect('/')->with('success', 'You need to verify your account. We have sent you an activation link, please check your mail');
+        return redirect('/login')->with('success', 'You need to verify your account. We have sent you an activation link, please check your mail');
     }
 
     public function generateTokenVerify()
@@ -105,10 +113,10 @@ class UserController extends Controller
                 $verifyUser->email_verified = 1;
                 $verifyUser->email_verified_at = Carbon::now()->toDateTimeString();
                 $verifyUser->save();
-                return redirect('/')->with('success', 'Your email is verified successfully. You can now login')->with('verifiedEmail', $verifyUser->email);
+                return redirect('/login')->with('success', 'Your email is verified successfully. You can now login')->with('verifiedEmail', $verifyUser->email);
                 // return view('login')->with('verifiedEmail',$user->email);
             } else {
-                return redirect('/')->with('success', 'Your email already verified successfully. You can now login')->with('verifiedEmail', $verifyUser->email);
+                return redirect('/login')->with('success', 'Your email already verified successfully. You can now login')->with('verifiedEmail', $verifyUser->email);
                 // return 'Already Verified';
             }
         }
