@@ -69,15 +69,22 @@
 
     $(document).ready(function(){
 
+<<<<<<< HEAD
       $.ajax({
+=======
+            $.ajax({
+>>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
             type: "GET",
             url: '/clinic-system/check-noti',
-        
+              beforeSend: function(){
+                $('.wrapper').css('opacity','0.1');
+                $('.middle').css('opacity','1');
+              },
               success: function( response ) {
                 if(response != 'no-data'){
 
                   var noti_number = Object.keys(response).length;
-                  if(noti_number > 0) {
+                  if(noti_number > 0 && response != 'no-session') {
                     $(".noti-number").text(Object.keys(response).length);
                       $.each(response, function(i, data){
                           if(document.getElementById('patient_noti'+data.id) != null){
@@ -94,19 +101,20 @@
                           
                       });
 
-                    }else{
-                        $("[id='time_"+data.id+"']").text(' '+data.time);
-                        $("[id='time_"+data.patient_id+"']").text(' '+data.time);
-                        $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
-                    }
+                  }else{
+                      $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
+                  }
                 }else if(response == 'no-session') {
                   console.log("Session expired");
                 }else{
 
                 }
+                $('.wrapper').css('opacity','1');
+                $('.middle').css('opacity','0.1');
 
               },
               error: function(httpObj, textStatus) {       
+<<<<<<< HEAD
                     location.reload();
                 },
             });
@@ -131,6 +139,55 @@
         });
       })
        
+=======
+                        console.log(textStatus);              
+              },
+>>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
 
+            });
+
+            if(document.getElementById('on_home_page'))
+            {
+              $.ajax({
+                type: "GET",
+                url: "{{route('wait.list')}}",
+                data: {code: '{{ Crypt::encrypt(session()->get('cc_id')) }}'},
+
+                beforeSend: function(){
+                  $('.wrapper').css('opacity','0.1');
+                  $('.middle').css('opacity','1');
+                },
+
+                success: function(response){
+                  $("#waiting-list").empty();
+                  $("#waiting-list").append(response);
+                  $('.wrapper').css('opacity','1');
+                  $('.middle').css('opacity','0.1');
+                },
+              });
+            }
+
+            if(document.getElementById())
+            {
+              
+            }
+
+        $('form').on('submit',function(){
+          $('.wrapper').css('opacity','0.1');
+          $('.middle').css('opacity','1');
+        });
+
+      
+        $("#u_clinics").change(function(){
+            var id = this.value;
+            
+            $.ajax({
+                type: "GET",
+                url: '/clinic-system/'+id,
+                data: {code :id},
+            }).done(function( response ) {
+                window.location = '/clinic-system/'+id;
+            });
+        })
 })
 </script>

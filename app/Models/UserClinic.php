@@ -17,4 +17,18 @@ class UserClinic extends Model
         'status',    
         'deleted_date'    
     ];
+
+    public function clinic()
+    {
+        return $this->hasMany(Clinic::class,'id','clinic_id');
+
+    }
+
+    public function expire()
+    {
+        return $this->hasMany(PackagePurchase::class,'clinic_id','clinic_id');
+    }
+
+    protected $dateFormat = 'Y-m-d H:i:s';
+
 }

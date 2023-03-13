@@ -18,6 +18,8 @@ use App\Models\Package;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use App\Http\Controllers\HomeController;
+
 
 use Illuminate\Support\Facades\Hash;
 
@@ -34,7 +36,7 @@ use Response;
 
 class ClinicController extends Controller
 {
-
+    
     public function dashboard()
     {
         return view('clinic.dashboard');
@@ -45,6 +47,7 @@ class ClinicController extends Controller
         if (Auth::user()->role_id != null) {
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+
 
             try {
                 $clinic_id = Crypt::decrypt($request->code);
@@ -68,22 +71,26 @@ class ClinicController extends Controller
                     ->where('user_id', $user_id)
                     ->where('p_status', 1)
                     ->where('updated_at', '>=', $now->format('ymd'))
-                    ->where('status', 1)->get();
+                    ->where('status', 1)
+                    ->orderBy('updated_at', 'desc')->get();
             } elseif ($role->role_type == 1 || $role->role_type == 5) {
 
 
                 $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
                     ->where('patient.updated_at', '>=', $now->format('ymd'))
                     ->where('patient.p_status', 2)
+                    ->where('patient.status', 1)
                     ->groupBy()
+                    ->orderBy('patient.updated_at', 'desc')
                     ->get();
-
+                    
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
                     ->where('p_status', 3)
                     ->where('updated_at', '>=', $now->format('ymd'))
-                    ->where('status', 1)->get();
+                    ->where('status', 1)
+                    ->orderBy('updated_at', 'desc')->get();
             } else {
                 $patientData = "";
             }
@@ -137,42 +144,44 @@ class ClinicController extends Controller
         ]);
 
         User::where('id', $user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
-        $items_data = array(
-            "name" => "Gold",
-            "amount" => "50",
-            "quantity" => "1"
-        );
-
-        $data_pay = json_encode(array(
-            "clientId" => "bf0a61c0-2c64-3fe3-bea4-4904b2396685",
-            "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrnOykA9qFBy6h3OV9ZIJluF2zTWQoNDW2L7ZcYGfw+qBJYGKsZVyTD9eCuJJIFEQY6ztlOzp0OYxfGP4IAxy6KU94m7xdZRr1oIMcHWb1TRyKF1hy9tqbm9AY/hG2+wH8S/BUU1RZN1ZgphlADWMslS5kYIu9QbIZMQJvEB6hEwIDAQAB",
-            "items" => json_encode(array($items_data)),
-            "customerName" => 'kyaw',
-            "totalAmount" => "50",
-            "merchantOrderId" => "ss-ss-ss",
-            "merchantKey" => "s65cfbn.bdg8yh5i04X--occ_JoAkry_ocM",
-            "projectName" => "AungMyin",
-            "merchantName" => "Kyaw Soe"
-        ));
+        // $items_data = array(
+        //     "name" => "Gold",
+        //     "amount" => "50",
+        //     "quantity" => "1"
+        // );
 
 
-        $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
+        // $data_pay = json_encode(array(
+        //     "clientId" => "bf0a61c0-2c64-3fe3-bea4-4904b2396685",
+        //     "publicKey" => "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrnOykA9qFBy6h3OV9ZIJluF2zTWQoNDW2L7ZcYGfw+qBJYGKsZVyTD9eCuJJIFEQY6ztlOzp0OYxfGP4IAxy6KU94m7xdZRr1oIMcHWb1TRyKF1hy9tqbm9AY/hG2+wH8S/BUU1RZN1ZgphlADWMslS5kYIu9QbIZMQJvEB6hEwIDAQAB",
+        //     "items" => json_encode(array($items_data)),
+        //     "customerName" => 'kyaw',
+        //     "totalAmount" => "50",
+        //     "merchantOrderId" => "ss-ss-ss",
+        //     "merchantKey" => "s65cfbn.bdg8yh5i04X--occ_JoAkry_ocM",
+        //     "projectName" => "AungMyin",
+        //     "merchantName" => "Kyaw Soe"
+        // ));
 
-        $rsa = new \phpseclib\Crypt\RSA();
 
-        extract($rsa->createKey(1024));
-        $rsa->loadKey($publicKey); // public key
-        $rsa->setEncryptionMode(2);
-        $ciphertext = $rsa->encrypt($data_pay);
-        $value = base64_encode($ciphertext);
+        // $publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCFD4IL1suUt/TsJu6zScnvsEdLPuACgBdjX82QQf8NQlFHu2v/84dztaJEyljv3TGPuEgUftpC9OEOuEG29z7z1uOw7c9T/luRhgRrkH7AwOj4U1+eK3T1R+8LVYATtPCkqAAiomkTU+aC5Y2vfMInZMgjX0DdKMctUur8tQtvkwIDAQAB';
 
-        $urlencode_value = urlencode($value);
+        // $rsa = new \phpseclib\Crypt\RSA();
 
-        $encryptedHashValue = hash_hmac('sha256', $data_pay, '130fb2878f107a57d8dfb637d4cb7d53');
+        // extract($rsa->createKey(1024));
+        // $rsa->loadKey($publicKey); // public key
+        // $rsa->setEncryptionMode(2);
+        // $ciphertext = $rsa->encrypt($data_pay);
+        // $value = base64_encode($ciphertext);
 
-        $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+        // $urlencode_value = urlencode($value);
 
-        return redirect($redirect_url);
+        // $encryptedHashValue = hash_hmac('sha256', $data_pay, '130fb2878f107a57d8dfb637d4cb7d53');
+
+        // $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+
+        return redirect('/home');
+
     }
 
     public function newUser()
@@ -298,9 +307,21 @@ class ClinicController extends Controller
     public function stepOneRegister()
     {
 
-        $data = Package::where('status', 1)->get();
+        $user_id = Auth::id();
 
-        return view('registration/clinic_name')->with('data', $data);
+        $data = Package::where('status', 1)->first();
+
+        $clinic_data = UserClinic::where('user_id', $user_id)->count();
+
+        if($clinic_data > 2)
+        {
+
+        }else{
+
+            return view('registration/clinic_name')->with('data', $data);
+
+        }
+
     }
 
     public function stepTwoRegister(Request $request)
@@ -312,6 +333,8 @@ class ClinicController extends Controller
         }
 
         $free_month = $request->value;
+
+        session()->put('is_free', $free_month);
 
         $payments = ['1_k' => 'kpay', '2_w' => 'wpay', '3_c' => 'cod'];
 
@@ -344,6 +367,170 @@ class ClinicController extends Controller
             return Response::json('no-session');
         }
     }
+
+    public function waitingList(Request $request)
+    {
+        if (Auth::user()->role_id != null) {
+
+            $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+
+            try {
+                $clinic_id = Crypt::decrypt($request->code);
+                $clinic_name = Clinic::where('id', $clinic_id)->value('name');
+
+                $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
+                $clinic_name = Clinic::where('id', $clinic_id)->value('name');
+                $user_id = Auth::guard('user')->user()['id'];
+                $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
+                $now = new Carbon;
+    
+                if ($role->role_type == 2 || $role->role_type == 5) {
+    
+                    $patientData = Patient::where('clinic_code', $clinic_id)
+                        ->where('user_id', $user_id)
+                        ->where('p_status', 1)
+                        ->where('updated_at', '>=', $now->format('ymd'))
+                        ->where('status', 1)
+                        ->orderBy('updated_at', 'asc')->get();
+                } elseif ($role->role_type == 1 || $role->role_type == 5) {
+    
+                    $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
+                        ->where('patient.updated_at', '>=', $now->format('ymd'))
+                        ->where('patient.p_status', 2)
+                        ->where('patient.status', 1)
+                        ->groupBy()
+                        ->orderBy('patient.updated_at', 'asc')
+                        ->get();
+                        
+    
+                } elseif ($role->role_type == 3 || $role->role_type == 5) {
+    
+                    $patientData = Patient::where('clinic_code', $clinic_id)
+                        ->where('p_status', 3)
+                        ->where('updated_at', '>=', $now->format('ymd'))
+                        ->where('status', 1)
+                        ->orderBy('updated_at', 'asc')->get();
+                } else {
+                    $patientData = array();
+                }
+
+                        $output = '';
+                        $i = 1;
+                        if (count($patientData) > 0)
+                        {
+                            $output .= '<table id="dat" class="table table-bordered table-striped">'.                                 
+                            '<thead>'.
+                                '<tr>'.
+                                    '<th>#</th>'.
+                                    '<th>Name</th>'.
+                                    '<th>Age</th>'.
+                                    '<th>Father\'s name</th>'.
+                                    '<th colspan="3" style="width:15%;">Actions</th>'.
+                                    '</tr>'.
+                            '</thead><tbody>';
+    
+                            foreach($patientData as $row)
+                            {
+                                $date = \Carbon\Carbon::parse($row->updated_at)->diffForHumans();                                           
+    
+                                $output .='<tr id="patient_row_'.$row->id.'">'.
+                                    '<td>'.$i++.
+                                        '<td>'.$row->name.'&nbsp;&nbsp;&nbsp;';
+    
+                                        if($row->gender ==1){
+                                            $output .='<i class="fas fa-male fa-lg" style="color:blue;"></i>';
+                                        }else{
+                                            $output .='<i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>';
+                                        }
+    
+                                    
+                                    $output .='</td>';
+                                    
+                                    $output .='<td>'.$row->age.'</td>';
+                                    $output .='<td>'.$row->father_name.'</td>';
+                                    $output .='<td>';
+                                    $output .='<div class="card-tools">';
+                                    
+                                        if($role->role_type == 1 || $role->role_type == 2 || $role->role_type == 5){
+    
+                                            $output .='<a href="'.route('patient.edit' , Crypt::encrypt($row->id)).'" class="btn btn-sm btn-tool">
+                                                <i class="fas fa-edit fa-lg" style="color:black;"></i>
+                                            </a>';
+    
+                                        }
+    
+                                        if($role->role_type == 2 || $role->role_type == 5){
+    
+                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = '.$row->id.'>
+                                                <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
+                                            </a>
+                                            <div class="modal fade" id="myModal" role="dialog">
+                                                <div class="modal-dialog">
+                                    
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <p class="text-left">Doctors</p>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                    <table class="table table-bordered" id="data">
+                                                            <tr>
+                                                                <td>Name</td>
+                                                                <td>Speciality</td>
+                                                                <td>Action</td>
+                                                            </tr>
+                                                            <tr>
+                                                            
+                                                            </tr>
+                                                    </table>
+                                                    </div>
+                                                
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>';
+                                    
+    
+                                        }elseif($role->role_type == 1 || $role->role_type == 5){
+    
+                                            $output .='<a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="margin:10px;"
+                                                ><i class="fas fa-stethoscope fa-lg"></i>
+                                                </a>';
+    
+                                        }elseif($role->role_type == 3 || $role->role_type == 5){
+    
+                                            $output .='<a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="margin:10px;"
+                                                ><i class="fas fa-receipt fa-lg"></i>
+                                            </a>';
+                
+                                        }
+                                            
+                                        if($role->role_type == 2){
+    
+                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = '.$row->id.'>
+                                                <i class="fas fa-trash fa-lg" style="color:rgb(239, 6, 6);"></i>
+                                            </a>';
+                                        }
+                                        $output .='</div>';
+                                    $output .='</td>';
+                                $output .='</tr>';
+                            }
+                                $output .='</tbody></table>';
+                        }else{
+                            $output .= '<p class="text-center">No patient in waiting list.</p>';
+                        }
+    
+                        echo $output;
+
+              
+            } catch (DecryptException $e) {
+                abort(404);
+            }
+
+           
+        }
+}
 
     private function userCodeGenerator()
     {

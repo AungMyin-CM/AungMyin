@@ -10,6 +10,10 @@ use Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Response;
+use App\Models\Role;
+use App\Models\Patient;
+use Carbon\Carbon;
+use DB;
 
 class NotificationController extends Controller
 {

@@ -19,5 +19,6 @@ class PackagePurchase extends Model
         'status',
         'expire_at',
     ];
+    
 
 }

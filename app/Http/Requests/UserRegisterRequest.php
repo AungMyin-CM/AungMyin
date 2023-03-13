@@ -25,14 +25,16 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'email' => 'email|unique:user',
+            'gender' => 'required|in:1,0',
             'name' => 'required',
             'avatar' => 'nullable|image|max:5000', // only 5MB is allowed
             'code' => 'required|string|unique:user',
             'speciality' => 'nullable',
             'credentials' => 'nullable',
-            'password' => 'required|min:8',
+            'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'min:6',
             'role_type' => 'nullable',
-            'phoneNumber' => 'required|min:10|max:15',
+            'phoneNumber' => 'required|min:10|max:11',
             'city' => 'nullable',
             'country' => 'nullable',
             'address' => 'nullable',

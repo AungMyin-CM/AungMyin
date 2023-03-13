@@ -118,8 +118,8 @@ class PatientController extends Controller
                     'followup_date' => $request->followup_date
                 ]);
             }
-
-            return redirect('clinic-system/patient')->with('success', "Done!");
+            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");;
+            // return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
 
@@ -178,6 +178,8 @@ class PatientController extends Controller
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
 
+            Notification::where('patient_id',$id)->update(['is_read'=>1]);
+               
 
             return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
         } catch (DecryptException $e) {
@@ -210,9 +212,11 @@ class PatientController extends Controller
         Patient::whereId($id)->update(['p_status' => '3']);
         $assign_medicines = '';
         if ($request->med_id) {
+            //   dd($request);
             $count_product = count($request->med_id);
             for ($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= $request->med_id[$x] . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
+                $med = $request->med_id[$x] == null ? $request->med_name[$x] : $request->med_id[$x];
+                $assign_medicines .= $med . '^' . $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
             }
         }
 
@@ -260,14 +264,14 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             foreach ($receiver_ids as $rd) {
 
-                // Notification::create([
-                //     'sender_id' => $user_id,
-                //     'receiver_id' => $rd->user_id,
-                //     'clinic_id' => session()->get('cc_id'),
-                //     'patient_id' => $id,
-                //     'is_sent' => '1',
-                //     'action_on_sent' => $action
-                // ]);
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $rd->user_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action
+                ]);
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" .  $rd->user_id);
             }
@@ -324,7 +328,7 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-        try {
+        
             Patient::whereId($patient_id)->update(['p_status' => $status]);
 
             switch ($status) {
@@ -364,12 +368,12 @@ class PatientController extends Controller
                                 ]);
                             }
                     }
-                    
+
 
                 $clinic_id = session()->get('cc_id');
 
                 NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-                
+
                 Notification::create([
                     'sender_id' => $user_id,
                     'receiver_id' => $receiver_id,
@@ -382,9 +386,7 @@ class PatientController extends Controller
 
 
             echo "changed";
-        } catch (QueryException $e) {
-            echo "false";
-        }
+       
     }
 
     public function addQueue($id)
@@ -500,8 +502,14 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             if (count($importData) <= 1) {
+<<<<<<< HEAD
                 return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
             }
+=======
+                return redirect('clinic-system/patient')->with('error', 'Empty CSV');
+            }
+         
+>>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
                     return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
@@ -536,4 +544,8 @@ class PatientController extends Controller
             return redirect('clinic-system/patient')->with('success', 'Done !');
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd

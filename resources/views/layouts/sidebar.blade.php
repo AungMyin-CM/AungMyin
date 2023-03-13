@@ -12,20 +12,22 @@
                     <div class="info d-flex">
                         <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" />
                         
-                        <select class="form-control " name="u_clinics" id="u_clinics">                          
-                            @foreach($user_clinics as $u_c)
-                                {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
-                                <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
-                                    {{ Str::title($u_c[0]['name']) }}
-                                </option>
-                            @endforeach
+                        <select class="form-control " name="u_clinics" id="u_clinics">   
+                            @if(isset($user_clinics))                       
+                                @foreach($user_clinics as $u_c)
+                                    {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
+                                    <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
+                                        {{ Str::title($u_c[0]['name']) }}
+                                    </option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                 @else
 
                 <div class="image">
                     @if(Auth::guard('user')->user()['avatar'] != null)
-                        <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{asset('images/avatars/'.Auth::guard('user')->user()['avatar'])}}" class="img-responsive" alt="User Image">
                     @else
                         <img src="{{ asset('images/web-photos/no-image.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     @endif

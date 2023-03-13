@@ -15,7 +15,7 @@
                             <div class="text-danger col-sm-3">
                                 <ul>
                                     <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
-                                </ul>
+                                </ul>a
                             </div>
                             
                             <div class="col-sm-6 text-right">
@@ -395,12 +395,22 @@
                 },
                 error: function(xhr, status, error) {
                     var err = eval("(" + xhr.responseText + ")");
-                    alert(err.Message);
-                    alert("hello");
+                    var response = JSON.parse(xhr.responseText);
+                    var errorString = '';
+                    $.each( response.errors, function( key, value) {
+                        errorString += '<p>' + value +'</p>';
+                    });
+
+                    alertify.alert(errorString, function(){
+                        alertify.message('Please fill the fields with *');
+                    }).setHeader('<em>Some errors occured</em>');
+
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
                 },
                 complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
-                    $('.wrapper').css('opacity','0.1');
-                    $('.middle').css('opacity','1');
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
                 },
                
             })

@@ -1,5 +1,14 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    .field-icon {
+        float: right;
+        margin-right: 8px;
+        margin-top: -25px;
+        position: relative;
+        z-index: 2;
+    }
+</style>
 <div class="login-page bg-light">
     <div class="container">
         
@@ -95,13 +104,16 @@
                                                 <div class="input-group-append">
                                                     <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                                 </div>
-                                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password"  id="password">
-                                            </div>
+                                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password"  id="password" toggle="password">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert" id="alert-message">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+                                            </div>
+                                            {{-- <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span> --}}
+
+
                                         </div>
                                         <div class="col-12 mb-1">
                                             <label>Confirm Password<span class="text-danger">*</span></label>
@@ -116,7 +128,7 @@
                                             <span class="invalid-feedback" role="alert" id="alert-message">
                                                 <strong>{{ $message }}</strong>
                                             </span>
-                                        @enderror
+                                            @enderror
                                         </div>
                                         <div class="col-12 mb-1">
                                             <label>Phone Number<span class="text-danger">*</span></label>
@@ -175,6 +187,20 @@ $('form').on('submit',function(){
 $("input").keypress(function(){
     $("#alert-message").hide();
     $("input").removeClass('is-invalid')
+});
+
+$(".toggle-password").click(function() {
+
+    $(this).toggleClass("fa-eye fa-eye-slash");
+        var input = $('#password').attr("toggle")
+        if (input == "password") {
+            $("#password").attr('type',"text"); 
+            $('#password').attr("toggle",'text');
+        } else {
+            $("#password").attr("type", "password");
+            $('#password').attr("toggle",'password');
+
+        }
 });
 
 $('#email').blur(function(){

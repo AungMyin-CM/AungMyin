@@ -255,12 +255,41 @@
 
                                             <div class="form-group">
                                                 <label for="address">Search Medicine</label>
-                                                <textarea type="text" class="form-control" id="medicine_dictionary" placeholder="Start Typing here..."
-                                                    name="medicines"></textarea>
+                                                <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
+                                                    name="medicines"> 
                                             </div>
 
                                             <div class="form-group" id="medtable">
-                                                
+                                                <section class="content">
+                                                    <div class="container-fluid">
+                                                        <table class="table table-bordered" id="product_info_table">
+                                                            <thead>
+                                                              <tr>
+                                                                <th style="width:45%">Name</th>                                                   
+                                                                <th style="width:25%">Qty</th>
+                                                                <th style="width:20%">Days</th>
+                                                                <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                                                              </tr>
+                                                            </thead>   
+                                                             <tbody>
+                                                               <tr id="row_1">
+                                                                 <td>
+                                                                      <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                      <input type = "hidden" name = "med_id[]" id = "med_id_1">
+                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;">
+                                                                    </div>
+                                                                </td>
+                                                                  
+                                                                  <td>
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control"></td>           
+                                                                  <td>
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" >  
+                                                                  </td>
+                                                                  
+                                                               </tr>
+                                                             </tbody>
+                                                          </table>              
+                                                  </section>
                                             </div>
 
                                             <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
@@ -333,7 +362,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                                                <input type="submit" id = "btnSubmit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                             </div>
                                         </div>
                                         <!-- Bootstrap Switch -->
@@ -353,6 +382,26 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <script>
+ $(document).ready(function() {
+  $(window).on("keydown", function(event){
+ 
+    // Check to see if ENTER was pressed and the submit button was active or not
+    if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
+      // It was, so submit the form
+      document.querySelector("form").submit();
+
+    } else if(event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary") ){
+        medicine_dictionary(event);
+        event.preventDefault();
+                
+                //  Invoke click event of target so that non-form submit behaviors will work
+                event.target.click();
+    }
+    else if(event.keyCode === 13){
+        event.preventDefault();
+    }
+  });
+});
         var loadFile = function(event) {
             for(var i =0; i< event.target.files.length; i++){
                 var src = URL.createObjectURL(event.target.files[i]);
@@ -385,22 +434,13 @@
 
         var dictCode = '';
 
-        $("#medicine_dictionary").on('keypress keydown',function(event) {
+    function medicine_dictionary(event) {
+   
         var key = event.keyCode;
         var evtType = event.type;
-
-        if(evtType == 'keydown'){
-            if(key ==8){
-                dictCode = dictCode.slice(0,-1);
-            }
-        }
-        if(evtType == 'keypress'){
-        
-                if(key == 13 || key == 32) 
-                {   
-                    if(dictCode != '') {
-
-                        document.getElementById('medtable').innerHTML = '';
+        var name = document.getElementById("medicine_dictionary").value;
+      
+                    if(event.key != '') {
 
                     $.ajaxSetup({
                         headers: {
@@ -411,8 +451,9 @@
                     $.ajax({
                         type: "POST",
                         url: '/clinic-system/fetchIsmed',
-                        data: { key: dictCode}
+                        data: { key:name}
                     }).done(function( response ) {
+                      
                         if(response != ''){
                             var obj = JSON.parse(response);
                             const res = obj.meaning.split("<br>");
@@ -421,33 +462,69 @@
                                 return el != "";
                             });
 
-                            var table_str = '<table class="table table-bordered">';
-                                for (i =0; i<fil_res.length ; i++){
-
-                                    data = res[i].split('^');
-                                
-                                    table_str +=
-                                    '<tr id="row_'+i+'">'+
-                                        '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
-                                        '<input type="text" name="med_name[]" class="form-control" value="'+data[1]+'" readonly /> </td>'+
-                                        '<td><input type="text"  name="med_qty[]" class="form-control" value="'+data[2]+'" /></td>'+
-                                        '<td><input type="text"   name="days[]"  class="form-control" value="'+data[3]+'"/></td>'+
-                                        '</td>'+
-                                    '</tr>';
-                                }
-                                table_str +=  '</table >';
-                            
-                            $('#medtable').append(table_str);
+                            var table = $("#product_info_table");
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+        var row_id =  1;
+        var html = "";
+        for (i =0; i<fil_res.length ; i++){
+            data = res[i].split('^');
+                html += '<tr id="row_'+row_id+'">'+
+            '<td>'+ 
+            '<input type="text" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
+            '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
+            '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
+            '</td>'+ 
+            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
+            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
+            '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+            '</tr>';
+            row_id++;
+        }
+ 
+        $("#product_info_table tbody").html(html);
+ 
                         }
                     });
                     }
-                    dictCode = '';
-                }else{
-                    dictCode += event.key;
-                }        
+ 
+    }
+    function searchMed(rowid) {
+            var query = $("#product_search_"+rowid).val();
+        
+            var clinic_id = {{ session()->get('cc_id') }};
+            $.ajaxSetup({
+                        headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+             $.ajax({
+                type: "POST",
+                url: '/clinic-system/searchMed',
+                data: { key: query, clinic_id: clinic_id, rowid: rowid}
+            }).done(function( response ) {        
+          
+            if(query != '')
+            {
+                $('#medList_'+rowid).css("display","block");  
+                $('#medList_'+rowid).html(response);
+            }
+            else{
+                $('#medList_'+rowid).css("display","none");  
+                $('#medList_'+rowid).html("");
+            }
+            });
+        };
+        function s_option(rowid)
+        {
+            var med_id = rowid.getAttribute("data-id");
+            var med_name = rowid.getAttribute("data-name");
+            var row_id = rowid.getAttribute("row-id");
+            $("#product_search_"+row_id).val(med_name);
+            $("#med_id_"+row_id).val(med_id);      
+            $('#medList_'+row_id).css("display","none");  
+            $('#medList_'+row_id).html("");
+            
         }
-    });
-
     function removeRow(id)
     {
         $("#medtable table tr#row_"+id).remove();
