@@ -149,7 +149,7 @@
                              <tbody>
                                @if ($med_data)                    
                                @foreach ($med_data as $key => $md)
-                               <tr id="row_1">          
+                               <tr id="row_{{$key+1}}">          
                                   
                                 <td>
                                      <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Search medicines.." value="{{$md[0]['name']}}" required>
@@ -263,7 +263,7 @@
                           
                           var tableProductLength = $("#product_info_table tbody tr").length;
 
-                          for(x = 1; x <= tableProductLength; x++) {
+                          for(let x = 1; x <= tableProductLength; x++) {
                             getTotal(x);
                           } 
                         
@@ -382,14 +382,16 @@
                       }
 
                       function subAmount() {
-
+ 
                           var tableProductLength = $("#product_info_table tbody tr").length;
+                         
                           var totalSubAmount = 0;
-                          for(x = 0; x < tableProductLength; x++) {
-                            var tr = $("#product_info_table tbody tr")[x];
+                          for(let y = 0; y < tableProductLength; y++) {
+                            var tr = $("#product_info_table tbody tr")[y];
                             var count = $(tr).attr('id');
+                          
                             count = count.substring(4);
-
+ 
                             totalSubAmount = Number(totalSubAmount) + Number($("#amount_"+count).val());
                           } // /for
 
@@ -413,6 +415,7 @@
                         } // /sub total amount
 
                         function getTotal(row = null) {
+                         
 
                             var qty = Number($("#qty_"+row).val());
                             var avaiqty = Number($("#remain_qty_"+row).val());
