@@ -13,6 +13,8 @@ use App\Models\Pos;
 use App\Models\PosItem;
 use App\Models\Patient;
 use App\Models\Visit;
+use App\Models\Notification;
+
 
 use Session;
 
@@ -43,6 +45,8 @@ class PosController extends Controller
                 $patient_data = Patient::findOrfail($id);
                 $visit_data = Visit::where('patient_id', $id)->orderBy('updated_at', 'desc')->get()->first();
                 $assigned_med = $visit_data['assigned_medicines'];
+
+                Notification::where('patient_id',$id)->update(['is_read'=>1]);
             
                 if ($assigned_med != "") {
                     $medList = explode("<br>", $assigned_med);
