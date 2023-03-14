@@ -502,14 +502,9 @@ class PatientController extends Controller
             $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
             if (count($importData) <= 1) {
-<<<<<<< HEAD
-                return redirect('clinic-system/pharmacy')->with('error', 'Empty CSV');
-            }
-=======
                 return redirect('clinic-system/patient')->with('error', 'Empty CSV');
             }
          
->>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
                     return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
@@ -544,8 +539,4 @@ class PatientController extends Controller
             return redirect('clinic-system/patient')->with('success', 'Done !');
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd

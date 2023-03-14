@@ -69,11 +69,7 @@
 
     $(document).ready(function(){
 
-<<<<<<< HEAD
-      $.ajax({
-=======
             $.ajax({
->>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
             type: "GET",
             url: '/clinic-system/check-noti',
               beforeSend: function(){
@@ -114,35 +110,8 @@
 
               },
               error: function(httpObj, textStatus) {       
-<<<<<<< HEAD
-                    location.reload();
-                },
-            });
-
-      $('form').on('submit',function(){
-        $('.wrapper').css('opacity','0.1');
-        $('.middle').css('opacity','1');
-      });
-
-     
-      $("#u_clinics").change(function(){
-        var id = this.value;
-        
-        $.ajax({
-            type: "GET",
-            url: '/clinic-system/'+id,
-            data: {code :id},
-        }).done(function( response ) {
-           
-            window.location = '/clinic-system/'+id;
-            
-        });
-      })
-       
-=======
                         console.log(textStatus);              
               },
->>>>>>> d9ea18fcf225ca35535bb7c1a959dd01317316cd
 
             });
 
@@ -167,10 +136,6 @@
               });
             }
 
-            if(document.getElementById())
-            {
-              
-            }
 
         $('form').on('submit',function(){
           $('.wrapper').css('opacity','0.1');
