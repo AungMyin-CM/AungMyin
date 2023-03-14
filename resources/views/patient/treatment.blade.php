@@ -327,12 +327,7 @@
                                             </div>
 
                                             <div class="row">
-                                                {{-- <div class="col-md-4">
-                                                    <div class="form-group">
-                                                       <label for="address" class="d-none">Fees</label>
-                                                        <input type="number" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value={{Auth::user()->fees}} readonly />
-                                                    </div>
-                                                </div> --}}
+                                                <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value={{Auth::user()->fees}} readonly />
                                                 <div class="col-md-6">
                                                     <div class="d-flex justify-content-center">
                                                         <div class="form-check" style="padding:6px !important;">

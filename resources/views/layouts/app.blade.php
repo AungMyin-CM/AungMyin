@@ -124,10 +124,11 @@
             if(document.getElementById('on_home_page'))
               {
 
-              $.ajax({
+                $.ajax({
                 type: "GET",
                 url: "{{route('wait.list')}}",
-                data: {code: '{{ Crypt::encrypt('+userId+') }}'},
+                data: {code: '{{ Crypt::encrypt(session()->get('cc_id')) }}'},
+
                 beforeSend: function(){
                   $('.wrapper').css('opacity','0.1');
                   $('.middle').css('opacity','1');
