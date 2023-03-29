@@ -27,7 +27,7 @@ class SearchController extends Controller
 
         $clinic_id = UserClinic::where('user_id', $request->clinic_id)->pluck('clinic_id')->first();
 
-        $data = Patient::select('id', 'name', 'age', 'father_name')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $clinic_id)->where('status', 1)->get();
+        $data = Patient::select('id', 'name', 'age', 'father_name')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $request->clinic_id)->where('status', 1)->get();
 
         $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
