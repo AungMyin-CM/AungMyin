@@ -13,9 +13,9 @@
                         {{-- <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" /> --}}
                         
                         <select class="form-control" name="u_clinics" id="u_clinics">   
+                            <option disabled>-- Select clinic --</option>
                             @if(isset($user_clinics))                       
                                 @foreach($user_clinics as $u_c)
-                                    <option disabled>-- Select clinic --</option>
                                     {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
                                     <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
                                         {{ Str::title($u_c[0]['name']) }}
