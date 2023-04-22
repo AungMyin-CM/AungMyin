@@ -357,7 +357,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" id = "btnSubmit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                                                <input type="submit" id = "btnSubmit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                             </div>
                                         </div>
                                         <!-- Bootstrap Switch -->

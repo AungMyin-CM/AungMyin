@@ -7,6 +7,7 @@ use App\Http\Requests\UserRegisterRequest;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserClinic;
 
 
@@ -149,5 +150,48 @@ class UserController extends Controller
                 echo 'unique';
             }
         }
+    }
+
+    public function updateProfile($id)
+    {
+        $user = User::findOrfail($id);
+        $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
+
+        $role = Role::where('id', $user->role_id)->get()->first();
+        return view('profile/update', compact('user', 'data', 'role'));
+
+    }
+
+    public function saveProfile($id,Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3|max:50',
+            'email' => 'email',
+            'password' => 'confirmed',
+        ]);
+
+        $requests = [
+            'name' => $request->name,
+            'speciality' => $request->speciality,
+            'credentials' => $request->credentials,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phoneNumber' => $request->phoneNumber,
+            'city' => $request->city,
+            'country' => $request->country,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'short_bio' => $request->short_bio,
+            'fees' => $request->fees,
+        ];
+
+        if ($request->password != null && trim($request->password) != '') {
+            $requests += ['password' => Hash::make($request->password)];
+        }
+
+        User::whereId($id)->update($requests);
+
+
+        return redirect()->back()->with('success','Done');
     }
 }

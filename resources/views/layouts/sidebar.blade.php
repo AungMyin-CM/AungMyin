@@ -10,11 +10,12 @@
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 @if(Request::is('clinic-system/*'))
                     <div class="info d-flex">
-                        <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" />
+                        {{-- <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" /> --}}
                         
-                        <select class="form-control " name="u_clinics" id="u_clinics">   
+                        <select class="form-control" name="u_clinics" id="u_clinics">   
                             @if(isset($user_clinics))                       
                                 @foreach($user_clinics as $u_c)
+                                    <option disabled>-- Select clinic --</option>
                                     {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
                                     <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
                                         {{ Str::title($u_c[0]['name']) }}
@@ -145,21 +146,18 @@
                             @endif
                         @endif
 
-                        <hr size="30" style="border-top:1px solid red !important;">
-{{-- 
                         <li class="nav-item">
-                            <a href="{{ route('clinic.settings') }}" class="nav-link">
+                            <a href="{{ route('clinic.settings',Auth::guard('user')->user()->id) }}" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
                                 <p>
                                     Settings
                                 </p>
                             </a>
-                        </li> --}}
-{{-- 
-                        <li class="nav-item">
+                        </li>
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
-                        </li> --}}
+                        </li>  --}}
                     @endif
                     {{-- <li class="nav-item">
                         @if (Auth::guard('user')->user())

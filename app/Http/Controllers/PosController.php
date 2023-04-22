@@ -44,28 +44,33 @@ class PosController extends Controller
                 $id = Crypt::decrypt($id);
                 $patient_data = Patient::findOrfail($id);
                 $visit_data = Visit::where('patient_id', $id)->orderBy('updated_at', 'desc')->get()->first();
-                $assigned_med = $visit_data['assigned_medicines'];
 
-                Notification::where('patient_id',$id)->update(['is_read'=>1]);
-            
-                if ($assigned_med != "") {
-                    $medList = explode("<br>", $assigned_med);
+                if($visit_data)
+                {
 
-                    foreach ($medList as $row) {
+                    $assigned_med = $visit_data['assigned_medicines'];
 
-                        $medInfo = explode("^", $row);
-                        if (!empty($medInfo[0])) {
-                            $qty = explode("-",  $medInfo[1]);
-                            $days = $medInfo[2];
-                            $med = Pharmacy::where('id', $medInfo[0])->get();
-                            if ($med->count() > 0) {
-                                $med_data[] = $med;
-                            } else {
-                                $arr = new Pharmacy();
-                                $arr['name'] = $medInfo[0];
-                                $med_data[][] =   $arr;
+                    Notification::where('patient_id',$id)->update(['is_read'=>1]);
+                
+                    if ($assigned_med != "") {
+                        $medList = explode("<br>", $assigned_med);
+
+                        foreach ($medList as $row) {
+
+                            $medInfo = explode("^", $row);
+                            if (!empty($medInfo[0])) {
+                                $qty = explode("-",  $medInfo[1]);
+                                $days = $medInfo[2];
+                                $med = Pharmacy::where('id', $medInfo[0])->get();
+                                if ($med->count() > 0) {
+                                    $med_data[] = $med;
+                                } else {
+                                    $arr = new Pharmacy();
+                                    $arr['name'] = $medInfo[0];
+                                    $med_data[][] =   $arr;
+                                }
+                                $total_qty[] = array(($qty[0] + $qty[1] +  $qty[2]) * $days);
                             }
-                            $total_qty[] = array(($qty[0] + $qty[1] +  $qty[2]) * $days);
                         }
                     }
                 }
@@ -253,6 +258,28 @@ class PosController extends Controller
         POS::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('clinic-system/pos-history')->with('success', 'Done !');
+    }
+
+    public function printInvoice($id)
+    {
+
+        try {
+            $id = Crypt::decrypt($id);
+            $pos = Pos::findOrfail($id);
+            $patient_data = null;
+            $visit_data = null;
+            if ($pos->patient_id != null) {
+                $patient_data = Patient::findOrfail($pos->patient_id);
+                $visit_data = Visit::where('pos_id', $id)->get()->first();
+            }
+            $pos_detail = PosItem::where("pos_id", $id)->get();
+            $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+
+            return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+
     }
 
     public function summary()

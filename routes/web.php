@@ -13,6 +13,8 @@ use App\Http\Controllers\FeedBackController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\ContactController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,7 @@ Route::get('payment', [ClinicController::class, 'payment'])->name('payment')->mi
 
 Route::post('register-clinic', [ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
 
+Route::post('/contact',[ContactController::class,'store'])->name('contact-us');
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
@@ -77,6 +80,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('/pos-patient/{patient_id}', [PosController::class, 'index'])->name('pos-patient');
 
+    Route::get('/pos-print/{id}', [PosController::class, 'printInvoice'])->name('pos-invoice');
+
     Route::post('/medData', [PosController::class, 'getMedData']);
 
     Route::get('users', [UserController::class, 'userList'])->name('user.list');
@@ -101,7 +106,9 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('check-noti', [NotificationController::class, 'getNoti']);
 
-    Route::get('settings', [ClinicController::class, 'settings'])->name('clinic.settings');
+    Route::get('settings/{id}', [UserController::class, 'updateProfile'])->name('clinic.settings');
+
+    Route::post('setting-save/{id}', [UserController::class, 'saveProfile'])->name('settings.save');
 
     Route::post('pharma_code/check', [PharmacyController::class, 'checkMedCode'])->name('pharma_code.check');
 

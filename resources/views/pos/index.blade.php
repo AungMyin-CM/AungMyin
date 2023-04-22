@@ -60,7 +60,7 @@
                                     </div>
 
                                     <div class="col-sm-2" {{ $patient_data != null ?"" :'hidden'}}>
-                                      <h6><b>Fees :</b>{{ $visit_data['fees'] != null  ? $visit_data['fees'] : " FOC"}} </h6>
+                                      <h6><b>Fees :</b>{{ isset($visit_data['fees'])  ? $visit_data['fees'] : " 0"}} </h6>
                                   </div>
                                                   
                                 </div>
@@ -117,8 +117,8 @@
                 
                   @if($patient_data != null)
                   <input type="hidden" name="patient_id" class="form-control" id="patient_id" value={{ $patient_data['id'] }}>
-                  <input type="hidden" name="visit_id" class="form-control"  value={{ $visit_data['id'] }}>
-                  <input type="hidden" id="fees" class="form-control" value={{ $visit_data['fees'] }}>
+                  <input type="hidden" name="visit_id" class="form-control"  value={{ isset($visit_data['id']) ? $visit_data['id'] : ''}}>
+                  <input type="hidden" id="fees" class="form-control" value={{ isset($visit_data['fees']) ? $visit_data['fees'] : ''}}>
                   <input type="hidden" id="customer_name" name = "customer_name" class="form-control" value={{ $patient_data['name'] }}>
                   @else
                   <input type="hidden" name="patient_id" class="form-control" id="patient_id">
@@ -234,7 +234,7 @@
                               </select>
                               </div><br>
                               <div class="col-md-2">
-                                <input type="submit" value="submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                                <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                               </div>
                            </div>
                             
