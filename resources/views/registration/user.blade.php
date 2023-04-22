@@ -177,7 +177,7 @@
                                         </div>
            
                                         <div class="col-12  mt-4">
-                                            <a href="/"><i class="fas fa-arrow-left" style="color:  {{config('app.color')}}">  Back to login</i></a>
+                                            <a href="{{route('user-login')}}"><i class="fas fa-arrow-left" style="color:  {{config('app.color')}}">  Back to login</i></a>
                                             <button type="submit" class="btn btn-primary  float-right" style="background-color: {{config('app.color')}}">Register</button>
                                         </div>
                                       

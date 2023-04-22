@@ -146,21 +146,18 @@
                             @endif
                         @endif
 
-                        <hr size="30" style="border-top:1px solid red !important;">
-{{-- 
                         <li class="nav-item">
-                            <a href="{{ route('clinic.settings') }}" class="nav-link">
+                            <a href="{{ route('clinic.settings',Auth::guard('user')->user()->id) }}" class="nav-link">
                                 <i class="nav-icon fas fa-cog"></i>
                                 <p>
                                     Settings
                                 </p>
                             </a>
-                        </li> --}}
-{{-- 
-                        <li class="nav-item">
+                        </li>
+                        {{-- <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
-                        </li> --}}
+                        </li>  --}}
                     @endif
                     {{-- <li class="nav-item">
                         @if (Auth::guard('user')->user())
