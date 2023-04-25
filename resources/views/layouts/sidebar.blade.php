@@ -19,7 +19,7 @@
                                     {{-- <option value="{{Crypt::encrypt($u_c[0]['id'])}}" {{$u_c[0]['id'] == session()->get('cc_id') ? 'selected' : '' }} >{{ Str::title($u_c[0]['name']) }} --}}
                                     <option value="{{route('user.clinic',Crypt::encrypt($u_c[0]['id']))}}" name ={{$u_c[0]['id'] }}>
                                         {{ Str::title($u_c[0]['name']) }}
-                                    </option>
+                                    </option>   
                                 @endforeach
                             @endif
                         </select>
