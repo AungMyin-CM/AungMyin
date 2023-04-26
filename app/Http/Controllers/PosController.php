@@ -99,6 +99,7 @@ class PosController extends Controller
             abort(404);
         }
 
+
         $pos = new Pos();
         $user_id = Auth::guard('user')->user()['id'];
         $clinic_id = session()->get('cc_id');
@@ -135,33 +136,69 @@ class PosController extends Controller
             Pharmacy::whereId($request->med_id[$x])->update(['quantity' => $new_quantity]);
             $assign_medicines .= $request->med_name[$x] . '-' . $request->quantity[$x] . '<br>';
         }
-        if ($request->patient_id != null) {
-            Patient::whereId($request->patient_id)->update(['p_status' => '4']);
 
-            if ($request->visit_id != null) {
-                Visit::whereId($request->visit_id)->update(['pos_id' => $pos_id]);
+            if ($request->patient_id != null) {
+                Patient::whereId($request->patient_id)->update(['p_status' => '4']);
 
-                $id = $request->visit_id;
-            } else {
-                $id = Visit::create([
-                    'patient_id' => $request->patient_id,
-                    'user_id' => $user_id,
-                    'assigned_medicines' => $assign_medicines
-                ])->id;
+                if ($request->visit_id != null) {
+                    Visit::whereId($request->visit_id)->update(['pos_id' => $pos_id]);
+
+                    $id = $request->visit_id;
+                } else {
+                    $id = Visit::create([
+                        'patient_id' => $request->patient_id,
+                        'user_id' => $user_id,
+                        'assigned_medicines' => $assign_medicines
+                    ])->id;
+                }
+
+
+                $pos_detail = PosItem::where("pos_id", $pos_id)->get();
+                $pos = Pos::findOrfail($pos_id);
+                $patient_data = Patient::findOrfail($pos->patient_id);
+                $visit_data = Visit::where('pos_id', $pos_id)->get()->first();
+                $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+
+                if($request->submit_type == 'print-type'){
+
+                    $pos = Pos::findOrfail($pos_id);
+                    $patient_data = null;
+                    $visit_data = null;
+                    if ($pos->patient_id != null) {
+                        $patient_data = Patient::findOrfail($pos->patient_id);
+                        $visit_data = Visit::where('pos_id', $pos_id)->get()->first();
+                    }
+                    $pos_detail = PosItem::where("pos_id", $pos_id)->get();
+                    $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+
+                    return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
+
+                }else{
+
+                    return redirect(route('pos.index'));
+                }
+
+            }else{
+
+                if($request->submit_type == 'print-type'){
+                    $pos = Pos::findOrfail($pos_id);
+                    $patient_data = null;
+                    $visit_data = null;
+                    if ($pos->patient_id != null) {
+                        $patient_data = Patient::findOrfail($pos->patient_id);
+                        $visit_data = Visit::where('pos_id', $pos_id)->get()->first();
+                    }
+                    $pos_detail = PosItem::where("pos_id", $pos_id)->get();
+                    $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+
+                    return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
+
+                }else{
+                    return redirect('/clinic-system/pos')->with('success', "Done!");
+
+                }
             }
-
-
-            $pos_detail = PosItem::where("pos_id", $pos_id)->get();
-            $pos = Pos::findOrfail($pos_id);
-            $patient_data = Patient::findOrfail($pos->patient_id);
-            $visit_data = Visit::where('pos_id', $pos_id)->get()->first();
-            $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
-
-            return redirect(route('pos.index'));
-
-        }else{
-        return redirect('/clinic-system/pos')->with('success', "Done!");
-        }
+        
     }
     public function edit($id)
     {
@@ -249,7 +286,7 @@ class PosController extends Controller
         }
 
         $clinic_id = session()->get('cc_id');
-        $history_List = POS::where("clinic_id", $clinic_id)->where('status', 1)->get();
+        $history_List = POS::where("clinic_id", $clinic_id)->where('status', 1)->orderBy('updated_at','desc')->get();
         return view('pos/history')->with(['history_list' => $history_List]);
     }
 
