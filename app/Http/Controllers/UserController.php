@@ -170,9 +170,18 @@ class UserController extends Controller
             'password' => 'confirmed',
         ]);
 
+        if ($request->file('avatar') != '') {
+            $file = $request->file('avatar');
+            $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
+            $file->move(public_path('images/avatars'), $filename);
+        }else{
+            $filename = User::where('id',Auth::guard('user')->user()['id'])->value('avatar');
+        }
+
         $requests = [
             'name' => $request->name,
             'speciality' => $request->speciality,
+            'avatar' => $filename,
             'credentials' => $request->credentials,
             'name' => $request->name,
             'email' => $request->email,

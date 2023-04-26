@@ -21,7 +21,7 @@
                     </div><!-- /.container-fluid --> --}}
                 </section>
 
-                <form action="{{ route('settings.save', $user->id) }}" method="POST">
+                <form action="{{ route('settings.save', $user->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <section class="content">
@@ -29,37 +29,37 @@
                             <div class="row">
                                 <!-- left column -->
                                 <div class="col-md-8">
+                                    
                                     <!-- general form elements -->
                                     <div class="card card-primary">
                                         <div class="card-header" style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Update Profile</h3>
                                         </div>
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger m-3">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div><br />
-                                        @endif
-
-                                        @if (Session::has('success'))
-                                            <div class="col-md-6">
-                                                <div class="alert alert-success m-3" id="alert-message">
-                                                    <ul class="list-unstyled">
-                                                        <li>
-                                                            {{ Session::get('success') }}
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        @endif
+                                        
                                         <!-- /.card-header -->
                                         <!-- form start -->
 
 
                                         <div class="card-body">
+                                            <div class="row">
+                                                <div class="input-group m-auto">
+                                                    <input type="file" class="@error('avatar') is-invalid @enderror" onchange="loadFile(event)" name="avatar" id="upload" hidden/>
+                                                    <label class="file_upload m-auto hover" for="upload" id="image_upload">
+                                                        @if($user->avatar != '')
+                                                            <img src="{{asset('images/avatars/'.$user->avatar)}}" alt="Avatar" class="avatar mb-2">
+                                                        @else
+                                                            <img src="{{ asset('images/web-photos/no-image.jpg') }}" class="avatar mb-2" alt="User Image"  id="image_logo">
+                                                        @endif
+
+                                                    </label>
+
+                                                    @error('avatar')
+                                                    <span class="invalid-feedback" role="alert" id="alert-message">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-6">
 
@@ -175,6 +175,29 @@
                                     </div>
 
                                 </div>
+                                <div class="col-md-4">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger m-3">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div><br />
+                                    @endif
+
+                                    @if (Session::has('success'))
+                                        <div class="col-md-6">
+                                            <div class="alert alert-success m-3" id="alert-message">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        {{ Session::get('success') }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
                                
                             </div>
                     </section>
@@ -184,5 +207,20 @@
         </div>
     </body>
     <script src="{{ asset('js/user.js') }}"></script>
+
+    
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+
+    <script>
+        var loadFile = function(event) {
+            for(var i =0; i< event.target.files.length; i++){
+                var src = URL.createObjectURL(event.target.files[i]);
+                $("#image_logo").remove();
+                $("#image_upload").append("<img id='image_logo' onclick='showImage("+i+")' src="+src+" class='avatar mb-3' alt='img' />");
+
+            }
+        };
+    </script>
 @endsection
 {{-- @include('layouts.js') --}}

@@ -233,8 +233,15 @@
                                 <option value="3">FOC</option>
                               </select>
                               </div><br>
-                              <div class="col-md-2">
-                                <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}" name="submit_type">
+                                </div>
+                                <div class="col-md-3">
+                                  <input type="submit" value="Print" class="btn btn-primary" name="submit_type" onclick="print()" style="background-color: {{config('app.color')}}">
+                                </div>
+                                <input id="submittype" type="hidden" name="submit_type" value="" />
+
                               </div>
                            </div>
                             
@@ -268,6 +275,10 @@
                           } 
                         
                       });
+
+                      function print() {
+                          document.getElementById("submittype").value = "print-type";
+                      }
                         
                       $('#main_search').keyup(function(){ 
                           var query = $(this).val();

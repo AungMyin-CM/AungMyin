@@ -74,9 +74,10 @@
   </head>
   <body>
     <img src="{{ asset('images/web-photos/aung-myin.png') }}" class="logo"  >
-    <div class="text-right">
-      <button class="btn btn-primary m-3" onclick="printInvoice()"><i class="fas fa-print"></i> Print</button>
-    </div>
+      <div class="text-right">
+        <button class="btn btn-primary m-3" onclick="printInvoice()"><i class="fas fa-print"></i> Print</button>
+        <a class="btn btn-primary m-3" href="{{route("pos.index")}}"><i class="fas fa-arrow-left"></i> Back</a>
+      </div>
     <h1 class="invoice-title">Invoice</h1>
     <table class="invoice-details">
       <tr>
