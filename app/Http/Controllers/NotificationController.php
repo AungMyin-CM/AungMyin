@@ -21,7 +21,7 @@ class NotificationController extends Controller
     {
         if(Session::has('cc_id')){
             $data = Notification::where('receiver_id' , Auth::guard('user')->user()['id']
-                                    )->where('is_read',0)->get();
+                                    )->where('is_read',0)->orderBy('updated_at','desc')->limit(5)->get();
             
                 if(count($data) > 0 ){
                     foreach($data as $d)
