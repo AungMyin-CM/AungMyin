@@ -398,6 +398,7 @@ class ClinicController extends Controller
                         ->where('patient.updated_at', '>=', $now->format('ymd'))
                         ->where('patient.p_status', 2)
                         ->where('patient.status', 1)
+                        ->where('patient.clinic_code',$clinic_id)
                         ->groupBy()
                         ->orderBy('patient.updated_at', 'asc')
                         ->get();
