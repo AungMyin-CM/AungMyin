@@ -84,7 +84,6 @@ class ClinicController extends Controller
                     ->orderBy('patient.updated_at', 'desc')
                     ->get();
                     
-
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
@@ -453,13 +452,22 @@ class ClinicController extends Controller
                                     $output .='<td>';
                                     $output .='<div class="card-tools">';
                                     
-                                        if($role->role_type == 1 || $role->role_type == 2 || $role->role_type == 5){
+                                        if($role->role_type == 1){
     
-                                            $output .='<a href="'.route('patient.edit' , Crypt::encrypt($row->id)).'" class="btn btn-sm btn-tool">
+                                            $output .='<a href="'.route('patient.edit' ,  Crypt::encrypt($row->patient_id)).'" class="btn btn-sm btn-tool">
                                                 <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                             </a>';
     
                                         }
+                                        
+                                         if($role->role_type == 2 || $role->role_type == 5){
+    
+                                            $output .='<a href="'.route('patient.edit' ,  Crypt::encrypt($row->id)).'" class="btn btn-sm btn-tool">
+                                                <i class="fas fa-edit fa-lg" style="color:black;"></i>
+                                            </a>';
+    
+                                        }
+                                        
     
                                         if($role->role_type == 2 || $role->role_type == 5){
     
@@ -496,7 +504,7 @@ class ClinicController extends Controller
     
                                         }elseif($role->role_type == 1 || $role->role_type == 5){
     
-                                            $output .='<a href="'.route('patient.treatment', Crypt::encrypt($row->id)).'" style="margin:10px;"
+                                            $output .='<a href="'.route('patient.treatment', Crypt::encrypt($row->patient_id)).'" style="margin:10px;"
                                                 ><i class="fas fa-stethoscope fa-lg"></i>
                                                 </a>';
     
