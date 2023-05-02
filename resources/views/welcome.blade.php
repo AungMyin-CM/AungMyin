@@ -38,12 +38,14 @@
           <li><a class="nav-link scrollto active" href="#home">Home</a></li>
           <li><a class="nav-link scrollto" href="#services">Our Services</a></li>
           <li><a class="nav-link scrollto" href="#pricing">Packages</a></li>
+          <li><a class="nav-link scrollto" href="#elearning">E-learning</a></li>
+          <li><a class="nav-link scrollto" href="#job-search">Job search</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact Us</a></li>
           @auth
           <li><a class="getstarted" href="{{asset('home')}}">My Dashboard</a></li>
           @else
           <li><a class="getstarted" href="{{asset('login')}}">Login</a></li>
-          <li><a class="login" href="{{asset('register')}}">Create Account</a></li>
+          <!-- <li><a class="login" href="{{asset('register')}}">Create Account</a></li> -->
           @endauth
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -62,19 +64,25 @@
           <h1 data-aos="fade-up" style="font-family: 'Times New Roman', Times, serif;">Clinic in one Place</h1>
           <br>
           <h5 data-aos-delay="400">Why you need to upgrade your clinic?</h5>
-          <div class="d-flex mt-3">
-            <h5 class="me-3">
-              <i class="bi bi-alarm-fill"></i>
-              Save your time
-            </h5>
-            <h5 class="me-3">
-              <i class="bi bi-lightbulb-fill"></i>
-              Effortless
-            </h5>
-            <h5 class="me-3">
-              <i class="bi bi-shield-fill-check"></i>
-              Reliable
-            </h5>
+          <div class="row mt-3">
+            <div class="col-md-4">
+              <h5>
+                <i class="bi bi-alarm-fill"></i>
+                Save your time
+              </h5>
+            </div>
+            <div class="col-md-4">
+              <h5>
+                <i class="bi bi-lightbulb-fill"></i>
+                Effortless
+              </h5>
+            </div>
+            <div class="col-md-4">
+              <h5>
+                <i class="bi bi-shield-fill-check"></i>
+                Reliable
+              </h5>
+            </div>
           </div>
           <div data-aos="fade-up" data-aos-delay="600">
             <div class="text-center text-lg-start">
@@ -245,7 +253,7 @@
 
         <div class="row gy-4">
           <div class="col-lg-6">
-
+            <img src="" class="img-fluid" alt="">
           </div>
           <div class="col-lg-6">
             <div class="content">
@@ -271,7 +279,7 @@
           <h2>Job search</h2>
         </header>
 
-        <select class="form-select w-25 ms-auto mb-5">
+        <select class="form-select ms-auto mb-5">
           <option selected>Select city</option>
           <option value="1">One</option>
           <option value="2">Two</option>
@@ -279,7 +287,7 @@
         </select>
 
         <div class="row">
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 col-md-6 mb-3">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">
@@ -314,7 +322,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 col-md-6 mb-3">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">
@@ -349,7 +357,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 mb-3">
+          <div class="col-lg-4 col-md-6 mb-3">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">

@@ -1109,6 +1109,10 @@ section {
 # E-learning
 --------------------------------------------------------------*/
 
+.elearning .content {
+  padding: 0 40px;
+}
+
 .elearning .content h3 {
   font-size: 20px;
   color: #012970;
@@ -1130,6 +1134,10 @@ section {
 /*--------------------------------------------------------------
 # Job Search
 --------------------------------------------------------------*/
+
+.job-search .form-select {
+  width: 200px;
+}
 
 .job-search .form-select, .card {
   border: #fafafa;
