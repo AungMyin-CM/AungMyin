@@ -410,34 +410,17 @@
 
         <header class="section-header">
           <p>Aung Myin for your Clinic</p><br>
-          <h2>Contact</h2>
+          <h2>Contact Us</h2>
         </header>
 
         <div class="row gy-4">
           <div class="col-lg-6">
-            <div class="row gy-4">
-              <div class="col-md-12">
-                <div class="info-box">
-                  <h3>Feel free to contact us for your query</h3>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-telephone"></i>
-                  <h3>Call Us</h3>
-                  <p>09403113003</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box">
-                  <i class="bi bi-envelope"></i>
-                  <h3>Email Us</h3>
-                  <p>info@aungmyin.io</p>
-                </div>
-              </div>
+            <div class="info-box">
+              <img class="w-100" src="assets/img/contact.png" alt="contact-info">
             </div>
           </div>
-          <div class="col-lg-6">
+
+          <div class="col-lg-6 order-lg-first">
             <form action="{{route('contact-us')}}" method="post" class="php-email-form">
               @csrf
               <div class="row gy-4">
