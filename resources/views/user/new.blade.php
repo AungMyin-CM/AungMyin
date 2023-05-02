@@ -4,45 +4,44 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
-                <section class="content-header">
-                    <div class="container-fluid">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
+             <section class="content-header">
+                   {{--     <div class="container-fluid">
                         <div class="row mb-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <h1>Register Form</h1>
+                                
                             </div>
-                            <div class="col-sm-6">
+                            <div class="text-danger col-sm-3">
+                                <ul>
+                                    <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
+                                </ul>a
+                            </div>
+                            
+                            <div class="col-sm-6 text-right">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">User</a></li>
                                     <li class="breadcrumb-item active">New</li>
                                 </ol>
                             </div>
                         </div>
-                    </div><!-- /.container-fluid -->
+                        
+                    </div><!-- /.container-fluid --> --}}
                 </section>
 
-                <form action="{{ route('user.register') }}" method="POST">
+                <form id="form-user" >
                     @csrf
-
-                    <section class="content">
+                    <section class="content" >
                         <div class="container-fluid">
                             <div class="row">
                                 <!-- left column -->
                                 <div class="col-md-6">
                                     <!-- general form elements -->
-                                    <div class="card card-primary">
-                                        <div class="card-header">
+                                    <div class="card card-primary" >
+                                        <div class="card-header"  style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div><br />
-                                        @endif
+                                           
                                         <!-- /.card-header -->
                                         <!-- form start -->
 
@@ -52,23 +51,24 @@
                                                 <div class="col-md-4">
 
                                                     <div class="form-group">
-                                                        <label for="code">Name</label>
+                                                        <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
                                                         <input type="text" class="form-control" id="username" name="name"
-                                                            placeholder="Name">
+                                                            placeholder="Name" value="{{ old('name') }}">
                                                     </div>
                                                 </div>
-                                                
 
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="code">Code</label>
-                                                        <input type="text" class="form-control" id="code" name="code"
-                                                            placeholder="Enter code" value="">
+                                                        <label for="code">Username<b><sup class="text-danger">*</sup></b></label>
+                                                        <input type="text" class="form-control" id="code" name="code" required
+                                                            placeholder="Code" value="{{ old('code') }}">
+                                                        <span class="small" id="a-text"></span>
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="col-md-4">
                                                     <div class="form-group">
-                                                        <label for="sel1">Role</label>
+                                                        <label for="sel1">Role<b><sup class="text-danger">*</sup></b></label>
                                                         <select class="form-control" id="role_type" name="role_type">
 
                                                             @foreach ($data as $key => $value)
@@ -79,9 +79,11 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                
                                             </div>
 
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
 
                                             <div class="row">
                                                 <div class="col-md-3">
@@ -111,38 +113,47 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="speciality">Speciality</label>
-                                                        <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality">
+                                                        <textarea class="form-control" name="speciality" row="10">{{ old('speciality') }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
 
                                                     <div class="form-group">
                                                         <label for="credentials">Credentials</label>
-                                                        <textarea class="form-control" name="credentials" row="10"></textarea>
+                                                        <textarea class="form-control" name="credentials" row="10">{{ old('credentials') }}</textarea>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1">Email address</label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                                            name="email" placeholder="example@gmail.com">
+                                                        <label for="email">Email address <b><sup class="text-danger">*</sup></b></label>
+                                                        <input type="email" class="form-control" id="email"
+                                                            name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
+                                                        <span class="small" id="em-text"></span>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
 
                                                     <div class="form-group">
-                                                        <label for="password">Password</label>
+                                                        <label for="password">Password <b><sup class="text-danger">*</sup></b></label>
                                                         <input type="password" class="form-control" id="password" name="password"
+                                                            placeholder="Password">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    <div class="form-group">
+                                                        <label for="password">Confirm Password <b><sup class="text-danger">*</sup></b></label>
+                                                        <input type="password" class="form-control" id="password" name="password_confirmation"
                                                             placeholder="Password">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="phNumber">Phone Number</label>
+                                                <label for="phNumber">Phone Number <b><sup class="text-danger">*</sup></b></label>
                                                 <input type="tel" class="form-control" placeholder="09xxxxxxxxx"
                                                     name="phoneNumber" value={{ old('phoneNumber') }}>
                                             </div>
@@ -152,7 +163,7 @@
                                                     <div class="form-group">
                                                         <label for="city">Country</label>
                                                         <input type="text" class="form-control" id="country"
-                                                            name="country" placeholder="Country">
+                                                            name="country" placeholder="Country" value="{{ old('country') }}">
                                                     </div>
                                                 </div>
 
@@ -166,7 +177,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label for="address">Address</label>
+                                                <label for="address">Address <b><sup class="text-danger">*</sup></b></label>
                                                 <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
                                             </div>
 
@@ -177,7 +188,7 @@
 
                                             <div class="col-md-6" id="fees">
                                                 <div class="form-group">
-                                                    <label class="fees">Fees</label>
+                                                    <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
                                                     <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
                                                 </div>
                                             </div>
@@ -189,8 +200,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Permissions</h3>
+                                        <div class="card-header "  style="  background-color:{{config('app.color')}}">
+                                            <h3 class="card-title">Permissions<sup class="text-warning"> (Please check at least one property) </sup></h3>
+                                            <input type="hidden" id="permission_check">
                                         </div>
                                         <div class="card-body">
                                             <div class="form-group">
@@ -317,10 +329,40 @@
 
                                                 </div>
                                             </div>
+                                        <hr/>
+
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="user_view" id="pos_permissions" type="checkbox" name="permission[]"  value="user_view">
+                                                    <label for="user_view">User</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_create" name="permission[]"
+                                                                value="user_create">
+                                                            <label for="user_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_update" name="permission[]"
+                                                                value="user_update">
+                                                            <label for="user_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="user_delete" type="checkbox" name="permission[]"
+                                                                value="user_delete">
+                                                            <label for="user_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                        <div class="card-footer">
+                                            <input type="button" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}" onclick="submitForm()" value="Submit">
                                         </div>
+
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->
                                     </div>
@@ -329,11 +371,173 @@
                     </section>
                 </form>
 
+
             </div>
         </div>
     </body>
     <script src="{{ asset('js/user.js') }}"></script>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+    <script>
+
+    function submitForm() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        if ($('#form-user :checkbox:checked').length > 0){
+            $.ajax({
+                url: '{{route('clinic-user.register')}}',
+                type: 'POST',
+                data: $("#form-user").serialize(),
+                beforeSend: function(){
+                    $('.wrapper').css('opacity','0.1');
+                    $('.middle').css('opacity','1');
+                },
+                success: function(response){
+                    if(response == 1){
+                        window.location = '/clinic-system/users'
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    var response = JSON.parse(xhr.responseText);
+                    var errorString = '';
+                    $.each( response.errors, function( key, value) {
+                        errorString += '<p>' + value +'</p>';
+                    });
+
+                    alertify.alert(errorString, function(){
+                        alertify.message('Please fill the fields with *');
+                    }).setHeader('<em>Some errors occured</em>');
+
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
+                },
+                complete: function () { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    $('.wrapper').css('opacity','1');
+                    $('.middle').css('opacity','0.1');
+                },
+               
+            })
+        }
+        else{
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("#alert").removeClass('d-none');
+            $("#alert").show().delay(5000).fadeOut();
+
+        }
+    }
+
+    $("#code").blur(function(){
+
+    var username = $('#code').val();
+    var _token = $('input[name="_token"]').val();
+
+    if(username.length >= 5){
+
+        $.ajax({
+            url:"{{ route('username_available.check') }}",
+            method:"POST",
+            data:{username:username, _token:_token},
+            success:function(result)
+            {
+                if(result == 'unique')
+                {
+                $('#a-text').removeClass('text-danger');
+                $('#a-text').removeClass('text-warning');
+                $('#a-text').addClass('text-success');
+                $('#a-text').text('Username available');
+                $('#a-text').show();
+                setTimeout(function(){
+                    $('#a-text').hide();
+                }, 5000);
+                }else
+                {
+                $('#a-text').removeClass('text-danger');
+                $('#a-text').removeClass('text-success');
+                $('#a-text').addClass('text-warning');
+                $('#a-text').text('Username Already taken');
+                $('#a-text').show();
+                setTimeout(function(){
+                    $('#a-text').hide();
+                }, 5000);
+                }
+            }
+                
+                
+        });
+        }else{
+
+            $('#a-text').removeClass('text-warning');
+            $('#a-text').removeClass('text-success');
+            $('#a-text').addClass('text-danger');
+            $('#a-text').text('Must have at leat 5 characters');
+            $('#a-text').show();
+            setTimeout(function(){
+                $('#a-text').hide();
+            }, 5000);
+
+        }
+    });
+
+    $('#email').blur(function(){
+
+    var error_email = '';
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-success');
+        $('#em-text').addClass('text-warning');
+        $('#em-text').text('Invaid Email');
+        $('#a-text').show();
+        setTimeout(function(){
+            $('#em-text').hide();
+        }, 5000);
+
+    }
+    else
+    {
+    $.ajax({
+    url:"{{ route('email_available.check') }}",
+    method:"POST",
+    data:{email:email, _token:_token},
+    success:function(result)
+    {
+        if(result == 'unique')
+        {
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-warning');
+        $('#em-text').addClass('text-success');
+        $('#em-text').text('Valid Email');
+        $('#a-text').show();
+        setTimeout(function(){
+            $('#em-text').hide();
+        }, 5000);
+        }
+        else
+        {
+        $('#em-text').removeClass('text-danger');
+        $('#em-text').removeClass('text-success');
+        $('#em-text').addClass('text-warning');
+        $('#em-text').text('Email Already taken');
+        $('#a-text').show();
+        setTimeout(function(){
+        $('#em-text').hide();
+        }, 5000);
+        }
+       
+    }
+    })
+    }
+    });
+    </script>
 
 
 @endsection

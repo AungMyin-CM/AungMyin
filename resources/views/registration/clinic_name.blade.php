@@ -1,63 +1,70 @@
 @extends('layouts.app')
 @section('content')
-    <form action="{{ route('clinic.info') }}" method="GET">
-        @csrf
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper" id="mydiv">
+                <div class="content-wrapper">
+                    <section class="content">
+                        <div class="container-fluid">
+                            <div class="container">
+                                    <div class="package-grid">
+                                        <div class="row mt-5">
+                                            {{-- <div class="col-md-6 text-center" >
+                                                <label class="package-card " style="background-color: #d8d6d6">
+                                                    <p class="mt-2">Solo Practice </p>
+                                                    <p  class="m-2">ဆရာဝန်တစ်ဦးတည်းထိုင်တဲ့</p>
+                                                    <p> ဆေးခန်းအတွက်</p>
+                                                    
+                                                    <h3 class = "m-3 font-weight-bold ">၂၁၀၀၀ကျပ်/ဆေးခန်း</h3>
+                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
+                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt(1).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
+                                                </label>
+                                            </div> --}}
+                                            <div class="col-md-12 text-center" >
+                                                <label class="package-card " style="background-color: #d8d6d6">
+                                                    <p class="m-3">{{$data['name']}}</p>
+                                                    <p  class="m-2">ဆရာဝန်အများထိုင်တဲ့</p>
+                                                    <p> ဆေးခန်းအတွက်</p>
+                                                    
+                                                    <h3 class = "m-3 font-weight-bold ">{{$data['price']}}ကျပ်/ဆေးခန်း</h3>
+                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
+                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt($data['id']).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
+                                                </label>
+                                            </div>
 
-        <body class="hold-transition register-page">
-            <div class="container">
-                    {{-- <div class="package-grid"> --}}
-                        <div class="row>">
-                            @foreach ($data as $package)
+                                            
+                                            {{-- @foreach ($data as $package)
 
-                                <label class="package-card">
-                                <input name="plan" class="radio" type="radio" value="{{ Crypt::encrypt($package->id) }}" checked>
-                                
-                                <span class="plan-details">
-                                    <span class="plan-type">{{ $package->name }}</span>
-                                    <span class="plan-cost">{{ $package->price }}<span class="slash">/</span><abbr class="plan-cycle" title="month">mo</abbr></span>
-                                    <span>1 team member</span>
-                                    <span>100 GB/mo</span>
-                                    <span>1 concurrent build</span>
-                                </span>
-                                </label>
-                            
-                                
-                            @endforeach
-                        </div>
-                    {{-- </div> --}}
-                    <div class="register-logo">
-                        <a href="../../index2.html"><b>Input </b>Your Clinic Name</a>
-                    </div>
+                                                <label class="package-card m-4">
+                                                
+                                                    <span class="plan-details">
+                                                        <span class="plan-type">{{ $package->name }}</span>
+                                                        <span class="plan-cost">{{ $package->price }}<span class="slash">/</span><abbr class="plan-cycle" title="month">mo</abbr></span>
+                                                        <span>1 team member:</span>
+                                                        <span>100 GB/mo</span>
+                                                        <span>1 concurrent build</span>
+                                                        <span>1 team member:</span>
+                                                        <span>100 GB/mo</span>
+                                                        <span>1 concurrent build</span> <span>1 team member:</span>
+                                                        <span>100 GB/mo</span>
+                                                        <span>1 concurrent build</span> <span>1 team member:</span>
+                                                        <span>100 GB/mo</span>
+                                                        <span>1 concurrent build</span>
+                                                        <a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="btn btn-info m-auto" style="background-color: {{config('app.color')}}">Start Your Free Trial</a>
+                                                    </span>
+                                                </label>
 
-                    <div class="register-box">
-
-                        <div class="card">
-                            <div class="card-body register-card-body">
-                                <div class="input-group mb-3">
-                                    <input type="text" id="clinic_name" class="form-control" name="clinic_name" placeholder="Name"
-                                        title="Name should contain atleast 5 characters" required>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-clinic-medical"></span>
+                                            @endforeach --}}
                                         </div>
                                     </div>
-                                </div>
-                                <span id="error_clinic_name" style="color:red"></span>
-                                <!-- /.col -->
-                                <div class="col-4 float-right">
-                                    <input type="submit" id="register_clinic" class="btn btn-primary btn-block" value="Continue" />
-                                </div>
-                                <!-- /.col -->
                             </div>
-                            <!-- /.form-box -->
-                        </div><!-- /.card -->
-                    </div>
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <!-- /.register-box -->
-            @extends('layouts.js')
             <!-- jQuery -->
 
         </body>
-    </form>
+
 @endsection

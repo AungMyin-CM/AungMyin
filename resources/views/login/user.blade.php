@@ -1,80 +1,83 @@
 @extends('layouts.app')
-
 @section('content')
-
-    <body class="hold-transition login-page">
-        <div class="login-box">
-            <div class="login-logo">
-                <a href="../../index2.html"><b>Aung</b>Myin</a>
-            </div>
-            <!-- /.login-logo -->
-            <div class="card">
-                <div class="card-body login-card-body">
-                    @if ($errors->any())
-                        <div class="alert alert-danger" id="alert-message">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div><br />
-                    @endif
-
-                    @if (Session::has('message'))
-                        <div class="alert alert-danger" id="alert-message">
-                            <ul class="list-unstyled">
-                                <li>
-                                    {{ Session::get('message') }}
-                                </li>
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('user.login') }}" method="post">
-                        @csrf
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Code" name="code"
-                                value="{{ old('code') }}">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-envelope"></span>
-                                </div>
+<div class="login-page bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1"> 
+                <div class="bg-white shadow rounded">
+                    <div class="row">
+                        <div class="col-md-5 ps-0 d-none d-md-block py-5 px-5  " style="background-color: {{config('app.color')}}">
+                            <div class="form-right  h-100  text-white text-center pt-5">
+                                <img src="{{ asset('images/web-photos/aung-myin.png') }}" class="brand-image"  >
+                                <h2 class="fs-1">Aung Myin</h2>
+                                <p class="fs-1">Clinic Manager</p>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="icheck-primary">
-                                    <input type="checkbox" id="remember">
-                                    <label for="remember">
-                                        Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-4">
-                                <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-                            </div>
-                            <!-- /.col -->
-                        </div>
-                    </form>
+                        <div class="col-md-7 pe-0">
+                            <div class="form-left h-100 py-5 px-5">
+                                <h3 class="mb-3 text-center">Login</h3>
+                                @if(Session::has('message'))
+                                <div class="alert alert-danger" id="alert-message">
+                                     {{Session::get('message')}}
+                                </div><br />
+                                @elseif(Session::has('alert'))
+                                <div class="alert alert-warning" id="alert-message">
+                                     {{Session::get('alert')}}
+                                </div><br />
+                                @elseif(Session::has('success'))
+                                <div class="alert alert-info" id="alert-message">
+                                     {{Session::get('success')}}
+                                </div><br />
+                                @endif
+                                <form action="{{ route('login') }}" class="row g-4"  method="post">
+                                    @csrf
+                                        <div class="col-12 mb-1">
+                                            <label>Username<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Username" name="code" value="{{ old('code') }}" required>
+                                         
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label>Password<span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                                                </div>
+                                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-sm-6">
+                                            <a href="#" class="float-end text-primary">Forgot Password?</a>
+                                        </div> --}}
 
-                    <p class="mb-0">
-                        <a href="{{ route('clinic.login') }}" class="text-center">Login as clinic</a>
-                    </p>
+                                        <div class="col-12  text-right">
+                                            <button type="submit" class="btn px-4 float-end mt-4" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Login</button>
+                                        </div>
+                                </form>
+                                <div class="card-footer text-muted text-center" >
+                                    New user?<a href="{{ route('register.user') }}" class="" style="color:  {{config('app.color')}}"> Create an account</a>
+                                  </div>
+                            </div>
+                        </div>
+            
+                    </div>
                 </div>
-                <!-- /.login-card-body -->
+                
             </div>
         </div>
-    </body>
-    <!-- /.login-box -->
-
-    <!-- jQuery -->
+    </div>
+</div>
 @endsection
+
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script>
+    $(document).ready(function(){
+        $("input").keypress(function(){
+            $("#alert-message").hide();
+        });
+    });
+    </script>

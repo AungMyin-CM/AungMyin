@@ -4,9 +4,9 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <section class="content-header">
-                    <div class="container-fluid">
+                    {{-- <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
                                 <h1>Register Form</h1>
@@ -18,7 +18,7 @@
                                 </ol>
                             </div>
                         </div>
-                    </div><!-- /.container-fluid -->
+                    </div><!-- /.container-fluid --> --}}
                 </section>
 
                 <form action="{{ route('user.update', $user->id) }}" method="POST">
@@ -31,7 +31,7 @@
                                 <div class="col-md-6">
                                     <!-- general form elements -->
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Please fill out form</h3>
                                         </div>
                                         @if ($errors->any())
@@ -122,12 +122,12 @@
 
                                             </div><br/>
 
-                                            <div class="row" id="doctor_section" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="row" id="doctor_section" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="speciality">Speciality</label>
-                                                        <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality" value="{{ $user->speciality }}">
+                                                        <textarea class="form-control" name="speciality" row="10">{{ $user->speciality }}</textarea>
+
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -187,12 +187,12 @@
 
 
                                         
-                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <label for="short_bio">Short Bio</label>
                                                 <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ $user->short_bio }}</textarea>
                                             </div>
 
-                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 ? '' : 'hidden'}}>
+                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                                 <div class="form-group">
                                                     <label class="fees">Fees</label>
                                                     <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" />
@@ -207,7 +207,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color:{{config('app.color')}}">
                                             <h3 class="card-title">Permissions</h3>
                                         </div>
                                         <div class="card-body">
@@ -335,9 +335,38 @@
 
                                                 </div>
                                             </div>
+                                            <hr />
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <input id="user_view" id="pos_permissions" type="checkbox" name="permission[]"  value="user_view" 
+                                                    {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                    <label for="user_view">User</label>
+                                                </div>
+                                                <div class="form-check" style="padding:6px !important;">
+
+                                                    <div class="row">
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_create" name="permission[]"
+                                                                value="user_create" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_create">Create</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="user_update" name="permission[]"
+                                                                value="user_update" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_update">Update</label>
+                                                        </div>
+                                                        <div class="col md-4 icheck-primary d-inline mt-2">
+                                                            <input id="user_delete" type="checkbox" name="permission[]"
+                                                                value="user_delete" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                            <label for="user_delete">Delete</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                                            <button type="submit" class="btn btn-primary float-right"  style="background-color:{{config('app.color')}}">Submit</button>
                                         </div>
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->

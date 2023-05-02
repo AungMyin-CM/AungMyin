@@ -3,7 +3,7 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper" style="background:#fff !important;">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
               
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
@@ -174,7 +174,7 @@
 
           $.ajax({
               type: "POST",
-              url: '/searchMedPatient',
+              url: 'clinic-system/searchMedPatient',
               data: { key: query, clinic_id: clinic_id}
           }).done(function( response ) {
             
@@ -233,11 +233,11 @@
 
           var query = $("#product_search_"+rowid).val();
   
-          var clinic_id = {{ Auth::guard('user')->user()['clinic_id'] }}
+          var clinic_id = {{ session()->get('cc_id') }}
 
           $.ajax({
               type: "POST",
-              url: '/searchMed',
+              url: '/clinic-system/searchMed',
               data: { key: query, clinic_id: clinic_id, rowid: rowid}
           }).done(function( response ) {
             
@@ -260,7 +260,7 @@
 
         $.ajax({
             type: "POST",
-            url: '/medData',
+            url: '/clinic-system/medData',
             data: { med_id: med_id}
         }).done(function( response ) {
 
@@ -285,8 +285,8 @@
 
           var tableProductLength = $("#product_info_table tbody tr").length;
           var totalSubAmount = 0;
-          for(x = 0; x < tableProductLength; x++) {
-            var tr = $("#product_info_table tbody tr")[x];
+          for(let y = 0;y  < tableProductLength;y ++) {
+            var tr = $("#product_info_table tbody tr")[y];
             var count = $(tr).attr('id');
             count = count.substring(4);
 

@@ -2,9 +2,97 @@
 
 @section('content')
 
+<style>
+    #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      
+      #myImg:hover {opacity: 0.7;}
+      
+      /* The Modal (background) */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+      }
+      
+      /* Modal Content (image) */
+      .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+      }
+      
+      /* Caption of Modal Image */
+      #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+      }
+      
+      /* Add Animation */
+      .modal-content, #caption {  
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+      }
+      
+      @-webkit-keyframes zoom {
+        from {-webkit-transform:scale(0)} 
+        to {-webkit-transform:scale(1)}
+      }
+      
+      @keyframes zoom {
+        from {transform:scale(0)} 
+        to {transform:scale(1)}
+      }
+      
+      /* The Close Button */
+      .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      
+      .close:hover,
+      .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      
+      /* 100% Image Width on Smaller Screens */
+      @media only screen and (max-width: 700px){
+        .modal-content {
+          width: 100%;
+        }
+      }
+      </style>
+
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <form action="{{ route('patient.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     
@@ -15,7 +103,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header"  style="  background-color:{{config('app.color')}}">
                                             <h3 class="card-title">New Patient</h3>
                                         </div>
                                         @if ($errors->any())
@@ -125,16 +213,16 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary">
+                                                <input type="submit" value="submit" class="btn " style="color: {{config('app.secondary_color')}}; background-color:{{config('app.color')}}">
                                             </div>
                                         </div>
                                     </div>
 
                                 </div>
-                                @if($role_type == 1)
+                                @if($role_type == 1 || $role_type == 5)
                                     <div class="col-md-6">
                                         <div class="card card-primary">
-                                            <div class="card-header">
+                                            <div class="card-header"  style=" background-color: {{config('app.color')}}">
                                                 <h3 class="card-title">....</h3>
                                             </div>
                                             <div class="card-body">
@@ -152,18 +240,32 @@
 
                                                 </div>
 
-                                                <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
-                                                <label class="file_upload" for="upload">Choose file</label>
-                                            
-                                                <div id="myModal" class="modal">
-                                                    <span class="close">&times;</span>
-                                                    <img class="modal-content" id="img01">
-                                                    <div id="caption"></div>
+                                                <div class="form-group">
+                                                    <label for="address">Search Medicine</label>
+                                                    <textarea type="text" class="form-control" id="medicine_dictionary" placeholder="Start Typing here..."
+                                                        name="medicines"></textarea>
                                                 </div>
 
-                                                <div class="form-group" id="image">
-                                                    {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
+                                                <div class="form-group" id="medtable">
+                                                
                                                 </div>
+
+                                                <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
+                                                <label class="file_upload" for="upload" 
+                                                    style="background: gray;
+                                                    padding: 8px;
+                                                    border-radius: 5px;
+                                                    cursor: pointer;">Upload Images</label>
+                                                
+                                                    <div id="myModal" class="modal">
+                                                        <span class="close">&times;</span>
+                                                        <img class="modal-content" id="img01">
+                                                        <div id="caption"></div>
+                                                    </div>
+
+                                                    <div class="form-group" id="image">
+                                                        {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
+                                                    </div>
 
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -253,6 +355,72 @@
         span.onclick = function() { 
             modal.style.display = "none";
         }
+
+        var dictCode = '';
+
+
+        $("#medicine_dictionary").on('keypress keydown',function(event) {
+        var key = event.keyCode;
+        var evtType = event.type;
+
+        if(evtType == 'keydown'){
+            if(key ==8){
+                dictCode = dictCode.slice(0,-1);
+            }
+        }
+        if(evtType == 'keypress'){
+        
+                if(key == 13 || key == 32) 
+                {   
+                    if(dictCode != '') {
+
+                        document.getElementById('medtable').innerHTML = '';
+
+                    $.ajaxSetup({
+                        headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/clinic-system/fetchIsmed',
+                        data: { key: dictCode}
+                    }).done(function( response ) {
+                        if(response != ''){
+                            var obj = JSON.parse(response);
+                            const res = obj.meaning.split("<br>");
+
+                            var fil_res = res.filter(function (el) {
+                                return el != "";
+                            });
+
+                            var table_str = '<table class="table table-bordered">';
+                                for (i =0; i<fil_res.length ; i++){
+
+                                    data = res[i].split('^');
+                                
+                                    table_str +=
+                                    '<tr id="row_'+i+'">'+
+                                        '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
+                                        '<input type="text" name="med_name[]" class="form-control" value="'+data[1]+'" readonly /> </td>'+
+                                        '<td><input type="text"  name="med_qty[]" class="form-control" value="'+data[2]+'" /></td>'+
+                                        '<td><input type="text"   name="days[]"  class="form-control" value="'+data[3]+'"/></td>'+
+                                        '</td>'+
+                                    '</tr>';
+                                }
+                                table_str +=  '</table >';
+                            
+                            $('#medtable').append(table_str);
+                        }
+                    });
+                    }
+                    dictCode = '';
+                }else{
+                    dictCode += event.key;
+                }        
+        }
+    });
         
     </script>
 @endsection

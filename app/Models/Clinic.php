@@ -6,25 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Clinic extends Authenticatable
+class Clinic extends Model
 {
     use HasFactory;
 
     protected $table = 'clinic';
 
-    protected $guard = 'clinic';
-
-    protected $fillable = [ 
-        'code','name','email','password','phoneNumber','address','package_id'
+    protected $fillable = [
+        'user_id','code','name', 'address', 'phoneNumber','package_id','package_purchased_date','package_purchased_times'
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    public function setPasswordAttribute($value)
+    public function expireDate()
     {
-    $this->attributes['password'] = bcrypt($value);
+        return $this->hasOne(PackagePurchase::class,'clinic_id','id');
     }
 }

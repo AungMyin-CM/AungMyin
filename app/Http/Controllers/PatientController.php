@@ -9,7 +9,10 @@ use App\Models\Dictionary;
 use App\Models\Clinic;
 use App\Models\Visit;
 use App\Models\Role;
-
+use App\Models\UserClinic;
+use App\Models\Notification;
+use App\Models\PatientDoctor;
+use App\Events\NoticeEvent;
 use Carbon\Carbon;
 
 use Auth;
@@ -19,113 +22,118 @@ use Illuminate\Database\QueryException;
 
 use File;
 
+use DB;
+
+use Session;
 
 class PatientController extends Controller
 {
     public function index(Request $request)
     {
 
-        if(!$this->checkPermission('p_view')){
-            abort(403);
+        if (!$this->checkPermission('p_view')) {
+            abort(404);
         }
-        
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
 
-        $clinic_code = Clinic::where('id',$clinic_id)->pluck('code');
+        $clinic_id = session()->get('cc_id');
 
-        if($request->name)
-        {
-            $patientData =  Patient::where("clinic_code",$clinic_code)->where('name', 'like', $request->name.'%')->where('status',1)->get();
-        }else{
-            $patientData = Patient::where("clinic_code",$clinic_code)->where('status',1)->get();
+        if ($request->name) {
+            $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
+        } else {
+            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at','asc')->get();
         }
-        return view('patient/index')->with('data',$patientData);
+        return view('patient/index')->with('data', $patientData);
     }
 
 
     public function create(Request $request)
     {
-        $code = $this->codeGenerator();
-        return view('patient/new')->with('data' , ['code' => $code , 'name' => $request->name ? $request->name : '']);
+        if (!$this->checkPermission('p_create')) {
+            abort(404);
+        }
 
+        $code = $this->codeGenerator();
+        return view('patient/new')->with('data', ['code' => $code, 'name' => $request->name ? $request->name : '']);
     }
 
     public function store(PatientRequest $request)
-    {   
-        if($request->validated()){
+    {
+        if (!$this->checkPermission('p_create')) {
+            abort(404);
+        }
+
+        if ($request->validated()) {
             $patient = new Patient();
 
             $code = $this->codeGenerator();
 
-            $clinic_id = Auth::guard('user')->user()['clinic_id'];
+            $clinic_id = session()->get('cc_id');
             $user_id = Auth::guard('user')->user()['id'];
 
-            $clinic_code = Clinic::select('code')->where('id',$clinic_id)->first();
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
-            $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
-            $p_status = $role->role_type == 1 ? 4 : 1 ;
+            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name);
+            $p_status = $role->role_type == 1 ? 4 : 1;
             $patient_id = $patient->create([
-                          'user_id' => Auth::guard('user')->user()['id'],
-                          'code' => $code,
-                          'name' => $request->name,
-                          'father_name' => $request->father_name,
-                          'phoneNumber' => $request->phoneNumber,
-                          'age' => $request->age,
-                          'address' => $request->address,
-                          'gender' => $request->gender,
-                          'clinic_code' => $clinic_code->code,
-                          'drug_allergy' => $request->drug_allergy,
-                          'summary' => $request->summary,
-                          'p_status' => $p_status,
-                          'Ref' => $reference
+                'user_id' => Auth::guard('user')->user()['id'],
+                'code' => $code,
+                'name' => $request->name,
+                'father_name' => $request->father_name,
+                'phoneNumber' => $request->phoneNumber,
+                'age' => $request->age,
+                'address' => $request->address,
+                'gender' => $request->gender,
+                'clinic_code' => $clinic_id,
+                'drug_allergy' => $request->drug_allergy,
+                'summary' => $request->summary,
+                'p_status' => $p_status,
+                'Ref' => $reference
             ])->id;
 
-            if($role->role_type == 1)
-            {
+            if ($role->role_type == 1) {
 
-            $images = [];
+                $images = [];
 
-            if($request->hasfile('images'))
-            {
-                foreach($request->file('images') as $file)
-                {
-                    $name = $this->imageNameGenerate($patient_id).'.'.$file->extension();
-                    $path = public_path().'/images/'.$code;
-                    File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
-                    $file->move($path, $name);  
-                    $images[] = $name;  
+                if ($request->hasfile('images')) {
+                    foreach ($request->file('images') as $file) {
+                        $name = $this->imageNameGenerate($patient_id) . '.' . $file->extension();
+                        $path = public_path() . '/images/' . $code;
+                        File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+                        $file->move($path, $name);
+                        $images[] = $name;
+                    }
                 }
+
+
+                Visit::create([
+                    'patient_id' => $patient_id,
+                    'prescription' => $request->prescription,
+                    'diag' => $request->diag,
+                    'images' => json_encode($images),
+                    'fees' => $request->fees == null ? 0.00 : $request->fees,
+                    'is_foc' => $request->is_foc,
+                    'user_id' => $user_id,
+                    'investigation' => $request->investigation,
+                    'procedure' => $request->procedure,
+                    'is_followup' => $request->is_followup,
+                    'followup_date' => $request->followup_date
+                ]);
             }
-
-
-            Visit::create([
-                'patient_id' => $patient_id,
-                'prescription' => $request->prescription,
-                'diag' => $request->diag,
-                'images' => json_encode($images),
-                'fees' => $request->fees == null ? 0.00 : $request->fees,
-                'is_foc' => $request->is_foc,
-                'user_id' => $user_id,
-                'investigation' => $request->investigation,
-                'procedure' => $request->procedure,
-                'is_followup' => $request->is_followup,
-                'followup_date' => $request->followup_date
-            ]);
-
-            }
-
-            return redirect('patient')->with('success', "Done!");
+            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");;
+            // return redirect('clinic-system/patient')->with('success', "Done!");
         }
     }
 
     public function edit($id)
     {
+        if (!$this->checkPermission('p_update')) {
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
-            return view('patient/edit',compact('patient'));
-
-        }catch(DecryptException $e){
+            return view('patient/edit', compact('patient'));
+        } catch (DecryptException $e) {
             abort(404);
         }
     }
@@ -138,53 +146,80 @@ class PatientController extends Controller
      */
     public function update(PatientRequest $request, $id)
     {
-        $reference = str_replace(' ','_',$request->name)."_".$request->age."_".str_replace(' ','_',$request->father_name);
+        if (!$this->checkPermission('p_update')) {
+            abort(404);
+        }
 
-        Patient::whereId($id)->update([$request->validated(), 'Ref' => $reference ]);
+        $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name);
 
-        return redirect('patient')->with('success', 'Done !');
+        Patient::whereId($id)->update([
+            'name' => $request->name,
+            'age' => $request->age,
+            'father_name' => $request->father_name,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'phoneNumber' => $request->phoneNumber,
+            'drug_allergy' => $request->drug_allergy,
+            'summary' => $request->summary,
+            'Ref' => $reference
+        ]);
+
+        return redirect('clinic-system/patient')->with('success', 'Done !');
     }
 
     public function treatment($id)
     {
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
-            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at','DESC')->get();
-            return view('patient/treatment')->with('data' , [ 'patient' => $patient , 'visit' => $visit]);
+            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
 
-        }catch(DecryptException $e){
+            Notification::where('patient_id',$id)->update(['is_read'=>1]);
+               
+
+            return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
+        } catch (DecryptException $e) {
             abort(404);
         }
     }
 
     public function saveTreatment(Request $request, $id)
     {
-        
+
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
         $user_id = Auth::guard('user')->user()['id'];
         $code = $request->code;
 
         $images = [];
 
-        if($request->hasfile('images'))
-        {
-            foreach($request->file('images') as $file)
-            {
-                $name = $this->imageNameGenerate($id).'.'.$file->extension();
-                $path = public_path().'/images/'.$code;
-                $file->move($path, $name);  
-                $images[] = $name;  
+        $receiver_ids = DB::table('user')->select('*')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '3')->where('user_clinic.clinic_id', session()->get('cc_id'))->get();
+
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $file) {
+                $name = $this->imageNameGenerate($id) . '.' . $file->extension();
+                $path = public_path('images/treatment-images');
+                $file->move($path, $name);
+                $images[] = $name;
             }
         }
         Patient::whereId($id)->update(['p_status' => '3']);
         $assign_medicines = '';
-        if($request->med_id){
+        if ($request->med_id) {
+            //   dd($request);
             $count_product = count($request->med_id);
-            for($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= $request->med_id[$x].'^'. $request->med_qty[$x].'^'.$request->days[$x].'<br>';
+            for ($x = 0; $x < $count_product; $x++) {
+                $med = $request->med_id[$x] == null ? $request->med_name[$x] : $request->med_id[$x];
+                $assign_medicines .= $med . '^' . $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
             }
         }
-      
+
 
         Visit::create([
             'patient_id' => $id,
@@ -195,13 +230,54 @@ class PatientController extends Controller
             'fees' => $request->fees,
             'is_foc' => $request->is_foc,
             'user_id' => $user_id,
-            'investigation' => $request->investigation,      
+            'investigation' => $request->investigation,
             'procedure' => $request->procedure,
             'is_followup' => $request->is_followup,
             'followup_date' => $request->followup_date
         ]);
 
-        return redirect('patient')->with('success', "Done!");
+
+        switch ('3') {
+            case '1':
+                $action = 'waiting';
+                break;
+            case '2':
+                $action = 'treatment';
+                break;
+            case '3':
+                $action = 'pos';
+                break;
+            case '4':
+                $action = 'completed';
+                break;
+            case '5':
+                $action = 'no-action';
+                break;
+
+            default:
+                $action = 'none';
+                break;
+        }
+
+        if ($action != 'no-action') {
+
+            $clinic_id = session()->get('cc_id');
+            foreach ($receiver_ids as $rd) {
+
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $rd->user_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action
+                ]);
+
+                NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" .  $rd->user_id);
+            }
+        }
+
+        return redirect('clinic-system/patient')->with('success', "Done!");
     }
 
 
@@ -215,18 +291,19 @@ class PatientController extends Controller
     {
         Patient::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('patient')->with('success', 'Done !');
+        return redirect('clinic-system/patient')->with('success', 'Done !');
     }
 
     public function fetchDictionary(Request $request)
     {
         $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
 
-        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '0'])->first();
+        $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => '0', 'user_id' =>  $user_id])->first();
 
-        if($data == ''){
+        if ($data == '') {
             echo '';
-        }else{
+        } else {
             echo $data;
         }
     }
@@ -234,12 +311,13 @@ class PatientController extends Controller
     public function fetchIsmedData(Request $request)
     {
         $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
 
-        $data = Dictionary::select('code','meaning')->where(['code' => $text, 'isMed' => '1'])->first();
+        $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => '1', 'user_id' =>  $user_id])->first();
 
-        if($data == ''){
+        if ($data == '') {
             echo '';
-        }else{
+        } else {
             echo $data;
         }
     }
@@ -249,14 +327,136 @@ class PatientController extends Controller
         $status = $request->status;
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
+        $receiver_id = $request->receiver_id;
+            Patient::whereId($patient_id)->update(['p_status' => $status]);
 
-        try{
-        Patient::whereId($patient_id)->update(['p_status' => $status]);
+            switch ($status) {
+                case '1':
+                    $action = 'waiting';
+                    break;
+                case '2':
+                    $action = 'treatment';
+                    break;
+                case '3':
+                    $action = 'pos';
+                    break;
+                case '4':
+                    $action = 'completed';
+                    break;
+                case '5':
+                    $action = 'no-action';
+                    break;
 
-        $clinic_code = Clinic::where('id' , Auth::guard('user')->user()['clinic_id'])->pluck('code');
-        $user_id = Auth::guard('user')->user()['id'];
+                default:
+                    $action = 'none';
+                    break;
+            }
+
+            if ($action != 'no-action') {
+
+                if ($action == 'treatment') {
+
+                    $count = PatientDoctor::where('patient_id', $patient_id)->where('user_id', $receiver_id)->get()->count();
+
+                    if ($count == 0) {
+                        PatientDoctor::create([
+                            'patient_id' => $patient_id,
+                            'user_id' => $receiver_id,
+                            'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+
+                        ]);
+                    }
+                }
+                    
+
+
+                $clinic_id = session()->get('cc_id');
+
+                NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
+                Notification::create([
+                    'sender_id' => $user_id,
+                    'receiver_id' => $receiver_id,
+                    'clinic_id' => session()->get('cc_id'),
+                    'patient_id' => $patient_id,
+                    'is_sent' => '1',
+                    'action_on_sent' => $action,
+                ]);
+            }
+
+
             echo "changed";
-        }catch(QueryException $e){
+       
+    }
+
+    public function addQueue($id)
+    {
+        $user_id = Auth::guard('user')->user()['id'];
+
+        try {
+            Patient::whereId($id)->update(['p_status' => '1', 'user_id' => $user_id]);
+
+            $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+
+            $clinic_id = session()->get('cc_id');
+            $now = new Carbon;
+
+
+            if ($role->role_type == 2 || $role->role_type == 5) {
+
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('user_id', $user_id)
+                    ->where('p_status', 1)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } elseif ($role->role_type == 1 || $role->role_type == 5) {
+
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('p_status', 2)->where('status', 1)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } elseif ($role->role_type == 3 || $role->role_type == 5) {
+
+                $patientData = Patient::where('clinic_code', $clinic_id)
+                    ->where('p_status', 3)->where('status', 1)
+                    ->where('updated_at', '>=', $now->format('ymd'))
+                    ->where('status', 1)->get();
+            } else {
+                $patientData = "";
+            }
+            return redirect()->route('user.clinic', Crypt::encrypt(session()->get('cc_id')));
+        } catch (QueryException $e) {
+            echo "false";
+        }
+    }
+
+    public function copyTreatment(Request $request)
+    {
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
+        $id = $request->id;
+
+        try {
+            $data = Visit::whereId($id)->get()->first();
+            return  $data;
+        } catch (QueryException $e) {
+            echo "false";
+        }
+    }
+
+    public function removeTreatment(Request $request)
+    {
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
+        $id = $request->id;
+
+        try {
+            Visit::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
+            echo "updated";
+        } catch (QueryException $e) {
             echo "false";
         }
     }
@@ -265,14 +465,13 @@ class PatientController extends Controller
     {
         $timestamp = Carbon::now();
         $current_date = $timestamp->format('u');
-        $clinic_id = Auth::guard('user')->user()['clinic_id'];
+        $clinic_id = session()->get('cc_id');
 
-        $c_name = Clinic::select('name')->where('id',$clinic_id)->first();
+        $c_name = Clinic::select('name')->where('id', $clinic_id)->first();
 
-        $patient_code = str_replace(' ','',$c_name->name).":p:".$current_date;
+        $patient_code = str_replace(' ', '', $c_name->name) . ":p:" . $current_date;
 
         return $patient_code;
-
     }
 
     private function imageNameGenerate($patient_id)
@@ -280,9 +479,63 @@ class PatientController extends Controller
         $timestamp = Carbon::now();
         $current_date = $timestamp->format('ymdhisu');
 
-        $image_name = "p-".$patient_id.'-'.$current_date;
+        $image_name = "p-" . $patient_id . '-' . $current_date;
 
         return $image_name;
+    }
+    public  function patientImport(Request $request)
+    {
+        $importData = [];
+        if ($request->hasfile('importFile')) {
 
+            $file = $request->file('importFile');
+            if (($open = fopen($file, "r")) !== FALSE) {
+
+                while (($data = fgetcsv($open, 1000, ",")) !== FALSE) {
+                    $importData[] = $data;
+                }
+
+                fclose($open);
+            }
+
+            $clinic_id = session()->get('cc_id');
+            $user_id = Auth::guard('user')->user()['id'];
+            if (count($importData) <= 1) {
+                return redirect('clinic-system/patient')->with('error', 'Empty CSV');
+            }
+         
+            for ($i = 1; $i < count($importData); $i++) {
+                if (array_count_values($importData[$i]) < 8) {
+                    return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
+                }
+
+                $patient = new Patient();
+
+                $code = $this->codeGenerator();
+
+                $clinic_id = session()->get('cc_id');
+                $user_id = Auth::guard('user')->user()['id'];
+
+                $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+                $reference = str_replace(' ', '_', $importData[$i][0]) . "_" . $importData[$i][2] . "_" . str_replace(' ', '_', $importData[$i][1]);
+                $p_status = $role->role_type == 1 ? 4 : 1;
+                $patient_id = $patient->create([
+                    'user_id' => Auth::guard('user')->user()['id'],
+                    'code' => $code,
+                    'name' => $importData[$i][0],
+                    'father_name' => $importData[$i][1],
+                    'phoneNumber' => $importData[$i][3],
+                    'age' => $importData[$i][2],
+                    'address' => $importData[$i][4],
+                    'gender' => $importData[$i][5],
+                    'clinic_code' => $clinic_id,
+                    'drug_allergy' => $importData[$i][7],
+                    'summary' => $importData[$i][6],
+                    'p_status' => $p_status,
+                    'Ref' => $reference
+                ])->id;
+            }
+            return redirect('clinic-system/patient')->with('success', 'Done !');
+        }
     }
 }

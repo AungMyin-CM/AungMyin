@@ -3,7 +3,7 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <div class="container-fluid">
@@ -54,10 +54,10 @@
                                         <tbody>
                                             @foreach ($history_list as $row)
                                                 <tr>
-                                                    <td>{{ $row->invoice_code }}</td>
+                                                    <td>{{ $row->invoice_code }}<span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span></td>
                                                     <td>{{ $row->customer_name }}</td>
                                                     <td>{{ $row->total_price }}</td>
-                                                    <td>  {{$row->payment_status == 1 ? "Paid" : ( $row->payment_status == 2 ? "Partial Paid" : "FOC" )  }}</td>
+                                                    <td>{{$row->payment_status == 1 ? "Paid" : ( $row->payment_status == 2 ? "Partial Paid" : "FOC" )  }}</td>
                                                     <td>
                                                         <div class="row">
                                                             @if(Helper::checkPermission('pos_update', $permissions))
@@ -76,6 +76,8 @@
                                                                 </form>
 
                                                             @endif
+                                                                <a href="{{route('pos-invoice',Crypt::encrypt($row->id))}}" style="margin:10px;">
+                                                                <i class="fas fa-print fa-lg"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -4,7 +4,7 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <form method="post" action="{{ route('pharmacy.update', $pharmacy->id) }}" >
                     @csrf
                     @method('PATCH')
@@ -32,7 +32,7 @@
                                 <div class="col-md-12">
 
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color:  {{config('app.color')}}">
                                             <h3 class="card-title">Edit Medicine</h3>
                                         </div>
                                         @if ($errors->any())
@@ -190,9 +190,9 @@
 
                                         </div>
 
-                                        <div class="card-footer" style="background:rgb(221, 231, 207);">
+                                        <div class="card-footer" >
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary">
+                                                <input type="submit" value="submit" class="btn btn-primary" style="background-color:  {{config('app.color')}}">
                                             </div>
                                         </div>
 

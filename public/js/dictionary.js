@@ -10998,7 +10998,7 @@ __webpack_require__.r(__webpack_exports__);
             });
             $.ajax({
               type: "POST",
-              url: '/fetchDictionary',
+              url: '/clinic-system/fetchDictionary',
               data: {
                 key: dictCode
               }
@@ -11038,7 +11038,7 @@ __webpack_require__.r(__webpack_exports__);
             });
             $.ajax({
               type: "POST",
-              url: '/fetchDictionary',
+              url: '/clinic-system/fetchDictionary',
               data: {
                 key: dictCode
               }

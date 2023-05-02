@@ -10,9 +10,10 @@ use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\FeedBackController;
-
-
-
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\ContactController;
 
 
 /*
@@ -26,86 +27,129 @@ use App\Http\Controllers\FeedBackController;
 |
 */
 
-Route::get('/', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
+Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('clinic-name',[ClinicController::class, 'stepOneRegister'])->name('clinic.name');
+Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
 
-Route::get('clinic-info',[ClinicController::class, 'stepTwoRegister'])->name('clinic.info');
+Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
+
+Route::get('clinic-info', [ClinicController::class, 'stepTwoRegister'])->name('clinic.info')->middleware('auth');
+Route::get('payment', [ClinicController::class, 'payment'])->name('payment')->middleware('auth');
+
+Route::post('register-clinic', [ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
+
+Route::post('/contact',[ContactController::class,'store'])->name('contact-us');
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
 })->name('login-clinic')->middleware('prevent-back-history');
 
-Route::post('register-clinic',[ClinicController::class, 'register'])->name('clinic.register');
+Route::get('home', [HomeController::class, 'index'])->name('user.home')->middleware('auth');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function () {
 
-    Route::resource('dictionary',DictionaryController::class);
+    Route::post('userlogout', [LoginController::class, 'logout'])->name('user.logout');
 
-    Route::get('home', [HomeController::class, 'index'])->name('user.home');
+    Route::resource('dictionary', DictionaryController::class);
 
-    Route::post('userlogout', [LoginController::class, 'userLogout'])->name('user.logout');
+    Route::resource('patient', PatientController::class);
 
-    Route::resource('patient',PatientController::class);
+    Route::resource('pharmacy', PharmacyController::class);
 
-    Route::resource('pharmacy',PharmacyController::class);
+    Route::get('patient/{patient}/treatment', [PatientController::class, 'treatment'])->name('patient.treatment');
 
-    Route::get('patient/{patient}/treatment',[PatientController::class, 'treatment'])->name('patient.treatment');
+    Route::post('patient/{patient}/treatment', [PatientController::class, 'saveTreatment'])->name('create.treatment');
 
-    Route::post('patient/{patient}/treatment',[PatientController::class, 'saveTreatment'])->name('create.treatment');
+    Route::post('/fetchDictionary', [PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
-    Route::post('/fetchDictionary',[PatientController::class, 'fetchDictionary'])->name('dictionary.get');
+    Route::post('/fetchIsmed', [PatientController::class, 'fetchIsmedData']);
 
-    Route::post('/fetchIsmed',[PatientController::class, 'fetchIsmedData']);
+    Route::post('/search', [SearchController::class, 'searchPatient']);
 
-    Route::post('/search',[SearchController::class, 'searchPatient']);
+    Route::post('/searchMed', [SearchController::class, 'searchMedicine']);
 
-    Route::post('/searchMed',[SearchController::class, 'searchMedicine']);
+    Route::post('/searchMedPatient', [SearchController::class, 'searchMedPatient']);
 
-    Route::post('/searchMedPatient',[SearchController::class, 'searchMedPatient']);
+    Route::post('/updateStatus', [PatientController::class, 'updatePatientStatus']);
 
-    Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
+    Route::get('/addQueue/{id}', [PatientController::class, 'addQueue'])->name('add.queue');
 
-    Route::post('/updateStatus',[PatientController::class, 'updatePatientStatus']);
+    Route::resource('/pos', PosController::class);
 
-    Route::resource('/pos',PosController::class);
+    Route::get('/pos-history', [PosController::class, 'history'])->name('pos.history');
 
-    Route::get('/pos-history',[PosController::class, 'history'])->name('pos.history');
+    Route::get('/pos-patient/{patient_id}', [PosController::class, 'index'])->name('pos-patient');
 
-    Route::get('/pos-patient/{patient_id}',[PosController::class, 'index'])->name('pos-patient');
+    Route::get('/pos-print/{id}', [PosController::class, 'printInvoice'])->name('pos-invoice');
 
-    Route::post('/medData',[PosController::class, 'getMedData']);
+    Route::post('/medData', [PosController::class, 'getMedData']);
 
+    Route::get('users', [UserController::class, 'userList'])->name('user.list');
 
+    Route::get('user/create', [ClinicController::class, 'newUser'])->name('user.create');
+
+    Route::get('user/{user}', [ClinicController::class, 'editUser'])->name('user.edit');
+
+    Route::post('user/{user}', [ClinicController::class, 'updateUser'])->name('user.update');
+
+    Route::post('user-delete/{user}', [ClinicController::class, 'deleteUser'])->name('user.destroy');
+
+    Route::post('register-user', [ClinicController::class, 'registerUser'])->name('clinic-user.register');
+
+    Route::post('change-status', [NotificationController::class, 'readStatus']);
+
+    Route::post('copy-data', [PatientController::class, 'copyTreatment']);
+
+    Route::post('remove-data', [PatientController::class, 'removeTreatment']);
+
+    Route::get('/summary', [PosController::class, 'summary'])->name('summary');
+
+    Route::get('check-noti', [NotificationController::class, 'getNoti']);
+
+    Route::get('settings/{id}', [UserController::class, 'updateProfile'])->name('clinic.settings');
+
+    Route::post('setting-save/{id}', [UserController::class, 'saveProfile'])->name('settings.save');
+
+    Route::post('pharma_code/check', [PharmacyController::class, 'checkMedCode'])->name('pharma_code.check');
+
+    Route::get('getDoctors', [ClinicController::class, 'fetchDoctors'])->name('get.doctors');
+
+    Route::get('/exportPatientCSV', [DataController::class, 'exportPatientCSV']);
+    Route::get('/exportMedCSV', [DataController::class, 'exportMedCSV']);
+
+    Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
+    Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
 });
 
+Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
+
+    Route::post('login', [LoginController::class, 'login'])->name('login');
+});
 
 Route::post('logout', [LoginController::class, 'clinicLogout'])->name('clinic.logout');
 
-Route::post('clinic-login',[LoginController::class, 'clinicLogin'])->name('clinic.login');
+Route::post('login', [LoginController::class, 'login'])->name('login');
 
-Route::post('user-login',[LoginController::class, 'userLogin'])->name('user.login');
+Route::get('register', [UserController::class, 'index'])->name('register.user')->middleware('guest');
+
+Route::post('email_available/check', [UserController::class, 'checkEmail'])->name('email_available.check');
+
+Route::post('username_available/check', [UserController::class, 'checkUsername'])->name('username_available.check');
+
+Route::post('user-register', [UserController::class, 'register'])->name('user.register');
+
+Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
 Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
-Route::get('/feedback',[FeedBackController::class, 'create'])->name('feedback.create');
+Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
 
+Route::get('/waiting',[ClinicController::class,'waitingList'])->name('wait.list');
 
-Route::group(['middleware' => 'clinic.auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('users',[ClinicController::class,'index'])->name('user.list');
+    Route::get('/clinic-system/{code}', [ClinicController::class, 'index'])->name('user.clinic');
 
-    Route::get('user/create',[ClinicController::class,'newUser'])->name('user.create');
-
-    Route::get('user/{user}',[ClinicController::class,'editUser'])->name('user.edit');
-
-    Route::post('user/{user}',[ClinicController::class,'updateUser'])->name('user.update');
-
-    Route::post('register-user',[ClinicController::class, 'registerUser'])->name('user.register');
-
-    Route::get('dashboard', function () {
-        return view('clinic.dashboard');
-    })->name('clinic.home');
-
-
+    Route::get('dashboard', [ClinicController::class, 'dashboard'])->name('clinic.home');
 });
+

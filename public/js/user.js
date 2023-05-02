@@ -11025,6 +11025,18 @@ __webpack_require__.r(__webpack_exports__);
         $("#pos_view").prop('checked', true);
       }
     });
+    $("#user_view").on("change", function () {
+      if (this.checked) {
+        $("#user_create,#user_delete,#user_update").prop('checked', true);
+      } else {
+        $("#user_create,#user_delete,#user_update").prop('checked', false);
+      }
+    });
+    $("#user_create,#user_delete,#user_update").on('change', function () {
+      if (this.checked) {
+        $("#user_view").prop('checked', true);
+      }
+    });
     $('#role_type').on('change', function () {
       if (this.value != 1) {
         document.getElementById("doctor_section").setAttribute('hidden', 'hidden');

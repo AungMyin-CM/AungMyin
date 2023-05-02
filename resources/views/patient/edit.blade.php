@@ -4,13 +4,13 @@
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
-            <div class="content-wrapper">
+            <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <form method="post" action="{{ route('patient.update', $patient->id) }}" >
                     @csrf
                     @method('PATCH')
 
                     <section class="content-header">
-                        <div class="container-fluid">
+                        {{-- <div class="container-fluid">
                             <div class="row mb-2">
                                 <div class="col-sm-6">
                                     <h1>Patient Form</h1>
@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             
-                        </div><!-- /.container-fluid -->
+                        </div><!-- /.container-fluid --> --}}
                     </section>
                     <section class="content">
                         <div class="container-fluid">
@@ -32,7 +32,7 @@
                                 <div class="col-md-6">
 
                                     <div class="card card-primary">
-                                        <div class="card-header">
+                                        <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Edit Patient</h3>
                                         </div>
                                         @if ($errors->any())
@@ -108,8 +108,8 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-check">
-                                                            <input class="form-check-input" id="female" type="radio"
-                                                                value="0" name="gender" <?php echo $m_checked;?>>
+                                                            <input class="form-check-input" id="male" type="radio"
+                                                                value="1" name="gender" <?php echo $m_checked;?>>
                                                             <label class="form-check-label" for="male">
                                                                 Male
                                                             </label>
@@ -147,7 +147,7 @@
                                         </div>
 
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Submit</button>
                                         </div>
 
                                     </div>

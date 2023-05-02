@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\Clinic;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Session;
 use Auth;
@@ -24,62 +25,39 @@ class LoginController extends Controller
         return view('login/user');
     }
 
-    public function clinicLogin(LoginRequest $request)
+
+    public function login(LoginRequest $request)
     {
         if($request->validated())
         {
-            $data = Clinic::where("code",'=',$request->code)->get();
+            $data = User::where("code",'=',$request->code)->get()->first();
 
-            if(count($data) == 0)
+            if($data == null)
             {
-                return redirect('clinic-login')->with('message', "User does not exists");
+                return redirect('/login')->with('message', "User does not exists");
+            }elseif($data->email_verified == 0){
+                return redirect('/login')->with('alert', "Please verify your email");
             }else{
-                $userCredentials = $request->only('code', 'password');
+                    $userCredentials = $request->only('code', 'password');
 
-                if(Auth::guard('clinic')->attempt($userCredentials)){
-                    return redirect('dashboard')->with('message', "");
-                }else{
-                    return redirect('clinic-login')->with('message', "Invalid Credentials");
-                }
-            }
-        }
-    }
-
-    public function userLogin(LoginRequest $request)
-    {
-        if($request->validated())
-        {
-            $data = User::where("code",'=',$request->code)->get();
-
-            if(count($data) == 0)
-            {
-                return redirect('/')->with('message', "User does not exists");
-            }else{
-                $userCredentials = $request->only('code', 'password');
-
-                if(Auth::guard('user')->attempt($userCredentials)){
-                    return redirect('home')->with('message', "");
-                }else{
-                    return redirect('/')->with('message', "Invalid Credentials");
+                    if(Auth::guard('user')->attempt($userCredentials)){
+                        
+                        return redirect('home')->with('message', "");
+                    }else{
+                        return redirect('/login')->with('message', "Invalid Credentials");
+                    }
                 }
             }
             
-        }
-
-    } 
-
-    public function clinicLogout()
-    {        
-        Auth::guard('clinic')->logout();
-
-        return redirect('/clinic-login');
     }
+       
 
-    public function userLogout(Request $request)
-    {                
+
+    public function logout()
+    {        
+        Auth::guard('user')->logout();
+
         Session::flush();
-
-        Auth::logout();
 
         return redirect(\URL::previous());
 

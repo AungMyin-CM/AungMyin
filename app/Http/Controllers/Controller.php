@@ -10,6 +10,10 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Role;
+use App\Models\Notification;
+use App\Models\UserClinic;
+use App\Models\Clinic;
+
 
 use App\Helpers\Helper;
 
@@ -29,19 +33,38 @@ class Controller extends BaseController
 
         $this->middleware(function ($request, $next) {
 
-            if (Auth::guard('user')->user()){
+            if(Auth::check())
+            {
 
-                $permissions = Role::where('id',Auth::guard('user')->user()['id'])->pluck('permissions')->first();
+            $permissions = Role::where('id',Auth::guard('user')->user()['role_id'])->pluck('permissions')->first();
 
-                $role_type = Role::where('id',Auth::guard('user')->user()['id'])->pluck('role_type')->first();
+            $role_type = Role::where('id',Auth::guard('user')->user()['role_id'])->pluck('role_type')->first();
 
-                $this->permissions = $permissions;
-                $this->role_type = $role_type;
+            $notifications = Notification::where(['receiver_id' => Auth::guard('user')->user()['id'], 'is_read' => 0])->get();
 
-                view()->share(['permissions' => $permissions, 'role_type' => $role_type]);   
-                
+            $this->permissions = $permissions;
+            $this->role_type = $role_type;
+
+            $clinic_data = UserClinic::where('user_id', Auth::guard('user')->user()['id'])->get();
+
+            if(count($clinic_data) == 1)
+            {
+                foreach($clinic_data as $clinic)
+                {
+                    $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
+                }
+
+            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
+
+
             }
-            return $next($request);
+
+
+        }
+
+        return $next($request);
+
+            
         });
     }
 
