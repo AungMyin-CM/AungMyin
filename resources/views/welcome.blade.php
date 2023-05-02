@@ -12,12 +12,12 @@
   <link href={{asset("assets/img/logo.png")}} rel="icon">
   <link href={{asset("assets/img/apple-touch-icon.png")}} rel="apple-touch-icon">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-  <link href={{asset("assets/vendor/aos/aos.css")}}  rel="stylesheet">
+  <link href={{asset("assets/vendor/aos/aos.css")}} rel="stylesheet">
   <link href={{asset("assets/vendor/bootstrap/css/bootstrap.min.css")}} rel="stylesheet">
   <link href={{asset("assets/vendor/bootstrap-icons/bootstrap-icons.css")}} rel="stylesheet">
-  <link href={{asset("assets/vendor/glightbox/css/glightbox.min.css")}}  rel="stylesheet">
-  <link href={{asset("assets/vendor/remixicon/remixicon.css")}}  rel="stylesheet">
-  <link href={{asset("assets/vendor/swiper/swiper-bundle.min.css")}}  rel="stylesheet">
+  <link href={{asset("assets/vendor/glightbox/css/glightbox.min.css")}} rel="stylesheet">
+  <link href={{asset("assets/vendor/remixicon/remixicon.css")}} rel="stylesheet">
+  <link href={{asset("assets/vendor/swiper/swiper-bundle.min.css")}} rel="stylesheet">
   <link href={{asset("assets/css/style.css")}} rel="stylesheet">
 
 </head>
@@ -37,13 +37,13 @@
         <ul>
           <li><a class="nav-link scrollto active" href="#home">Home</a></li>
           <li><a class="nav-link scrollto" href="#services">Our Services</a></li>
-          <li><a class="nav-link scrollto" href="#pricing">Packages</a></li>       
+          <li><a class="nav-link scrollto" href="#pricing">Packages</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact Us</a></li>
           @auth
-            <li><a class="getstarted" href="{{asset('home')}}">My Dashboard</a></li>
+          <li><a class="getstarted" href="{{asset('home')}}">My Dashboard</a></li>
           @else
-            <li><a class="getstarted" href="{{asset('login')}}">Login</a></li>
-            <li><a class="login" href="{{asset('register')}}">Create Account</a></li>
+          <li><a class="getstarted" href="{{asset('login')}}">Login</a></li>
+          <li><a class="login" href="{{asset('register')}}">Create Account</a></li>
           @endauth
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -62,6 +62,20 @@
           <h1 data-aos="fade-up" style="font-family: 'Times New Roman', Times, serif;">Clinic in one Place</h1>
           <br>
           <h5 data-aos-delay="400">Why you need to upgrade your clinic?</h5>
+          <div class="d-flex mt-3">
+            <h5 class="me-3">
+              <i class="bi bi-alarm-fill"></i>
+              Save your time
+            </h5>
+            <h5 class="me-3">
+              <i class="bi bi-lightbulb-fill"></i>
+              Effortless
+            </h5>
+            <h5 class="me-3">
+              <i class="bi bi-shield-fill-check"></i>
+              Reliable
+            </h5>
+          </div>
           <div data-aos="fade-up" data-aos-delay="600">
             <div class="text-center text-lg-start">
               <a href="{{route('register.user')}}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
@@ -78,14 +92,14 @@
     </div>
 
   </section><!-- End home -->
- 
+
 
   <main id="main">
 
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
       <div class="container" data-aos="fade-up">
-        <header class="section-header">       
+        <header class="section-header">
           <p>What kind of feature are in?</p>
           <h2>Our Services</h2>
         </header>
@@ -160,7 +174,7 @@
           </div>
         </div>
       </div>
-       
+
       </div>
 
     </section><!-- End Services Section -->
@@ -170,7 +184,7 @@
 
       <div class="container" data-aos="fade-up">
 
-        <header class="section-header">        
+        <header class="section-header">
           <p>Ready to give us a try?</p><br>
           <h2>Our Packages</h2>
         </header>
@@ -184,7 +198,7 @@
               <p>Totally free for one month</p>
               <img src="assets/img/pricing-free.png" class="img-fluid" alt="">
 
-         
+
               <ul>
                 <!-- <li>Aida dere</li>
                 <li>Nec feugiat nisl</li>
@@ -219,6 +233,34 @@
 
     </section><!-- End Pricing Section -->
 
+    <!-- ======= Articles Section ======= -->
+    <section id="articles" class="articles">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Read the articles by doctors</p><br>
+          <h2>E-learning</h2>
+        </header>
+
+        <div class="row gy-4">
+          <div class="col-lg-6">
+
+          </div>
+          <div class="col-lg-6">
+            <div class="content">
+              <h3>What will you find out in this section?</h3>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut iure consequatur numquam ad totam rerum maiores assumenda error ex quae. Eveniet sint pariatur, inventore amet voluptatum cum. Veritatis deserunt laudantium vel, recusandae possimus omnis itaque nisi labore libero minus. Quae fugiat modi dolor. Ratione repellendus, dolore voluptatibus vel tempora fuga.
+              </p>
+              <a href="#" class="btn btn-primary">More Articles</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Articles Section -->
+
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
 
@@ -226,7 +268,7 @@
 
         <header class="section-header">
           <p>Aung Myin for your Clinic</p><br>
-          <h2>Contact</h2>      
+          <h2>Contact</h2>
         </header>
 
         <div class="row gy-4">
@@ -250,7 +292,7 @@
                   <h3>Email Us</h3>
                   <p>info@aungmyin.io</p>
                 </div>
-              </div>  
+              </div>
             </div>
           </div>
           <div class="col-lg-6">
@@ -285,8 +327,8 @@
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">
- 
-          <div class="col-lg-5 col-5 footer-links">        
+
+          <div class="col-lg-5 col-5 footer-links">
             <div class="social-links mt-3">
               <h3>Follow us:</h3>
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -294,16 +336,16 @@
               <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
               <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
 
     <div class="container">
       <div class="copyright">
-        &copy;2022 Copyright <strong><span>Aung Miyin</span></strong>. All Rights Reserved
+        &copy;2022 Copyright <strong><span>Aung Myin</span></strong>. All Rights Reserved
       </div>
-     
+
     </div>
   </footer><!-- End Footer -->
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
