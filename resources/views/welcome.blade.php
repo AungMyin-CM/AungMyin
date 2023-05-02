@@ -233,8 +233,8 @@
 
     </section><!-- End Pricing Section -->
 
-    <!-- ======= Articles Section ======= -->
-    <section id="articles" class="articles">
+    <!-- ======= E-learning Section ======= -->
+    <section id="elearning" class="elearning">
 
       <div class="container" data-aos="fade-up">
 
@@ -259,7 +259,141 @@
         </div>
       </div>
     </section>
-    <!-- End Articles Section -->
+    <!-- End E-learning Section -->
+
+    <!-- ======= Job search Section ======= -->
+    <section id="job-search" class="job-search">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header mb-3">
+          <p>Explore the open positions</p><br>
+          <h2>Job search</h2>
+        </header>
+
+        <select class="form-select w-25 ms-auto mb-5">
+          <option selected>Select city</option>
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+
+        <div class="row">
+          <div class="col-lg-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">
+                  <div class="row">
+                    <div class="col-4">
+                      <img class="w-75" src="assets/img/image-6.png" alt="">
+                    </div>
+                    <div class="col-8">
+                      <h5 class="fw-bold">Nurse Aid</h5>
+                      <p>Chan Thar hospital</p>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="mx-auto p-3" style="width: 175px;">
+                  <p class="card-text ms-auto">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Yangon
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-currency-dollar"></i>
+                    Negotiable
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-handbag-fill"></i>
+                    Entry
+                  </p>
+                </div>
+                <div class="text-center py-3">
+                  <a href="#">View Job Description</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">
+                  <div class="row">
+                    <div class="col-4">
+                      <img class="w-75" src="assets/img/image-7.png" alt="">
+                    </div>
+                    <div class="col-8">
+                      <h5 class="fw-bold">Assistant</h5>
+                      <p>Myittar Clinic</p>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="mx-auto p-3" style="width: 175px;">
+                  <p class="card-text">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Mandalay
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-currency-dollar"></i>
+                    3lakhs - 5lakhs
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-handbag-fill"></i>
+                    2years exp
+                  </p>
+                </div>
+                <div class="text-center py-3">
+                  <a href="#" class="mt-3">View Job Description</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">
+                  <div class="row">
+                    <div class="col-4">
+                      <img class="w-75" src="assets/img/image-8.png" alt="">
+                    </div>
+                    <div class="col-8">
+                      <h5 class="fw-bold">Accountant</h5>
+                      <p>Shwe hospital</p>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="mx-auto p-3" style="width: 175px;">
+                  <p class="card-text">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    Taungyi
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-currency-dollar"></i>
+                    Negotiable
+                  </p>
+                  <p class="card-text">
+                    <i class="bi bi-handbag-fill"></i>
+                    Entry
+                  </p>
+                </div>
+                <div class="text-center py-3">
+                  <a href="#" class="mt-3">View Job Description</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="#" class="btn btn-primary">View all jobs</a>
+        </div>
+      </div>
+    </section>
+    <!-- End Job search Section -->
+
+    <!-- ======= Contact Section ======= -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
