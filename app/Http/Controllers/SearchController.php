@@ -48,7 +48,7 @@ class SearchController extends Controller
                         '<span class="col-lg-4">Age: ' . $row->age . '</span>' .
                         '<span class="col-lg-4">Father\'s Name: ' . $row->father_name . '</span>                 
                         </a>  
-                        <a class="col-md-1" href="' . route('add.queue', $row->id) . '" class="btn btn-sm btn-tool">
+                        <a class="col-md-1" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
                         </div>

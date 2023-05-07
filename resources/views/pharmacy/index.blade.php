@@ -119,7 +119,7 @@
                                                                     @csrf
                                                                     @method('DELETE')   
                                                                 
-                                                                    <button class="btn btn-default " type="submit"  style=" margin:5px ;"><i class="fas fa-trash" style="color:#E95A4A; "></i></button>
+                                                                    <button class="btn btn-default " type="Submit"  style=" margin:5px ;"><i class="fas fa-trash" style="color:#E95A4A; "></i></button>
                                                                 </form>
 
                                                             @endif

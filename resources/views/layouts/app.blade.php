@@ -145,6 +145,8 @@
       });
     </script>
 </head>
+<body>
+  
 <div class="middle">
     <div class="bar bar1"></div>
     <div class="bar bar2"></div>
@@ -161,6 +163,9 @@
 @include('layouts.sidebar')
 
 @yield('content')
+
+</body>
+
 
 @if(Request::is('clinic-system/*') || Request::is('home') || Request::is('package-selection'))
 @include('layouts.js')

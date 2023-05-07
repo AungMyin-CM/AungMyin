@@ -142,7 +142,7 @@
                               </select>
                               </div>
                            </div>
-                            <input type="submit" value="submit" class="btn btn-primary">
+                            <input type="submit" value="Submit" class="btn btn-primary">
                       </div>    
                   </section>
                 </form>
