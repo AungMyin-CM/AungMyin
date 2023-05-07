@@ -150,7 +150,7 @@
                         <div class="container-fluid">
 
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-4 overflow-auto">
 
                                     <div class="card card-primary">
                                         <div class="card-header" style="background-color: {{config('app.color')}}">
@@ -241,7 +241,31 @@
                                         <div class="card-body">
 
                                             <div class="form-group">
-                                                <label for="address">Prescription</label>
+                                                <label for="general_prescription">General Prescription</label>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="sys_bp" placeholder="Sys">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="dia_bp" placeholder="Dia">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="pr" placeholder="P.R">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="temp" placeholder="Temp">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="spo2" placeholder="Spo2">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="rbs" placeholder="Rbs">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="address">History and Examination</label>
                                                 <textarea class="form-control c-field" id="dictionary" rows="10" placeholder="Start Typing here..."
                                                     name="prescription">{{ old('prescription') }}</textarea>
                                             </div>
@@ -377,26 +401,26 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <script>
- $(document).ready(function() {
-  $(window).on("keydown", function(event){
- 
-    // Check to see if ENTER was pressed and the submit button was active or not
-    if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
-      // It was, so submit the form
-      document.querySelector("form").submit();
+        $(document).ready(function() {
+        $(window).on("keydown", function(event){
+        
+            // Check to see if ENTER was pressed and the submit button was active or not
+            if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
+            // It was, so submit the form
+            document.querySelector("form").submit();
 
-    } else if(event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary") ){
-        medicine_dictionary(event);
-        event.preventDefault();
-                
-                //  Invoke click event of target so that non-form submit behaviors will work
-                event.target.click();
-    }
-    else if(event.keyCode === 13){
-        event.preventDefault();
-    }
-  });
-});
+            } else if(event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary") ){
+                medicine_dictionary(event);
+                event.preventDefault();
+                        
+                        //  Invoke click event of target so that non-form submit behaviors will work
+                        event.target.click();
+            }
+            else if(event.keyCode === 13){
+                event.preventDefault();
+            }
+        });
+        });
         var loadFile = function(event) {
             for(var i =0; i< event.target.files.length; i++){
                 var src = URL.createObjectURL(event.target.files[i]);

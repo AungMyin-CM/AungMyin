@@ -223,6 +223,13 @@ class PatientController extends Controller
 
         Visit::create([
             'patient_id' => $id,
+            'sys_bp' => $request->sys_bp,
+            'dia_bp' => $request->dia_bp,
+            'pr' => $request->pr,
+            'temp' => $request->temp,
+            'spo2' => $request->sys_bp,
+            'rbs' => $request->rbs,
+
             'prescription' => $request->prescription,
             'diag' => $request->diag,
             'assigned_medicines' =>  $assign_medicines,

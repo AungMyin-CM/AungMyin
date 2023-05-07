@@ -69,6 +69,8 @@
 
     $(document).ready(function(){
 
+            $('body').addClass('sidebar-collapse');
+
             $.ajax({
             type: "GET",
             url: '/clinic-system/check-noti',
