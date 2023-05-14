@@ -469,7 +469,7 @@ class ClinicController extends Controller
                                         }
                                         
     
-                                        if($role->role_type == 2 || $role->role_type == 5){
+                                        if($role->role_type == 2){
     
                                             $output .='<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = '.$row->id.'>
                                                 <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
@@ -537,8 +537,8 @@ class ClinicController extends Controller
             } catch (DecryptException $e) {
                 abort(404);
             }
-
            
+
         }
 }
 

@@ -51,6 +51,12 @@
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
+    <style>
+       body{
+          background-color: {{config('app.bg_color')}}
+        }
+    </style>
+
 
     <script src="{{asset('js/iziToast.min.js') }}"></script>
 

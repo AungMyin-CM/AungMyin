@@ -28,18 +28,22 @@
                                     <!-- /.card-header -->
                                     @if(Helper::checkPermission('d_create', $permissions))
                                         <div class="card-header">
+                                            <div class="float-left">
+                                                
+                                            </div>
                                             <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
                                                     class="fas fa-plus"></i> Add new</a>
                                         </div>
                                     @endif
                                     <div class="card-body">
-                                        <table id="example2" class="table table-bordered table-hover">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless mb-0">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Code</th>
                                                     <th>Meaning</th>
-                                                    <th colspan="2" style="width:15%;">Actions</th>
+                                                    {{-- <th colspan="2" style="width:15%;">Actions</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -69,7 +73,8 @@
                                                     </tr>
                                                 @endforeach
 
-                                        </table>
+                                            </table>
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>

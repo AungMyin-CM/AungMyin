@@ -81,6 +81,23 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+            box-shadow:  0px 0px 0px 0px #000;
+}
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width:auto;
+        padding:0 10px;
+        border-bottom:none;
+    }
   
   /* 100% Image Width on Smaller Screens */
   @media only screen and (max-width: 700px){
@@ -118,16 +135,18 @@
                                 </div>
                                 <div class="row mb-2">
                                    
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-6">
                                         <h6><b>Address :</b> {{ $data['patient']['address'] }} </h6>
+                                       
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
                                     </div>
                                     
                                    
                                 </div>
                                 <div class="row mb-2">                         
-                                    <div class="col-sm-12">
-                                        <h6><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
-                                    </div>
+                                    
                                    <div  style="position: absolute; right : 1px ;bottom :10px">
                                     @if(Helper::checkPermission('p_update', $permissions))
 
@@ -149,15 +168,15 @@
                     <section class="content">
                         <div class="container-fluid">
 
-                            <div class="row">
-                                <div class="col-md-4 overflow-auto">
+                            <div class="row" style="height:100vh;">
+                                <div class="col-md-4" >
 
-                                    <div class="card card-primary">
+                                    <div class="card card-primary" >
                                         <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Patient Treatment</h3>
                                         </div>
                                        
-                                        <div class="card-body">
+                                        <div class="card-body" style="height: 100%;overflow-y:scroll;">
                                             @if($data['visit']->isEmpty() != 1)
                                                 @foreach ($data['visit'] as $row)
                                                     <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
@@ -264,21 +283,24 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="address">History and Examination</label>
-                                                <textarea class="form-control c-field" id="dictionary" rows="10" placeholder="Start Typing here..."
-                                                    name="prescription">{{ old('prescription') }}</textarea>
-                                            </div>
+                                            <fieldset class="scheduler-border">
+                                                <legend class="scheduler-border">Investigation</legend>
+                                                <div class="form-group">
 
-                                            <div class="form-group">
-                                                <label for="address">Diagnosis</label>
-                                                <textarea class="form-control c-field" id="diagnosis_dictionary" rows="6" placeholder="Start Typing here..."
+                                                    <textarea class="form-control c-field" id="dictionary" rows="3" placeholder="History"
+                                                        name="prescription">{{ old('prescription') }}</textarea><br>
+                                                <textarea class="form-control c-field" id="diagnosis_dictionary" rows="3" placeholder="Diagnosis..."
                                                     name="diag">{{ old('diag') }}</textarea>
+                                                </div>
 
-                                            </div>
+
+                                            </fieldset>
+                                                
+
+                                            
 
                                             <div class="form-group">
-                                                <label for="address">Search Medicine</label>
+                                                <label for="search_medicine">Search Medicine</label>
                                                 <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
                                                     name="medicines"> 
                                             </div>
@@ -298,9 +320,11 @@
                                                              <tbody>
                                                                <tr id="row_1">
                                                                  <td>
-                                                                      <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                    <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
+                                                                    name="medicines">           
+                                                                      {{-- <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
                                                                       <input type = "hidden" name = "med_id[]" id = "med_id_1">
-                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;">
+                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;"> --}}
                                                                     </div>
                                                                 </td>
                                                                   
@@ -314,6 +338,25 @@
                                                              </tbody>
                                                           </table>              
                                                   </section>
+                                            </div>
+
+                                            
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="investigation">Investigation</label>
+                                                        <textarea class="form-control c-field" id="investigation" rows="5" placeholder="Start Typing here..."
+                                                            name="investigation">{{ old('investigation') }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="procedure">Procedure</label>
+                                                        <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..."
+                                                            name="procedure">{{ old('procedure') }}</textarea>
+                                                    </div>
+                                                </div>
                                             </div>
 
                                             <input type="file" multiple="multiple" onchange="loadFile(event)" name= "images[]" id="upload" hidden/>
@@ -331,23 +374,6 @@
 
                                             <div class="form-group" id="image">
                                                 {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="address">Investigation</label>
-                                                        <textarea class="form-control c-field" id="investigation" rows="5" placeholder="Start Typing here..."
-                                                            name="investigation">{{ old('investigation') }}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="address">Procedure</label>
-                                                        <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..."
-                                                            name="procedure">{{ old('procedure') }}</textarea>
-                                                    </div>
-                                                </div>
                                             </div>
 
                                             <div class="row">

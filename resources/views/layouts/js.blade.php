@@ -37,11 +37,22 @@
 <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
 
-    $("#datatable").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
-
+  $('#datatable').DataTable({
+          columnDefs: [
+              {
+                  targets: [0],
+                  orderData: [0, 1],
+              },
+              {
+                  targets: [1],
+                  orderData: [1, 0],
+              },
+              {
+                  targets: [4],
+                  orderData: [4, 0],
+              },
+          ],
+      });
     
     function readAction(action){
       var id = action.getAttribute('data-id');
@@ -104,7 +115,10 @@
                   }
                 }else if(response == 'no-session') {
                   console.log("Session expired");
+                  $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
+
                 }else{
+                  $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
 
                 }
                 $('.wrapper').css('opacity','1');

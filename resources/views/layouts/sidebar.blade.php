@@ -122,7 +122,7 @@
                         @if(Helper::checkPermission('ph_view', $permissions))
                                 <li class="nav-item">
                                     <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
-                                        <i class="nav-icon fas fa-medkit"></i>
+                                        <i class="nav-icon fas fa-pills"></i>
                                         <p>
                                             Pharmacy
                                         </p>
@@ -144,6 +144,17 @@
 
                                 </li>
                             @endif
+                        @endif
+
+                        @if (Auth::guard('user')->user()->isAdmin())
+                            <li class="nav-item">
+                                <a href="{{ route('procedure.index') }}" class="nav-link" title="Procedure / Lab">
+                                    <i class="nav-icon fas fa-procedures"></i>       
+                                    <p>
+                                        Procedure / Lab
+                                    </p>
+                                </a>
+                            </li>
                         @endif
 
                         <li class="nav-item">
