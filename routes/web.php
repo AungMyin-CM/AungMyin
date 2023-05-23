@@ -56,6 +56,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::resource('pharmacy', PharmacyController::class);
 
+    Route::patch('patient-update/{patient}', [PatientController::class, 'updatePatient'])->name('patient.updatePatient');
+
     Route::get('patient/{patient}/treatment', [PatientController::class, 'treatment'])->name('patient.treatment');
 
     Route::post('patient/{patient}/treatment', [PatientController::class, 'saveTreatment'])->name('create.treatment');

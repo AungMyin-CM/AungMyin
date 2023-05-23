@@ -40,7 +40,7 @@ class PatientController extends Controller
         if ($request->name) {
             $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
         } else {
-            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at','asc')->get();
+            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at', 'asc')->get();
         }
         return view('patient/index')->with('data', $patientData);
     }
@@ -167,6 +167,32 @@ class PatientController extends Controller
         return redirect('clinic-system/patient')->with('success', 'Done !');
     }
 
+    public function updatePatient(PatientRequest $request, $id)
+    {
+        if (!$this->checkPermission('p_update')) {
+            abort(404);
+        }
+
+        $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name);
+
+        Patient::whereId($id)->update([
+            'name' => $request->name,
+            'age' => $request->age,
+            'father_name' => $request->father_name,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'phoneNumber' => $request->phoneNumber,
+            'drug_allergy' => $request->drug_allergy,
+            'summary' => $request->summary,
+            'Ref' => $reference
+        ]);
+
+        // Get updated data
+        $patient = (Patient::where('id', $id)->get())[0];
+
+        return response()->json($patient);
+    }
+
     public function treatment($id)
     {
         if (!$this->checkPermission('p_treatment')) {
@@ -178,8 +204,8 @@ class PatientController extends Controller
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
 
-            Notification::where('patient_id',$id)->update(['is_read'=>1]);
-               
+            Notification::where('patient_id', $id)->update(['is_read' => 1]);
+
 
             return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
         } catch (DecryptException $e) {
@@ -328,64 +354,63 @@ class PatientController extends Controller
         $patient_id = $request->patient_id;
         $user_id = Auth::guard('user')->user()['id'];
         $receiver_id = $request->receiver_id;
-            Patient::whereId($patient_id)->update(['p_status' => $status]);
+        Patient::whereId($patient_id)->update(['p_status' => $status]);
 
-            switch ($status) {
-                case '1':
-                    $action = 'waiting';
-                    break;
-                case '2':
-                    $action = 'treatment';
-                    break;
-                case '3':
-                    $action = 'pos';
-                    break;
-                case '4':
-                    $action = 'completed';
-                    break;
-                case '5':
-                    $action = 'no-action';
-                    break;
+        switch ($status) {
+            case '1':
+                $action = 'waiting';
+                break;
+            case '2':
+                $action = 'treatment';
+                break;
+            case '3':
+                $action = 'pos';
+                break;
+            case '4':
+                $action = 'completed';
+                break;
+            case '5':
+                $action = 'no-action';
+                break;
 
-                default:
-                    $action = 'none';
-                    break;
-            }
+            default:
+                $action = 'none';
+                break;
+        }
 
-            if ($action != 'no-action') {
+        if ($action != 'no-action') {
 
-                if ($action == 'treatment') {
+            if ($action == 'treatment') {
 
-                    $count = PatientDoctor::where('patient_id', $patient_id)->where('user_id', $receiver_id)->get()->count();
+                $count = PatientDoctor::where('patient_id', $patient_id)->where('user_id', $receiver_id)->get()->count();
 
-                    if ($count == 0) {
-                        PatientDoctor::create([
-                            'patient_id' => $patient_id,
-                            'user_id' => $receiver_id,
-                            'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
+                if ($count == 0) {
+                    PatientDoctor::create([
+                        'patient_id' => $patient_id,
+                        'user_id' => $receiver_id,
+                        'status' => 0, // 0 => assign-to-doctor, 1 => in-progress-treatment, 2 => pharmacy-counter
 
-                        ]);
-                    }
+                    ]);
                 }
-                    
-
-
-                $clinic_id = session()->get('cc_id');
-
-                NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
-                Notification::create([
-                    'sender_id' => $user_id,
-                    'receiver_id' => $receiver_id,
-                    'clinic_id' => session()->get('cc_id'),
-                    'patient_id' => $patient_id,
-                    'is_sent' => '1',
-                    'action_on_sent' => $action,
-                ]);
             }
 
 
-            echo "changed";
-       
+
+            $clinic_id = session()->get('cc_id');
+
+            NoticeEvent::dispatch("New Patient Entry!!",  $clinic_id . "_" . $receiver_id);
+            Notification::create([
+                'sender_id' => $user_id,
+                'receiver_id' => $receiver_id,
+                'clinic_id' => session()->get('cc_id'),
+                'patient_id' => $patient_id,
+                'is_sent' => '1',
+                'action_on_sent' => $action,
+            ]);
+        }
+
+
+        echo "changed";
     }
 
     public function addQueue($id)
@@ -503,7 +528,7 @@ class PatientController extends Controller
             if (count($importData) <= 1) {
                 return redirect('clinic-system/patient')->with('error', 'Empty CSV');
             }
-         
+
             for ($i = 1; $i < count($importData); $i++) {
                 if (array_count_values($importData[$i]) < 8) {
                     return redirect('clinic-system/pharmacy')->with('error', 'Invalid CSV');
