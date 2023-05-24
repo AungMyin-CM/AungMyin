@@ -118,11 +118,6 @@
 
             <section class="content-header">
                 <div class="container-fluid">
-                    @if (session()->has('message'))
-                        <div class="alert text-white" style="background-color: {{config('app.color')}} !important">
-                            {{ session('message') }}
-                        </div>
-                    @endif
                     <div class="card card-primary">
                         <div class="card-body" style="padding: 0.9rem !important;">
                             <div class="row mb-2">

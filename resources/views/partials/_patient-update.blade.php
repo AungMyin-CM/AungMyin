@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="patient_name" name="name" placeholder="Name" value=" {{ $data['patient']['name'] }}">
-                                <span id="nameError" class="text-danger"></span>
+                                <span id="nameError" class="text-danger small"></span>
                             </div>
                         </div>
 
@@ -31,7 +31,7 @@
                             <div class="form-group">
                                 <label for="age">Age</label>
                                 <input type="number" class="form-control" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $data['patient']['age'] }}">
-                                <span id="ageError" class="text-danger"></span>
+                                <span id="ageError" class="text-danger small"></span>
                             </div>  
                         </div>
 
@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <label for="address">Address</label>
                         <textarea class="form-control" placeholder="Address" name="address">{{ $data['patient']['address'] }}</textarea>
-                        <span id="addressError" class="text-danger"></span>
+                        <span id="addressError" class="text-danger small"></span>
                     </div>
 
                     <div class="form-group">
@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span id="genderError" class="text-danger"></span>
+                        <span id="genderError" class="text-danger small"></span>
                     </div>
 
                     <div class="row">

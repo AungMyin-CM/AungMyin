@@ -49,10 +49,9 @@ class UserController extends Controller
             $file->move(public_path('images/avatars'), $filename);
         }
 
-        if($request->title == 'Mr')
-        {
+        if ($request->title == 'Mr') {
             $gender = 1;
-        }else{
+        } else {
             $gender = 0;
         }
 
@@ -159,23 +158,23 @@ class UserController extends Controller
 
         $role = Role::where('id', $user->role_id)->get()->first();
         return view('profile/update', compact('user', 'data', 'role'));
-
     }
 
-    public function saveProfile($id,Request $request)
+    public function saveProfile($id, Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3|max:50',
-            'email' => 'email',
+            'email' => 'required|email',
             'password' => 'confirmed',
+            'phoneNumber' => 'required'
         ]);
 
         if ($request->file('avatar') != '') {
             $file = $request->file('avatar');
             $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
             $file->move(public_path('images/avatars'), $filename);
-        }else{
-            $filename = User::where('id',Auth::guard('user')->user()['id'])->value('avatar');
+        } else {
+            $filename = User::where('id', Auth::guard('user')->user()['id'])->value('avatar');
         }
 
         $requests = [
@@ -201,6 +200,6 @@ class UserController extends Controller
         User::whereId($id)->update($requests);
 
 
-        return redirect()->back()->with('success','Done');
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 }

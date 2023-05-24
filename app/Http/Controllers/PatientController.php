@@ -118,8 +118,7 @@ class PatientController extends Controller
                     'followup_date' => $request->followup_date
                 ]);
             }
-            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");;
-            // return redirect('clinic-system/patient')->with('success', "Done!");
+            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");
         }
     }
 
@@ -164,7 +163,7 @@ class PatientController extends Controller
             'Ref' => $reference
         ]);
 
-        return redirect('clinic-system/patient')->with('success', 'Done !');
+        return redirect('clinic-system/patient')->with('success', 'Patient updated successfully!');
     }
 
     public function updatePatient(PatientRequest $request, $id)
@@ -317,7 +316,7 @@ class PatientController extends Controller
     {
         Patient::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('clinic-system/patient')->with('success', 'Done !');
+        return redirect('clinic-system/patient')->with('success', 'Patient removed successfully!');
     }
 
     public function fetchDictionary(Request $request)

@@ -19,8 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Controllers\HomeController;
-
-
+use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Hash;
 
 use Carbon\Carbon;
@@ -36,7 +35,7 @@ use Response;
 
 class ClinicController extends Controller
 {
-    
+
     public function dashboard()
     {
         return view('clinic.dashboard');
@@ -83,7 +82,6 @@ class ClinicController extends Controller
                     ->groupBy()
                     ->orderBy('patient.updated_at', 'desc')
                     ->get();
-                    
             } elseif ($role->role_type == 3 || $role->role_type == 5) {
 
                 $patientData = Patient::where('clinic_code', $clinic_id)
@@ -181,7 +179,6 @@ class ClinicController extends Controller
         // $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
         return redirect('/home');
-
     }
 
     public function newUser()
@@ -219,7 +216,6 @@ class ClinicController extends Controller
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
             'code' => $request->code,
-            'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
             'phoneNumber' => $request->phoneNumber,
@@ -255,7 +251,7 @@ class ClinicController extends Controller
         return view('user/edit', compact('user', 'data', 'role'));
     }
 
-    public function updateUser(Request $request, $id)
+    public function updateUser(UserUpdateRequest $request, $id)
     {
 
         if (!$this->checkPermission("user_update")) {
@@ -270,9 +266,9 @@ class ClinicController extends Controller
 
         $requests = [
             'name' => $request->name,
+            'code' => $request->code,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
-            'name' => $request->name,
             'email' => $request->email,
             'phoneNumber' => $request->phoneNumber,
             'city' => $request->city,
@@ -289,7 +285,7 @@ class ClinicController extends Controller
 
         User::whereId($id)->update($requests);
 
-        return redirect('clinic-system/users')->with('success', 'Done !');
+        return redirect('clinic-system/users')->with('success', 'User updated successfully!');
     }
 
     public function deleteUser($id)
@@ -300,7 +296,7 @@ class ClinicController extends Controller
 
         User::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('clinic-system/users')->with('success', 'Done !');
+        return redirect('clinic-system/users')->with('success', 'User deleted successfully!');
     }
 
 
@@ -313,15 +309,11 @@ class ClinicController extends Controller
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
-        if($clinic_data > 2)
-        {
-
-        }else{
+        if ($clinic_data > 2) {
+        } else {
 
             return view('registration/clinic_name')->with('data', $data);
-
         }
-
     }
 
     public function stepTwoRegister(Request $request)
@@ -383,9 +375,9 @@ class ClinicController extends Controller
                 $user_id = Auth::guard('user')->user()['id'];
                 $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
                 $now = new Carbon;
-    
+
                 if ($role->role_type == 2 || $role->role_type == 5) {
-    
+
                     $patientData = Patient::where('clinic_code', $clinic_id)
                         ->where('user_id', $user_id)
                         ->where('p_status', 1)
@@ -393,19 +385,17 @@ class ClinicController extends Controller
                         ->where('status', 1)
                         ->orderBy('updated_at', 'asc')->get();
                 } elseif ($role->role_type == 1 || $role->role_type == 5) {
-    
+
                     $patientData = DB::table('patient')->select('*')->join('patient_doctor', 'patient_doctor.patient_id', '=', 'patient.id')->where('patient_doctor.user_id', Auth::user()->id)
                         ->where('patient.updated_at', '>=', $now->format('ymd'))
                         ->where('patient.p_status', 2)
                         ->where('patient.status', 1)
-                        ->where('patient.clinic_code',$clinic_id)
+                        ->where('patient.clinic_code', $clinic_id)
                         ->groupBy()
                         ->orderBy('patient.updated_at', 'asc')
                         ->get();
-                        
-    
                 } elseif ($role->role_type == 3 || $role->role_type == 5) {
-    
+
                     $patientData = Patient::where('clinic_code', $clinic_id)
                         ->where('p_status', 3)
                         ->where('updated_at', '>=', $now->format('ymd'))
@@ -415,63 +405,59 @@ class ClinicController extends Controller
                     $patientData = array();
                 }
 
-                        $output = '';
-                        $i = 1;
-                        if (count($patientData) > 0)
-                        {
-                            $output .= '<table id="dat" class="table table-bordered table-striped">'.                                 
-                            '<thead>'.
-                                '<tr>'.
-                                    '<th>#</th>'.
-                                    '<th>Name</th>'.
-                                    '<th>Age</th>'.
-                                    '<th>Father\'s name</th>'.
-                                    '<th colspan="3" style="width:15%;">Actions</th>'.
-                                    '</tr>'.
-                            '</thead><tbody>';
-    
-                            foreach($patientData as $row)
-                            {
-                                $date = \Carbon\Carbon::parse($row->updated_at)->diffForHumans();                                           
-    
-                                $output .='<tr id="patient_row_'.$row->id.'">'.
-                                    '<td>'.$i++.
-                                        '<td>'.$row->name.'&nbsp;&nbsp;&nbsp;';
-    
-                                        if($row->gender ==1){
-                                            $output .='<i class="fas fa-male fa-lg" style="color:blue;"></i>';
-                                        }else{
-                                            $output .='<i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>';
-                                        }
-    
-                                    
-                                    $output .='</td>';
-                                    
-                                    $output .='<td>'.$row->age.'</td>';
-                                    $output .='<td>'.$row->father_name.'</td>';
-                                    $output .='<td>';
-                                    $output .='<div class="card-tools">';
-                                    
-                                        if($role->role_type == 1){
-    
-                                            $output .='<a href="'.route('patient.edit' ,  Crypt::encrypt($row->patient_id)).'" class="btn btn-sm btn-tool">
+                $output = '';
+                $i = 1;
+                if (count($patientData) > 0) {
+                    $output .= '<table id="dat" class="table table-bordered table-striped">' .
+                        '<thead>' .
+                        '<tr>' .
+                        '<th>#</th>' .
+                        '<th>Name</th>' .
+                        '<th>Age</th>' .
+                        '<th>Father\'s name</th>' .
+                        '<th colspan="3" style="width:15%;">Actions</th>' .
+                        '</tr>' .
+                        '</thead><tbody>';
+
+                    foreach ($patientData as $row) {
+                        $date = \Carbon\Carbon::parse($row->updated_at)->diffForHumans();
+
+                        $output .= '<tr id="patient_row_' . $row->id . '">' .
+                            '<td>' . $i++ .
+                            '<td>' . $row->name . '&nbsp;&nbsp;&nbsp;';
+
+                        if ($row->gender == 1) {
+                            $output .= '<i class="fas fa-male fa-lg" style="color:blue;"></i>';
+                        } else {
+                            $output .= '<i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>';
+                        }
+
+
+                        $output .= '</td>';
+
+                        $output .= '<td>' . $row->age . '</td>';
+                        $output .= '<td>' . $row->father_name . '</td>';
+                        $output .= '<td>';
+                        $output .= '<div class="card-tools">';
+
+                        if ($role->role_type == 1) {
+
+                            $output .= '<a href="' . route('patient.edit',  Crypt::encrypt($row->patient_id)) . '" class="btn btn-sm btn-tool">
                                                 <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                             </a>';
-    
-                                        }
-                                        
-                                         if($role->role_type == 2 || $role->role_type == 5){
-    
-                                            $output .='<a href="'.route('patient.edit' ,  Crypt::encrypt($row->id)).'" class="btn btn-sm btn-tool">
+                        }
+
+                        if ($role->role_type == 2 || $role->role_type == 5) {
+
+                            $output .= '<a href="' . route('patient.edit',  Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                                                 <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                             </a>';
-    
-                                        }
-                                        
-    
-                                        if($role->role_type == 2 || $role->role_type == 5){
-    
-                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = '.$row->id.'>
+                        }
+
+
+                        if ($role->role_type == 2 || $role->role_type == 5) {
+
+                            $output .= '<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = ' . $row->id . '>
                                                 <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
                                             </a>
                                             <div class="modal fade" id="myModal" role="dialog">
@@ -500,47 +486,39 @@ class ClinicController extends Controller
                                                     
                                                 </div>
                                             </div>';
-                                    
-    
-                                        }elseif($role->role_type == 1 || $role->role_type == 5){
-    
-                                            $output .='<a href="'.route('patient.treatment', Crypt::encrypt($row->patient_id)).'" style="margin:10px;"
+                        } elseif ($role->role_type == 1 || $role->role_type == 5) {
+
+                            $output .= '<a href="' . route('patient.treatment', Crypt::encrypt($row->patient_id)) . '" style="margin:10px;"
                                                 ><i class="fas fa-stethoscope fa-lg"></i>
                                                 </a>';
-    
-                                        }elseif($role->role_type == 3 || $role->role_type == 5){
-    
-                                            $output .='<a href="'.route('pos-patient', Crypt::encrypt($row->id)).'" style="margin:10px;"
+                        } elseif ($role->role_type == 3 || $role->role_type == 5) {
+
+                            $output .= '<a href="' . route('pos-patient', Crypt::encrypt($row->id)) . '" style="margin:10px;"
                                                 ><i class="fas fa-receipt fa-lg"></i>
                                             </a>';
-                
-                                        }
-                                            
-                                        if($role->role_type == 2){
-    
-                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = '.$row->id.'>
+                        }
+
+                        if ($role->role_type == 2) {
+
+                            $output .= '<a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = ' . $row->id . '>
                                                 <i class="fas fa-trash fa-lg" style="color:rgb(239, 6, 6);"></i>
                                             </a>';
-                                        }
-                                        $output .='</div>';
-                                    $output .='</td>';
-                                $output .='</tr>';
-                            }
-                                $output .='</tbody></table>';
-                        }else{
-                            $output .= '<p class="text-center">No patient in waiting list.</p>';
                         }
-    
-                        echo $output;
+                        $output .= '</div>';
+                        $output .= '</td>';
+                        $output .= '</tr>';
+                    }
+                    $output .= '</tbody></table>';
+                } else {
+                    $output .= '<p class="text-center">No patient in waiting list.</p>';
+                }
 
-              
+                echo $output;
             } catch (DecryptException $e) {
                 abort(404);
             }
-
-           
         }
-}
+    }
 
     private function userCodeGenerator()
     {
