@@ -69,7 +69,7 @@ class PharmacyController extends Controller
                 'Ref' => $reference
             ]);
 
-            return redirect('clinic-system/pharmacy')->with('success', "Created successfully!");
+            return redirect('clinic-system/pharmacy')->with('success', "New medicine added!");
         }
     }
 
@@ -113,7 +113,7 @@ class PharmacyController extends Controller
                 ]
             );
 
-            return redirect('clinic-system/pharmacy')->with('success', 'Updated successfully!');
+            return redirect('clinic-system/pharmacy')->with('success', 'Medicine updated successfully!');
         };
     }
 
@@ -121,7 +121,7 @@ class PharmacyController extends Controller
     {
         Pharmacy::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
-        return redirect('clinic-system/pharmacy')->with('success', 'Deleted successfully!');
+        return redirect('clinic-system/pharmacy')->with('success', 'Medicine deleted successfully!');
     }
 
     public function checkMedCode(Request $request)
