@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRegisterRequest;
-
+use App\Models\Package;
+use App\Models\PackagePurchase;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Role;
@@ -156,8 +157,21 @@ class UserController extends Controller
         $user = User::findOrfail($id);
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
+        // Get package info
+        $package = (PackagePurchase::where('user_id', $id)->get())[0];
+
+        // Get purchase date
+        $purchase_date = strtotime($package->created_at);
+
+        // Get days left
+        $expire_date = strtotime($package->expire_at);
+        $current_date = time();
+        $diff = $expire_date - $current_date;
+        $days_left = floor($diff / (60 * 60 * 24));
+
         $role = Role::where('id', $user->role_id)->get()->first();
-        return view('profile/update', compact('user', 'data', 'role'));
+
+        return view('profile/update', compact('user', 'data', 'package', 'purchase_date', 'expire_date', 'days_left', 'role'));
     }
 
     public function saveProfile($id, Request $request)

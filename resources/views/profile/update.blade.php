@@ -163,10 +163,33 @@
                                         <input type="submit" class="btn btn-primary" value="Update Profile" style="background-color: {{config('app.color')}}">
                                     </div>
                                 </div>
-
                             </div>
-                            <div class="col-md-4">
 
+                            <div class="col-md-4">
+                                <div class="card card-primary">
+                                    <div class="card-header" style="background-color:{{config('app.color')}}">
+                                        <h3 class="card-title">Package Info</h3>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p>Clinic Name</p>
+                                                <p>Price</p>
+                                                <p>Purchase Date</p>
+                                                <p>Expire Date</p>
+                                                <p>Days Left</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{ $package->clinic->name }}</p>
+                                                <p>{{ $package->price }}</p>
+                                                <p>{{ date("F jS Y", $purchase_date) }}</p>
+                                                <p>{{ date("F jS Y", $expire_date) }}</p>
+                                                <p>{{ $days_left }} days</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                 </section>
