@@ -301,8 +301,8 @@
 
                                             <div class="form-group">
                                                 <label for="search_medicine">Search Medicine</label>
-                                                <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
-                                                    name="medicines"> 
+                                                {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
+                                                    name="medicines">  --}}
                                             </div>
 
                                             <div class="form-group" id="medtable">
@@ -324,8 +324,8 @@
                                                                     name="medicines">           
                                                                       {{-- <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
                                                                       <input type = "hidden" name = "med_id[]" id = "med_id_1">
-                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;"> --}}
-                                                                    </div>
+                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;">
+                                                                    </div> --}}
                                                                 </td>
                                                                   
                                                                   <td>
@@ -508,29 +508,29 @@
                             });
 
                             var table = $("#product_info_table");
-        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-        var row_id =  1;
-        var html = "";
-        for (i =0; i<fil_res.length ; i++){
-            data = res[i].split('^');
-                html += '<tr id="row_'+row_id+'">'+
-            '<td>'+ 
-            '<input type="text" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
-            '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
-            '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
-            '</td>'+ 
-            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
-            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
-            '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
-            '</tr>';
-            row_id++;
-        }
- 
-        $("#product_info_table tbody").html(html);
- 
-                        }
-                    });
+                    var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+                    var row_id =  1;
+                    var html = "";
+                    for (i =0; i<fil_res.length ; i++){
+                        data = res[i].split('^');
+                            html += '<tr id="row_'+row_id+'">'+
+                        '<td>'+ 
+                        '<input type="text" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
+                        '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
+                        '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
+                        '</td>'+ 
+                        '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
+                        '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
+                        '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+                        '</tr>';
+                        row_id++;
                     }
+ 
+                    $("#product_info_table tbody").html(html);
+            
+                                    }
+                                });
+                                }
  
     }
     function searchMed(rowid) {

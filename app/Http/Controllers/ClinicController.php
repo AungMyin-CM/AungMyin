@@ -384,7 +384,7 @@ class ClinicController extends Controller
                 $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
                 $now = new Carbon;
     
-                if ($role->role_type == 2 || $role->role_type == 5) {
+                if ($role->role_type == 2) {
     
                     $patientData = Patient::where('clinic_code', $clinic_id)
                         ->where('user_id', $user_id)
