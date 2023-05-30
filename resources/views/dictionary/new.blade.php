@@ -18,15 +18,7 @@
                                     <div class="card-header" style="background-color: {{config('app.color')}}">
                                         <h3 class="card-title">Please fill out form</h3>
                                     </div>
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger">
-                                            <ul>
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div><br />
-                                    @endif
+                                   
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <form action="{{ route('dictionary.store') }}" method="POST">
@@ -34,8 +26,13 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="code">Code</label>
-                                                <input type="text" class="form-control" id="code" name="code" required
+                                                <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" required
                                                     placeholder="Code">
+                                                @error('code')
+                                                    <span class="invalid-feedback" role="alert" id="alert-message">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                             <div class="form-group float-right">
                                                 <input type="checkbox" id="is_med" name="is_med" value="1">
@@ -43,7 +40,12 @@
                                             </div>
                                             <div class="form-group" id= "dictonary_div">
                                                 <label for="meaing">Meaning</label>
-                                                <textarea class="form-control" placeholder="Meaning" name="meaning" rows="7">{{ old('meaning') }}</textarea>
+                                                <textarea class="form-control @error('meaning') is-invalid @enderror" placeholder="Meaning" name="meaning" rows="7">{{ old('meaning') }}</textarea>
+                                                @error('meaning')
+                                                    <span class="invalid-feedback" role="alert" id="alert-message">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
                                             </div>
                                             <div id="med_div" hidden="hidden">
                                                 <section class="content">
@@ -136,6 +138,8 @@
         {
             $("#product_info_table tbody tr#row_"+tr_id).remove();
         }
+
+        
 
     </script>
 @endsection

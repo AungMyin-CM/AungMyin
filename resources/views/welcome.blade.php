@@ -437,7 +437,7 @@
                   <div class="loading">Loading</div>
                   <div class="error-message"></div>
                   <div class="sent-message">Your message has been sent. Thank you!</div>
-                  <button type="submit">Send Message</button>
+                  <button type="Submit">Send Message</button>
                 </div>
               </div>
             </form>

@@ -23,6 +23,12 @@ class Visit extends Model
         'procedure',
         'is_followup',
         'followup_date',
+        'sys_bp',
+        'dia_bp',
+        'pr',
+        'temp',
+        'spo2',
+        'rbs',
         'status'
     ];
 

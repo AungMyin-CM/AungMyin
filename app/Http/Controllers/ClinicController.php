@@ -375,9 +375,9 @@ class ClinicController extends Controller
                 $user_id = Auth::guard('user')->user()['id'];
                 $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
                 $now = new Carbon;
-
-                if ($role->role_type == 2 || $role->role_type == 5) {
-
+    
+                if ($role->role_type == 2) {
+    
                     $patientData = Patient::where('clinic_code', $clinic_id)
                         ->where('user_id', $user_id)
                         ->where('p_status', 1)
@@ -452,12 +452,13 @@ class ClinicController extends Controller
                             $output .= '<a href="' . route('patient.edit',  Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                                                 <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                             </a>';
-                        }
-
-
-                        if ($role->role_type == 2 || $role->role_type == 5) {
-
-                            $output .= '<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = ' . $row->id . '>
+    
+                                        }
+                                        
+    
+                                        if($role->role_type == 2){
+    
+                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = '.$row->id.'>
                                                 <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
                                             </a>
                                             <div class="modal fade" id="myModal" role="dialog">
@@ -517,6 +518,8 @@ class ClinicController extends Controller
             } catch (DecryptException $e) {
                 abort(404);
             }
+           
+
         }
     }
 

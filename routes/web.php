@@ -14,6 +14,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProcedureController;
+
 
 
 /*
@@ -51,6 +53,10 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::post('userlogout', [LoginController::class, 'logout'])->name('user.logout');
 
     Route::resource('dictionary', DictionaryController::class);
+
+    Route::resource('procedure', ProcedureController::class);
+
+    Route::resource('investigation', InvestigationController::class);
 
     Route::resource('patient', PatientController::class);
 

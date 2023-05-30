@@ -8,6 +8,9 @@ use App\Models\Dictionary;
 
 
 use Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+
 
 class DictionaryController extends Controller
 {
@@ -35,28 +38,35 @@ class DictionaryController extends Controller
         if(!$this->checkPermission('d_create')){
             abort(403);
         }
- 
-            $dict = new Dictionary();
-            if($request->is_med == 1){
-                $count_product = count($request->med_id);
-                $assign_medicines = '';
-                for($x = 0; $x < $count_product; $x++) {
-                    $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.  $request->quantity[$x].'^'.$request->days[$x].'<br>';
-                }
-                $dict->create(['code' => $request->code,
-                'meaning' => $assign_medicines,
-                'user_id' => Auth::guard('user')->user()['id'],
-                'isMed'  => 1
-                ]);
+
+        $request->validate([
+            'code' => ['required',Rule::unique('dictionary')->where(fn ($query) => $query->where('code', request()->code)->where('user_id',Auth::guard('user')->user()->id)), //assuming the request has platform information
+        ],
+            'meaning' => 'nullable'
+        ]);
+
+    
+        $dict = new Dictionary();
+        if($request->is_med == 1){
+            $count_product = count($request->med_id);
+            $assign_medicines = '';
+            for($x = 0; $x < $count_product; $x++) {
+                $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.  $request->quantity[$x].'^'.$request->days[$x].'<br>';
             }
-            else{
-                $dict->create(['code' => $request->code,
-                'meaning' => $request->meaning,
-                'user_id' => Auth::guard('user')->user()['id'],
-                'isMed'  => 0
-                ]);
-            }
-             return redirect('clinic-system/dictionary')->with('success', "Dictionary created successfully!");
+            $dict->create(['code' => $request->code,
+            'meaning' => $assign_medicines,
+            'user_id' => Auth::guard('user')->user()['id'],
+            'isMed'  => 1
+            ]);
+        }
+        else{
+            $dict->create(['code' => $request->code,
+            'meaning' => $request->meaning,
+            'user_id' => Auth::guard('user')->user()['id'],
+            'isMed'  => 0
+            ]);
+        }
+            return redirect('clinic-system/dictionary')->with('success', "Done!");
     }
 
     public function edit($id)
