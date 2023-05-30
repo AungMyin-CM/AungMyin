@@ -113,7 +113,7 @@ class DictionaryController extends Controller
         }
 
 
-        return redirect('clinic-system/dictionary')->with('success', 'Done !');
+        return redirect('clinic-system/dictionary')->with('success', 'Dictionary updated successfully!');
     }
 
     /**
@@ -132,7 +132,7 @@ class DictionaryController extends Controller
         $dict = Dictionary::findOrFail($id);
         $dict->delete();
 
-        return redirect('clinic-system/dictionary')->with('success', 'Done !');
+        return redirect('clinic-system/dictionary')->with('success', 'Dictionary deleted successfully!');
     }
 
 }

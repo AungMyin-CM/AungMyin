@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PackagePurchase extends Model
 {
@@ -19,6 +20,9 @@ class PackagePurchase extends Model
         'status',
         'expire_at',
     ];
-    
 
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic::class);
+    }
 }
