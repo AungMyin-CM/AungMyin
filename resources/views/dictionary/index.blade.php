@@ -6,7 +6,12 @@
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Shorthand</li>
+                    </ol>
+                </div><!-- /.container-fluid -->
             </section>
 
             <section class="content">
