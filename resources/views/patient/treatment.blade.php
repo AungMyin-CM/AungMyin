@@ -319,12 +319,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="address">History and Examination</label>
-                                                <textarea class="form-control c-field" id="dictionary" rows="10" placeholder="Start Typing here..."
-                                                    name="prescription">{{ old('prescription') }}</textarea>
-                                            </div>
-
                                             <fieldset class="scheduler-border">
                                                 <legend class="scheduler-border">Investigation</legend>
                                                 <div class="form-group">
