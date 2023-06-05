@@ -110,6 +110,28 @@
             width: 100%;
         }
     }
+
+    /* Scrollbar */
+    /* Adjust the width of the scrollbar */
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Set the background color */
+    ::-webkit-scrollbar-track {
+        background-color: #f1f1f1; 
+    }
+
+    /* Thumb styles */
+    ::-webkit-scrollbar-thumb {
+        background-color: #a9a9a9;
+    }
+
+    /* Hover styles */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #858383;
+    }
+
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -118,8 +140,10 @@
 
             <section class="content-header">
                 <div class="container-fluid">
+
                     <div class="card card-primary">
                         <div class="card-body" style="padding: 0.9rem !important;">
+
                             <div class="row mb-2">
                                 <div class="col-sm-2">
                                     <h6 id="name"><b>Name :</b> {{ $data['patient']['name'] }} </h6>
@@ -181,7 +205,7 @@
                                         <h3 class="card-title">Patient Treatment</h3>
                                     </div>
 
-                                    <div class="card-body">
+                                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
                                         @if($data['visit']->isEmpty() != 1)
                                         @foreach ($data['visit'] as $row)
                                         <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
@@ -233,14 +257,14 @@
                                                     $images_r = substr($row['images'], 1, -1);
 
                                                     $images = explode(",", $images_r);
-                                                    
+
                                                     for ($i = 0; $i < count($images); $i++) {
 
                                                         if ($images[$i] != '') {
                                                             // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
                                                             $id = $row['id'];
 
-                                                            echo "<img id='myImg" . $id . "' onclick='showImage($id)' src=" . asset('images/treatment-images/' . substr($images[$i], 1, -1)) . " style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";                
+                                                            echo "<img id='myImg" . $id . "' onclick='showImage($id)' src=" . asset('images/treatment-images/' . substr($images[$i], 1, -1)) . " style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
                                                         }
                                                     }
                                                     ?>
@@ -261,7 +285,7 @@
                                         <h3 class="card-title">....</h3>
 
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
 
                                         <div class="form-group">
                                             <label for="address">Prescription</label>
@@ -343,7 +367,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row mb-3">
                                             <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value="{{Auth::user()->fees}}" />
                                             <div class="col-md-6">
                                                 <div class="d-flex justify-content-center">
@@ -371,12 +395,15 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
                                         <div class="form-group float-right">
                                             <input type="submit" id="btnSubmit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                         </div>
                                     </div>
+                                    <!-- <div class="card-footer">
+                                        <div class="form-group float-right">
+                                            <input type="submit" id="btnSubmit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
+                                        </div>
+                                    </div> -->
                                     <!-- Bootstrap Switch -->
                                     <!-- /.card -->
                                 </div>
@@ -438,8 +465,8 @@
                 data: formData,
                 success: function(response) {
                     modal1.style.display = "none";
-                    $('.wrapper').css('opacity','1');
-                    $('.middle').css('opacity','0.1');
+                    $('.wrapper').css('opacity', '1');
+                    $('.middle').css('opacity', '0.1');
 
                     let gender = response.gender == 1 ? 'Male' : 'Female';
                     let father_name = response.father_name ?? '';
@@ -457,11 +484,11 @@
                 },
                 error: function(xhr) {
                     // Handle the error response
-                    $('.wrapper').css('opacity','1');
-                    $('.middle').css('opacity','0.1');
+                    $('.wrapper').css('opacity', '1');
+                    $('.middle').css('opacity', '0.1');
 
                     let data = JSON.parse(xhr.responseText);
-   
+
                     let name = data.errors.name ? data.errors.name[0] : '';
                     let age = data.errors.age ? data.errors.age[0] : '';
                     let address = data.errors.address ? data.errors.address[0] : '';
