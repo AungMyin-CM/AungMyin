@@ -8,7 +8,7 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
                         <li class="breadcrumb-item active">Shorthand</li>
                     </ol>
                     @if (Session::has('success'))
