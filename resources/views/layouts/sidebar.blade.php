@@ -1,5 +1,5 @@
 @if ( Auth::guard('user')->user())
-    <aside class="main-sidebar sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
+    <aside class="main-sidebar sidebar-collapse sidebar-no-expand sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
         <!-- Brand Logo -->
         <a  href="{{ route('user.home') }}" class="brand-link" style="background-color: {{config('app.color')}}">
             <img src="{{ asset('images/web-photos/aung-myin.png') }}" class="brand-image"  >
@@ -64,7 +64,7 @@
                                         </p>
                                     </a>
                                 @else
-                                <a href="{{ route('user.home') }}" class="nav-link">
+                                <a href="{{ route('user.home') }}" class="nav-link" title="Home">
                                     <i class="nav-icon fas fa-home"></i>
                                     <p>
                                         Home
@@ -81,7 +81,7 @@
                             @if(Helper::checkPermission('user_view', $permissions))
 
                                 <li class="nav-item">
-                                    <a href="{{ route('user.list') }}" class="nav-link">
+                                    <a href="{{ route('user.list') }}" class="nav-link" title="Users">
                                         <i class="nav-icon fas fa-user"></i>
                                         <p>
                                             Users
@@ -94,7 +94,7 @@
                             @if(Helper::checkPermission('p_view', $permissions))
 
                                 <li class="nav-item">
-                                    <a href="{{ route('patient.index') }}" class="nav-link">
+                                    <a href="{{ route('patient.index') }}" class="nav-link" title="Patients">
                                         <i class="nav-icon fas fa-user-md"></i>
                                         <p>
                                             Patients
@@ -107,7 +107,7 @@
                         @if (Auth::guard('user')->user())
                             @if(Helper::checkPermission('d_view', $permissions))
                                 <li class="nav-item">
-                                    <a href="{{ route('dictionary.index') }}" class="nav-link">
+                                    <a href="{{ route('dictionary.index') }}" class="nav-link" title="Shorthand">
                                         <i class="nav-icon fas fa-book"></i>
                                         <p>
                                             Shorthand
@@ -121,8 +121,8 @@
                         @if (Auth::guard('user')->user())
                         @if(Helper::checkPermission('ph_view', $permissions))
                                 <li class="nav-item">
-                                    <a href="{{ route('pharmacy.index') }}" class="nav-link">
-                                        <i class="nav-icon fas fa-medkit"></i>
+                                    <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
+                                        <i class="nav-icon fas fa-pills"></i>
                                         <p>
                                             Pharmacy
                                         </p>
@@ -135,7 +135,7 @@
                         @if (Auth::guard('user')->user())
                             @if(Helper::checkPermission('pos_view', $permissions))
                                 <li class="nav-item">
-                                    <a href="{{ route('pos.index') }}" class="nav-link">
+                                    <a href="{{ route('pos.index') }}" class="nav-link" title="POS">
                                         <i class="nav-icon fas fa-desktop"></i>
                                         <p>
                                             POS
@@ -146,8 +146,19 @@
                             @endif
                         @endif
 
+                        @if (Auth::guard('user')->user()->isAdmin())
+                            <li class="nav-item">
+                                <a href="{{ route('procedure.index') }}" class="nav-link" title="Procedure / Lab">
+                                    <i class="nav-icon fas fa-procedures"></i>       
+                                    <p>
+                                        Procedure / Lab
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
                         <li class="nav-item">
-                            <a href="{{ route('clinic.settings',Auth::guard('user')->user()->id) }}" class="nav-link">
+                            <a href="{{ route('clinic.settings',Auth::guard('user')->user()->id) }}" class="nav-link" title="Settings">
                                 <i class="nav-icon fas fa-cog"></i>
                                 <p>
                                     Settings

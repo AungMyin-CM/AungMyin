@@ -81,4 +81,18 @@ class Controller extends BaseController
         }
         
     }
+
+    public function isAdmin()
+    {
+        $role_type = Role::where('id',Auth::guard('user')->user()['role_id'])->pluck('role_type')->first();
+
+        if($role_type == 5)
+        {
+            return true;
+
+        }else{
+            return false;
+        }
+
+    }
 }

@@ -160,6 +160,22 @@
                                 <div class="col-sm-3">
                                     <h6 id="phoneNumber"><b>Phone-Number :</b> {{ $data['patient']['phoneNumber'] }} </h6>
                                 </div>
+                                <div class="row mb-2">
+                                   
+                                    <div class="col-sm-6">
+                                        <h6><b>Address :</b> {{ $data['patient']['address'] }} </h6>
+                                       
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
+                                    </div>
+                                    
+                                   
+                                </div>
+                                <div class="row mb-2">                         
+                                    
+                                   <div  style="position: absolute; right : 1px ;bottom :10px">
+                                    @if(Helper::checkPermission('p_update', $permissions))
 
                             </div>
                             <div class="row mb-2">
@@ -194,11 +210,45 @@
             <form action="{{ route('create.treatment', $data['patient']['id']) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <section class="content">
-                    <div class="container-fluid">
+                            <div class="row" style="height:100vh;">
+                                <div class="col-md-4" >
 
-                        <div class="row">
-                            <div class="col-md-4">
+                                    <div class="card card-primary" >
+                                        <div class="card-header" style="background-color: {{config('app.color')}}">
+                                            <h3 class="card-title">Patient Treatment</h3>
+                                        </div>
+                                       
+                                        <div class="card-body" style="height: 100%;overflow-y:scroll;">
+                                            @if($data['visit']->isEmpty() != 1)
+                                                @foreach ($data['visit'] as $row)
+                                                    <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
+                                                        <div class="card-header border-0">
+                                                            <h3 class="card-title" title="{{$row['update_at']}}">{{ $row['updated_at']->diffForHumans() }}</h3>
+                                                            <div class="card-tools">
+                                                                <a class="btn btn-sm btn-tool">
+                                                                    <i class="fas fa-copy" style="color:black;" onclick="copyData({{$row['id']}})"></i>
+                                                                </a>
+                                                                <a class="btn btn-sm btn-tool">
+                                                                    <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row['id']}})"></i>
+                                                                </a>
+                                                            </div><br/>
+
+                                                            <ul>
+                                                                @if($row['prescription'] != '')
+                                                                    <li><?php echo Str::limit($row['prescription'], $limit = 100, $end = '...') ;?></li>
+                                                                @endif
+
+                                                                @if($row['diag'] != '')
+                                                                    <li>{{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
+
+                                                                @if($row['investigation'] != '')
+                                                                    <li>{{ Str::limit($row['investigation'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
+
+                                                                @if($row['procedure'] != '')
+                                                                    <li>{{ Str::limit($row['procedure'], $limit = 100, $end = '...') }}</li>
+                                                                @endif
 
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color: {{config('app.color')}}">
@@ -250,6 +300,28 @@
                                                 </div>
                                                 @endif
 
+                                            <div class="form-group">
+                                                <label for="general_prescription">General Prescription</label>
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="sys_bp" placeholder="Sys">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="dia_bp" placeholder="Dia">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="pr" placeholder="P.R">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="temp" placeholder="Temp">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="spo2" placeholder="Spo2">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <input type="text" class="form-control" name="rbs" placeholder="Rbs">
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="card-footer">
                                                 <div class="row">
@@ -269,6 +341,26 @@
                                                     }
                                                     ?>
                                                 </div>
+                                            <fieldset class="scheduler-border">
+                                                <legend class="scheduler-border">Investigation</legend>
+                                                <div class="form-group">
+
+                                                    <textarea class="form-control c-field" id="dictionary" rows="3" placeholder="History"
+                                                        name="prescription">{{ old('prescription') }}</textarea><br>
+                                                <textarea class="form-control c-field" id="diagnosis_dictionary" rows="3" placeholder="Diagnosis..."
+                                                    name="diag">{{ old('diag') }}</textarea>
+                                                </div>
+
+
+                                            </fieldset>
+                                                
+
+                                            
+
+                                            <div class="form-group">
+                                                <label for="search_medicine">Search Medicine</label>
+                                                {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
+                                                    name="medicines">  --}}
                                             </div>
                                         </div>
                                         @endforeach
@@ -439,6 +531,31 @@
     span1.onclick = function() {
         modal1.style.display = "none";
     }
+   
+        $(document).ready(function() {
+        $(window).on("keydown", function(event){
+        
+            // Check to see if ENTER was pressed and the submit button was active or not
+            if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
+            // It was, so submit the form
+            document.querySelector("form").submit();
+
+            } else if(event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary") ){
+                medicine_dictionary(event);
+                event.preventDefault();
+                        
+                        //  Invoke click event of target so that non-form submit behaviors will work
+                        event.target.click();
+            }
+            else if(event.keyCode === 13){
+                event.preventDefault();
+            }
+        });
+        });
+        var loadFile = function(event) {
+            for(var i =0; i< event.target.files.length; i++){
+                var src = URL.createObjectURL(event.target.files[i]);
+                $("#image").append("<img id='myImg"+i+"' onclick='showImage("+i+")' src="+src+" style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
 
     // When the user clicks anywhere outside of the modal, close it
     $(window).click(function(event) {

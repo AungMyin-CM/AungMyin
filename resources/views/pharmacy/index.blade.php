@@ -84,30 +84,35 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $row)
-                                            <tr>
-                                                <td>{{ $row->name }}</td>
-                                                <td>{{ $row->code }}</td>
-                                                <td>{{ $row->expire_date }}</td>
-                                                <td>{{ $row->quantity }}</td>
-                                                <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
-                                                <td>
-                                                    @if(Helper::checkPermission('ph_update', $permissions))
-                                                    <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default" style="color: {{config('app.color')}}">
-                                                        <i class="fas fa-edit fa-lg"></i></a>
-                                                    @endif
-                                                </td>
+                                                <tr>
+                                                    <td>{{ $row->name }}</td>
+                                                    <td>{{ $row->code }}</td>
+                                                    <td>{{ $row->expire_date }}</td>
+                                                    <td>{{ $row->quantity }}</td>
+                                                    <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
+                                                    <td>
+                                                        <div class="row">
+                                                            @if(Helper::checkPermission('ph_update', $permissions))
 
-                                                <td>
-                                                    @if(Helper::checkPermission('ph_delete', $permissions))
-                                                    <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
-                                                        @csrf
-                                                        @method('DELETE')
+                                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default" style="margin:5px ;color: {{config('app.color')}}">
+                                                                <i class="fas fa-edit fa-lg"></i></a>
 
-                                                        <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A; "></i></button>
-                                                    </form>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                            @endif
+
+                                                            @if(Helper::checkPermission('ph_delete', $permissions))
+
+                                                                <form action="{{ route('pharmacy.destroy', $row->id) }}"
+                                                                    method="post">
+                                                                    @csrf
+                                                                    @method('DELETE')   
+                                                                
+                                                                    <button class="btn btn-default " type="Submit"  style=" margin:5px ;"><i class="fas fa-trash" style="color:#E95A4A; "></i></button>
+                                                                </form>
+
+                                                            @endif
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                     </table>

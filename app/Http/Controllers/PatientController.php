@@ -40,7 +40,7 @@ class PatientController extends Controller
         if ($request->name) {
             $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
         } else {
-            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at', 'asc')->get();
+            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at','desc')->get();
         }
         return view('patient/index')->with('data', $patientData);
     }
@@ -71,7 +71,7 @@ class PatientController extends Controller
             $user_id = Auth::guard('user')->user()['id'];
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
-            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name);
+            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name).str_replace(' ','_',$code);
             $p_status = $role->role_type == 1 ? 4 : 1;
             $patient_id = $patient->create([
                 'user_id' => Auth::guard('user')->user()['id'],
@@ -248,6 +248,13 @@ class PatientController extends Controller
 
         Visit::create([
             'patient_id' => $id,
+            'sys_bp' => $request->sys_bp,
+            'dia_bp' => $request->dia_bp,
+            'pr' => $request->pr,
+            'temp' => $request->temp,
+            'spo2' => $request->sys_bp,
+            'rbs' => $request->rbs,
+
             'prescription' => $request->prescription,
             'diag' => $request->diag,
             'assigned_medicines' =>  $assign_medicines,

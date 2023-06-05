@@ -181,7 +181,7 @@
 
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="submit" class="btn btn-primary" style="background-color:  {{config('app.color')}}">
+                                                <input type="submit" value="Submit" class="btn btn-primary" style="background-color:  {{config('app.color')}}">
                                             </div>
                                         </div>
 

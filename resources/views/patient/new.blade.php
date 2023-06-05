@@ -220,10 +220,10 @@
                                             </div>
 
                                         </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <div class="form-group float-right">
-                                            <input type="submit" value="submit" class="btn " style="color: {{config('app.secondary_color')}}; background-color:{{config('app.color')}}">
+                                        <div class="card-footer">
+                                            <div class="form-group float-right">
+                                                <input type="submit" value="Submit" class="btn " style="color: {{config('app.secondary_color')}}; background-color:{{config('app.color')}}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
