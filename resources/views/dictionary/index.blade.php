@@ -6,7 +6,15 @@
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Shorthand</li>
+                    </ol>
+                    @if (Session::has('success'))
+                        @include('partials._toast')
+                    @endif
+                </div><!-- /.container-fluid -->
             </section>
 
             
@@ -82,10 +90,5 @@
         </div>
     </div>
 </body>
-<script>
-    // Alert Box
-    setInterval(function() {
-        $(".alert").fadeOut();
-    }, 3000);
-</script>
+
 @endsection

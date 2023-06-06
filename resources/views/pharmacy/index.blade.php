@@ -37,16 +37,20 @@
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Pharmacy</li>
+                    </ol>
+                    @if (Session::has('success'))
+                        @include('partials._toast')
+                    @endif
+                </div><!-- /.container-fluid -->
             </section>
 
             <section class="content">
                 <div class="container-fluid">
-                    @if (Session::has('success'))
-                    <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-                        {{ Session::get('success') }}
-                    </div>
-                    @endif
+                    
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -127,10 +131,6 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
 
 <script>
-    // Alert Box
-    setInterval(function() {
-        $(".alert").fadeOut();
-    }, 3000);
 
     $('#fileUpload').change(function(e) {
 

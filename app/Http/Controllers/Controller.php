@@ -14,6 +14,10 @@ use App\Models\Notification;
 use App\Models\UserClinic;
 use App\Models\Clinic;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
+
 
 use App\Helpers\Helper;
 
@@ -54,7 +58,7 @@ class Controller extends BaseController
                     $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
                 }
 
-            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
+            view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic ]);
 
 
             }
