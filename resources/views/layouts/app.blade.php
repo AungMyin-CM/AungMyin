@@ -176,3 +176,9 @@
 @if(Request::is('clinic-system/*') || Request::is('home') || Request::is('package-selection'))
 @include('layouts.js')
 @endif
+
+<script>
+  window.addEventListener('load', function () {
+    $('body').addClass('sidebar-collapse');
+  })
+</script>

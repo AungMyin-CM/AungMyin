@@ -158,20 +158,28 @@ class UserController extends Controller
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         // Get package info
-        $package = (PackagePurchase::where('user_id', $id)->get())[0];
-
-        // Get purchase date
-        $purchase_date = strtotime($package->created_at);
-
-        // Get days left
-        $expire_date = strtotime($package->expire_at);
-        $current_date = time();
-        $diff = $expire_date - $current_date;
-        $days_left = floor($diff / (60 * 60 * 24));
+        $package = PackagePurchase::where('user_id', $id)->first();
 
         $role = Role::where('id', $user->role_id)->get()->first();
+        
+        if(!is_null($package))
+        {
+        // Get purchase date
+            $purchase_date = strtotime($package->created_at);
 
-        return view('profile/update', compact('user', 'data', 'package', 'purchase_date', 'expire_date', 'days_left', 'role'));
+            // Get days left
+            $expire_date = strtotime($package->expire_at);
+            $current_date = time();
+            $diff = $expire_date - $current_date;
+            $days_left = floor($diff / (60 * 60 * 24));
+
+
+            return view('profile/update', compact('user', 'data', 'package', 'purchase_date', 'expire_date', 'days_left', 'role'));
+
+        }else{
+            return view('profile/update',compact('user','data','role'));
+        }
+
     }
 
     public function saveProfile($id, Request $request)
