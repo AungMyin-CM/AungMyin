@@ -7,9 +7,7 @@
             <section class="content">
                 <div class="container-fluid">
                     @if (Session::has('success'))
-                    <div class="alert text-white mt-2" style="background-color: {{config('app.color')}} !important">
-                        {{ Session::get('success') }}
-                    </div>
+                        @include('partials._toast')
                     @endif
 
                     <a href="#" class="btn btn-sm btn-tool mt-1 float-right" title="play" id="myModalBtn" onclick="openVideo()">

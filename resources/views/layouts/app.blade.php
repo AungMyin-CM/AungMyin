@@ -151,7 +151,7 @@
       });
     </script>
 </head>
-<body>
+<body class="sidebar-mini layout-fixed sidebar-collapse" data-new-gr-c-s-check-loaded="14.1112.0" data-gr-ext-installed="" cz-shortcut-listen="true" style="height: auto;">
   
 <div class="middle">
     <div class="bar bar1"></div>
@@ -176,9 +176,3 @@
 @if(Request::is('clinic-system/*') || Request::is('home') || Request::is('package-selection'))
 @include('layouts.js')
 @endif
-
-<script>
-  window.addEventListener('load', function () {
-    $('body').addClass('sidebar-collapse');
-  })
-</script>

@@ -127,6 +127,27 @@
             width: 100%;
         }
     }
+
+    /* Scrollbar */
+    /* Adjust the width of the scrollbar */
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Set the background color */
+    ::-webkit-scrollbar-track {
+        background-color: #f1f1f1; 
+    }
+
+    /* Thumb styles */
+    ::-webkit-scrollbar-thumb {
+        background-color: #a9a9a9;
+    }
+
+    /* Hover styles */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #858383;
+    }
 </style>
 
     <body class="hold-transition sidebar-mini layout-fixed">
@@ -139,30 +160,30 @@
                             <div class="card-body" style="padding: 0.9rem !important;"> 
                                 <div class="row mb-2">
                                     <div class="col-sm-2">
-                                        <h6><b>Name :</b> {{ $data['patient']['name'] }} </h6>
+                                        <h6 id="name"><b>Name :</b> {{ $data['patient']['name'] }} </h6>
                                     </div>
                                     <div class="col-sm-2">
-                                        <h6><b>Age :</b> {{ $data['patient']['age'] }} </h6>
+                                        <h6 id="age"><b>Age :</b> {{ $data['patient']['age'] }} </h6>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h6><b>Father's Name :</b> {{ $data['patient']['father_name'] }} </h6>
+                                        <h6 id="father_name"><b>Father's Name :</b> {{ $data['patient']['father_name'] }} </h6>
                                     </div>
                                     <div class="col-sm-2">
-                                        <h6><b>Gender :</b> {{ $data['patient']['gender'] == 1 ? 'Male' : 'Female' }} </h6>
+                                        <h6 id="gender"><b>Gender :</b> {{ $data['patient']['gender'] == 1 ? 'Male' : 'Female' }} </h6>
                                     </div>
                                     <div class="col-sm-3">
-                                        <h6><b>Phone-Number :</b> {{ $data['patient']['phoneNumber'] }} </h6>
+                                        <h6 id="phoneNumber"><b>Phone-Number :</b> {{ $data['patient']['phoneNumber'] }} </h6>
                                     </div>
                                     
                                 </div>
                                 <div class="row mb-2">
                                    
                                     <div class="col-sm-6">
-                                        <h6><b>Address :</b> {{ $data['patient']['address'] }} </h6>
+                                        <h6 id="address"><b>Address :</b> {{ $data['patient']['address'] }} </h6>
                                        
                                     </div>
                                     <div class="col-sm-6">
-                                        <h6><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
+                                        <h6 id="drug_allergy"><b>Allergy :</b> {{ $data['patient']['drug_allergy'] }} </h6>
                                     </div>
 
                                     <div style="position: absolute; right : 1px ;bottom :10px">
@@ -205,12 +226,12 @@
                             <div class="row" style="height:100vh;">
                                 <div class="col-md-4" >
 
-                                    <div class="card card-primary" >
+                                    <div class="card card-primary">
                                         <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Patient Treatment</h3>
                                         </div>
                                        
-                                        <div class="card-body" style="height: 100%;overflow-y:scroll;">
+                                        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
                                             @if($data['visit']->isEmpty() != 1)
                                                 @foreach ($data['visit'] as $row)
                                                     <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
@@ -268,7 +289,9 @@
                                                                     for($i=0; $i < count($images); $i++){
                                                                         if($images[$i] != ''){
                                                                             // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
-                                                                            echo "<img id='myImg".$i."' onclick='showImage($i)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+
+                                                                            $id = $row['id'];
+                                                                            echo "<img id='myImg".$id."' onclick='showImage($id)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
                                                                         }
                                                                     }
                                                                     
@@ -293,7 +316,7 @@
                                             <h3 class="card-title">....</h3>
                                             
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
 
                                             <div class="form-group">
                                                 <label for="general_prescription">General Prescription</label>
@@ -403,7 +426,7 @@
                                             cursor: pointer;">Upload Images</label>
                                         
                                             <div id="myModal" class="modal">
-                                                <span class="close">&times;</span>
+                                                <span id="close2" class="close">&times;</span>
                                                 <img class="modal-content" id="img01">
                                                 <div id="caption"></div>
                                             </div>
@@ -412,7 +435,7 @@
                                                 {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
                                             </div>
 
-                                            <div class="row">
+                                            <div class="row mb-3">
                                                 <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value="{{Auth::user()->fees}}" />
                                                 <div class="col-md-6">
                                                     <div class="d-flex justify-content-center">
@@ -440,12 +463,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card-footer">
                                             <div class="form-group float-right">
                                                 <input type="submit" id = "btnSubmit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <!-- Bootstrap Switch -->
                                         <!-- /.card -->
                                     </div>
@@ -463,7 +484,7 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <script>
-        // Get the modal
+    // Get the modal
     let modal1 = document.getElementById("myModal1");
 
     // Get the button that opens the modal
@@ -475,10 +496,6 @@
     // When the user clicks the button, open the modal 
     btn1.onclick = function() {
         modal1.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span1.onclick = function() {
     }
 
     $("#close1").click(function(e){
@@ -582,12 +599,19 @@
         }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
+        var span = document.getElementById("close2");
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() { 
             modal.style.display = "none";
         }
+
+        // When the user clicks anywhere outside of the modal, close it
+        $(window).click(function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
 
         var dictCode = '';
 
