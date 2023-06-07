@@ -40,7 +40,10 @@ class PatientController extends Controller
         if ($request->name) {
             $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
         } else {
-            $patientData = Patient::where("clinic_code", $clinic_id)->where('status', 1)->orderBy('updated_at','desc')->paginate(12);
+            $patientData = Patient::where("clinic_code", $clinic_id)
+                        ->where('status', 1)
+                        ->orderBy('updated_at','desc')
+                        ->paginate(12);
         }
         return view('patient/index')->with('data', $patientData);
     }

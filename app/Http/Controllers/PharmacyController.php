@@ -28,7 +28,9 @@ class PharmacyController extends Controller
 
         $clinic_id = session()->get('cc_id');
 
-        $pharmacyData = Pharmacy::where("clinic_id", $clinic_id)->where('status', 1)->get();
+        $pharmacyData = Pharmacy::where("clinic_id", $clinic_id)
+                ->where('status', 1)
+                ->paginate(12);
 
         return view('pharmacy/index')->with('data', $pharmacyData);
     }
