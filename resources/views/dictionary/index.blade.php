@@ -42,7 +42,7 @@
                                                     <th>#</th>
                                                     <th>Code</th>
                                                     <th>Meaning</th>
-                                                    {{-- <th colspan="2" style="width:15%;">Actions</th> --}}
+                                                    <th colspan="2" style="width: 10%;"></th>
                                                 </tr>
                                             </thead>
                                                 <tbody>
