@@ -33,7 +33,10 @@ class UserController extends Controller
         $user_id = UserClinic::where('clinic_id', $clinic_id)->pluck('user_id');
 
 
-        $userData = User::whereIn('id', $user_id)->where('status', '1')->get();
+        $userData = User::whereIn('id', $user_id)
+                ->where('status', '1')
+                ->orderBy('id', 'desc')
+                ->paginate(12);
 
         return view('user/index')->with('data', $userData);
     }
