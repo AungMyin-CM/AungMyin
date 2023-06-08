@@ -20,8 +20,12 @@ class ProcedureController extends Controller
             abort(403);
         }
 
-        $procedures = Procedure::where("clinic_id",session()->get('cc_id'))->get();
-        $investigations = Investigation::where("clinic_id",session()->get('cc_id'))->get();
+        $procedures = Procedure::where("clinic_id",session()
+                    ->get('cc_id'))
+                    ->get();
+        $investigations = Investigation::where("clinic_id",session()
+                    ->get('cc_id'))
+                    ->get();
 
         return view('procedure-lab/index')->with('data',$procedures)->with('investigations',$investigations);
     }

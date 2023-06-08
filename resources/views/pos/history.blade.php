@@ -75,8 +75,9 @@
     </div>
 </body>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
 <script>
-    let table = new DataTable("#posTable", {
+    new DataTable("#posTable", {
         "paging": false,
         "info": false,
         search: {
@@ -87,17 +88,6 @@
             search: "",
         },
     });
-
-    $('#fileUpload').change(function(e) {
-
-        console.log(e.target.files[0])
-
-    });
-
-    function exportTasks(_this) {
-        let _url = $(_this).data('href');
-        window.location.href = _url;
-    }
 </script>
 
 @endsection
