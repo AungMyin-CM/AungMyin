@@ -286,25 +286,21 @@
 
                                                                     $images = explode(",", $images_r);
 
-                                                                    for($i=0; $i < count($images); $i++){
-                                                                        if($images[$i] != ''){
-                                                                            // echo "<img id='myImg'".$row['id']."onclick='showImage($row['id'])' src="asset('images/'substr(json_encode($data['images'][$i]),1,-1))" style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img' />";
-
+                                                                    for($i = 0; $i < count($images); $i++) {
+                                                                        if($images[$i] != '') {
                                                                             $id = $row['id'];
-                                                                            echo "<img id='myImg".$id."' onclick='showImage($id)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+
+                                                                            echo "<img id='myImg".$i.$id."' onclick='showImage($i, $id)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
                                                                         }
                                                                     }
-                                                                    
                                                                 ?>
-                                                            
 
-                                                                
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
                                             @else
-                                                    <p class="text-center">No records yet.</p>
+                                                <p class="text-center">No records yet.</p>
                                             @endif
                                         </div>
                                     </div>
@@ -589,9 +585,9 @@
         // Get the image and insert it inside the modal - use its "alt" text as a caption
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
-        function showImage(id)
+        function showImage(i, id)
         {
-            var origin_image = document.getElementById("myImg"+id);
+            var origin_image = document.getElementById("myImg"+i+id);
             modal.style.display = "block";
             modalImg.src = origin_image.src;
             console.log(modalImg.src);
