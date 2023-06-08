@@ -7,88 +7,98 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
-                        <li class="breadcrumb-item active">Shorthand</li>
-                    </ol>
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
+                                <li class="breadcrumb-item active">Shorthand</li>
+                            </ol>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
+                                <iclass="fas fa-plus"></i> Add new
+                            </a>                      
+                        </div>
+                    </div>
+                    
                     @if (Session::has('success'))
                         @include('partials._toast')
                     @endif
                 </div><!-- /.container-fluid -->
-            </section>
+            </section>            
 
-            
+            <section class="content">
+                <div class="container-fluid">
+                    @if(Helper::checkPermission('d_create', $permissions))
+                    @endif
 
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <!-- /.card-header -->
-                                    @if(Helper::checkPermission('d_create', $permissions))
-                                        <div class="card-header">
-                                            <div class="float-left">
-                                                
+                    <table id="dictionaryTable" class="table table-striped table-bordered mb-3">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Meaning</th>
+                                <th style="width: 10%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $i = 1; ?>
+                            @foreach ($data as $row)
+                                <tr>
+                                    <td>{{ $i++ }} </td>
+                                    <td>{{ $row->code }}</td>
+                                    <td>
+                                        <?php echo Str::limit(str_replace("^" , " " ,$row->meaning ) , $limit = 100, $end = '...') ?>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex justify-content-center" style="gap: 20px">
+                                            <div>
+                                                @if(Helper::checkPermission('d_update', $permissions))
+                                                    <a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
+                                                        <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i>
+                                                    </a>
+                                                @endif
                                             </div>
-                                            <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i
-                                                    class="fas fa-plus"></i> Add new</a>
-                                        </div>
-                                    @endif
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-borderless mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Code</th>
-                                                    <th>Meaning</th>
-                                                    <th colspan="2" style="width: 10%;"></th>
-                                                </tr>
-                                            </thead>
-                                                <tbody>
-                                                    <?php $i = 1; ?>
-                                                    @foreach ($data as $row)
-                                                        <tr>
-                                                            <td>{{ $i++ }} </td>
-                                                            <td>{{ $row->code }}</td>
-                                                            <td>
-                                                                <?php echo Str::limit(str_replace("^" , " " ,$row->meaning ) , $limit = 100, $end = '...') ?>
-                                                            </td>
-                                                            @if(Helper::checkPermission('d_update', $permissions))
-                                                                <td>
-                                                                    <a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
-                                                                        <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i>
-                                                                    </a>
-                                                                </td>
-                                                            @endif
-                                                            @if(Helper::checkPermission('d_delete', $permissions))
-                                                                <td>
-                                                                    <form action="{{ route('dictionary.destroy', $row->id) }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
-                                                                    </form>
-                                                                </td>
-                                                                
-                                                            @endif
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
 
-                                            </table>
+                                            <div>
+                                                @if(Helper::checkPermission('d_delete', $permissions))
+                                                    <form action="{{ route('dictionary.destroy', $row->id) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                    </form>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- /.card-body -->
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                        </div>
+                                    </td>                                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <div class="float-right p-2">
+                        {{ $data->links('pagination.bootstrap-4') }}
                     </div>
-                </div>
+                    
+                </div>            
             </section>
         </div>
     </div>
 </body>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script>
+    let table = new DataTable("#dictionaryTable", {
+        "paging": false,
+        "info": false,
+        search: {
+            caseInsensitive: true
+        },
+        language: {
+            searchPlaceholder: "Search shorthand...",
+            search: "",
+        },
+    });
+</script>
 
 @endsection

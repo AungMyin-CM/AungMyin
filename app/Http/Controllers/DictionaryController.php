@@ -20,7 +20,9 @@ class DictionaryController extends Controller
             abort(403);
         }
 
-        $dictData = Dictionary::where("user_id",Auth::guard('user')->user()['id'])->get();
+        $dictData = Dictionary::where("user_id",Auth::guard('user')
+                ->user()['id'])
+                ->paginate(12);
         return view('dictionary/index')->with('data',$dictData);
     }
 
@@ -42,7 +44,7 @@ class DictionaryController extends Controller
         $request->validate([
             'code' => ['required',Rule::unique('dictionary')->where(fn ($query) => $query->where('code', request()->code)->where('user_id',Auth::guard('user')->user()->id)), //assuming the request has platform information
         ],
-            'meaning' => 'nullable'
+            'meaning' => 'required'
         ]);
 
     
@@ -66,7 +68,7 @@ class DictionaryController extends Controller
             'isMed'  => 0
             ]);
         }
-            return redirect('clinic-system/dictionary')->with('success', "Done!");
+            return redirect('clinic-system/dictionary')->with('success', "New dictionary added!");
     }
 
     public function edit($id)
