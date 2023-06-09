@@ -226,7 +226,7 @@
                     <section class="content">
                         <div class="container-fluid">
 
-                            <div class="row" style="height:100vh;">
+                            <div class="row">
                                 <div class="col-md-4" >
 
                                     <div class="card card-primary">
@@ -234,7 +234,7 @@
                                             <h3 class="card-title">Patient Treatment</h3>
                                         </div>
                                        
-                                        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                        <div class="card-body" style="height: 500px;overflow-y:scroll;">
                                             @if($data['visit']->isEmpty() != 1)
                                                 @foreach ($data['visit'] as $row)
                                                     <div class="card" style="background:#a19090;" id="treatment_data_{{$row['id']}}">
