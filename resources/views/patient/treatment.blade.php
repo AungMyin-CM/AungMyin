@@ -38,7 +38,7 @@
     }
 
     /* Modal Content (image) */
-    .modal-content {
+    .carousel-inner img {
         margin: auto;
         display: block;
         width: 80%;
@@ -55,10 +55,10 @@
         color: #ccc;
         padding: 10px 0;
         height: 150px;
-    }
+    }    
 
     /* Add Animation */
-    .modal-content,
+    .carousel-inner img,
     #caption {
         -webkit-animation-name: zoom;
         -webkit-animation-duration: 0.6s;
@@ -123,7 +123,7 @@
 
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px) {
-        .modal-content {
+        .carousel-inner img {
             width: 100%;
         }
     }
@@ -290,7 +290,7 @@
                                                                         if($images[$i] != '') {
                                                                             $id = $row['id'];
 
-                                                                            echo "<img id='myImg".$i.$id."' onclick='showImage($i, $id)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                                                                            echo "<img id='myImg".$id.$i."' onclick='showImage($id, $i)' src=".asset('images/treatment-images/'.substr($images[$i],1,-1))." style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
                                                                         }
                                                                     }
                                                                 ?>
@@ -421,9 +421,19 @@
                                             border-radius: 5px;
                                             cursor: pointer;">Upload Images</label>
                                         
-                                            <div id="myModal" class="modal">
+                                            <div id="imgModal" class="modal">
                                                 <span id="close2" class="close">&times;</span>
-                                                <img class="modal-content" id="img01">
+                                                <div id="carousel" class="carousel slide">
+                                                    <div class="carousel-inner" id="carousel-inner"></div>
+                                                    <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                    <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                        <span class="sr-only">Next</span>
+                                                    </a>
+                                                </div>
                                                 <div id="caption"></div>
                                             </div>
 
@@ -580,22 +590,51 @@
             }
         };
 
-        var modal = document.getElementById("myModal");
+        let modal = document.getElementById("imgModal");
+        let captionText = document.getElementById("caption");
 
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-        function showImage(i, id)
+        function showImage(id, i)
         {
-            var origin_image = document.getElementById("myImg"+i+id);
+            let origin_image = document.getElementById("myImg" + id + i);
             modal.style.display = "block";
-            modalImg.src = origin_image.src;
-            console.log(modalImg.src);
             captionText.innerHTML = origin_image.alt;
+
+            let carouselInner = document.getElementById("carousel-inner");
+            // Clear the previous carousel items
+            carouselInner.innerHTML = "";
+
+            let carouselItem = document.createElement("div");
+            carouselItem.classList.add("carousel-item");
+            carouselItem.classList.add("active");
+
+            let carouselImage = document.createElement("img");
+            carouselImage.src = origin_image.src;
+            carouselImage.alt = origin_image.alt;
+
+            carouselItem.appendChild(carouselImage);
+            carouselInner.appendChild(carouselItem);
+
+            // Select all images with the same ID
+            let images = document.querySelectorAll("[id^='myImg" + id + "']");
+            console.log(images);
+
+            for (let j = 0; j < images.length; j++) {
+                if (images[j] !== origin_image) {
+                    carouselItem = document.createElement("div");
+                    carouselItem.classList.add("carousel-item");
+
+                    carouselImage = document.createElement("img");
+                    carouselImage.src = images[j].src;
+                    carouselImage.alt = images[j].alt;
+
+                    carouselItem.appendChild(carouselImage);
+                    carouselInner.appendChild(carouselItem);
+                }
+            }
         }
 
         // Get the <span> element that closes the modal
-        var span = document.getElementById("close2");
+        let span = document.getElementById("close2");
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() { 
