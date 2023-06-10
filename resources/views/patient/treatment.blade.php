@@ -38,6 +38,7 @@
     }
 
     /* Modal Content (image) */
+    .modal-content,
     .carousel-inner img {
         margin: auto;
         display: block;
@@ -58,6 +59,7 @@
     }    
 
     /* Add Animation */
+    .modal-content,
     .carousel-inner img,
     #caption {
         -webkit-animation-name: zoom;
@@ -123,6 +125,7 @@
 
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px) {
+        .modal-content,
         .carousel-inner img {
             width: 100%;
         }
