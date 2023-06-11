@@ -10,6 +10,7 @@ use App\Models\Clinic;
 use App\Models\Visit;
 use App\Models\Role;
 use App\Models\UserClinic;
+use App\Models\Pharmacy;
 use App\Models\Notification;
 use App\Models\PatientDoctor;
 use App\Events\NoticeEvent;
@@ -351,7 +352,30 @@ class PatientController extends Controller
         $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => '1', 'user_id' =>  $user_id])->first();
 
         if ($data == '') {
-            echo '';
+            $ref = str_replace(' ', '_', $request->key);
+
+            $clinic_id = $request->clinic_id;
+
+            $timestamp = Carbon::now();
+            $current_date = $timestamp->format('y-m-d');
+
+            $row_id = $request->rowid;
+
+            $data = Pharmacy::select('id', 'name', 'code')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_id', $clinic_id)->where('quantity', '>', '0')->where('expire_date', '>', $current_date)->where('status', 1)->get();
+
+            if (count($data) == 0) {
+                $output = '';
+            } else {
+                $output = '<ul class="list-group" style="display:block; position:relative;z-index:1;">';
+
+                foreach ($data as $row) {
+                    $output .= '
+                        <li class="list-group-item" id="item_options" data-id =' . $row->id . '  data-name =' . $row->name . ' row-id=' . $row_id . ' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>' . $row->name . '</span></li>';
+                }
+                $output .= '</ul>';
+            }
+
+            echo $output;
         } else {
             echo $data;
         }

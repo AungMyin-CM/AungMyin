@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-sm-6">
                             <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
-                                <iclass="fas fa-plus"></i> Add new
+                                <i class="fas fa-plus"></i> Add new
                             </a>                      
                         </div>
                     </div>

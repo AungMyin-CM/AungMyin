@@ -242,8 +242,8 @@
                                                             <h3 class="card-title" title="{{$row['update_at']}}">{{ $row['updated_at']->diffForHumans() }}</h3>
                                                             <div class="card-tools">
                                                                 <a class="btn btn-sm btn-tool">
-                                                                    <i class="fas fa-copy" style="color:black;" onclick="copyData({{$row['id']}})"></i>
-                                                                    <i class="fas fa-trash" style="color:black;display:hidden;" onclick="deleteData({{$row['id']}})"></i>
+                                                                    <i class="fas fa-copy" id="copy_{{$row['id']}}" style="color:black;" onclick="copyData({{$row['id']}})"></i>
+                                                                    <i class="fa fa-history" id="undo_{{$row['id']}}" style="color:black;display:none;" onclick="deleteData({{$row['id']}})"></i>
 
                                                                 </a>
                                                                 <a class="btn btn-sm btn-tool">
@@ -271,7 +271,7 @@
                                                     
                                                             </ul>
 
-                                                            <div class="float-left">
+                                                            <div class="float-left d-none">
                                                                 <small>Fees:</small>  {{ $row['fees'] }}
                                                                 <input type="hidden" name="code" value="{{ $data['patient']['code'] }}" >
                                                             </div>
@@ -355,48 +355,49 @@
                                             </fieldset>
                                                 
 
-                                            
+                                            <fieldset class="scheduler-border">
+                                                <legend class="scheduler-border">Medicine</legend>
 
-                                            <div class="form-group">
-                                                <label for="search_medicine">Search Medicine</label>
-                                                {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
-                                                    name="medicines">  --}}
-                                            </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
+                                                        name="medicines"> 
+                                                </div>
 
-                                            <div class="form-group" id="medtable">
-                                                <section class="content">
-                                                    <div class="container-fluid">
-                                                        <table class="table table-bordered" id="product_info_table">
-                                                            <thead>
-                                                              <tr>
-                                                                <th style="width:45%">Name</th>                                                   
-                                                                <th style="width:25%">Qty</th>
-                                                                <th style="width:20%">Days</th>
-                                                                <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
-                                                              </tr>
-                                                            </thead>   
-                                                             <tbody>
-                                                               <tr id="row_1">
-                                                                 <td>
-                                                                    <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
-                                                                    name="medicines">           
-                                                                      {{-- <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
-                                                                      <input type = "hidden" name = "med_id[]" id = "med_id_1">
-                                                                      <div id="medList_1" style="display:none;position:absolute;width:35%;">
-                                                                    </div> --}}
-                                                                </td>
-                                                                  
-                                                                  <td>
-                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control"></td>           
-                                                                  <td>
-                                                                    <input type="number" name="days[]" id="days_1" class="form-control" >  
-                                                                  </td>
-                                                                  
-                                                               </tr>
-                                                             </tbody>
-                                                          </table>              
-                                                  </section>
-                                            </div>
+                                                <div class="form-group" id="medtable">
+                                                    <section class="content">
+                                                        <div class="container-fluid">
+                                                            <table class="table table-bordered" id="product_info_table">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th style="width:45%">Name</th>                                                   
+                                                                    <th style="width:25%">Qty</th>
+                                                                    <th style="width:20%">Days</th>
+                                                                    <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                                                                </tr>
+                                                                </thead>   
+                                                                <tbody>
+                                                                <tr id="row_1">
+                                                                    <td>
+                                                                        {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search..."
+                                                                        name="medicines">            --}}
+                                                                        <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                        <input type = "hidden" name = "med_id[]" id = "med_id_1">
+                                                                        <div id="medList_1" style="display:none;width:35%;">
+                                                                        </div>
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                        <input type="text" name="quantity[]" id="qty_1" class="form-control"></td>           
+                                                                    <td>
+                                                                        <input type="number" name="days[]" id="days_1" class="form-control" >  
+                                                                    </td>
+                                                                    
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>              
+                                                    </section>
+                                                </div>
+                                            </fieldset>
 
                                             
 
@@ -657,33 +658,39 @@
    
         var key = event.keyCode;
         var evtType = event.type;
+        var clinic_id = {{ session()->get('cc_id') }};
         var name = document.getElementById("medicine_dictionary").value;
       
-                    if(event.key != '') {
+        if(event.key != '') {
 
-                    $.ajaxSetup({
-                        headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '/clinic-system/fetchIsmed',
+                data: { key: name, clinic_id: clinic_id}
+            }).done(function( response ) {
+            
+                if(response != ''){
+                    var obj = JSON.parse(response);
+                    const res = obj.meaning.split("<br>");
+
+                    var fil_res = res.filter(function (el) {
+                        return el != "";
                     });
 
-                    $.ajax({
-                        type: "POST",
-                        url: '/clinic-system/fetchIsmed',
-                        data: { key:name}
-                    }).done(function( response ) {
-                      
-                        if(response != ''){
-                            var obj = JSON.parse(response);
-                            const res = obj.meaning.split("<br>");
-
-                            var fil_res = res.filter(function (el) {
-                                return el != "";
-                            });
-
-                            var table = $("#product_info_table");
+                    var table = $("#product_info_table");
                     var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-                    var row_id =  1;
+                    var $this = $("table#product_info_table tbody");
+                    if (count_table_tbody_tr == 1 && $("#product_search_1").val() == ''){
+                        var row_id =  count_table_tbody_tr;
+                    }else{
+                        var row_id =  count_table_tbody_tr + 1;
+                    }
                     var html = "";
                     for (i =0; i<fil_res.length ; i++){
                         data = res[i].split('^');
@@ -691,7 +698,7 @@
                         '<td>'+ 
                         '<input type="text" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
                         '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
-                        '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
+                        '<div id="medList_'+row_id+'" style="position:absolute;top:10px;display:none;width:35%;"></div>'+
                         '</td>'+ 
                         '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
                         '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
@@ -699,38 +706,46 @@
                         '</tr>';
                         row_id++;
                     }
- 
-                    $("#product_info_table tbody").html(html);
-            
-                                    }
-                                });
-                                }
+
+                    if(count_table_tbody_tr == 1 && $("#product_search_1").val() == '')
+                    {
+                        $("#product_info_table tbody").html(html)
+                    }else{
+                        $("#product_info_table tr:last").after(html)
+                    }
+                        
+    
+                }
+            });
+        }
  
     }
-    function searchMed(rowid) {
+        function searchMed(rowid) {
             var query = $("#product_search_"+rowid).val();
         
             var clinic_id = {{ session()->get('cc_id') }};
             $.ajaxSetup({
-                        headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-             $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
                 type: "POST",
                 url: '/clinic-system/searchMed',
                 data: { key: query, clinic_id: clinic_id, rowid: rowid}
             }).done(function( response ) {        
           
-            if(query != '')
-            {
-                $('#medList_'+rowid).css("display","block");  
-                $('#medList_'+rowid).html(response);
-            }
-            else{
-                $('#medList_'+rowid).css("display","none");  
-                $('#medList_'+rowid).html("");
-            }
+                if(query != '')
+                {
+                    $('#medList_'+rowid).css("display","contents");  
+                    $('#medList_'+rowid).css("position","relative");
+                    $('#medList_'+rowid).css("top",'14rem');
+                    $('#medList_'+rowid).html(response);
+                }
+                else{
+                    $('#medList_'+rowid).css("display","none");  
+                    $('#medList_'+rowid).html("");
+                }
             });
         };
         function s_option(rowid)
@@ -772,8 +787,21 @@
         },
         complete: function(response) {
             $('.c-field').removeAttr('style','opacity:0.1');
+            $('#copy_'+id).css('display','none');
+            $('#undo_'+id).css('display','block');
         }
         });
+    }
+    
+    function deleteData(id)
+    {
+        $("#dictionary").text('');
+        $("#diagnosis_dictionary").text('');
+        $("#investigation").text('');
+        $("#procedure").text('');
+
+        $('#copy_'+id).css('display','block');
+        $('#undo_'+id).css('display','none');
     }
 
     function removeData(id)

@@ -97,4 +97,15 @@ class ProcedureController extends Controller
             return view('pharmacy-lab/index')->with('success', "Done!");
         }
 
+    public function edit()
+    {
+        try {
+            $id = Crypt::decrypt($id);
+            $procedure = Procedure::findOrfail($id);
+            return view('procedure/edit', compact('procedure'));
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+    }
+
 }
