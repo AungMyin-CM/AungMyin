@@ -59,6 +59,16 @@ class User extends Authenticatable
         return $this->hasOne(Role::class,'id','role_id');
     }
 
+    public function roles() {
+        return $this->HasMany(Role::class,'id','role_id');
+     }
+
+    function isAdmin()
+    {
+        return $this->roles()->where('role_type', '5')->exists();
+
+    }
+
     /**
      * The attributes that should be cast.
      *

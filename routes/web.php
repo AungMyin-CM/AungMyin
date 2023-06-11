@@ -14,6 +14,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProcedureController;
+
 
 
 /*
@@ -52,9 +54,15 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::resource('dictionary', DictionaryController::class);
 
+    Route::resource('procedure', ProcedureController::class);
+
+    Route::resource('investigation', InvestigationController::class);
+
     Route::resource('patient', PatientController::class);
 
     Route::resource('pharmacy', PharmacyController::class);
+
+    Route::patch('patient-update/{patient}', [PatientController::class, 'updatePatient'])->name('patient.updatePatient');
 
     Route::get('patient/{patient}/treatment', [PatientController::class, 'treatment'])->name('patient.treatment');
 

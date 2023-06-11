@@ -14,6 +14,10 @@ use App\Models\Notification;
 use App\Models\UserClinic;
 use App\Models\Clinic;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
+
 
 use App\Helpers\Helper;
 
@@ -76,5 +80,19 @@ class Controller extends BaseController
             return false;
         }
         
+    }
+
+    public function isAdmin()
+    {
+        $role_type = Role::where('id',Auth::guard('user')->user()['role_id'])->pluck('role_type')->first();
+
+        if($role_type == 5)
+        {
+            return true;
+
+        }else{
+            return false;
+        }
+
     }
 }

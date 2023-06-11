@@ -30,20 +30,11 @@
 
                             <div class="row">
                                 <div class="col-md-6">
-
                                     <div class="card card-primary">
                                         <div class="card-header" style="background-color: {{config('app.color')}}">
                                             <h3 class="card-title">Edit Patient</h3>
                                         </div>
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div><br />
-                                        @endif
+                                        
                                         <div class="card-body">
                                             {{-- <p class="badge badge-secondary fs-3">{{ $code }}
                                             </p><br /> --}}
@@ -54,7 +45,7 @@
                                                         <label for="name">Name</label>
                                                         <input type="text" class="form-control" id="patient_name"
                                                             name="name" placeholder="Name" value=" {{ $patient->name }}">
-
+                                                            @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -73,6 +64,7 @@
                                                         <label for="age">Age</label>
                                                         <input type="number" class="form-control" id="age" name="age"
                                                             min="1" max="100" placeholder="Age" value="{{ $patient->age }}">
+                                                            @error('age') <span class="text-danger small">{{ $message }}</span>@enderror
                                                     </div>
                                                 </div>
 
@@ -89,6 +81,7 @@
                                             <div class="form-group">
                                                 <label for="address">Address</label>
                                                 <textarea class="form-control" placeholder="Address" name="address">{{ $patient->address }}</textarea>
+                                                @error('address') <span class="text-danger small">{{ $message }}</span>@enderror
                                             </div>
 
                                             <div class="form-group">
@@ -125,6 +118,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @error('gender') <span class="text-danger small">{{ $message }}</span>@enderror
                                             </div>
 
                                             <div class="row">

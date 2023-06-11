@@ -8,6 +8,9 @@ use App\Models\Dictionary;
 
 
 use Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+
 
 class DictionaryController extends Controller
 {
@@ -17,7 +20,9 @@ class DictionaryController extends Controller
             abort(403);
         }
 
-        $dictData = Dictionary::where("user_id",Auth::guard('user')->user()['id'])->get();
+        $dictData = Dictionary::where("user_id",Auth::guard('user')
+                ->user()['id'])
+                ->paginate(12);
         return view('dictionary/index')->with('data',$dictData);
     }
 
@@ -35,28 +40,35 @@ class DictionaryController extends Controller
         if(!$this->checkPermission('d_create')){
             abort(403);
         }
- 
-            $dict = new Dictionary();
-            if($request->is_med == 1){
-                $count_product = count($request->med_id);
-                $assign_medicines = '';
-                for($x = 0; $x < $count_product; $x++) {
-                    $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.  $request->quantity[$x].'^'.$request->days[$x].'<br>';
-                }
-                $dict->create(['code' => $request->code,
-                'meaning' => $assign_medicines,
-                'user_id' => Auth::guard('user')->user()['id'],
-                'isMed'  => 1
-                ]);
+
+        $request->validate([
+            'code' => ['required',Rule::unique('dictionary')->where(fn ($query) => $query->where('code', request()->code)->where('user_id',Auth::guard('user')->user()->id)), //assuming the request has platform information
+        ],
+            'meaning' => 'required'
+        ]);
+
+    
+        $dict = new Dictionary();
+        if($request->is_med == 1){
+            $count_product = count($request->med_id);
+            $assign_medicines = '';
+            for($x = 0; $x < $count_product; $x++) {
+                $assign_medicines .= $request->med_id[$x].'^'.  $request->med_name[$x].'^'.  $request->quantity[$x].'^'.$request->days[$x].'<br>';
             }
-            else{
-                $dict->create(['code' => $request->code,
-                'meaning' => $request->meaning,
-                'user_id' => Auth::guard('user')->user()['id'],
-                'isMed'  => 0
-                ]);
-            }
-             return redirect('clinic-system/dictionary')->with('success', "Done!");
+            $dict->create(['code' => $request->code,
+            'meaning' => $assign_medicines,
+            'user_id' => Auth::guard('user')->user()['id'],
+            'isMed'  => 1
+            ]);
+        }
+        else{
+            $dict->create(['code' => $request->code,
+            'meaning' => $request->meaning,
+            'user_id' => Auth::guard('user')->user()['id'],
+            'isMed'  => 0
+            ]);
+        }
+            return redirect('clinic-system/dictionary')->with('success', "New dictionary added!");
     }
 
     public function edit($id)
@@ -103,7 +115,7 @@ class DictionaryController extends Controller
         }
 
 
-        return redirect('clinic-system/dictionary')->with('success', 'Done !');
+        return redirect('clinic-system/dictionary')->with('success', 'Dictionary updated successfully!');
     }
 
     /**
@@ -122,7 +134,7 @@ class DictionaryController extends Controller
         $dict = Dictionary::findOrFail($id);
         $dict->delete();
 
-        return redirect('clinic-system/dictionary')->with('success', 'Done !');
+        return redirect('clinic-system/dictionary')->with('success', 'Dictionary deleted successfully!');
     }
 
 }

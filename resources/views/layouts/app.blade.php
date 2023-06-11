@@ -50,6 +50,14 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <!-- DataTable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+    
+    <style>
+       body{
+          background-color: {{config('app.bg_color')}}
+        }
+    </style>
 
 
     <script src="{{asset('js/iziToast.min.js') }}"></script>
@@ -145,7 +153,7 @@
       });
     </script>
 </head>
-<body>
+<body class="sidebar-mini layout-fixed sidebar-collapse" data-new-gr-c-s-check-loaded="14.1112.0" data-gr-ext-installed="" cz-shortcut-listen="true" style="height: auto;">
   
 <div class="middle">
     <div class="bar bar1"></div>
