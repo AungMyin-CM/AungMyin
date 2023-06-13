@@ -15,8 +15,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProcedureController;
-
-
+use App\Http\Controllers\SuperAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +30,7 @@ use App\Http\Controllers\ProcedureController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
+Route::get('/', [HomeController::class, 'welcome'])->name('aung-myin.welcome');
 
 Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
 
@@ -40,7 +39,7 @@ Route::get('payment', [ClinicController::class, 'payment'])->name('payment')->mi
 
 Route::post('register-clinic', [ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
 
-Route::post('/contact',[ContactController::class,'store'])->name('contact-us');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact-us');
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
@@ -148,11 +147,11 @@ Route::post('user-register', [UserController::class, 'register'])->name('user.re
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
-Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
 
-Route::get('/waiting',[ClinicController::class,'waitingList'])->name('wait.list');
+Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -161,3 +160,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('dashboard', [ClinicController::class, 'dashboard'])->name('clinic.home');
 });
 
+// Super Admin Routes
+Route::prefix('aung_myin/admin_dashboard')->group(function () {
+    Route::get('/login', [SuperAdminController::class, 'login']);
+
+    Route::post('/login', [SuperAdminController::class, 'authenticate'])->name('superadmin.login');
+
+    Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
+
+    Route::get('/', [SuperAdminController::class, 'index'])->middleware('superAuth');
+});
