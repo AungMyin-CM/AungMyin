@@ -181,5 +181,7 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
 
     Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
 
-    Route::get('/', [SuperAdminController::class, 'index'])->middleware('superAuth');
+    Route::get('/', [SuperAdminController::class, 'index'])
+        ->middleware('superAuth')
+        ->name('superadmin.index');
 });
