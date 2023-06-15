@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -55,18 +56,18 @@ class User extends Authenticatable
     ];
 
     public function roleType()
-    {   
-        return $this->hasOne(Role::class,'id','role_id');
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
-    public function roles() {
-        return $this->HasMany(Role::class,'id','role_id');
-     }
+    public function roles()
+    {
+        return $this->HasMany(Role::class, 'id', 'role_id');
+    }
 
     function isAdmin()
     {
         return $this->roles()->where('role_type', '5')->exists();
-
     }
 
     /**
@@ -80,6 +81,11 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-    $this->attributes['password'] = bcrypt($value);
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 }
