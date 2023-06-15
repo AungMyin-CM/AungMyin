@@ -17,7 +17,11 @@ class SuperAdminAuthenticate
     public function handle(Request $request, Closure $next)
     {
         if (!auth()->check()) {
-            return redirect()->route('superadmin.login'); // Replace 'login' with your actual login route name or URL
+            return redirect()->route('superadmin.login');
+        }
+
+        if (!auth()->user()->is_superadmin) {
+            abort(404);
         }
 
         return $next($request);
