@@ -85,7 +85,7 @@
 
 <div class="form-container" style="background: #003049;">
         <form action="" class="form">
-            <h2 class="form-title mb-4 text-white">Verify Your email</h2>
+            {{-- <h2 class="form-title mb-4 text-white">Email</h2> --}}
             <div class="carousel">
                 <div class="inner ">
                     <div class="sub-forms">
@@ -120,10 +120,10 @@
                <button id="prev" class="btn btn-secondary d-none">Previous</button>
                <button id="next" class="btn btn-primary">Next</button>
            </div>
-           <div class="form-step-indicators mt-5">
+           {{-- <div class="form-step-indicators mt-5">
                <button class="step-indicator active"></button>
                <button class="step-indicator"></button>
-           </div>
+           </div> --}}
         </form>
         <div class="form-finish-box d-none">
             <h3 class="greeting-phrase"></h3>
@@ -163,12 +163,13 @@ prevStepBtn.addEventListener("click", e => {
 //I know i could use bootstrap pre-made carousel
 
  function nextStep(){
-   prevStepBtn.classList.remove("d-none");
-    let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
-    //Check if we reached the last step
-    if(activeStepIndex >= subForms.length - 1)
-     nextStepBtn.innerText = "Finish";
-    slide(transBy);
+    
+//    prevStepBtn.classList.remove("d-none");
+//     let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+//     //Check if we reached the last step
+//     if(activeStepIndex >= subForms.length - 1)
+//      nextStepBtn.innerText = "Finish";
+//     slide(transBy);
 }
 
 function prevStep(){
