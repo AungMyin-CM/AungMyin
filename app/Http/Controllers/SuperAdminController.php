@@ -68,6 +68,18 @@ class SuperAdminController extends Controller
             ->with('total_packages', $total_packages);
     }
 
+    public function users()
+    {
+        $users = User::all();
+        return view('superadmin.users')->with('users', $users);
+    }
+
+    public function edit(String $id)
+    {
+        $user = User::where('id', $id)->get()->first();
+        return view('superadmin.edit')->with('user', $user);
+    }
+
     public function logout(Request $request)
     {
         Auth::guard('user')->logout();

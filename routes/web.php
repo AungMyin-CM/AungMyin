@@ -163,12 +163,14 @@ Route::group(['middleware' => 'auth'], function () {
 // Super Admin Routes
 Route::prefix('aung_myin/admin_dashboard')->group(function () {
     Route::get('/login', [SuperAdminController::class, 'login']);
-
     Route::post('/login', [SuperAdminController::class, 'authenticate'])->name('superadmin.login');
 
-    Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
+    Route::middleware(['superAuth'])->group(function () {
+        Route::get('/', [SuperAdminController::class, 'index'])->name('superadmin.index');
+        Route::get('/users', [SuperAdminController::class, 'users'])->name('superadmin.users');
+        Route::get('/users?type={type}', [SuperAdminController::class, 'users'])->name('superadmin.filter');
+        Route::get('/users/{id}', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
 
-    Route::get('/', [SuperAdminController::class, 'index'])
-        ->middleware('superAuth')
-        ->name('superadmin.index');
+        Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
+    });
 });
