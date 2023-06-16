@@ -28,7 +28,7 @@
                                 <a class="dropdown-item" href="{{ route('superadmin.filter', 'p_users') }}">Package Purchased Users</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('superadmin.filter', 'f_users') }}">Free Users</a>
+                                <a class="dropdown-item" href="{{ route('superadmin.filter', 'c_users') }}">Clinic Users</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('superadmin.filter', 'v_users') }}">Only Verified</a>
@@ -37,7 +37,7 @@
                                 <a class="dropdown-item" href="{{ route('superadmin.filter', 'u_users') }}">Unverified Users</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('superadmin.filter', 'c_users') }}">Clinic Users</a>
+                                <a class="dropdown-item" href="{{ route('superadmin.filter', 'f_users') }}">Free Users</a>
                             </li>
                         </ul>
                     </div>
