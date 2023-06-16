@@ -25,4 +25,9 @@ class PackagePurchase extends Model
     {
         return $this->belongsTo(Clinic::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

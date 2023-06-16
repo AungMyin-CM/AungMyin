@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -87,5 +88,15 @@ class User extends Authenticatable
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function package_purchase(): HasOne
+    {
+        return $this->hasOne(PackagePurchase::class);
+    }
+
+    public function user_clinic(): HasOne
+    {
+        return $this->hasOne(UserClinic::class);
     }
 }
