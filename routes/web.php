@@ -179,12 +179,19 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
     Route::post('/login', [SuperAdminController::class, 'authenticate'])->name('superadmin.login');
 
     Route::middleware(['superAuth'])->group(function () {
+        // Home route
         Route::get('/', [SuperAdminController::class, 'index'])->name('superadmin.index');
+
+        // User route
         Route::get('/users', [SuperAdminController::class, 'users'])->name('superadmin.users');
         Route::get('/users?type={type}', [SuperAdminController::class, 'users'])->name('superadmin.filter');
         Route::get('/users/{id}', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
         Route::patch('/users/{id}', [SuperAdminController::class, 'update'])->name('superadmin.update');
 
+        // Clinic route
+        Route::get('/clinics', [SuperAdminController::class, 'clinics'])->name('superadmin.clinics');
+
+        // Logout
         Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
     });
 });

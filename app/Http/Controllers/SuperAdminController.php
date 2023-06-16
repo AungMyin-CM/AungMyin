@@ -145,6 +145,12 @@ class SuperAdminController extends Controller
         return redirect('aung_myin/admin_dashboard/users')->with('success', 'User updated successfully!');
     }
 
+    public function clinics()
+    {
+        $clinics = Clinic::all();
+        return view('superadmin.clinics')->with('clinics', $clinics);
+    }
+
     public function logout(Request $request)
     {
         Auth::guard('user')->logout();
