@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Clinic;
 use App\Models\Package;
-use App\Models\PackagePurchase;
 use App\Models\UserClinic;
-use App\Http\Requests\SuperAdminLoginRequest;
+use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\SuperAdminLoginRequest;
 
 class SuperAdminController extends Controller
 {
@@ -78,6 +79,47 @@ class SuperAdminController extends Controller
     {
         $user = User::where('id', $id)->get()->first();
         return view('superadmin.edit')->with('user', $user);
+    }
+
+    public function update(Request $request, String $id)
+    {
+        $request->validate([
+            'name' => 'required|min:3|max:50',
+            'email' => 'required|email',
+            'phoneNumber' => 'required',
+            'password' => 'confirmed',
+        ]);
+
+        if ($request->file('avatar')) {
+            $file = $request->file('avatar');
+            $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
+            $file->move(public_path('images/avatars'), $filename);
+        } else {
+            $filename = User::where('id', $id)->value('avatar');
+        }
+
+        $requests = [
+            'name' => $request->name,
+            'speciality' => $request->speciality,
+            'avatar' => $filename,
+            'credentials' => $request->credentials,
+            'email' => $request->email,
+            'phoneNumber' => $request->phoneNumber,
+            'city' => $request->city,
+            'country' => $request->country,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'short_bio' => $request->short_bio,
+            'fees' => $request->fees,
+        ];
+
+        if ($request->password != null && trim($request->password) != '') {
+            $requests += ['password' => Hash::make($request->password)];
+        }
+
+        User::whereId($id)->update($requests);
+
+        return redirect('aung_myin/admin_dashboard/users')->with('success', 'User updated successfully!');
     }
 
     public function logout(Request $request)

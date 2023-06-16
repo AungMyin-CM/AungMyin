@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\UserRegisterRequest;
-use App\Models\Package;
-use App\Models\PackagePurchase;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\UserClinic;
-
-
 use Auth;
+use Carbon\Carbon;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Package;
+use App\Models\UserClinic;
+use Illuminate\Http\Request;
+use App\Models\PackagePurchase;
+
+
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserRegisterRequest;
 
 class UserController extends Controller
 {
@@ -34,9 +35,9 @@ class UserController extends Controller
 
 
         $userData = User::whereIn('id', $user_id)
-                ->where('status', '1')
-                ->orderBy('id', 'desc')
-                ->paginate(12);
+            ->where('status', '1')
+            ->orderBy('id', 'desc')
+            ->paginate(12);
 
         return view('user/index')->with('data', $userData);
     }
@@ -164,10 +165,9 @@ class UserController extends Controller
         $package = PackagePurchase::where('user_id', $id)->first();
 
         $role = Role::where('id', $user->role_id)->get()->first();
-        
-        if(!is_null($package))
-        {
-        // Get purchase date
+
+        if (!is_null($package)) {
+            // Get purchase date
             $purchase_date = strtotime($package->created_at);
 
             // Get days left
@@ -178,11 +178,9 @@ class UserController extends Controller
 
 
             return view('profile/update', compact('user', 'data', 'package', 'purchase_date', 'expire_date', 'days_left', 'role'));
-
-        }else{
-            return view('profile/update',compact('user','data','role'));
+        } else {
+            return view('profile/update', compact('user', 'data', 'role'));
         }
-
     }
 
     public function saveProfile($id, Request $request)
