@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\SuperAdminController;
 
@@ -190,6 +191,9 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
 
         // Clinic route
         Route::get('/clinics', [SuperAdminController::class, 'clinics'])->name('superadmin.clinics');
+
+        // Package route
+        Route::resource('/package', PackageController::class);
 
         // Logout
         Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
