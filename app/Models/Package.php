@@ -12,6 +12,8 @@ class Package extends Model
 
     protected $table = 'package';
 
+    protected $fillable = ['name', 'type', 'price', 'trialPeriod', 'isDiscount', 'discountPercentage', 'discountStartDate', 'discountEndDate'];
+
     public function clinic(): HasMany
     {
         return $this->hasMany(Clinic::class, 'package_id');
