@@ -31,6 +31,8 @@ use App\Http\Controllers\ProcedureController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
+Route::get('/send-otp',[UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
+
 Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
 
 Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');

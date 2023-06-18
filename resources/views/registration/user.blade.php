@@ -93,6 +93,7 @@
                             <div class="form-floating mb-3">
                                 <input class="form-control" type="text" name="Email" id="email" placeholder="email">
                                 <label for="email">Email</label>
+                                <span class="text-danger d-none" id="email-error">Email already taken !</span>
                            </div>
                         
                         </div>
@@ -133,8 +134,18 @@
             </div>
         </div>
     </div>
-  
+
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
     <script>
+
+        $(document).ready(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+        })
         
 const parentForm = document.querySelector("form.form");
 const subFormsWrapper = parentForm.querySelector(".carousel .sub-forms");
@@ -159,17 +170,59 @@ prevStepBtn.addEventListener("click", e => {
     prevStep()
 });
 
-//Form steps carousel
-//I know i could use bootstrap pre-made carousel
 
- function nextStep(){
+function nextStep(){
     
-//    prevStepBtn.classList.remove("d-none");
-//     let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
-//     //Check if we reached the last step
-//     if(activeStepIndex >= subForms.length - 1)
-//      nextStepBtn.innerText = "Finish";
-//     slide(transBy);
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+      
+        $('#email-error').text('Invalid Email');
+        $('#email-error').removeClass('d-none');
+       
+    }
+    else
+    {
+
+   
+
+    $.ajax({
+    url:"{{ route('email_available.check') }}",
+    method:"POST",
+    data:{email:email},
+    success:function(result)
+    {
+       
+        if(result != 'unique')
+        {
+            $('#email-error').removeClass('d-none');
+            
+
+        }else{
+            // prevStepBtn.classList.remove("d-none");
+            // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+            // //Check if we reached the last step
+            // if(activeStepIndex >= subForms.length - 1)
+            //     nextStepBtn.innerText = "Finish";
+            // slide(transBy);
+            $.ajax({
+                url : "{{route('send-otp')}}",
+                method : "GET",
+                data:{email:email},
+                success:function(result)
+                {
+                   alert(result)
+                }
+
+            });
+        }
+        
+    }
+    })
+    }
+    
 }
 
 function prevStep(){
