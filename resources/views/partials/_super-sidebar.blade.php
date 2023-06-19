@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link px-0 align-middle">
+                <a href="{{ route('superadmin.profile') }}" class="nav-link px-0 align-middle">
                     <i class="bi bi-gear-fill fs-4"></i>
                     <span class="ms-1 d-none d-md-inline">Setting</span>
                 </a>

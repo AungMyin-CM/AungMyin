@@ -195,6 +195,10 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
         // Package route
         Route::resource('/package', PackageController::class);
 
+        // Profile Setting
+        Route::get('/profile', [SuperAdminController::class, 'profile'])->name('superadmin.profile');
+        Route::patch('/profile/{id}', [SuperAdminController::class, 'profileUpdate'])->name('superadmin.profileUpdate');
+
         // Logout
         Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
     });
