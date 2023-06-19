@@ -6,7 +6,7 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <form action="{{ route('superadmin.update', $user->id) }}" method="post">
+                <form action="{{ route('superadmin.update', $user->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="card card-primary">
