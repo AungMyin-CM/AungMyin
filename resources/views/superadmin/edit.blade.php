@@ -68,50 +68,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="speciality">Speciality</label>
-                                        <input type="speciality" class="form-control" name="speciality" placeholder="Speciality" value="{{ $user->speciality }}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="fees">Fees</label>
-                                        <input type="text" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}">
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="form-group mb-4">
-                                <label for="address">Address</label>
-                                <textarea class="form-control" placeholder="Address" name="address">{{ $user->address }}</textarea>
-                            </div>
-
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password">
-                                    </div>
-                                    @error('password')
-                                    <span class="text-danger small">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="password_confirmation">Confirm Password</label>
-                                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password">
-                                    </div>
-                                    @error('password_confirmation')
-                                    <span class="text-danger small">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="gender">Gender</label>
                                 @if($user->gender == 1)
                                 <?php
@@ -144,6 +101,55 @@
                                 </div>
                                 <span id="genderError" class="text-danger small"></span>
                             </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="speciality">Speciality</label>
+                                        <input type="speciality" class="form-control" name="speciality" placeholder="Speciality" value="{{ $user->speciality }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fees">Fees</label>
+                                        <input type="text" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-4">
+                                <label for="address">Address</label>
+                                <textarea class="form-control" placeholder="Address" name="address">{{ $user->address }}</textarea>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Password">
+                                    </div>
+                                    @error('password')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-group">
+                                        <label for="password_confirmation">Confirm Password</label>
+                                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password">
+                                    </div>
+                                    @error('password_confirmation')
+                                    <span class="text-danger small">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <small class="text-danger">* Leave blank if you don't want to update your password</small>
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="checkbox" name="status" value="{{ $user->status }}" {{ $user->status ? '' : 'checked' }}>
+                                <label for="checkbox" class="form-check-label text-danger small">Are you sure you want to disable user?</label><br>
+                            </div>
                         </div>
 
                         <div class="card-footer text-center p-3">
@@ -166,6 +172,16 @@
             $("#image_upload").append("<img id='image_logo' onclick='showImage(" + i + ")' src=" + src + " class='img-thumbnail rounded-circle mb-3' width='70px' height='70px' alt='img' />");
         }
     };
+
+    let checkbox = document.getElementById("checkbox");
+
+    checkbox.addEventListener('click', function() {
+        if (checkbox.checked) {
+            checkbox.value = "0";
+        } else {
+            checkbox.value = "1";
+        }
+    })
 </script>
 
 @endsection
