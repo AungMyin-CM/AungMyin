@@ -52,6 +52,7 @@
                                 <th>Phone number</th>
                                 <th>Role type</th>
                                 <th>Address</th>
+                                <th>Status</th>
                                 <th style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
@@ -83,6 +84,7 @@
                                     @endswitch
                                 </td>
                                 <td>{{ $user->address }}</td>
+                                <td>{{ $user->status ? 'Active' : 'Disable' }}</td>
 
                                 <td>
                                     <div class="d-flex justify-content-center" style="gap: 10px">
@@ -90,10 +92,6 @@
                                             <a href="{{route('superadmin.edit', $user->id)}}" class="btn btn-default">
                                                 <i class="bi bi-pencil-square fs-4" style=" color: {{config('app.color')}}"></i>
                                             </a>
-                                        </div>
-
-                                        <div class="form-check form-switch mt-2 fs-4">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                                         </div>
                                     </div>
                                 </td>
@@ -113,7 +111,7 @@
 <script>
     let table = new DataTable("#userTable", {
         "paging": true,
-        "info": false,
+        "info": true,
         search: {
             caseInsensitive: true
         },
