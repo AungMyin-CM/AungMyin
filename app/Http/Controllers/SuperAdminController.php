@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\FeedbackMail;
 use App\Models\User;
 use App\Models\Clinic;
 use App\Models\Package;
+use App\Models\Feedback;
 use App\Models\UserClinic;
-use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
+use App\Models\PackagePurchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\SuperAdminLoginRequest;
 
 class SuperAdminController extends Controller
@@ -36,6 +39,7 @@ class SuperAdminController extends Controller
         }
     }
 
+    // Home
     public function index()
     {
         // Get Total Users
@@ -69,6 +73,7 @@ class SuperAdminController extends Controller
             ->with('total_packages', $total_packages);
     }
 
+    // Users
     public function users(Request $request)
     {
         $type = $request->query('type');
@@ -94,14 +99,14 @@ class SuperAdminController extends Controller
             return view('superadmin.users')->with('users', $users);
         } else {
             $users = User::all();
-            return view('superadmin.users')->with('users', $users);
+            return view('superadmin.users.index')->with('users', $users);
         }
     }
 
     public function edit(String $id)
     {
         $user = User::where('id', $id)->get()->first();
-        return view('superadmin.edit')->with('user', $user);
+        return view('superadmin.users.edit')->with('user', $user);
     }
 
     public function update(Request $request, String $id)
@@ -151,16 +156,63 @@ class SuperAdminController extends Controller
         return redirect('aung_myin/admin_dashboard/users')->with('success', 'User updated successfully!');
     }
 
+    // Clinics
     public function clinics()
     {
         $clinics = Clinic::all();
-        return view('superadmin.clinics')->with('clinics', $clinics);
+        return view('superadmin.clinics.index')->with('clinics', $clinics);
     }
 
+    // Feedback
+    public function feedback()
+    {
+        $feedbacks = Feedback::orderBy('id', 'desc')->paginate(12);
+        return view('superadmin.feedback.index')->with('feedbacks', $feedbacks);
+    }
+
+    public function show($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        return view('superadmin.feedback.show')->with('feedback', $feedback);
+    }
+
+    public function reply($id)
+    {
+        $feedback = Feedback::findOrFail($id);
+        return view('superadmin.feedback.reply')->with('feedback', $feedback);
+    }
+
+    public function sendFeedbackEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'comment' => 'required'
+        ]);
+
+        $name = $request->name;
+        $recipient = $request->email;
+        $message = $request->comment;
+
+        $mailData = [
+            'name' => $name,
+            'recipient' => $recipient,
+            'fromEmail' => 'aungmyin.cm@gmail.com',
+            'fromName' => 'Aung Myin Feedback',
+            'subject' => 'Thank You for Your Feedback',
+            'body' => $message,
+        ];
+
+        // Send the email
+        Mail::to($recipient)->send(new FeedbackMail($mailData));
+
+        return redirect('aung_myin/admin_dashboard/feedback')->with('success', 'Mail sent!');
+    }
+
+    // Profile
     public function profile()
     {
         $user = auth()->user();
-        return view('superadmin.profile')->with('user', $user);
+        return view('superadmin.profile.profile')->with('user', $user);
     }
 
     public function profileUpdate(Request $request, String $id)

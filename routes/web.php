@@ -195,6 +195,12 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
         // Package route
         Route::resource('/package', PackageController::class);
 
+        // Feedback route
+        Route::get('/feedback', [SuperAdminController::class, 'feedback'])->name('superadmin.feedback');
+        Route::get('/feedback/{id}', [SuperAdminController::class, 'show'])->name('superadmin.showFeedback');
+        Route::get('/feedback/reply/{id}', [SuperAdminController::class, 'reply'])->name('superadmin.replyFeedback');
+        Route::post('/feedback', [SuperAdminController::class, 'sendFeedbackEmail'])->name('superadmin.sendFeedbackEmail');
+
         // Profile Setting
         Route::get('/profile', [SuperAdminController::class, 'profile'])->name('superadmin.profile');
         Route::patch('/profile/{id}', [SuperAdminController::class, 'profileUpdate'])->name('superadmin.profileUpdate');
