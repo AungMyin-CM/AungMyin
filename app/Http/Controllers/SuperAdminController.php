@@ -81,22 +81,22 @@ class SuperAdminController extends Controller
         if ($type === 'p_users') {
             // Get Package Purchased Users
             $users = User::has('package_purchase')->get();
-            return view('superadmin.users')->with('users', $users);
+            return view('superadmin.users.index')->with('users', $users);
         } elseif ($type === 'f_users') {
             // Get Free Users
             return "This is free users";
         } elseif ($type === 'v_users') {
             // Get Only Verified
             $users = User::where('email_verified', 1)->doesntHave('user_clinic')->get();
-            return view('superadmin.users')->with('users', $users);
+            return view('superadmin.users.index')->with('users', $users);
         } elseif ($type === 'u_users') {
             // Get Unverified Users
             $users = User::where('email_verified', 0)->get();
-            return view('superadmin.users')->with('users', $users);
+            return view('superadmin.users.index')->with('users', $users);
         } elseif ($type === 'c_users') {
             // Get Clinics Users
             $users = User::has('user_clinic')->get();
-            return view('superadmin.users')->with('users', $users);
+            return view('superadmin.users.index')->with('users', $users);
         } else {
             $users = User::all();
             return view('superadmin.users.index')->with('users', $users);
