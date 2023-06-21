@@ -17,7 +17,7 @@
                     <div class="dropdown mb-4">
                         <a class="btn text-white dropdown-toggle" style="background-color: {{config('app.color')}};" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-filter-left"></i>
-                            Filter Users
+                            Filters
                         </a>
 
                         <ul class="dropdown-menu">

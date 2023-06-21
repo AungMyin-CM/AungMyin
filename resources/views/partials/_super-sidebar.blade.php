@@ -13,8 +13,12 @@
             <h5 class="mt-3 fw-semibold d-none d-md-block">AungMyin</h5>
         </div>
         <div class="text-center mb-4">
-            <img src="{{ asset('images/web-photos/no-image.jpg') }}" width="30" height="30" class="rounded-circle">
-            <span class="d-none d-md-inline mx-1">{{ Auth::user()->name }}</span>
+            @if(Auth::user()->avatar)
+            <img src="{{asset('images/avatars/'.Auth::user()->avatar)}}" alt="Avatar" class="rounded-circle" width="40" height="40">
+            @else
+            <img src="{{ asset('images/web-photos/no-image.jpg') }}" alt="Avatar" class="rounded-circle" width="40" height="40">
+            @endif
+            <span class=" d-none d-md-inline mx-1">{{ Auth::user()->name }}</span>
         </div>
         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
             <li class="nav-item">
@@ -39,6 +43,12 @@
                 <a href="{{ route('package.index') }}" class="nav-link px-0 align-middle text-white">
                     <i class="bi bi-box-fill fs-4"></i>
                     <span class="ms-1 d-none d-md-inline">Packages</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('superadmin.feedback') }}" class="nav-link px-0 align-middle text-white">
+                    <i class="bi bi-chat-dots-fill fs-4"></i>
+                    <span class="ms-1 d-none d-md-inline">Feedback</span>
                 </a>
             </li>
             <li>
