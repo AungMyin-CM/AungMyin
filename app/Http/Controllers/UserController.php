@@ -37,7 +37,7 @@ class UserController extends Controller
         $userData = User::whereIn('id', $user_id)
             ->where('status', '1')
             ->orderBy('id', 'desc')
-            ->paginate(12);
+            ->get();
 
         return view('user/index')->with('data', $userData);
     }

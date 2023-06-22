@@ -2,8 +2,8 @@
 
 @section('content')
 <style>
-    .dataTables_length {
-        margin-bottom: 10px;
+    .pagination .active .page-link {
+        background-color: #003049;
     }
 </style>
 
@@ -17,9 +17,11 @@
                     @if (Session::has('success'))
                     @include('partials._toast')
                     @endif
-                    <a href="{{ route('package.create') }}" class="btn text-white float-end mb-3" style="background-color: {{config('app.color')}};">
-                        <i class="bi bi-plus-lg"></i> Add New
-                    </a>
+                    <div class="d-flex mb-3">
+                        <a href="{{ route('package.create') }}" class="btn text-white ms-auto" style="background-color: {{config('app.color')}};">
+                            <i class="bi bi-plus-lg"></i> Add New
+                        </a>
+                    </div>
 
                     <table id="userTable" class="table table-striped table-bordered mb-3">
                         <thead>
@@ -53,7 +55,6 @@
                                                 <i class="bi bi-pencil-square fs-4" style=" color: {{config('app.color')}}"></i>
                                             </a>
                                         </div>
-
                                         <div>
                                             <form action="{{route('package.destroy', $package->id)}}" method="post">
                                                 @csrf
@@ -77,11 +78,13 @@
 
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     let table = new DataTable("#userTable", {
         "paging": true,
-        "info": false,
+        "info": true,
         search: {
             caseInsensitive: true
         },

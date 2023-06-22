@@ -1,6 +1,11 @@
 @extends("layouts.app")
 @section('content')
 
+<style>
+    .pagination .active .page-link {
+        background-color: #003049;
+    }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
@@ -27,7 +32,7 @@
                 </div><!-- /.container-fluid -->
             </section>            
 
-            <section class="content">
+            <section class="content mb-3">
                 <div class="container-fluid">
                     @if(Helper::checkPermission('d_create', $permissions))
                     @endif
@@ -75,21 +80,17 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
-
-                    <div class="float-right p-2">
-                        {{ $data->links('pagination.bootstrap-4') }}
-                    </div>
-                    
+                    </table>                    
                 </div>            
             </section>
         </div>
     </div>
 </body>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script>
     let table = new DataTable("#dictionaryTable", {
-        "paging": false,
+        "paging": true,
         "info": false,
         search: {
             caseInsensitive: true
