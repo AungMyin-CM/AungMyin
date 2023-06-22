@@ -30,6 +30,10 @@
         cursor: pointer;
         /* "hand" cursor */
     }
+
+    .pagination .active .page-link {
+        background-color: #003049;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -46,18 +50,14 @@
                             </ol>
                         </div>
                         <div class="col-sm-6">
-                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>                         
+                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
                         </div>
                     </div>
-                    
-                    @if (Session::has('success'))
-                        @include('partials._toast')
-                    @endif
-                </div><!-- /.container-fluid -->
-            </section>
 
-            <section class="content">
-                <div class="container-fluid">
+                    @if (Session::has('success'))
+                    @include('partials._toast')
+                    @endif
+
                     @if(Helper::checkPermission('ph_create', $permissions))
                     <div>
                         <span data-href="/clinic-system/exportMedCSV" id="export" class="btn btn-success btn-sm float-left" onclick="exportTasks(event.target);">Export</span>
@@ -70,7 +70,12 @@
                         </form>
                     </div>
                     @endif
-                    
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <section class="content mt-5 mb-3">
+                <div class="container-fluid">
+
                     <table id="pharmacyTable" class="table table-striped table-bordered mb-3">
                         <thead>
                             <tr>
@@ -84,45 +89,40 @@
                         </thead>
                         <tbody>
                             @foreach ($data as $row)
-                                <tr>
-                                    <td>{{ $row->name }}</td>
-                                    <td>{{ $row->code }}</td>
-                                    <td>{{ $row->expire_date }}</td>
-                                    <td>{{ $row->quantity }}</td>
-                                    <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
-                                    <td>
-                                        <div class="d-flex justify-content-center" style="gap: 20px">                                            
-                                            <div>
-                                                @if(Helper::checkPermission('ph_update', $permissions))
-                                                    <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
-                                                        <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
-                                                    </a>
-                                                @endif
-                                            </div>
-                                            
-                                            <div>
-                                                @if(Helper::checkPermission('ph_delete', $permissions))
-                                                    <form action="{{ route('pharmacy.destroy', $row->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                    
-                                                        <button class="btn btn-default" type="Submit">
-                                                            <i class="fas fa-trash" style="color:#E95A4A; "></i>
-                                                        </button>
-                                                    </form>
-                                                @endif
-                                            </div>
+                            <tr>
+                                <td>{{ $row->name }}</td>
+                                <td>{{ $row->code }}</td>
+                                <td>{{ $row->expire_date }}</td>
+                                <td>{{ $row->quantity }}</td>
+                                <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center" style="gap: 20px">
+                                        <div>
+                                            @if(Helper::checkPermission('ph_update', $permissions))
+                                            <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
+                                                <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
+                                            </a>
+                                            @endif
                                         </div>
-                                    </td>
-                                </tr>
+
+                                        <div>
+                                            @if(Helper::checkPermission('ph_delete', $permissions))
+                                            <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button class="btn btn-default" type="Submit">
+                                                    <i class="fas fa-trash" style="color:#E95A4A; "></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
-
-                    <div class="float-right p-2">
-                        {{ $data->links('pagination.bootstrap-4') }}
-                    </div>
                 </div>
             </section>
         </div>
@@ -130,11 +130,12 @@
 </body>
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
     let table = new DataTable("#pharmacyTable", {
-        "paging": false,
+        "paging": true,
         "info": false,
         search: {
             caseInsensitive: true

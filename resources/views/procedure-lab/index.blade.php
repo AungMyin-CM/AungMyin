@@ -1,6 +1,11 @@
 @extends("layouts.app")
 @section('content')
 
+<style>
+    .pagination .active .page-link {
+        background-color: #003049;
+    }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
@@ -39,7 +44,7 @@
                 </div>
             @endif
 
-            <section class="content">
+            <section class="content mb-3">
                 <div class="container-fluid">
                     @if(Helper::checkPermission('d_create', $permissions))
                         <div class="float-left"></div> 
@@ -150,11 +155,12 @@
         </div>
     </div>
 </body>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
     new DataTable("#procedureTable", {
-        "paging": false,
+        "paging": true,
         "info": false,
         search: {
             caseInsensitive: true
@@ -166,7 +172,7 @@
     });
 
     new DataTable("#investigationTable", {
-        "paging": false,
+        "paging": true,
         "info": false,
         search: {
             caseInsensitive: true

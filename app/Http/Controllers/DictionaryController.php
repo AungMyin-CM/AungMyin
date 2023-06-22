@@ -22,7 +22,7 @@ class DictionaryController extends Controller
 
         $dictData = Dictionary::where("user_id",Auth::guard('user')
                 ->user()['id'])
-                ->paginate(12);
+                ->get();
         return view('dictionary/index')->with('data',$dictData);
     }
 

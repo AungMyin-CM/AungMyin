@@ -283,7 +283,7 @@ class PosController extends Controller
         $history_List = POS::where("clinic_id", $clinic_id)
                     ->where('status', 1)
                     ->orderBy('updated_at', 'desc')
-                    ->paginate(12);
+                    ->get();
         return view('pos/history')->with(['history_list' => $history_List]);
     }
 

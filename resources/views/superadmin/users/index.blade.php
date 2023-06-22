@@ -2,8 +2,8 @@
 
 @section('content')
 <style>
-    .dataTables_length {
-        margin-bottom: 10px;
+    .pagination .active .page-link {
+        background-color: #003049;
     }
 </style>
 
@@ -107,7 +107,9 @@
 
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
 <script>
     let table = new DataTable("#userTable", {
         "paging": true,
