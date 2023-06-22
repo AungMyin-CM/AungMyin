@@ -8,8 +8,9 @@ use App\Models\Clinic;
 use App\Models\Package;
 use App\Models\Feedback;
 use App\Models\UserClinic;
-use Illuminate\Http\Request;
+use App\Models\Patient;
 use App\Models\PackagePurchase;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -60,6 +61,9 @@ class SuperAdminController extends Controller
         // Get Total Clinics
         $total_clinics = count(Clinic::all());
 
+        // Get Total Patients
+        $total_patients = count(Patient::all());
+
         // Get Total Packages
         $total_packages = count(Package::all());
 
@@ -70,6 +74,7 @@ class SuperAdminController extends Controller
             ->with('u_users', $u_users)
             ->with('c_users', $c_users)
             ->with('total_clinics', $total_clinics)
+            ->with('total_patients', $total_patients)
             ->with('total_packages', $total_packages);
     }
 
@@ -159,7 +164,7 @@ class SuperAdminController extends Controller
     // Clinics
     public function clinics()
     {
-        $clinics = Clinic::all();
+        $clinics = Clinic::withCount('patient')->get();
         return view('superadmin.clinics.index')->with('clinics', $clinics);
     }
 
