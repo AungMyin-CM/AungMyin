@@ -17,9 +17,11 @@
                     @if (Session::has('success'))
                     @include('partials._toast')
                     @endif
-                    <a href="{{ route('package.create') }}" class="btn text-white float-end mb-3" style="background-color: {{config('app.color')}};">
-                        <i class="bi bi-plus-lg"></i> Add New
-                    </a>
+                    <div class="d-flex mb-3">
+                        <a href="{{ route('package.create') }}" class="btn text-white ms-auto" style="background-color: {{config('app.color')}};">
+                            <i class="bi bi-plus-lg"></i> Add New
+                        </a>
+                    </div>
 
                     <table id="userTable" class="table table-striped table-bordered mb-3">
                         <thead>
