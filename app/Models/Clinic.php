@@ -32,4 +32,9 @@ class Clinic extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    public function patient(): HasMany
+    {
+        return $this->hasMany(Patient::class, 'clinic_code', 'id');
+    }
 }

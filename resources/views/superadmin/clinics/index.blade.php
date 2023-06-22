@@ -22,6 +22,7 @@
                                 <th>Status</th>
                                 <th>Package</th>
                                 <th>Address</th>
+                                <th>Total Patients</th>
                                 <th>Created At</th>
                             </tr>
                         </thead>
@@ -33,6 +34,7 @@
                                 <td>{{ $clinic->status }}</td>
                                 <td>{{ $clinic->package->name }}</td>
                                 <td>{{ $clinic->address }}</td>
+                                <td>{{ $clinic->patient_count }}</td>
                                 <td>{{ $clinic->created_at->format('F jS Y') }}</td>
                             </tr>
                             @endforeach

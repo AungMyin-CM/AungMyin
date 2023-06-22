@@ -51,6 +51,10 @@
                                         <span class="text-muted">Total Clinics:</span>
                                         {{ $total_clinics }}
                                     </li>
+                                    <li class="list-group-item">
+                                        <span class="text-muted">Total Patients:</span>
+                                        {{ $total_patients }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
