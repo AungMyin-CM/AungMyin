@@ -205,7 +205,7 @@ class PatientController extends Controller
         try {
             $id = Crypt::decrypt($id);
             $patient = Patient::findOrfail($id);
-            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->get();
+            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->paginate(1);
 
             Notification::where('patient_id', $id)->update(['is_read' => 1]);
 
