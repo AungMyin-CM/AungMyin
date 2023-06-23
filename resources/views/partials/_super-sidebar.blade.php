@@ -40,6 +40,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('superadmin.patients') }}" class="nav-link px-0 align-middle text-white">
+                    <i class="bi bi-person-fill-add fs-4"></i>
+                    <span class="ms-1 d-none d-md-inline">Patients</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('package.index') }}" class="nav-link px-0 align-middle text-white">
                     <i class="bi bi-box-fill fs-4"></i>
                     <span class="ms-1 d-none d-md-inline">Packages</span>
