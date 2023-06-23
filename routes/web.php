@@ -192,6 +192,9 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
         // Clinic route
         Route::get('/clinics', [SuperAdminController::class, 'clinics'])->name('superadmin.clinics');
 
+        // Patient route
+        Route::get('/patients', [SuperAdminController::class, 'patients'])->name('superadmin.patients');
+
         // Package route
         Route::resource('/package', PackageController::class);
 

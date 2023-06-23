@@ -168,6 +168,14 @@ class SuperAdminController extends Controller
         return view('superadmin.clinics.index')->with('clinics', $clinics);
     }
 
+    // Patients
+    public function patients()
+    {
+        $patients = Patient::with(['visits', 'clinic'])->get();
+
+        return view('superadmin.patients.index')->with('patients', $patients);
+    }
+
     // Feedback
     public function feedback()
     {
