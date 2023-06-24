@@ -214,7 +214,7 @@
                                         <span class="float-right">{{ $data['patient']->visits->count() }} visits</span>
                                     </div>
 
-                                    <div class="card-body" style="height: 500px;overflow-y:scroll;">
+                                    <div class="card-body" style="max-height: 500px;overflow-y: scroll;">
                                         @if($data['visit']->isEmpty() != 1)
                                         @foreach ($data['visit'] as $row)
                                         <!-- style="background:#a19090;" -->
@@ -253,9 +253,13 @@
                                                     @endif
                                                 </ul>
 
+                                                @php
+                                                $text = $row['assigned_medicines'];
+                                                $medicines = str_replace("<br>", "\n", $text);
+                                                @endphp
                                                 <div>
-                                                    <span>Treatment:</span><br>
-                                                    <span>{{ $row['assigned_medicines'] }}</span>
+                                                    <span>Treatment:</span>
+                                                    <pre>{{ $medicines }}</pre>
                                                 </div>
 
                                                 <p>Fees - {{ $row['fees'] }} Kyats</p>
@@ -313,53 +317,62 @@
                             <div class="col-md-8">
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color: {{config('app.color')}}">
-                                        <h3 class="card-title">....</h3>
-
+                                        <h3 class="card-title">New Record</h3>
+                                        <input type="submit" id="btnSubmit" value="Submit" class="btn float-right" style="color: {{config('app.color')}}; background-color: white; padding: 2px 10px;">
                                     </div>
-                                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
 
-                                        <div class="form-group">
-                                            <label for="general_prescription">General Prescription</label>
+                                    <div class="card-body" style="max-height: 500px;overflow-y: scroll;">
+
+                                        <div class="form-group mb-3">
                                             <div class="row">
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="sys_bp" placeholder="Sys">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="dia_bp" placeholder="Dia">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="pr" placeholder="P.R">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="temp" placeholder="Temp">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="spo2" placeholder="Spo2">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-2 col-sm-4 mb-1">
                                                     <input type="text" class="form-control" name="rbs" placeholder="Rbs">
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <fieldset class="scheduler-border">
-                                            <legend class="scheduler-border">Investigation</legend>
-                                            <div class="form-group">
+                                        <div class="mb-3">
+                                            <textarea class="form-control c-field" id="dictionary" rows="3" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
+                                        </div>
 
-                                                <textarea class="form-control c-field" id="dictionary" rows="3" placeholder="History" name="prescription">{{ old('prescription') }}</textarea><br>
-                                                <textarea class="form-control c-field" id="diagnosis_dictionary" rows="3" placeholder="Diagnosis..." name="diag">{{ old('diag') }}</textarea>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepand">
+                                                        <span class="input-group-text">Diagnosis</span>
+                                                    </div>
+                                                    <textarea class="form-control c-field" id="diagnosis_dictionary" rows="1" name="diag">{{ old('diag') }}</textarea>
+                                                </div>
                                             </div>
-
-
-                                        </fieldset>
-
-
-                                        <fieldset class="scheduler-border">
-                                            <legend class="scheduler-border">Medicine</legend>
-
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..." name="medicines">
+                                            <div class="col-md-6">
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepand">
+                                                        <span class="input-group-text">Diseases</span>
+                                                    </div>
+                                                    <input type="text" name="disease" class="form-control">
+                                                </div>
                                             </div>
+                                        </div>
+
+                                        <fieldset class="scheduler-border mb-3">
+                                            <legend class="scheduler-border">
+                                                <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search medicine" name="medicines">
+                                            </legend>
 
                                             <div class="form-group" id="medtable">
                                                 <section class="content">
@@ -367,8 +380,8 @@
                                                         <table class="table table-bordered" id="product_info_table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th style="width:45%">Name</th>
-                                                                    <th style="width:25%">Qty</th>
+                                                                    <th style="width:45%">Medicine</th>
+                                                                    <th style="width:25%">Dosage</th>
                                                                     <th style="width:20%">Days</th>
                                                                     <th><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                                                                 </tr>
@@ -376,19 +389,17 @@
                                                             <tbody>
                                                                 <tr id="row_1">
                                                                     <td>
-                                                                        {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search..."
-                                                                        name="medicines">            --}}
-                                                                        <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                        <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Medicine">
                                                                         <input type="hidden" name="med_id[]" id="med_id_1">
                                                                         <div id="medList_1" style="display:none;width:35%;">
                                                                         </div>
                                                                     </td>
 
                                                                     <td>
-                                                                        <input type="text" name="quantity[]" id="qty_1" class="form-control">
+                                                                        <input type="text" name="quantity[]" id="qty_1" class="form-control" placeholder="Dosage">
                                                                     </td>
                                                                     <td>
-                                                                        <input type="number" name="days[]" id="days_1" class="form-control">
+                                                                        <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days">
                                                                     </td>
 
                                                                 </tr>
@@ -398,31 +409,50 @@
                                             </div>
                                         </fieldset>
 
-
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-2">
+                                                <textarea class="form-control c-field" id="procedure" rows="3" placeholder="Procedure" name="procedure">{{ old('procedure') }}</textarea>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <textarea class="form-control c-field" id="investigation" rows="3" placeholder="Investigation" name="investigation">{{ old('investigation') }}</textarea>
+                                            </div>
+                                        </div>
 
                                         <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="investigation">Investigation</label>
-                                                    <textarea class="form-control c-field" id="investigation" rows="5" placeholder="Start Typing here..." name="investigation">{{ old('investigation') }}</textarea>
+                                            <div class="col-md-4">
+                                                <input type="file" multiple="multiple" onchange="loadFile(event)" name="images[]" id="upload" hidden />
+                                                <label class="file_upload" for="upload" style="background: #E9ECEF;
+                                                padding: 8px 15px;
+                                                border: 1px solid #CED4DA; 
+                                                border-radius: 5px;
+                                                cursor: pointer;">Upload Images</label>
+                                            </div>
+
+                                            <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value="{{Auth::user()->fees}}" />
+
+                                            <div class="col-md-3">
+                                                <div class="form-check" style="padding:6px !important;">
+                                                    <div class="icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="foc" name="is_foc" value="1">
+                                                        <label for="foc">FOC</label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="procedure">Procedure</label>
-                                                    <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..." name="procedure">{{ old('procedure') }}</textarea>
+
+                                            <div class="col-md-5">
+                                                <div class="d-flex justify-content-center" id="followUp">
+                                                    <div class="form-check" style="padding:6px !important;">
+                                                        <div class="icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            <label for="isFollowup">Follow up</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <input type="file" multiple="multiple" onchange="loadFile(event)" name="images[]" id="upload" hidden />
-                                        <label class="file_upload" for="upload" style="background: gray;
-                                            padding: 8px;
-                                            border-radius: 5px;
-                                            cursor: pointer;">Upload Images</label>
-
                                         <div id="imgModal" class="modal">
-                                            <span id="close2" class="close">&times;</span>
+                                            <span id="imgClose" class="close">&times;</span>
                                             <div id="carousel" class="carousel slide">
                                                 <div class="carousel-inner" id="carousel-inner"></div>
                                                 <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
@@ -439,38 +469,6 @@
 
                                         <div class="form-group" id="image">
                                             {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value="{{Auth::user()->fees}}" />
-                                            <div class="col-md-6">
-                                                <div class="d-flex justify-content-center">
-                                                    <div class="form-check" style="padding:6px !important;">
-
-                                                        <div class="icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="foc" name="is_foc" value="1">
-                                                            <label for="foc">FOC</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-
-                                                <div class="d-flex justify-content-center" id="followUp">
-                                                    <div class="form-check" style="padding:6px !important;">
-
-                                                        <div class="icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
-                                                            <label for="isFollowup">Follow up</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group float-right">
-                                            <input type="submit" id="btnSubmit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}">
                                         </div>
                                     </div>
                                     <!-- Bootstrap Switch -->
@@ -597,12 +595,12 @@
         }
     };
 
-    let modal = document.getElementById("imgModal");
+    let imgModal = document.getElementById("imgModal");
     let captionText = document.getElementById("caption");
 
     function showImage(id, i) {
         let origin_image = document.getElementById("myImg" + id + i);
-        modal.style.display = "block";
+        imgModal.style.display = "block";
         captionText.innerHTML = origin_image.alt;
 
         let carouselInner = document.getElementById("carousel-inner");
@@ -640,17 +638,17 @@
     }
 
     // Get the <span> element that closes the modal
-    let span = document.getElementById("close2");
+    let imgClose = document.getElementById("imgClose");
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
+    imgClose.onclick = function() {
+        imgModal.style.display = "none";
     }
 
     // When the user clicks anywhere outside of the modal, close it
     $(window).click(function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+        if (event.target == imgModal) {
+            imgModal.style.display = "none";
         }
     });
 
@@ -702,12 +700,12 @@
                         data = res[i].split('^');
                         html += '<tr id="row_' + row_id + '">' +
                             '<td>' +
-                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" onkeyup="searchMed(' + row_id + ')" value="' + data[1] + '"  class="form-control" placeholder="Search Medicine">' +
+                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" onkeyup="searchMed(' + row_id + ')" value="' + data[1] + '"  class="form-control" placeholder="Medicine">' +
                             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
                             '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
                             '</td>' +
-                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" value="' + data[2] + '" ></td>' +
-                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"  value="' + data[3] + '"></td>' +
+                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" value="' + data[2] + '" ></td>' +
+                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" value="' + data[3] + '"></td>' +
                             '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
                             '</tr>';
                         row_id++;
