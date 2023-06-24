@@ -28,6 +28,7 @@ class PatientRequest extends FormRequest
             'age' => 'required',
             'father_name' => 'nullable',
             'address' => 'required',
+            'disease' => 'required',
             'gender' => 'required',
             'phoneNumber' => 'nullable',
             'drug_allergy' => 'nullable',

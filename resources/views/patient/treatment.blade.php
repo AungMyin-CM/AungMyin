@@ -163,17 +163,16 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-2">
-                                    <h6 id="name">{{ $data['patient']['name'] }}
-                                        <span class="text-danger" style="font-weight: bold;">{{ $data['patient']['gender'] == 1 ? 'M' : 'F' }}</span>
-                                        <span>{{ $data['patient']['age'] }} years</span>
-                                    </h6>
+                                <div class="col-sm-2 mb-2">
+                                    <span id="name">{{ $data['patient']['name'] }}</span>
+                                    <span id="gender" class="text-danger" style="font-weight: bold;">{{ $data['patient']['gender'] == 1 ? 'M' : 'F' }}</span>
+                                    <span id="age">{{ $data['patient']['age'] }} years</span>
                                 </div>
                                 <div class="col-sm-4">
                                     <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $data['patient']['drug_allergy'] ? $data['patient']['drug_allergy'] : 'None'  }} </h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h6 id="diseases"><b>Diseases :</b> </h6>
+                                    <h6 id="disease"><b>Diseases :</b> {{ $data['patient']['disease'] }}</h6>
                                 </div>
                                 <div class="col-sm-2">
                                     <nav aria-label="breadcrumb" class="float-right">
@@ -234,6 +233,8 @@
                                                         <small title="{{$row['update_at']}}">{{ $row['updated_at']->format('d-M-Y g:iA') }}</small>
                                                     </div>
                                                 </div>
+
+                                                <p>Diseases: {{ $row['disease'] }}</p>
 
                                                 <ul class="list-unstyled">
                                                     @if($row['prescription'] != '')
@@ -553,19 +554,26 @@
                     $('.wrapper').css('opacity', '1');
                     $('.middle').css('opacity', '0.1');
 
-                    let gender = response.gender == 1 ? 'Male' : 'Female';
-                    let father_name = response.father_name ?? '';
-                    let phoneNumber = response.phoneNumber ?? '';
-                    let drug_allergy = response.drug_allergy ?? '';
-                    let summary = response.summary ?? '';
+                    let gender = response.gender == 1 ? 'M' : 'F';
+                    let drug_allergy = response.drug_allergy ?? 'None';
 
-                    $('#name').html("<b>Name :</b> " + response.name);
-                    $('#age').html("<b>Age :</b> " + response.age);
-                    $('#father_name').html("<b>Father's Name :</b> " + father_name);
-                    $('#gender').html("<b>Gender :</b> " + gender);
-                    $('#phoneNumber').html("<b>Phone-Number :</b> " + phoneNumber);
-                    $('#address').html("<b>Address :</b> " + response.address);
+                    $('#name').html("<span>" + response.name + "</span>");
+                    $('#gender').html("<span class='text-danger'>" + gender + "</span>");
+                    $('#age').html("<span>" + response.age + ' years' + "</span>");
                     $('#drug_allergy').html("<b>Allergy :</b> " + drug_allergy);
+                    $('#disease').html("<b>Disease :</b> " + response.disease);
+
+                    let modalGender = response.gender == 1 ? 'Male' : 'Female';
+
+                    $('#modalName').text(response.name);
+                    $('#modalAge').text(response.age);
+                    $('#modalGender').text(modalGender);
+                    $('#modalDrugAllergy').text(response.drug_allergy);
+                    $('#modalDisease').text(response.disease);
+                    $('#modalFatherName').text(response.father_name);
+                    $('#modalCode').text(response.code);
+                    $('#modalPhone').text(response.phoneNumber);
+                    $('#modalAddress').text(response.address);
                 },
                 error: function(xhr) {
                     // Handle the error response
@@ -577,11 +585,13 @@
                     let name = data.errors.name ? data.errors.name[0] : '';
                     let age = data.errors.age ? data.errors.age[0] : '';
                     let address = data.errors.address ? data.errors.address[0] : '';
+                    let disease = data.errors.disease ? data.errors.disease[0] : '';
                     let gender = data.errors.gender ? data.errors.gender[0] : '';
 
                     $('#nameError').html(name);
                     $('#ageError').html(age);
                     $('#addressError').html(address);
+                    $('#diseaseError').html(disease);
                     $('#genderError').html(gender);
                 }
             });

@@ -15,6 +15,7 @@ class Visit extends Model
         'pos_id',
         'prescription',
         'diag',
+        'disease',
         'assigned_medicines',
         'images',
         'is_foc',
