@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\UserClinic;
+use Illuminate\Support\Facades\Hash;
+
 
 
 use Auth;
@@ -53,47 +55,45 @@ class UserController extends Controller
             $file->move(public_path('images/avatars'), $filename);
         }
 
-        if ($request->title == 'Mr') {
-            $gender = 1;
-        } else {
-            $gender = 0;
-        }
+        // if ($request->title == 'Mr') {
+        //     $gender = 1;
+        // } else {
+        //     $gender = 0;
+        // }
 
-        $user_id = $user->create([
-            'title' => $request->title,
-            'code' => $request->code,
-            'name' => $request->name,
+
+         $user->where('email', $request->email)->update([
+            'name' => $request->first_name.' '.$request->last_name,
             'avatar' => $filename,
-            'email' => $request->email,
-            'password' => $request->password,
-            'phoneNumber' => $request->phoneNumber,
-            'city' => $request->city,
-            'country' => $request->country,
-            'address' => $request->address,
-            'gender' => $gender
-        ])->id;
+            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+           
+        ]);
 
-        $hash = $this->generateTokenVerify();
-        $token = $user_id . $hash;
-        $verifyURL = route('verify', ['token' => $hash, 'value' => $user_id, 'service' => 'Email_verification']);
+        // $hash = $this->generateTokenVerify();
+        // $token = $user_id . $hash;
+        // $verifyURL = route('verify', ['token' => $hash, 'value' => $user_id, 'service' => 'Email_verification']);
 
-        $message = 'Dear <b>' . $request->name . '</b>';
-        $message = 'Thanks for singing up, we just need to verify your email address';
-        $mail_data = [
-            'recipient' => $request->email,
-            'fromEmail' => 'aungmyin.cm@gmail.com',
-            'fromName' => 'Aung Myin Authentication',
-            'subject' => 'Email Verification',
-            'body' => $message,
-            'actionLink' => $verifyURL,
-        ];
-        \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
-            $message->to($mail_data['recipient'])
-                ->from($mail_data['fromEmail'], $mail_data['fromName'])
-                ->subject($mail_data['subject']);
-        });
+        // $message = 'Dear <b>' . $request->name . '</b>';
+        // $message = 'Thanks for singing up, we just need to verify your email address';
+        // $mail_data = [
+        //     'recipient' => $request->email,
+        //     'fromEmail' => 'aungmyin.cm@gmail.com',
+        //     'fromName' => 'Aung Myin Authentication',
+        //     'subject' => 'Email Verification',
+        //     'body' => $message,
+        //     'actionLink' => $verifyURL,
+        // ];
+        // \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+        //     $message->to($mail_data['recipient'])
+        //         ->from($mail_data['fromEmail'], $mail_data['fromName'])
+        //         ->subject($mail_data['subject']);
+        // });
 
-        return redirect('/login')->with('success', 'You need to verify your account. We have sent you an activation link, please check your mail');
+        echo 'complete-registration';
+
+        // return redirect('/login')->with('success', 'You need to verify your account. We have sent you an activation link, please check your mail');
     }
 
     public function sendOtp(Request $request)
@@ -101,11 +101,23 @@ class UserController extends Controller
 
         $user = new User();
 
-        $user_id = $user->create([
-           'email' => $request->email
-        ])->id;
-
         $otp = $this->otpGenerator();
+
+        $user = User::where("email",$request->email)->count();
+
+        if($user > 0)
+        {
+            $user_id = User::where('email',$request->email)->value('id');
+            User::where('email',$request->email)->update(['otp' => $otp]);
+           
+        }else{
+
+            $user_id = User::create([
+                'email' => $request->email,
+                'otp' => $otp
+            ])->id;
+
+        }
 
         $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
 
@@ -125,9 +137,64 @@ class UserController extends Controller
                 ->subject($mail_data['subject']);
         });
 
-        echo "Done";
+        echo "Email Sent";
 
 
+    }
+
+    public function checkOtp(Request $request)
+    {
+
+        $otp = str_replace(',','',$request->otp);
+
+        $email = $request->email;
+
+        $value = User::where('email',$email)->where('otp',$otp)->count();
+
+        if($value == 1)
+        {
+            User::where('email',$email)->update(['email_verified' => 1, 'email_verified_at' => Carbon::now()]);
+
+            echo "valid";
+        }else{
+            echo "invalid";
+        }
+
+
+    }
+
+    public function showMailTemp()
+    {
+        // $user = new User();
+
+        // $user_id = $user->create([
+        //    'email' => $request->email
+        // ])->id;
+
+        // $otp = $this->otpGenerator();
+
+        $otp = $this->otpGenerator();
+
+        $verifyURL = route('verify', ['otp' => $otp, 'value' => '1', 'service' => 'Email_verification']);
+
+        $message = 'Hello, <b>' . 'email' . '</b>';
+        $message = 'Thanks for singing up, we just need to verify your email address';
+        $mail_data = [
+            'recipient' => 'email@gmail.com',
+            'fromEmail' => 'aungmyin.cm@gmail.com',
+            'fromName' => 'Aung Myin Authentication',
+            'subject' => 'Email Verification',
+            'body' => $message,
+            'otp' => $otp,
+        ];
+        // \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+        //     $message->to($mail_data['recipient'])
+        //         ->from($mail_data['fromEmail'], $mail_data['fromName'])
+        //         ->subject($mail_data['subject']);
+        // });
+
+        return view('email-template',compact('otp'));
+        
     }
 
     public function generateTokenVerify()
@@ -190,7 +257,7 @@ class UserController extends Controller
     {
         if ($request->get('email')) {
             $email = $request->get('email');
-            $data = User::where('email', $email)
+            $data = User::where('email', $email)->where('email_verified','1')
                 ->count();
             if ($data > 0) {
                 echo 'not_unique';

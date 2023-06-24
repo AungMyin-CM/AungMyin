@@ -152,7 +152,10 @@ class ClinicController extends Controller
 
         $clinic = Clinic::find(session()->get('cc_id'));
 
+        return $clinic;
+
         $package = Package::find($clinic->package_id);
+
 
         $clinic_user = UserClinic::where('clinic_id',$clinic->id)->where('user_id',Auth::id())->first();
 

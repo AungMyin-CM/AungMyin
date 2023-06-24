@@ -54,9 +54,9 @@
                                     <div class="col-md-4">
                                         <div class="container">
                                             <?php
-                                                $date = \Carbon\Carbon::now();
+                                                $date = \Carbon\Carbon::now()->format('Y-m-d');
                                             ?>
-                                            @if($date > $data->clinic[0]->expire_at)
+                                            @if($date > $data->expire[0]->expire_at)
                                                 <a href="{{route('complete.payment',Crypt::encrypt($data->clinic_id))}}">
                                             @else
                                                 <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
@@ -70,10 +70,8 @@
                                                         <div class="col-md-8">
                                                             <div class="card-body">
                                                             <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
+                                                                @if($date > $data->expire[0]->expire_at)
 
-                                                            
-                                                                
-                                                                @if($date > $data->clinic[0]->expire_at)
                                                                     <button class="btn btn-primary btn-sm mt-3 app-color">Complete Your Payment</button>
                                                                 @else
                                                                     <p class="card-text">

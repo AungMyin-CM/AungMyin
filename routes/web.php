@@ -31,7 +31,7 @@ use App\Http\Controllers\ProcedureController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('/send-otp',[UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
+Route::post('/send-otp',[UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
 
 Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
 
@@ -43,6 +43,13 @@ Route::get('payment', [ClinicController::class, 'payment'])->name('payment')->mi
 Route::post('register-clinic', [ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
 
 Route::post('/contact',[ContactController::class,'store'])->name('contact-us');
+
+// Route::get('/email-view',function() {
+//     return view('email-template');
+// });
+
+Route::get('/email-view',[UserController::class,'showMailTemp'])->name('contact-us');
+
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
@@ -151,6 +158,8 @@ Route::post('username_available/check', [UserController::class, 'checkUsername']
 Route::post('user-register', [UserController::class, 'register'])->name('user.register');
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
+
+Route::post('/checkOtp',[UserController::class,'checkOtp'])->name('verify-otp');
 
 Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 

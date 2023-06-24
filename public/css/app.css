@@ -327,7 +327,7 @@ ul#patient_group>li:hover{
 }
 
 .app-color{
-  background-color: #003049;
+  background-color: #003049 !important;
 }
 
 .app-color:hover{
