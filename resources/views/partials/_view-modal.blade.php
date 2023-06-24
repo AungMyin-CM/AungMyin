@@ -12,31 +12,43 @@
             <div class="card">
                 <div class="card-body">
                     <section class="mb-1">
-                        <h5 class="mb-3">{{ $data['patient']['name'] }}</h5>
+                        <h5 id="modalName" class="mb-3">{{ $data['patient']['name'] }}</h5>
                     </section>
                     <section>
-                        <span class="text-muted">Age: </span>{{ $data['patient']['age'] }}
+                        <span class="text-muted">Age: </span>
+                        <span id="modalAge">{{ $data['patient']['age'] }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Gender: </span>{{ $data['patient']['gender'] == 1 ? 'Male' : 'Female' }}
+                        <span class="text-muted">Gender: </span>
+                        <span id="modalGender">{{ $data['patient']['gender'] == 1 ? 'Male' : 'Female' }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Drug Allergy: </span>{{ $data['patient']['drug_allergy'] }}
+                        <span class="text-muted">Drug Allergy: </span>
+                        <span id="modalDrugAllergy">{{ $data['patient']['drug_allergy'] }}</span>
                     </section>
                     <section>
                         <span class="text-muted">Diseases: </span>
+                        <span id="modalDisease">{{ $data['patient']['disease'] }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Father name: </span>{{ $data['patient']['father_name'] }}
+                        <span class="text-muted">Father name: </span>
+                        <span id="modalFatherName">{{ $data['patient']['father_name'] }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Code: </span>{{ $data['patient']['code'] }}
+                        <span class="text-muted">Code: </span>
+                        <span id="modalCode">{{ $data['patient']['code'] }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Phone: </span>{{ $data['patient']['phoneNumber'] }}
+                        <span class="text-muted">Phone: </span>
+                        <span id="modalPhone">{{ $data['patient']['phoneNumber'] }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Address: </span>{{ $data['patient']['address'] }}
+                        <span class="text-muted">Address: </span>
+                        <span id="modalAddress">{{ $data['patient']['address'] }}</span>
+                    </section>
+                    <section>
+                        <span class="text-muted">Summary: </span>
+                        <span id="modalSummary">{{ $data['patient']['summary'] }}</span>
                     </section>
                 </div>
             </div>

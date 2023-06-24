@@ -23,7 +23,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control" id="patient_name" name="name" placeholder="Name" value=" {{ $data['patient']['name'] }}">
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $data['patient']['name'] }}">
                                             <span id="nameError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="age">Age</label>
-                                            <input type="number" class="form-control" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $data['patient']['age'] }}">
+                                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $data['patient']['age'] }}">
                                             <span id="ageError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -55,8 +55,14 @@
 
                                 <div class="form-group">
                                     <label for="address">Address</label>
-                                    <textarea class="form-control" placeholder="Address" name="address">{{ $data['patient']['address'] }}</textarea>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $data['patient']['address'] }}</textarea>
                                     <span id="addressError" class="text-danger small"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="disease">Disease</label>
+                                    <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ $data['patient']['disease'] }}</textarea>
+                                    <span id="diseaseError" class="text-danger small"></span>
                                 </div>
 
                                 <div class="form-group">

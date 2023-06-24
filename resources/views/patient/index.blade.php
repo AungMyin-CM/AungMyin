@@ -95,7 +95,7 @@
                                         <span class="text-muted">Father name: </span>{{ $row->father_name }}
                                     </section>
                                     <section class="mb-1">
-                                        <span class="text-muted">Code: </span>{{ $row->code }}
+                                        <span class="text-muted">Disease: </span>{{ $row->disease }}
                                     </section>
                                     <section class="mb-1">
                                         <span class="text-muted">Age: </span>{{ $row->age }}

@@ -138,9 +138,9 @@
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     @if($data['name'] != '')
-                                                    <input type="text" class="form-control" id="patient_name" name="name" placeholder="Name" value=" {{ $data['name'] }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $data['name'] }}">
                                                     @else
-                                                    <input type="text" class="form-control" id="patient_name" name="name" placeholder="Name" value="{{ old('name') }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value="{{ old('name') }}">
                                                     @endif
 
                                                     @error('name') <span class="text-danger">{{ $message }}</span>@enderror
@@ -158,7 +158,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="age">Age</label>
-                                                    <input type="number" class="form-control" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ old('age') }}">
+                                                    <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ old('age') }}">
 
                                                     @error('age') <span class="text-danger">{{ $message }}</span>@enderror
                                                 </div>
@@ -167,16 +167,23 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="phoneNumber">Phone Number</label>
-                                                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value={{ old('phoneNumber') }}>
+                                                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ old('phoneNumber') }}">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
+                                            <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ old('address') }}</textarea>
 
                                             @error('address') <span class="text-danger">{{ $message }}</span>@enderror
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="disease">Disease</label>
+                                            <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ old('disease') }}</textarea>
+
+                                            @error('disease') <span class="text-danger">{{ $message }}</span>@enderror
                                         </div>
 
                                         <div class="form-group">
@@ -186,7 +193,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="male" type="radio" value="1" name="gender">
+                                                        <input class="form-check-input @error('gender') is-invalid @enderror" id="male" type="radio" value="1" name="gender">
                                                         <label class="form-check-label" for="male">
                                                             Male
                                                         </label>
@@ -194,7 +201,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="female" type="radio" value="0" name="gender">
+                                                        <input class="form-check-input @error('gender') is-invalid @enderror" id="female" type="radio" value="0" name="gender">
                                                         <label class="form-check-label" for="female">
                                                             Female
                                                         </label>
