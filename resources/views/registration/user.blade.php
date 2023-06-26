@@ -222,6 +222,9 @@ input
 
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bdbb995 (Merge conflict solved)
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 
@@ -247,11 +250,14 @@ input
             }
         };
 
+<<<<<<< HEAD
 =======
 
     <script>
 
 >>>>>>> 9199fce (Merge conflict solved)
+=======
+>>>>>>> bdbb995 (Merge conflict solved)
         $(document).ready(function(){
             $.ajaxSetup({
                 headers: {
@@ -259,6 +265,9 @@ input
                 }
             });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> bdbb995 (Merge conflict solved)
             $('#otpModal').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -273,9 +282,12 @@ input
             // toggle the eye slash icon
             this.classList.toggle('fa-eye');
         });
+<<<<<<< HEAD
 =======
         })
 >>>>>>> 9199fce (Merge conflict solved)
+=======
+>>>>>>> bdbb995 (Merge conflict solved)
         
 
 
@@ -287,6 +299,14 @@ input
             e.preventDefault();
             nextStep()
         });
+<<<<<<< HEAD
+=======
+
+        prevStepBtn.addEventListener("click", e => {
+            e.preventDefault();
+            prevStep()
+        });
+>>>>>>> bdbb995 (Merge conflict solved)
 
 <<<<<<< HEAD
         prevStepBtn.addEventListener("click", e => {
@@ -311,60 +331,183 @@ function nextStep(){
 =======
 
 function nextStep(){
-    
-    var email = $('#email').val();
-    var _token = $('input[name="_token"]').val();
-    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if(!filter.test(email))
-    {    
-      
-        $('#email-error').text('Invalid Email');
-        $('#email-error').removeClass('d-none');
-       
-    }
-    else
-    {
 
-   
+    let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+    //Check if we reached the last step
+    if(activeStepIndex >= subForms.length - 1)
+        nextStepBtn.setAttribute('hidden','hidden');
+        nextStepBtn.setAttribute('disabled','disabled');
+
+        // button = document.createElement('button');
+        // $(button).addClass('btn btn-primary').css({'background-color':'#003049 !important;'}).setAttribute('id','completeRegistration');
+        var button = $('<input/>').attr({ type: 'button', name:'btn1',id: 'complete-registration', value:'Complete Registration',class: 'btn btn-primary m-2',style: 'background-color:#003049 !important;' });
+        $('#user-form').append('<i class="fa fa-spinner fa-spin d-none m-2" id="loader"></i>',button);
+
+
+    slide(transBy);
+
+    console.log(transBy);
+
+    $('#complete-registration').on('click',function(){
+            console.log(checkEmptysubForm());
+            if(checkEmptysubForm())
+            {
+                if($("#password").val().length > 5)
+                {
+
+                    let f_name = $("#f_name").val();
+                    let l_name = $("#l_name").val();
+                    let password = $("#password").val();
+                    let email = $("#email").val();
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    $.ajax({
+                    url:"{{ route('user.register') }}",
+                    method:"POST",
+                    data:{email: email,first_name: f_name,last_name: l_name,password: password},
+                    beforeSend: function(){
+                        $(".form").addClass('opacity-25');
+                        $("#loader").removeClass('d-none');
+                        $("#complete-registration").addClass('d-none');
+                    },
+
+                    success:function(result){
+                        if(result == 'complete-registration'){
+                            endFormJourney();
+                        }
+
+
+                    }
+                    
+
+                    });
+                }else{
+                    $("#password-error").text('Password should be at least 6 letters');
+                    
+                }
+            }
+
+        
+
+        
+    });
+
+    
+
+    // var email = $('#email').val();
+    // var _token = $('input[name="_token"]').val();
+    // var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    // if(!filter.test(email))
+    // {    
+    //     $('#email-error').text('Invalid Email !');
+    //     $('#email-error').removeClass('d-none');
+    // }
+    // else
+    // {
+
+    //     $.ajax({
+    //     url:"{{ route('email_available.check') }}",
+    //     method:"POST",
+    //     data:{email:email},
+    //     success:function(result)
+    //     {
+        
+    //         if(result != 'unique')
+    //         {
+    //             $('#email-error').text('Email already exists !');
+    //             $('#email-error').removeClass('d-none');
+                
+
+    //         }else{
+    //             // prevStepBtn.classList.remove("d-none");
+    //             // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+    //             // //Check if we reached the last step
+    //             // if(activeStepIndex >= subForms.length - 1)
+    //             //     nextStepBtn.innerText = "Finish";
+    //             // slide(transBy);
+    //             $.ajax({
+    //                 url : "{{route('send-otp')}}",
+    //                 method : "POST",
+    //                 data:{email:email},
+    //                 beforeSend: function(){
+    //                     $(".form").addClass('opacity-25');
+    //                 },
+    //                 success:function(result)
+    //                 {
+
+    //                     if(result == "Email Sent")
+    //                     {
+    //                         $("#mail").text(email);
+    //                         $("#modal-btn").trigger('click');
+    //                         $(".form").removeClass('opacity-25');
+
+    //                     }
+    //                 }
+
+    //             });
+    //         }
+            
+    //     }
+    //     })
+    // }
+    
+}
+
+
+
+function verifyOtp()
+{
+
+    const inputs = document.querySelectorAll("input[type='number']")
+    var email = $('#email').val();
+
+    let otp = [];
+    inputs.forEach((input, index1) => {
+       otp.push(input.value);
+    });
+
+    var otpValue = otp.toString();
 
     $.ajax({
-    url:"{{ route('email_available.check') }}",
-    method:"POST",
-    data:{email:email},
-    success:function(result)
-    {
-       
-        if(result != 'unique')
+        url:"{{ route('verify-otp') }}",
+        method:"POST",
+        data:{email:email,otp: otpValue},
+        beforeSend: function(){
+            $("#verify").text('');
+            $("#loader").removeClass('d-none');
+        },
+        success:function(result)
         {
-            $('#email-error').removeClass('d-none');
-            
+            $("#verify").text('Verify');
+            $("#loader").addClass('d-none');
 
-        }else{
-            // prevStepBtn.classList.remove("d-none");
-            // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
-            // //Check if we reached the last step
-            // if(activeStepIndex >= subForms.length - 1)
-            //     nextStepBtn.innerText = "Finish";
-            // slide(transBy);
-            $.ajax({
-                url : "{{route('send-otp')}}",
-                method : "GET",
-                data:{email:email},
-                success:function(result)
-                {
-                   alert(result)
-                }
+            if(result == 'valid')
+            {
 
-            });
+                $('#otpModal').modal('toggle');
+
+                prevStepBtn.classList.remove("d-none");
+                let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+                //Check if we reached the last step
+                if(activeStepIndex >= subForms.length - 1)
+                    nextStepBtn.innerText = "Finish";
+                slide(transBy);
+            }else if(result == 'invalid')
+            {
+                $("#otp-validation").text("Invalid Otp");
+
+            }
         }
-        
-    }
-    })
-    }
-    
+    });
 }
 >>>>>>> 9199fce (Merge conflict solved)
 
+<<<<<<< HEAD
     slide(transBy);
 
     console.log(transBy);
@@ -550,6 +693,31 @@ function verifyOtp()
         stepsIndicators[activeStepIndex].classList.add("active")
     }
 
+=======
+   
+    function prevStep(){
+        nextStepBtn.innerText = "Next";
+        let transBy = subForms[activeStepIndex].clientWidth * --activeStepIndex * -1;
+        //Check if we are at the first step
+        if(activeStepIndex < 1)
+        prevStepBtn.classList.add("d-none");
+        slide(transBy);
+    }
+
+
+    function slide(slideBy){
+        subFormsWrapper.style.setProperty("--transX", `${slideBy}px`);
+        // updateIndicators();
+    }
+
+    function updateIndicators(){
+        stepsIndicators.forEach(indic => {
+            indic.classList.remove("active");
+        });
+        stepsIndicators[activeStepIndex].classList.add("active")
+    }
+
+>>>>>>> bdbb995 (Merge conflict solved)
     function checkEmptysubForm(){
         const subFormIndex = activeStepIndex;
         const subFormInputs = Array.from(subForms[subFormIndex].querySelectorAll("input:not([type=file])"));
