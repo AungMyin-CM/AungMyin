@@ -195,6 +195,40 @@ class UserController extends Controller
         
     }
 
+    public function sendOtp(Request $request)
+    {
+
+        $user = new User();
+
+        $user_id = $user->create([
+           'email' => $request->email
+        ])->id;
+
+        $otp = $this->otpGenerator();
+
+        $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
+
+        $message = 'Hello, <b>' . $request->email . '</b>';
+        $message = 'Thanks for singing up, we just need to verify your email address';
+        $mail_data = [
+            'recipient' => $request->email,
+            'fromEmail' => 'aungmyin.cm@gmail.com',
+            'fromName' => 'Aung Myin Authentication',
+            'subject' => 'Email Verification',
+            'body' => $message,
+            'otp' => $otp,
+        ];
+        \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+            $message->to($mail_data['recipient'])
+                ->from($mail_data['fromEmail'], $mail_data['fromName'])
+                ->subject($mail_data['subject']);
+        });
+
+        echo "Done";
+
+
+    }
+
     public function generateTokenVerify()
     {
         $characters = 'MV4560GM678ZA0B0E1DABCDEFGHIJKLM';

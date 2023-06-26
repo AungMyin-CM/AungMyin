@@ -221,6 +221,7 @@ input
     </div>
 
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
 
@@ -246,12 +247,18 @@ input
             }
         };
 
+=======
+
+    <script>
+
+>>>>>>> 9199fce (Merge conflict solved)
         $(document).ready(function(){
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+<<<<<<< HEAD
             $('#otpModal').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -266,6 +273,9 @@ input
             // toggle the eye slash icon
             this.classList.toggle('fa-eye');
         });
+=======
+        })
+>>>>>>> 9199fce (Merge conflict solved)
         
 
 
@@ -278,6 +288,7 @@ input
             nextStep()
         });
 
+<<<<<<< HEAD
         prevStepBtn.addEventListener("click", e => {
             e.preventDefault();
             prevStep()
@@ -297,6 +308,62 @@ function nextStep(){
         var button = $('<input/>').attr({ type: 'button', name:'btn1',id: 'complete-registration', value:'Complete Registration',class: 'btn btn-primary m-2',style: 'background-color:#003049 !important;' });
         $('#user-form').append('<i class="fa fa-spinner fa-spin d-none m-2" id="loader"></i>',button);
 
+=======
+
+function nextStep(){
+    
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+      
+        $('#email-error').text('Invalid Email');
+        $('#email-error').removeClass('d-none');
+       
+    }
+    else
+    {
+
+   
+
+    $.ajax({
+    url:"{{ route('email_available.check') }}",
+    method:"POST",
+    data:{email:email},
+    success:function(result)
+    {
+       
+        if(result != 'unique')
+        {
+            $('#email-error').removeClass('d-none');
+            
+
+        }else{
+            // prevStepBtn.classList.remove("d-none");
+            // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+            // //Check if we reached the last step
+            // if(activeStepIndex >= subForms.length - 1)
+            //     nextStepBtn.innerText = "Finish";
+            // slide(transBy);
+            $.ajax({
+                url : "{{route('send-otp')}}",
+                method : "GET",
+                data:{email:email},
+                success:function(result)
+                {
+                   alert(result)
+                }
+
+            });
+        }
+        
+    }
+    })
+    }
+    
+}
+>>>>>>> 9199fce (Merge conflict solved)
 
     slide(transBy);
 
