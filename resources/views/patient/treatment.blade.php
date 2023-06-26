@@ -358,10 +358,10 @@
                                             <fieldset class="scheduler-border">
                                                 <legend class="scheduler-border">Medicine</legend>
 
-                                                <div class="form-group">
+                                                {{-- <div class="form-group">
                                                     <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search by Shorthand..."
                                                         name="medicines"> 
-                                                </div>
+                                                </div> --}}
 
                                                 <div class="form-group" id="medtable">
                                                     <section class="content">
@@ -372,15 +372,13 @@
                                                                     <th style="width:45%">Name</th>                                                   
                                                                     <th style="width:25%">Qty</th>
                                                                     <th style="width:20%">Days</th>
-                                                                    <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                                                                    <th ><button type="button" id="add_tret_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                                                                 </tr>
                                                                 </thead>   
                                                                 <tbody>
                                                                 <tr id="row_1">
                                                                     <td>
-                                                                        {{-- <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search..."
-                                                                        name="medicines">            --}}
-                                                                        <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                        <input type="text" name="med_name[]" id="product_search_1"  med-data-id = "1" onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">
                                                                         <input type = "hidden" name = "med_id[]" id = "med_id_1">
                                                                         <div id="medList_1" style="display:none;width:35%;">
                                                                         </div>
@@ -508,13 +506,36 @@
         modal1.style.display = "block";
     }
 
+    $("#add_tret_med_row").on('click', function() {
+        var table = $("#product_info_table");
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+        var row_id = count_table_tbody_tr + 1;
+        var html = '<tr id="row_'+row_id+'">'+
+            '<td>'+ 
+            '<input type="search" name="med_name[]" id="product_search_'+row_id+'"  med-data-id = '+row_id+' onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">'+
+            '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'">'+
+            '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
+            '</td>'+ 
+            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control"></td>'+           
+            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"></td>'+
+            '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+            '</tr>';
+        if(count_table_tbody_tr >= 1) {
+        $("#product_info_table tbody tr:last").after(html);  
+        }
+        else {
+        $("#product_info_table tbody").html(html);
+        }
+    });
+
     $("#close1").click(function(e){
         modal1.style.display = "none";
     })
 
         $(document).ready(function() {
             $(window).on("keydown", function(event){
-            
+                var id = event.target.id;
+              
                 // Check to see if ENTER was pressed and the submit button was active or not
                 if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
                 // It was, so submit the form
@@ -526,6 +547,11 @@
                             
                             //  Invoke click event of target so that non-form submit behaviors will work
                             event.target.click();
+                }
+                else if(event.keyCode === 13 && id.includes("product_search")){
+                 
+                    searchMed(event);
+                    event.preventDefault();
                 }
                 else if(event.keyCode === 13){
                     event.preventDefault();
@@ -654,13 +680,10 @@
 
         var dictCode = '';
 
-    function medicine_dictionary(event) {
-   
-        var key = event.keyCode;
-        var evtType = event.type;
+    function medicine_dictionary(event) {   
+        var id = event.target.id;    
         var clinic_id = {{ session()->get('cc_id') }};
-        var name = document.getElementById("medicine_dictionary").value;
-      
+        var name = document.getElementById(id).value;
         if(event.key != '') {
 
             $.ajaxSetup({
@@ -692,11 +715,16 @@
                         var row_id =  count_table_tbody_tr + 1;
                     }
                     var html = "";
-                    for (i =0; i<fil_res.length ; i++){
+                    data = res[0].split('^');
+                    var current_rowid =  event.target.getAttribute("med-data-id");      
+                    document.getElementById("product_search_"+current_rowid).value = data[1];
+                    document.getElementById("qty_"+current_rowid).value = data[2];
+                    document.getElementById("days_"+current_rowid).value = data[3];
+                    for (i =1; i<fil_res.length ; i++){
                         data = res[i].split('^');
                             html += '<tr id="row_'+row_id+'">'+
                         '<td>'+ 
-                        '<input type="text" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
+                        '<input type="text" name="med_name[]" id="product_search_'+row_id+'" med-data-id = '+row_id+' onkeypress="return searchMed(event)" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
                         '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
                         '<div id="medList_'+row_id+'" style="position:absolute;top:10px;display:none;width:35%;"></div>'+
                         '</td>'+ 
@@ -706,13 +734,13 @@
                         '</tr>';
                         row_id++;
                     }
-
-                    if(count_table_tbody_tr == 1 && $("#product_search_1").val() == '')
-                    {
-                        $("#product_info_table tbody").html(html)
-                    }else{
-                        $("#product_info_table tr:last").after(html)
-                    }
+                    $("#product_info_table tbody").append(html)
+                    // if(count_table_tbody_tr == 1 && $("#product_search_1").val() == '')
+                    // {
+                    //     $("#product_info_table tbody").html(html)
+                    // }else{
+                    //     $("#product_info_table tr:last").after(html)
+                    // }
                         
     
                 }
@@ -720,9 +748,13 @@
         }
  
     }
-        function searchMed(rowid) {
-            var query = $("#product_search_"+rowid).val();
-        
+        function searchMed(event) {
+          if(event.keyCode == 13){
+            medicine_dictionary(event)
+          }
+          else{
+            var rowid =  event.target.getAttribute("med-data-id");        
+             var query = $("#product_search_"+rowid).val();
             var clinic_id = {{ session()->get('cc_id') }};
             $.ajaxSetup({
                 headers: {
@@ -733,8 +765,7 @@
                 type: "POST",
                 url: '/clinic-system/searchMed',
                 data: { key: query, clinic_id: clinic_id, rowid: rowid}
-            }).done(function( response ) {        
-          
+            }).done(function( response ) {           
                 if(query != '')
                 {
                     $('#medList_'+rowid).css("display","contents");  
@@ -747,6 +778,8 @@
                     $('#medList_'+rowid).html("");
                 }
             });
+          }
+      
         };
         function s_option(rowid)
         {
