@@ -183,6 +183,7 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
         Route::get('/users', [SuperAdminController::class, 'users'])->name('superadmin.users');
         Route::get('/users?type={type}', [SuperAdminController::class, 'users'])->name('superadmin.filter');
         Route::get('/users/{id}', [SuperAdminController::class, 'edit'])->name('superadmin.edit');
+        Route::patch('/users/{id}', [SuperAdminController::class, 'update'])->name('superadmin.update');
 
         Route::post('/logout', [SuperAdminController::class, 'logout'])->name('superadmin.logout');
     });
