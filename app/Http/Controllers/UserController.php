@@ -69,6 +69,10 @@ class UserController extends Controller
            
         ]);
 
+        $user_id = User::where('email',$request->email)->value('id');
+
+        Auth::loginUsingId($user_id);
+
         // $hash = $this->generateTokenVerify();
         // $token = $user_id . $hash;
         // $verifyURL = route('verify', ['token' => $hash, 'value' => $user_id, 'service' => 'Email_verification']);

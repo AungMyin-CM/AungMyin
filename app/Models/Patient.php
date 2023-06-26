@@ -22,7 +22,7 @@ class Patient extends Model
         'age',
         'phoneNumber',
         'address',
-        'disease',
+        // 'disease',
         'gender',
         'summary',
         'drug_allergy',

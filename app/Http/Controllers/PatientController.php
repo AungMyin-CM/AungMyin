@@ -264,7 +264,7 @@ class PatientController extends Controller
             'rbs' => $request->rbs,
             'prescription' => $request->prescription,
             'diag' => $request->diag,
-            'disease' => $request->disease,
+            // 'disease' => $request->disease,
             'assigned_medicines' =>  $assign_medicines,
             'images' => json_encode($images),
             'fees' => $request->fees,
