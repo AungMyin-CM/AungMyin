@@ -39,7 +39,7 @@ class Patient extends Model
 
     public function visits(): HasMany
     {
-        return $this->hasMany(Visit::class, 'patient_id');
+        return $this->hasMany(Visit::class, 'patient_id')->where('status', 1);
     }
 
     // public function doctors(): BelongsToMany

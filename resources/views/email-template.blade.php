@@ -129,7 +129,7 @@
           <tr>
             <td align="center" valign="top" style="padding: 36px 24px;">
               <a href="https://sendgrid.com" target="_blank" style="display: inline-block;">
-                <h2>Aung Myin</h2>
+                <h2><img src="{{ asset('images/web-photos/aung-myin.png') }}" alt="" class="img"></h2>
               </a>
             </td>
           </tr>
@@ -180,7 +180,7 @@
           <!-- start copy -->
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-              <p style="margin: 0;">Tap the button below to confirm your email address. If you didn't create an account with Aung Myin, you can safely delete this email.</p>
+              <p style="margin: 0;">Here is your one time login password for the system. If you didn't create an account with Aung Myin, you can safely delete this email.</p>
             </td>
           </tr>
           <!-- end copy -->
@@ -193,8 +193,8 @@
                   <td align="center" bgcolor="#ffffff" style="padding: 12px;">
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td align="center" bgcolor="#1a82e2" style="border-radius: 6px;">
-                          <a href="{{$actionLink}}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Verify</a>
+                        <td align="center" bgcolor="#003049" style="border-radius: 6px;">
+                          <strong  style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #fff; text-decoration: none; border-radius: 6px;">{{$otp}}</strong>
                         </td>
                       </tr>
                     </table>
@@ -206,18 +206,18 @@
           <!-- end button -->
 
           <!-- start copy -->
-          <tr>
+          {{-- <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
               <p style="margin: 0;">If that doesn't work, copy and paste the following link in your browser:</p>
               <p style="margin: 0;"><a href="{{$actionLink}}" target="_blank">{{$actionLink}}</a></p>
             </td>
-          </tr>
+          </tr> --}}
           <!-- end copy -->
 
           <!-- start copy -->
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf">
-              <p style="margin: 0;">Regards,<br> Aung Myin</p>
+              <p style="margin: 0;">Regards,<br> Aung Myin Tech Team</p>
             </td>
           </tr>
           <!-- end copy -->

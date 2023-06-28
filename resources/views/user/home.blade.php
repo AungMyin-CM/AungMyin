@@ -52,21 +52,34 @@
                                 ?>
  
                                     <div class="col-md-4">
-                                        <div class=" ">
-                                            <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
+                                        <div class="container">
+                                            <?php
+                                                $date = \Carbon\Carbon::now()->format('Y-m-d');
+                                            ?>
+                                            @if($date > $data->expire[0]->expire_at)
+                                                <a href="{{route('complete.payment',Crypt::encrypt($data->clinic_id))}}">
+                                            @else
+                                                <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
+                                            @endif
+
                                                 <div class="card mb-3" style="cursor:pointer;hover">
                                                     <div class="row no-gutters">
-                                                    <div class="col-md-4">
-                                                        <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img image-styling" style="width:100%;height:100%" />
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="card-body">
-                                                        <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
-                                                            
-                                                            <p class="card-text"><small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small></p> 
-
+                                                        <div class="col-md-4">
+                                                            <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img image-styling" style="width:100%;height:100%" />
                                                         </div>
-                                                    </div>
+                                                        <div class="col-md-8">
+                                                            <div class="card-body">
+                                                            <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
+                                                                @if($date > $data->expire[0]->expire_at)
+
+                                                                    <button class="btn btn-primary btn-sm mt-3 app-color">Complete Your Payment</button>
+                                                                @else
+                                                                    <p class="card-text">
+                                                                        <small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small>
+                                                                    </p> 
+                                                                @endif
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </a>

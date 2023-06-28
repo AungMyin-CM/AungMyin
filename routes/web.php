@@ -31,7 +31,9 @@ use App\Http\Controllers\SuperAdminController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::get('/', [HomeController::class, 'welcome'])->name('aung-myin.welcome');
+Route::post('/send-otp',[UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
+
+Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
 
 Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
 
@@ -41,6 +43,13 @@ Route::get('payment', [ClinicController::class, 'payment'])->name('payment')->mi
 Route::post('register-clinic', [ClinicController::class, 'register'])->name('clinic.register')->middleware('auth');
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact-us');
+
+// Route::get('/email-view',function() {
+//     return view('email-template');
+// });
+
+Route::get('/email-view',[UserController::class,'showMailTemp'])->name('contact-us');
+
 
 Route::get('clinic-login', function () {
     return view('login.clinic');
@@ -127,6 +136,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
+
+    Route::get('/complete-payment/{id}',[ClinicController::class, 'completePayment'])->name('complete.payment');
 });
 
 Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
@@ -148,7 +159,9 @@ Route::post('user-register', [UserController::class, 'register'])->name('user.re
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
-Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feedback.store');
+Route::post('/checkOtp',[UserController::class,'checkOtp'])->name('verify-otp');
+
+Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
 

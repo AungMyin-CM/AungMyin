@@ -390,7 +390,8 @@
                                                             <tbody>
                                                                 <tr id="row_1">
                                                                     <td>
-                                                                        <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Medicine">
+                                                                        <input type="text" name="med_name[]" id="product_search_1" 
+                                                                        med-data-id="1" onkeyup="searchMed('1')" class="form-control" placeholder="Medicine">
                                                                         <input type="hidden" name="med_id[]" id="med_id_1">
                                                                         <div id="medList_1" style="display:none;width:35%;">
                                                                         </div>
@@ -502,36 +503,67 @@
         viewModal.style.display = "block";
     }
 
-    editBtn.onclick = function() {
+    editBtn.onclick = function(){
         editModal.style.display = "block";
     }
 
-    // Close the modal
-    $("#viewClose").click(function(e) {
+    $("#add_tret_med_row").on('click', function() {
+        var table = $("#product_info_table");
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+        var row_id = count_table_tbody_tr + 1;
+        var html = '<tr id="row_'+row_id+'">'+
+            '<td>'+ 
+            '<input type="search" name="med_name[]" id="product_search_'+row_id+'"  med-data-id = '+row_id+' onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">'+
+            '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'">'+
+            '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
+            '</td>'+ 
+            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control"></td>'+           
+            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"></td>'+
+            '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+            '</tr>';
+        if(count_table_tbody_tr >= 1) {
+        $("#product_info_table tbody tr:last").after(html);  
+        }
+        else {
+        $("#product_info_table tbody").html(html);
+        }
+    });
+
+    $("#viewClose").click(function(e){
         viewModal.style.display = "none";
     })
 
-    $("#editClose").click(function(e) {
+    $("#editClose").click(function(e){
         editModal.style.display = "none";
     })
 
-    $(document).ready(function() {
-        $(window).on("keydown", function(event) {
-
-            // Check to see if ENTER was pressed and the submit button was active or not
-            if (event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
+        $(document).ready(function() {
+            $(window).on("keydown", function(event){
+                var id = event.target.id;
+              
+                // Check to see if ENTER was pressed and the submit button was active or not
+                if(event.keyCode === 13 && event.target === document.getElementById("btnSubmit")) {
                 // It was, so submit the form
                 document.querySelector("form").submit();
 
-            } else if (event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary")) {
-                medicine_dictionary(event);
-                event.preventDefault();
-
+                } else if(event.keyCode === 13 && event.target == document.getElementById("medicine_dictionary") ){
+                    medicine_dictionary(event);
+                    event.preventDefault();
+                            
+                            //  Invoke click event of target so that non-form submit behaviors will work
+                            event.target.click();
+                }
+                else if(event.keyCode === 13 && id.includes("product_search")){
+                 
+                    searchMed(event);
+                    event.preventDefault();
+                }
+                else if(event.keyCode === 13){
+                    event.preventDefault();
+                }
+            });
                 //  Invoke click event of target so that non-form submit behaviors will work
-                event.target.click();
-            } else if (event.keyCode === 13) {
-                event.preventDefault();
-            }
+
         });
 
         $.ajaxSetup({
@@ -596,7 +628,7 @@
                 }
             });
         });
-    });
+    
     var loadFile = function(event) {
         for (var i = 0; i < event.target.files.length; i++) {
             var src = URL.createObjectURL(event.target.files[i]);
@@ -664,15 +696,11 @@
 
     var dictCode = '';
 
-    // {{ session() -> get('cc_id') }};
-    function medicine_dictionary(event) {
-
-        var key = event.keyCode;
-        var evtType = event.type;
-        var clinic_id = {{ session() -> get('cc_id') }};
-        var name = document.getElementById("medicine_dictionary").value;
-
-        if (event.key != '') {
+    function medicine_dictionary(event) {   
+        var id = event.target.id;    
+        var clinic_id = {{ session()->get('cc_id') }};
+        var name = document.getElementById(id).value;
+        if(event.key != '') {
 
             $.ajaxSetup({
                 headers: {
@@ -706,64 +734,118 @@
                         var row_id = count_table_tbody_tr + 1;
                     }
                     var html = "";
-                    for (i = 0; i < fil_res.length; i++) {
+                    data = res[0].split('^');
+                    var current_rowid =  event.target.getAttribute("med-data-id");      
+                    document.getElementById("product_search_"+current_rowid).value = data[1];
+                    document.getElementById("qty_"+current_rowid).value = data[2];
+                    document.getElementById("days_"+current_rowid).value = data[3];
+                    for (i =1; i<fil_res.length ; i++){
                         data = res[i].split('^');
-                        html += '<tr id="row_' + row_id + '">' +
-                            '<td>' +
-                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" onkeyup="searchMed(' + row_id + ')" value="' + data[1] + '"  class="form-control" placeholder="Medicine">' +
-                            '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
-                            '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
-                            '</td>' +
-                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" value="' + data[2] + '" ></td>' +
-                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" value="' + data[3] + '"></td>' +
-                            '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
-                            '</tr>';
+                            html += '<tr id="row_'+row_id+'">'+
+                        '<td>'+ 
+                        '<input type="text" name="med_name[]" id="product_search_'+row_id+'" med-data-id = '+row_id+' onkeypress="return searchMed(event)" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
+                        '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
+                        '<div id="medList_'+row_id+'" style="position:absolute;top:10px;display:none;width:35%;"></div>'+
+                        '</td>'+ 
+                        '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
+                        '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
+                        '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+                        '</tr>';
                         row_id++;
                     }
-
-                    if (count_table_tbody_tr == 1 && $("#product_search_1").val() == '') {
-                        $("#product_info_table tbody").html(html)
-                    } else {
-                        $("#product_info_table tr:last").after(html)
-                    }
-
-
+                    $("#product_info_table tbody").append(html)
+                    // if(count_table_tbody_tr == 1 && $("#product_search_1").val() == '')
+                    // {
+                    //     $("#product_info_table tbody").html(html)
+                    // }else{
+                    //     $("#product_info_table tr:last").after(html)
+                    // }
+                        
+    
                 }
             });
         }
-
+ 
+    }
+        function searchMed(event) {
+          if(event.keyCode == 13){
+            medicine_dictionary(event)
+          }
+          else{
+            var rowid =  event.target.getAttribute("med-data-id");        
+             var query = $("#product_search_"+rowid).val();
+            var clinic_id = {{ session()->get('cc_id') }};
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: '/clinic-system/searchMed',
+                data: { key: query, clinic_id: clinic_id, rowid: rowid}
+            }).done(function( response ) {           
+                if(query != '')
+                {
+                    $('#medList_'+rowid).css("display","contents");  
+                    $('#medList_'+rowid).css("position","relative");
+                    $('#medList_'+rowid).css("top",'14rem');
+                    $('#medList_'+rowid).html(response);
+                }
+                else{
+                    $('#medList_'+rowid).css("display","none");  
+                    $('#medList_'+rowid).html("");
+                }
+            });
+          }
+      
+        };
+        function s_option(rowid)
+        {
+            var med_id = rowid.getAttribute("data-id");
+            var med_name = rowid.getAttribute("data-name");
+            var row_id = rowid.getAttribute("row-id");
+            $("#product_search_"+row_id).val(med_name);
+            $("#med_id_"+row_id).val(med_id);      
+            $('#medList_'+row_id).css("display","none");  
+            $('#medList_'+row_id).html("");
+            
+        }
+    function removeRow(id)
+    {
+        $("#medtable table tr#row_"+id).remove();
     }
 
-    function searchMed(rowid) {
-        var query = $("#product_search_" + rowid).val();
+    // function searchMed(rowid) {
+    //     var query = $("#product_search_" + rowid).val();
 
-        var clinic_id = {{ session() -> get('cc_id') }};
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: '/clinic-system/searchMed',
-            data: {
-                key: query,
-                clinic_id: clinic_id,
-                rowid: rowid
-            }
-        }).done(function(response) {
+    //     var clinic_id = {{ session() -> get('cc_id') }};
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         }
+    //     });
+    //     $.ajax({
+    //         type: "POST",
+    //         url: '/clinic-system/searchMed',
+    //         data: {
+    //             key: query,
+    //             clinic_id: clinic_id,
+    //             rowid: rowid
+    //         }
+    //     }).done(function(response) {
 
-            if (query != '') {
-                $('#medList_' + rowid).css("display", "contents");
-                $('#medList_' + rowid).css("position", "relative");
-                $('#medList_' + rowid).css("top", '14rem');
-                $('#medList_' + rowid).html(response);
-            } else {
-                $('#medList_' + rowid).css("display", "none");
-                $('#medList_' + rowid).html("");
-            }
-        });
-    };
+    //         if (query != '') {
+    //             $('#medList_' + rowid).css("display", "contents");
+    //             $('#medList_' + rowid).css("position", "relative");
+    //             $('#medList_' + rowid).css("top", '14rem');
+    //             $('#medList_' + rowid).html(response);
+    //         } else {
+    //             $('#medList_' + rowid).css("display", "none");
+    //             $('#medList_' + rowid).html("");
+    //         }
+    //     });
+    // };
 
     function s_option(rowid) {
         var med_id = rowid.getAttribute("data-id");
