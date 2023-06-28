@@ -286,129 +286,62 @@ input
 
 function nextStep(){
 
-    let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
-    //Check if we reached the last step
-    if(activeStepIndex >= subForms.length - 1)
-        nextStepBtn.setAttribute('hidden','hidden');
-        nextStepBtn.setAttribute('disabled','disabled');
+    var email = $('#email').val();
+    var _token = $('input[name="_token"]').val();
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(!filter.test(email))
+    {    
+        $('#email-error').text('Invalid Email !');
+        $('#email-error').removeClass('d-none');
+    }
+    else
+    {
 
-        // button = document.createElement('button');
-        // $(button).addClass('btn btn-primary').css({'background-color':'#003049 !important;'}).setAttribute('id','completeRegistration');
-        var button = $('<input/>').attr({ type: 'button', name:'btn1',id: 'complete-registration', value:'Complete Registration',class: 'btn btn-primary m-2',style: 'background-color:#003049 !important;' });
-        $('#user-form').append('<i class="fa fa-spinner fa-spin d-none m-2" id="loader"></i>',button);
-
-
-    slide(transBy);
-
-    console.log(transBy);
-
-    $('#complete-registration').on('click',function(){
-            console.log(checkEmptysubForm());
-            if(checkEmptysubForm())
+        $.ajax({
+        url:"{{ route('email_available.check') }}",
+        method:"POST",
+        data:{email:email},
+        success:function(result)
+        {
+        
+            if(result != 'unique')
             {
-                if($("#password").val().length > 5)
-                {
-
-                    let f_name = $("#f_name").val();
-                    let l_name = $("#l_name").val();
-                    let password = $("#password").val();
-                    let email = $("#email").val();
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    $.ajax({
-                    url:"{{ route('user.register') }}",
-                    method:"POST",
-                    data:{email: email,first_name: f_name,last_name: l_name,password: password},
-                    beforeSend: function(){
-                        $(".form").addClass('opacity-25');
-                        $("#loader").removeClass('d-none');
-                        $("#complete-registration").addClass('d-none');
-                    },
-
-                    success:function(result){
-                        if(result == 'complete-registration'){
-                            endFormJourney();
-                        }
-
-
-                    }
-                    
-
-                    });
-                }else{
-                    $("#password-error").text('Password should be at least 6 letters');
-                    
-                }
-            }
-
-        
-
-        
-    });
-
-    
-
-    // var email = $('#email').val();
-    // var _token = $('input[name="_token"]').val();
-    // var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    // if(!filter.test(email))
-    // {    
-    //     $('#email-error').text('Invalid Email !');
-    //     $('#email-error').removeClass('d-none');
-    // }
-    // else
-    // {
-
-    //     $.ajax({
-    //     url:"{{ route('email_available.check') }}",
-    //     method:"POST",
-    //     data:{email:email},
-    //     success:function(result)
-    //     {
-        
-    //         if(result != 'unique')
-    //         {
-    //             $('#email-error').text('Email already exists !');
-    //             $('#email-error').removeClass('d-none');
+                $('#email-error').text('Email already exists !');
+                $('#email-error').removeClass('d-none');
                 
 
-    //         }else{
-    //             // prevStepBtn.classList.remove("d-none");
-    //             // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
-    //             // //Check if we reached the last step
-    //             // if(activeStepIndex >= subForms.length - 1)
-    //             //     nextStepBtn.innerText = "Finish";
-    //             // slide(transBy);
-    //             $.ajax({
-    //                 url : "{{route('send-otp')}}",
-    //                 method : "POST",
-    //                 data:{email:email},
-    //                 beforeSend: function(){
-    //                     $(".form").addClass('opacity-25');
-    //                 },
-    //                 success:function(result)
-    //                 {
+            }else{
+                // prevStepBtn.classList.remove("d-none");
+                // let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
+                // //Check if we reached the last step
+                // if(activeStepIndex >= subForms.length - 1)
+                //     nextStepBtn.innerText = "Finish";
+                // slide(transBy);
+                $.ajax({
+                    url : "{{route('send-otp')}}",
+                    method : "POST",
+                    data:{email:email},
+                    beforeSend: function(){
+                        $(".form").addClass('opacity-25');
+                    },
+                    success:function(result)
+                    {
 
-    //                     if(result == "Email Sent")
-    //                     {
-    //                         $("#mail").text(email);
-    //                         $("#modal-btn").trigger('click');
-    //                         $(".form").removeClass('opacity-25');
+                        if(result == "Email Sent")
+                        {
+                            $("#mail").text(email);
+                            $("#modal-btn").trigger('click');
+                            $(".form").removeClass('opacity-25');
 
-    //                     }
-    //                 }
+                        }
+                    }
 
-    //             });
-    //         }
+                });
+            }
             
-    //     }
-    //     })
-    // }
+        }
+        })
+    }
     
 }
 
@@ -445,12 +378,68 @@ function verifyOtp()
 
                 $('#otpModal').modal('toggle');
 
-                prevStepBtn.classList.remove("d-none");
                 let transBy = subForms[activeStepIndex].clientWidth * ++activeStepIndex * -1;
                 //Check if we reached the last step
                 if(activeStepIndex >= subForms.length - 1)
-                    nextStepBtn.innerText = "Finish";
+                    nextStepBtn.setAttribute('hidden','hidden');
+                    nextStepBtn.setAttribute('disabled','disabled');
+
+                    // button = document.createElement('button');
+                    // $(button).addClass('btn btn-primary').css({'background-color':'#003049 !important;'}).setAttribute('id','completeRegistration');
+                    var button = $('<input/>').attr({ type: 'button', name:'btn1',id: 'complete-registration', value:'Complete Registration',class: 'btn btn-primary m-2',style: 'background-color:#003049 !important;' });
+                    $('#user-form').append('<i class="fa fa-spinner fa-spin d-none m-2" id="loader"></i>',button);
+
+
                 slide(transBy);
+
+                $('#complete-registration').on('click',function(){
+                        console.log(checkEmptysubForm());
+                        if(checkEmptysubForm())
+                        {
+                            if($("#password").val().length > 5)
+                            {
+
+                                let f_name = $("#f_name").val();
+                                let l_name = $("#l_name").val();
+                                let password = $("#password").val();
+                                let email = $("#email").val();
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                });
+
+                                $.ajax({
+                                url:"{{ route('user.register') }}",
+                                method:"POST",
+                                data:{email: email,first_name: f_name,last_name: l_name,password: password},
+                                beforeSend: function(){
+                                    $(".form").addClass('opacity-25');
+                                    $("#loader").removeClass('d-none');
+                                    $("#complete-registration").addClass('d-none');
+                                },
+
+                                success:function(result){
+                                    if(result == 'complete-registration'){
+                                        endFormJourney();
+                                    }
+
+
+                                }
+                                
+
+                                });
+                            }else{
+                                $("#password-error").text('Password should be at least 6 letters');
+                                
+                            }
+                        }
+
+                    
+
+                    
+                });
             }else if(result == 'invalid')
             {
                 $("#otp-validation").text("Invalid Otp");
@@ -507,7 +496,6 @@ function verifyOtp()
         const greetingBox = document.querySelector(".form-container .form-finish-box");
         const greetingPhrase = greetingBox.querySelector("h3.greeting-phrase");
         parentForm.remove();
-        greetingPhrase.textContent = `Welcome ${userName}`;
         greetingBox.classList.remove("d-none");
         toggleParty(greetingBox);
     }

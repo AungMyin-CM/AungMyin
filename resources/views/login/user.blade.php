@@ -32,14 +32,14 @@
                                 <form action="{{ route('login') }}" class="row g-4" method="post">
                                     @csrf
                                     <div class="col-12 mb-1">
-                                        <label>Username<span class="text-danger">*</span></label>
+                                        <label>Email<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
                                                 <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Username" name="code" value="{{ old('code') }}">
+                                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
                                         </div>
-                                        @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
+                                        @error('email') <span class="text-danger small">{{ $message }}</span>@enderror
                                     </div>
                                     <div class="col-12">
                                         <label>Password<span class="text-danger">*</span></label>

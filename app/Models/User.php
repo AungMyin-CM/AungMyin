@@ -43,6 +43,10 @@ class User extends Authenticatable
         'fees',
         'status',
         'gender',
+        'otp',
+        'is_superadmin',
+        'first_name',
+        'last_name',
         'lastest_ip',
     ];
 
