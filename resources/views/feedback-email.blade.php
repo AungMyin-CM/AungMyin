@@ -160,7 +160,7 @@
                                     font-size: 16px;
                                     line-height: 24px;
                                 ">
-                            <small style="margin: 0; font-size: 12px; color: gray;">
+                            <small style="margin: 0; color: gray;">
                                 If you have any further feedback,
                                 suggestions, or questions, please don't
                                 hesitate to reach out to us. We're here to
