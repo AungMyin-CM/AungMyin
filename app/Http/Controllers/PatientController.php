@@ -524,9 +524,9 @@ class PatientController extends Controller
 
         try {
             Visit::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
-            echo "updated";
+            return response()->json('updated');
         } catch (QueryException $e) {
-            echo "false";
+            return response()->json('false');
         }
     }
 
