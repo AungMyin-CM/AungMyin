@@ -220,7 +220,7 @@
                                         <input type="submit" id="btnSubmit" value="Submit" class="btn float-right" style="color: {{config('app.color')}}; background-color: white; padding: 2px 10px;">
                                     </div>
 
-                                    <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
+                                    <div class="card-body" style="max-height: 600px; overflow-y: scroll;">
 
                                         <div class="form-group mb-3">
                                             <div class="row">
@@ -550,16 +550,45 @@
             let page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
-
-        function fetch_data(page) {
-            $.ajax({
-                url: "?page=" + page,
-                success: function(data) {
-                    $('#visit-lists').html(data);
-                }
-            });
-        }
     });
+
+    function fetch_data(page) {
+        $.ajax({
+            url: "?page=" + page,
+            success: function(data) {
+                if (data === "updated") {
+                    fetch_data(page);
+                    bindModalHandlers();
+                } else {
+                    $('#visit-lists').html(data);
+                    bindModalHandlers();
+                }
+            }
+        });
+    }
+
+    function bindModalHandlers() {
+        $(document).on('click', '#visitBtn', function() {
+            $('#visitModal').css('display', 'block');
+        });
+
+        $(document).on('click', '#visitClose', function(e) {
+            $('#visitModal').css('display', 'none');
+        });
+    }
+
+    // Visit Records Modal
+    let visitBtn = document.getElementById('visitBtn');
+    let visitModal = document.getElementById('visitModal');
+
+    visitBtn.onclick = function() {
+        visitModal.style.display = "block";
+    }
+
+    $("#visitClose").click(function(e) {
+        visitModal.style.display = "none";
+    })
+
 
     var loadFile = function(event) {
         for (var i = 0; i < event.target.files.length; i++) {
@@ -803,6 +832,16 @@
             }
         }).done(function(response) {
             $("#treatment_data_" + id).slideUp();
+
+            if (response === "updated") {
+                let currentPage = $('.pagination .active').text();
+                
+                if (currentPage > 1) {
+                    fetch_data(currentPage - 1);
+                } else {
+                    fetch_data(currentPage);
+                }
+            }
         });
     }
 </script>

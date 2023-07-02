@@ -1,10 +1,72 @@
 <div class="card card-primary">
     <div class="card-header" style="background-color: {{config('app.color')}}">
         <h3 class="card-title">Previous Records</h3>
-        <span class="float-right">{{ $patient->visits->count() }} visits</span>
+        <span id="visitBtn" class="float-right" style="cursor: pointer;">
+            {{ $patient->visits->count() }} visits
+        </span>
     </div>
 
-    <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
+    <!-- Visit Records Modal -->
+    <div id="visitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: {{config('app.color')}}">
+                <h5 class="modal-title text-white">Visit Records</h5>
+                <span id="visitClose" class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="accordion" class="">
+                    @php
+                    $sortedData = $patient->visits->sortByDesc('updated_at');
+                    @endphp
+
+                    @foreach ($sortedData as $row)
+                    <a class="btn d-block text-white mb-1" style="background-color: {{config('app.color')}}" data-toggle="collapse" href="#collapse{{$row->id}}" role="button" aria-expanded="false" aria-controls="collapse{{ $row->id }}">
+                        {{ $row->updated_at->format('d-M-Y g:iA') }}
+                    </a>
+
+                    <div id="collapse{{ $row->id }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li>
+                                    <li>PR - {{ $row->pr }} min</li>
+                                    <li>T - {{ $row->temp }}*F</li>
+                                    <li>SpO2 - {{ $row->spo2 }} % on Air</li>
+                                    <li>RBS - {{ $row->rbs }} mg/dL</li> <br>
+                                    <li>Diseases - {{ $row->disease }}</li> <br>
+                                    @if($row->prescription != '')
+                                    <li>Prescription: {{ Str::limit($row->prescription, $limit = 100, $end = '...') }}</li>
+                                    @endif
+
+                                    @if($row->diag != '')
+                                    <li>Diagnosis: {{ Str::limit($row->diag, $limit = 100, $end = '...') }}</li>
+                                    @endif
+
+                                    @if($row->investigation != '')
+                                    <li>Investigation: {{ Str::limit($row->investigation, $limit = 100, $end = '...') }}</li>
+                                    @endif
+
+                                    @if($row->procedure != '')
+                                    <li>Procedure: {{ Str::limit($row->procedure, $limit = 100, $end = '...') }}</li>
+                                    @endif
+
+                                    <br>
+                                    @php
+                                    $text = $row->assigned_medicines;
+                                    $medicines = str_replace("<br>", "\n", $text);
+                                    @endphp
+                                    <li>Treatment: {{ $medicines }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body" style="max-height: 600px; overflow-y: scroll;">
         @if($visit->isEmpty() != 1)
         @foreach ($visit as $row)
         <div class="card" id="treatment_data_{{$row->id}}">
