@@ -32,17 +32,6 @@
                 </div><!-- /.container-fluid -->                  
             </section>
 
-            @if (Session::has('success'))
-                <div class="col-md-6">
-                    <div class="alert alert-success" id="alert-message">
-                        <ul class="list-unstyled">
-                            <li>
-                                {{ Session::get('success') }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            @endif
 
             <section class="content mb-3">
                 <div class="container-fluid">
@@ -79,13 +68,13 @@
                                                 <div class="d-flex justify-content-center" style="gap: 20px">
                                                     <div>
                                                         @if(Helper::isAdmin())
-                                                            <a href="{{ route('procedure.edit', $row->id) }}" class="btn btn-default">
+                                                            <a href="{{ route('procedure.edit', Crypt::encrypt($row->id)) }}" class="btn btn-default">
                                                             <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i></a>
                                                         @endif
                                                     </div>
                                                     <div>
                                                         @if(Helper::isAdmin())
-                                                            <form action="{{ route('procedure.destroy', $row->id) }}"
+                                                            <form action="{{ route('procedure.destroy', Crypt::encrypt($row->id)) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -128,13 +117,13 @@
                                                 <div class="d-flex justify-content-center" style="gap: 20px">
                                                     <div>
                                                         @if(Helper::isAdmin())
-                                                            <a href="{{ route('investigation.edit', $row->id) }}" class="btn btn-default">
+                                                            <a href="{{ route('investigation.edit', Crypt::encrypt($row->id)) }}" class="btn btn-default">
                                                             <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i></a>
                                                         @endif
                                                     </div>
                                                     <div>
                                                         @if(Helper::isAdmin())
-                                                            <form action="{{ route('investigation.destroy', $row->id) }}"
+                                                            <form action="{{ route('investigation.destroy', Crypt::encrypt($row->id)) }}"
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
