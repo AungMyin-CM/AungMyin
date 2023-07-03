@@ -96,7 +96,7 @@ body {
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
-      <form action="#" id="form" disabled>
+      <form  id="form" disabled>
         <div class="input-field">
           <input type="number" id="otp-number" />
           <input type="number" id="otp-number" disabled />

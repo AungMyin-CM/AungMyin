@@ -184,9 +184,15 @@
             }
 
             $("#remove_row_"+row_id).on('click',function(){
+                alert("Hello");
                 $("#lab_table tbody tr#row_"+row_id).remove();
             });
             
+        });
+
+        $("#remove_row_"+row_id).on('click',function(){
+            alert("Hello");
+            $("#lab_table tbody tr#row_"+row_id).remove();
         });
 
         
