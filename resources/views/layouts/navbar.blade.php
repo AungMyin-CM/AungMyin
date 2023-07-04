@@ -7,8 +7,18 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            {{-- <li class="nav-item" style="margin-top: 8px;"> Hello Dr. @if(Auth::guard('user')->user()){{ Auth::guard('user')->user()['name'] }} @endif
-            </li> --}}
+            @if(Request::is('clinic-system/*') && \Route::currentRouteName() != 'user.home' && \Route::currentRouteName() != 'user.clinic' && \Route::currentRouteName() != 'pos.index')
+
+                <li class="nav-item" style="margin-top: 8px;">  
+                    <div class="search-box">
+                    <button class="btn-search"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" id="input-search" placeholder="Type to Search...">
+                    <div id="patientList" class="search-get-results" style="display:none;">
+                    </div>
+                </div>
+
+                </li>
+            @endif
         </ul>
         <ul class="navbar-nav ml-auto">
             <!-- Messages Dropdown Menu -->

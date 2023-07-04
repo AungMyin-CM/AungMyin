@@ -125,7 +125,7 @@
             var fil_res = cleanArray(res);
             var fil_price = cleanArray(price);
 
-            var table_str = '<table class="table table-bordered" id="lab_table">'+ 
+            var table_str = '<table class="table table-bordered" id="product_info_table">'+ 
                             '<th style="width:40%">Name</th>'+                                              
                             '<th>Price</th>'+
                             '<th ><button type="button" id="add_lab_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>';
@@ -136,14 +136,20 @@
                     '<tr id="row_'+i+'">'+
                         '<td><input type="text" name="name[]" id="product_search_1" onkeyup="searchMed(1)" class="form-control" value="'+fil_res[i]+'" readonly /> </td>'+
                         '<td><input type="text"   name="price[]"  class="form-control" value="'+fil_price[i]+'"/></td>'+
-                        '<td><button type="button" class="btn btn-default" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
+                        '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
 
                         '</td>'+
-                    '</tr>';
+                        '</tr>';
+
+                        
                 }
                     table_str +=  '</table >';
+
+           
             
             $('#medtable').append(table_str);
+
+           
 
 
         function isNumber(evt) {
@@ -166,8 +172,8 @@
         }
 
         $("#add_lab_row").on('click', function() {
-            var table = $("#lab_table");
-            var count_table_tbody_tr = $("#lab_table tbody tr").length;
+            var table = $("#product_info_table");
+            var count_table_tbody_tr = $("#product_info_table tbody tr").length;
             var row_id = count_table_tbody_tr + 1;
             var html = '<tr id="row_'+row_id+'">'+
                 '<td>'+ 
@@ -177,23 +183,21 @@
                 '<td><button type="button" class="btn btn-default" id="remove_row_'+row_id+'"><i class="fa fa-minus"></i></button></td>'+
                 '</tr>';
             if(count_table_tbody_tr >= 1) {
-            $("#lab_table tbody tr:last").after(html);  
+            $("#product_info_table tbody tr:last").after(html);  
             }
             else {
-            $("#lab_table tbody").html(html);
+            $("#product_info_table tbody").html(html);
             }
 
             $("#remove_row_"+row_id).on('click',function(){
-                alert("Hello");
-                $("#lab_table tbody tr#row_"+row_id).remove();
+                $("#product_info_table tbody tr#row_"+row_id).remove();
             });
             
         });
 
-        $("#remove_row_"+row_id).on('click',function(){
-            alert("Hello");
-            $("#lab_table tbody tr#row_"+row_id).remove();
-        });
+       
+
+       
 
         
 

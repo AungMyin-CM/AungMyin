@@ -124,8 +124,6 @@ class ProcedureController extends Controller
     public function update(Request $request,$id)
     {
 
-        //check route if come from procedure
-
         $type = Route::currentRouteName();
 
         if($type == 'procedure.update')
@@ -163,6 +161,13 @@ class ProcedureController extends Controller
         }
 
 
+    }
+
+    public function destroy($id)
+    {
+        Procedure::destroy(Crypt::decrypt($id));
+
+        return redirect('clinic-system/procedure')->with('success', "Update Successfully");
     }
 
 

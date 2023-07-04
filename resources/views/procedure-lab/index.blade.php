@@ -78,7 +78,7 @@
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                                <button class="btn btn-default" type="submit" id="delete_procedure"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
                                                             </form>
                                                         @endif
                                                     </div>
@@ -127,7 +127,7 @@
                                                                 method="post">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                                                <button class="btn btn-default" type="submit" id="delete_btn"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
                                                             </form>
                                                         @endif
                                                     </div>
@@ -148,6 +148,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
+
     new DataTable("#procedureTable", {
         "paging": true,
         "info": false,
@@ -155,7 +156,7 @@
             caseInsensitive: true
         },
         language: {
-            searchPlaceholder: "Search procedure...",
+            searchPlaceholder: "Search ...",
             search: "",
         },
     });
@@ -167,9 +168,15 @@
             caseInsensitive: true
         },
         language: {
-            searchPlaceholder: "Search investigation...",
+            searchPlaceholder: "Search ...",
             search: "",
         },
+    });
+
+    $("#delete_btn").click(function(){
+        if (!confirm("Do you want to delete")){
+            return false;
+        }
     });
 </script>
 @endsection

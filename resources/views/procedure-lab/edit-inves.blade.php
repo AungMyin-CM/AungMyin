@@ -21,13 +21,14 @@
                                    
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form action="{{ route('procedure.store') }}" method="POST">
+                                    <form action="{{ route('investigation.update',Crypt::encrypt($investigation->id)) }}" method="POST">
+                                        @method('PATCH')
                                         @csrf
                                         <div class="card-body">
 
                                             <div class="row">
 
-                                                <div class="col-md-6">
+                                                {{-- <div class="col-md-6">
 
                                                     <div class="form-group">
                                                         <label for="type">Type</label>
@@ -37,19 +38,16 @@
                                                                 <strong>{{ $message }}</strong>
                                                             </span>
                                                         @enderror --}}
-                                                        <select name="type" id="type" class="form-control">
-                                                            <option value="procedure">Procedure</option>
-                                                            <option value="investigation">Investigation</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                            {{-- <input type="input" disabled value={{$type}} class="form-control"/> --}}
+                                                    {{-- </div>
+                                                </div> --}}
 
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
 
                                                     <div class="form-group">
                                                         <label for="code">Code</label>
 
-                                                        <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" required placeholder="Eg: ..." value="{{old("code")}}" >
+                                                        <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{$investigation->code}}" required placeholder="Eg: ..." value="{{old("code")}}" >
                                                         @error('code')
                                                             <span class="invalid-feedback" role="alert" id="alert-message">
                                                                 <strong>{{ $message }}</strong>
@@ -84,31 +82,15 @@
                                                 </div>
                                             </div> --}}
 
-                                            <div id="med_div">
-                                                <section class="content">
-                                                    <div class="container-fluid">
-                                                        <table class="table table-bordered" id="product_info_table">
-                                                            <thead>
-                                                              <tr>
-                                                                <th style="width:40%">Name</th>                                                   
-                                                                <th>Price</th>
-                                                                <th ><button type="button" id="add_lab_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
-                                                              </tr>
-                                                            </thead>   
-                                                             <tbody>
-                                                               <tr id="row_1">
-                                                                 <td>
-                                                                      <input type="text" name="name[]" id="name_1" class="form-control">
-                                                                </td>
-                                                                  
-                                                                  <td>
-                                                                    <input type="text" name="price[]" id="price_1" class="form-control" onkeypress="return isNumber(event)"></td>       
-                                                                  
-                                                               </tr>
-                                                             </tbody>
-                                                          </table>              
-                                                  </section>
-                                            </div>
+                                                <span id="med_data" hidden>{{$investigation->name}}</span>
+                                                <span id="med_data_1" hidden>{{$investigation->price}}</span>
+
+                                                <div id="med_div">
+                                                    <section class="content">
+                                                        <div class="container-fluid" id="medtable">
+                                                            
+                                                    </section>
+                                                </div>  
                                                    
                                         </div>
                                         <!-- /.card-body -->
@@ -127,6 +109,49 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
     <script>
+        $(document).ready(function(){
+            var med_data = $("#med_data").text().toString();
+            var med_data_1 = $("#med_data_1").text().toString();
+
+            const res = med_data.split("^");
+            const price = med_data_1.split("^");
+
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var fil_res = cleanArray(res);
+            var fil_price = cleanArray(price);
+
+            var table_str = '<table class="table table-bordered" id="product_info_table">'+ 
+                            '<th style="width:40%">Name</th>'+                                              
+                            '<th>Price</th>'+
+                            '<th ><button type="button" id="add_lab_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>';
+                
+                for (i =0; i < fil_res.length; i++){
+
+                    table_str +=
+                    '<tr id="row_'+i+'">'+
+                        '<td><input type="text" name="name[]" id="product_search_1" onkeyup="searchMed(1)" class="form-control" value="'+fil_res[i]+'" readonly /> </td>'+
+                        '<td><input type="text"   name="price[]"  class="form-control" value="'+fil_price[i]+'"/></td>'+
+                        '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
+
+                        '</td>'+
+                        '</tr>';
+
+                        
+                }
+                    table_str +=  '</table >';
+
+           
+            
+            $('#medtable').append(table_str);
+
+           
+
+
         function isNumber(evt) {
             evt = (evt) ? evt : window.event;
             var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -134,6 +159,16 @@
                 return false;
             }
             return true;
+        }
+
+        function cleanArray(actual) {
+            var newArray = new Array();
+            for (var i = 0; i < actual.length; i++) {
+                if (actual[i]) {
+                newArray.push(actual[i]);
+                }
+            }
+            return newArray;
         }
 
         $("#add_lab_row").on('click', function() {
@@ -145,7 +180,7 @@
                 '<input type="search" name="name[]" id="name_'+row_id+'" class="form-control">'+
                 '</td>'+ 
                 '<td><input type="text" name="price[]" id="price_'+row_id+'" onkeypress ="return isNumber(event)" class="form-control"></td>'+
-                '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+                '<td><button type="button" class="btn btn-default" id="remove_row_'+row_id+'"><i class="fa fa-minus"></i></button></td>'+
                 '</tr>';
             if(count_table_tbody_tr >= 1) {
             $("#product_info_table tbody tr:last").after(html);  
@@ -153,9 +188,20 @@
             else {
             $("#product_info_table tbody").html(html);
             }
+
+            $("#remove_row_"+row_id).on('click',function(){
+                $("#product_info_table tbody tr#row_"+row_id).remove();
+            });
+            
         });
 
        
+
+       
+
+        
+
+    });
     </script>
     
 @endsection
