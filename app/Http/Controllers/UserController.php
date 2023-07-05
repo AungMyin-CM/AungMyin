@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 use Auth;
 
+
+
 class UserController extends Controller
 {
     public function index()
