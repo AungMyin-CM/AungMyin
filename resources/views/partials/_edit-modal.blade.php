@@ -23,7 +23,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $data['patient']['name'] }}">
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $patient->name }}">
                                             <span id="nameError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -31,7 +31,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="father_name">Father name</label>
-                                            <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ $data['patient']['father_name'] }}">
+                                            <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ $patient->father_name }}">
                                         </div>
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="age">Age</label>
-                                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $data['patient']['age'] }}">
+                                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $patient->age }}">
                                             <span id="ageError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -48,26 +48,26 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="phoneNumber">Phone Number</label>
-                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $data['patient']['phoneNumber'] }}">
+                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $patient->phoneNumber }}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="address">Address</label>
-                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $data['patient']['address'] }}</textarea>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $patient->address }}</textarea>
                                     <span id="addressError" class="text-danger small"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="disease">Disease</label>
-                                    <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ $data['patient']['disease'] }}</textarea>
+                                    <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ $patient->disease }}</textarea>
                                     <span id="diseaseError" class="text-danger small"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
-                                    @if($data['patient']['gender'] == 1)
+                                    @if($patient->gender == 1)
                                     <?php
                                     $m_checked = 'checked';
                                     $f_checked = '';
@@ -97,26 +97,20 @@
                                         </div>
                                     </div>
                                     <span id="genderError" class="text-danger small"></span>
-                                </div>
-
-                                <!-- <div class="form-group">
-                                    <label for="disease">Disease</label>
-                                    <textarea class="form-control" placeholder="Disease" name="disease">{{ $data['patient']['disease'] }}</textarea>
-                                    <span id="diseaseError" class="text-danger small"></span>
-                                </div> -->
+                                </div>                                
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="address">Drug Allergy</label>
-                                            <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy">{{ $data['patient']['drug_allergy'] }}</textarea>
+                                            <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy">{{ $patient->drug_allergy }}</textarea>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="address">Summary</label>
-                                            <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ $data['patient']['summary'] }}</textarea>
+                                            <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ $patient->summary }}</textarea>
                                         </div>
                                     </div>
                                 </div>

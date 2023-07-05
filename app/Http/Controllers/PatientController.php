@@ -42,9 +42,9 @@ class PatientController extends Controller
             $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
         } else {
             $patientData = Patient::where("clinic_code", $clinic_id)
-                        ->where('status', 1)
-                        ->orderBy('updated_at','desc')
-                        ->paginate(12);
+                ->where('status', 1)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(12);
         }
         return view('patient/index')->with('data', $patientData);
     }
@@ -75,7 +75,7 @@ class PatientController extends Controller
             $user_id = Auth::guard('user')->user()['id'];
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
-            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name).str_replace(' ','_',$code);
+            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name) . str_replace(' ', '_', $code);
             $p_status = $role->role_type == 1 ? 4 : 1;
             $patient_id = $patient->create([
                 'user_id' => Auth::guard('user')->user()['id'],
@@ -200,7 +200,7 @@ class PatientController extends Controller
         return response()->json($patient);
     }
 
-    public function treatment($id)
+    public function treatment(Request $request, $id)
     {
         if (!$this->checkPermission('p_treatment')) {
             abort(404);
@@ -213,8 +213,15 @@ class PatientController extends Controller
 
             Notification::where('patient_id', $id)->update(['is_read' => 1]);
 
+            if ($request->ajax()) {
+                return view('partials/_visit-modal')
+                    ->with('patient', $patient)
+                    ->with('visit', $visit);
+            }
 
-            return view('patient/treatment')->with('data', ['patient' => $patient, 'visit' => $visit]);
+            return view('patient/treatment')
+                ->with('patient', $patient)
+                ->with('visit', $visit);
         } catch (DecryptException $e) {
             abort(404);
         }

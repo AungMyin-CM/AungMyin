@@ -123,6 +123,10 @@
         border-bottom: none;
     }
 
+    .pagination .active {
+        z-index: 0;
+    }
+
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px) {
 
@@ -164,15 +168,15 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-2 mb-2">
-                                    <span id="name">{{ $data['patient']['name'] }}</span>
-                                    <span id="gender" class="text-danger" style="font-weight: bold;">{{ $data['patient']['gender'] == 1 ? 'M' : 'F' }}</span>
-                                    <span id="age">{{ $data['patient']['age'] }} years</span>
+                                    <span id="name">{{ $patient->name }}</span>
+                                    <span id="gender" class="text-danger" style="font-weight: bold;">{{ $patient->gender == 1 ? 'M' : 'F' }}</span>
+                                    <span id="age">{{ $patient->age }} years</span>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $data['patient']['drug_allergy'] ? $data['patient']['drug_allergy'] : 'None'  }} </h6>
+                                    <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h6 id="disease"><b>Diseases :</b> {{ $data['patient']['disease'] }}</h6>
+                                    <h6 id="disease"><b>Diseases :</b> {{ $patient->disease }}</h6>
                                 </div>
                                 <div class="col-sm-2">
                                     <nav aria-label="breadcrumb" class="float-right">
@@ -198,121 +202,15 @@
                 </div>
             </section>
 
-            <form action="{{ route('create.treatment', $data['patient']['id']) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('create.treatment', $patient->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <section class="content">
                     <div class="container-fluid">
 
                         <div class="row">
-                            <div class="col-md-4">
-
-                                <div class="card card-primary">
-                                    <div class="card-header" style="background-color: {{config('app.color')}}">
-                                        <h3 class="card-title">Previous Records</h3>
-                                        <span class="float-right">{{ $data['patient']->visits->count() }} visits</span>
-                                    </div>
-
-                                    <div class="card-body" style="max-height: 500px;overflow-y: scroll;">
-                                        @if($data['visit']->isEmpty() != 1)
-                                        @foreach ($data['visit'] as $row)
-                                        <!-- style="background:#a19090;" -->
-                                        <div class="card" id="treatment_data_{{$row['id']}}">
-                                            <div class="card-header">
-                                                <div class="row mb-3">
-                                                    <div class="col-8">
-                                                        <ul class="list-unstyled">
-                                                            <li>Bp - {{ $row['sys_bp'] }}/{{ $row['dia_bp'] }} mmHg</li>
-                                                            <li>PR - {{ $row['pr'] }} min</li>
-                                                            <li>T - {{ $row['temp'] }}*F</li>
-                                                            <li>SpO2 - {{ $row['spo2'] }} % on Air</li>
-                                                            <li>RBS - {{ $row['rbs'] }}mg/dL</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-4 text-right">
-                                                        <small title="{{$row['update_at']}}">{{ $row['updated_at']->format('d-M-Y g:iA') }}</small>
-                                                    </div>
-                                                </div>
-
-                                                <p>Diseases: {{ $row['disease'] }}</p>
-
-                                                <ul class="list-unstyled">
-                                                    @if($row['prescription'] != '')
-                                                    <li>Prescription: {{ Str::limit($row['prescription'], $limit = 100, $end = '...') }}</li>
-                                                    @endif
-
-                                                    @if($row['diag'] != '')
-                                                    <li>Diagnosis: {{ Str::limit($row['diag'], $limit = 100, $end = '...') }}</li>
-                                                    @endif
-
-                                                    @if($row['investigation'] != '')
-                                                    <li>Investigation: {{ Str::limit($row['investigation'], $limit = 100, $end = '...') }}</li>
-                                                    @endif
-
-                                                    @if($row['procedure'] != '')
-                                                    <li>Procedure: {{ Str::limit($row['procedure'], $limit = 100, $end = '...') }}</li>
-                                                    @endif
-                                                </ul>
-
-                                                @php
-                                                $text = $row['assigned_medicines'];
-                                                $medicines = str_replace("<br>", "\n", $text);
-                                                @endphp
-                                                <div>
-                                                    <span>Treatment:</span>
-                                                    <pre>{{ $medicines }}</pre>
-                                                </div>
-
-                                                <p>Fees - {{ $row['fees'] }} Kyats</p>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-8">
-                                                        @if($row['is_followup'] == '1')
-                                                        <small>Follow-up: {{ date('d-m-Y', strtotime($row['followup_date'])) }}</small>
-                                                        @endif
-                                                    </div>
-                                                    <div class="col-4 text-right">
-                                                        <a class="btn btn-sm btn-tool">
-                                                            <i class="fas fa-copy" id="copy_{{$row['id']}}" style="color:black;" onclick="copyData({{$row['id']}})"></i>
-                                                            <i class="fa fa-history" id="undo_{{$row['id']}}" style="color:black;display:none;" onclick="deleteData({{$row['id']}})"></i>
-
-                                                        </a>
-                                                        <a class="btn btn-sm btn-tool">
-                                                            <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row['id']}})"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="card-footer">
-                                                <div class="row">
-                                                    <?php
-                                                    $images_r = substr($row['images'], 1, -1);
-
-                                                    $images = explode(",", $images_r);
-
-                                                    for ($i = 0; $i < count($images); $i++) {
-                                                        if ($images[$i] != '') {
-                                                            $id = $row['id'];
-
-                                                            echo "<img id='myImg" . $id . $i . "' onclick='showImage($id, $i)' src=" . asset('images/treatment-images/' . substr($images[$i], 1, -1)) . " style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
-                                                        }
-                                                    }
-                                                    ?>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                        @else
-                                        <p class="text-center">No records yet.</p>
-                                        @endif
-
-                                        <div>
-                                            {{ $data['visit']->links('pagination.bootstrap-4') }}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="visit-lists" class="col-md-4">
+                                @include('partials._visit-modal')
                             </div>
 
                             <div class="col-md-8">
@@ -322,7 +220,7 @@
                                         <input type="submit" id="btnSubmit" value="Submit" class="btn float-right" style="color: {{config('app.color')}}; background-color: white; padding: 2px 10px;">
                                     </div>
 
-                                    <div class="card-body" style="max-height: 500px;overflow-y: scroll;">
+                                    <div class="card-body" style="max-height: 500px; overflow-y: scroll;">
 
                                         <div class="form-group mb-3">
                                             <div class="row">
@@ -530,21 +428,20 @@
         var table = $("#product_info_table");
         var count_table_tbody_tr = $("#product_info_table tbody tr").length;
         var row_id = count_table_tbody_tr + 1;
-        var html = '<tr id="row_'+row_id+'">'+
-            '<td>'+ 
-            '<input type="search" name="med_name[]" id="product_search_'+row_id+'"  med-data-id = '+row_id+' onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">'+
-            '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'">'+
-            '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
-            '</td>'+ 
-            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control"></td>'+           
-            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"></td>'+
-            '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
+        var html = '<tr id="row_' + row_id + '">' +
+            '<td>' +
+            '<input type="search" name="med_name[]" id="product_search_' + row_id + '"  med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">' +
+            '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '">' +
+            '<div id="medList_' + row_id + '" style="display:none;position:absolute;width:35%;"></div>' +
+            '</td>' +
+            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control"></td>' +
+            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"></td>' +
+            '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
             '</tr>';
-        if(count_table_tbody_tr >= 1) {
-        $("#product_info_table tbody tr:last").after(html);  
-        }
-        else {
-        $("#product_info_table tbody").html(html);
+        if (count_table_tbody_tr >= 1) {
+            $("#product_info_table tbody tr:last").after(html);
+        } else {
+            $("#product_info_table tbody").html(html);
         }
     });
     $(document).ready(function() {
@@ -578,64 +475,92 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        //  Invoke click event of target so that non-form submit behaviors will work
 
-        $('#updateForm').submit(function(event) {
-            event.preventDefault(); // Prevent the default form submission
+    });
 
-            let formData = $(this).serialize(); // Serialize the form data
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-            $.ajax({
-                url: action = "{{ route('patient.updatePatient', $data['patient']['id']) }}",
-                type: 'PATCH',
-                data: formData,
-                success: function(response) {
-                    editModal.style.display = "none";
-                    $('.wrapper').css('opacity', '1');
-                    $('.middle').css('opacity', '0.1');
+    $('#updateForm').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-                    let gender = response.gender == 1 ? 'M' : 'F';
-                    let drug_allergy = response.drug_allergy ?? 'None';
+        let formData = $(this).serialize(); // Serialize the form data
 
-                    $('#name').html("<span>" + response.name + "</span>");
-                    $('#gender').html("<span class='text-danger'>" + gender + "</span>");
-                    $('#age').html("<span>" + response.age + ' years' + "</span>");
-                    $('#drug_allergy').html("<b>Allergy :</b> " + drug_allergy);
-                    $('#disease').html("<b>Disease :</b> " + response.disease);
+        $.ajax({
+            url: action = "{{ route('patient.updatePatient', $patient->id) }}",
+            type: 'PATCH',
+            data: formData,
+            success: function(response) {
+                editModal.style.display = "none";
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
 
-                    let modalGender = response.gender == 1 ? 'Male' : 'Female';
+                let gender = response.gender == 1 ? 'M' : 'F';
+                let drug_allergy = response.drug_allergy ?? 'None';
 
-                    $('#modalName').text(response.name);
-                    $('#modalAge').text(response.age);
-                    $('#modalGender').text(modalGender);
-                    $('#modalDrugAllergy').text(response.drug_allergy);
-                    $('#modalDisease').text(response.disease);
-                    $('#modalFatherName').text(response.father_name);
-                    $('#modalCode').text(response.code);
-                    $('#modalPhone').text(response.phoneNumber);
-                    $('#modalAddress').text(response.address);
-                },
-                error: function(xhr) {
-                    // Handle the error response
-                    $('.wrapper').css('opacity', '1');
-                    $('.middle').css('opacity', '0.1');
+                $('#name').html("<span>" + response.name + "</span>");
+                $('#gender').html("<span class='text-danger'>" + gender + "</span>");
+                $('#age').html("<span>" + response.age + ' years' + "</span>");
+                $('#drug_allergy').html("<b>Allergy :</b> " + drug_allergy);
+                $('#disease').html("<b>Disease :</b> " + response.disease);
 
-                    let data = JSON.parse(xhr.responseText);
+                let modalGender = response.gender == 1 ? 'Male' : 'Female';
 
-                    let name = data.errors.name ? data.errors.name[0] : '';
-                    let age = data.errors.age ? data.errors.age[0] : '';
-                    let address = data.errors.address ? data.errors.address[0] : '';
-                    let disease = data.errors.disease ? data.errors.disease[0] : '';
-                    let gender = data.errors.gender ? data.errors.gender[0] : '';
+                $('#modalName').text(response.name);
+                $('#modalAge').text(response.age);
+                $('#modalGender').text(modalGender);
+                $('#modalDrugAllergy').text(response.drug_allergy);
+                $('#modalDisease').text(response.disease);
+                $('#modalFatherName').text(response.father_name);
+                $('#modalCode').text(response.code);
+                $('#modalPhone').text(response.phoneNumber);
+                $('#modalAddress').text(response.address);
+            },
+            error: function(xhr) {
+                // Handle the error response
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
 
-                    $('#nameError').html(name);
-                    $('#ageError').html(age);
-                    $('#addressError').html(address);
-                    $('#diseaseError').html(disease);
-                    $('#genderError').html(gender);
-                }
-            });
+                let data = JSON.parse(xhr.responseText);
+
+                let name = data.errors.name ? data.errors.name[0] : '';
+                let age = data.errors.age ? data.errors.age[0] : '';
+                let address = data.errors.address ? data.errors.address[0] : '';
+                let disease = data.errors.disease ? data.errors.disease[0] : '';
+                let gender = data.errors.gender ? data.errors.gender[0] : '';
+
+                $('#nameError').html(name);
+                $('#ageError').html(age);
+                $('#addressError').html(address);
+                $('#diseaseError').html(disease);
+                $('#genderError').html(gender);
+            }
         });
     });
+
+    // Ajax Pagination
+    $(document).ready(function() {
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            fetch_data(page);
+        });
+
+        function fetch_data(page) {
+            $.ajax({
+                url: "?page=" + page,
+                success: function(data) {
+                    $('#visit-lists').html(data);
+                }
+            });
+        }
+    });
+
     var loadFile = function(event) {
         for (var i = 0; i < event.target.files.length; i++) {
             var src = URL.createObjectURL(event.target.files[i]);
@@ -686,13 +611,10 @@
         }
     }
 
-    // Get the <span> element that closes the modal
-    let imgClose = document.getElementById("imgClose");
-
-    // When the user clicks on <span> (x), close the modal
-    imgClose.onclick = function() {
+    // Close image model
+    $("#imgClose").click(function(e) {
         imgModal.style.display = "none";
-    }
+    })
 
     // When the user clicks anywhere outside of the modal, close it
     $(window).click(function(event) {
@@ -753,16 +675,16 @@
                     document.getElementById("days_"+current_rowid).value = data[3];
                     for (i =1; i<fil_res.length ; i++){
                         data = res[i].split('^');
-                            html += '<tr id="row_'+row_id+'">'+
-                        '<td>'+ 
-                        '<input type="text" name="med_name[]" id="product_search_'+row_id+'" med-data-id = '+row_id+' onkeypress="return searchMed(event)" value="'+data[1]+'"  class="form-control" placeholder="Search Medicine">'+
-                        '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'" value="'+data[0]+'" >'+
-                        '<div id="medList_'+row_id+'" style="position:absolute;top:10px;display:none;width:35%;"></div>'+
-                        '</td>'+ 
-                        '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" value="'+data[2]+'" ></td>'+           
-                        '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"  value="'+data[3]+'"></td>'+
-                        '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
-                        '</tr>';
+                        html += '<tr id="row_' + row_id + '">' +
+                            '<td>' +
+                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" value="' + data[1] + '"  class="form-control" placeholder="Search Medicine">' +
+                            '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
+                            '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
+                            '</td>' +
+                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" value="' + data[2] + '" ></td>' +
+                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"  value="' + data[3] + '"></td>' +
+                            '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
+                            '</tr>';
                         row_id++;
                     }
                     $("#product_info_table tbody").append(html)
@@ -780,31 +702,32 @@
     function searchMed(event) {
         if(event.keyCode == 13){
             medicine_dictionary(event)
-          }
-          else{
-            var rowid =  event.target.getAttribute("med-data-id");        
-             var query = $("#product_search_"+rowid).val();
-            var clinic_id = {{ session()->get('cc_id') }};
+        } else {
+            var rowid = event.target.getAttribute("med-data-id");
+            var query = $("#product_search_" + rowid).val();
+            var clinic_id = {{ session() -> get('cc_id') }};
             $.ajaxSetup({
                 headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
             $.ajax({
                 type: "POST",
                 url: '/clinic-system/searchMed',
-                data: { key: query, clinic_id: clinic_id, rowid: rowid}
-            }).done(function( response ) {           
-                if(query != '')
-                {
-                    $('#medList_'+rowid).css("display","contents");  
-                    $('#medList_'+rowid).css("position","relative");
-                    $('#medList_'+rowid).css("top",'14rem');
-                    $('#medList_'+rowid).html(response);
+                data: {
+                    key: query,
+                    clinic_id: clinic_id,
+                    rowid: rowid
                 }
-                else{
-                    $('#medList_'+rowid).css("display","none");  
-                    $('#medList_'+rowid).html("");
+            }).done(function(response) {
+                if (query != '') {
+                    $('#medList_' + rowid).css("display", "contents");
+                    $('#medList_' + rowid).css("position", "relative");
+                    $('#medList_' + rowid).css("top", '14rem');
+                    $('#medList_' + rowid).html(response);
+                } else {
+                    $('#medList_' + rowid).css("display", "none");
+                    $('#medList_' + rowid).html("");
                 }
             });
           }

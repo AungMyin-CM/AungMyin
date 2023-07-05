@@ -63,6 +63,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phoneNumber }}</td>
                                 <td>
+                                    @if($user->role)
                                     @switch($user->role->role_type)
                                     @case('1')
                                     doctor
@@ -82,6 +83,7 @@
 
                                     @default
                                     @endswitch
+                                    @endif
                                 </td>
                                 <td>{{ $user->address }}</td>
                                 <td>{{ $user->status ? 'Active' : 'Disable' }}</td>
