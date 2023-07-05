@@ -350,7 +350,7 @@
                                             </div>
                                         </div>
 
-                                            <div class="col-md-5">
+                                            {{-- <div class="col-md-5">
                                                 <div class="d-flex justify-content-center" id="followUp">
                                                     <div class="form-check" style="padding:6px !important;">
                                                         <div class="icheck-primary d-inline mt-2">
@@ -359,7 +359,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
 
                                         <div id="imgModal" class="modal">

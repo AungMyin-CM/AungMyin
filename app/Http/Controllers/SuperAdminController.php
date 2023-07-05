@@ -6,21 +6,14 @@ use App\Mail\FeedbackMail;
 use App\Models\User;
 use App\Models\Clinic;
 use App\Models\Package;
-<<<<<<< HEAD
 use App\Models\Feedback;
 use App\Models\UserClinic;
 use App\Models\Patient;
-=======
-use App\Models\UserClinic;
->>>>>>> 4953276 (feat: user update in superadmin)
 use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Mail;
-=======
->>>>>>> 4953276 (feat: user update in superadmin)
 use App\Http\Requests\SuperAdminLoginRequest;
 
 class SuperAdminController extends Controller
