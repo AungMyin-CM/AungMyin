@@ -439,6 +439,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="procedure">Procedure</label>
+                                                    <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..." name="procedure">{{ old('procedure') }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                             <div class="col-md-5">
                                                 <div class="d-flex justify-content-center" id="followUp">
@@ -703,31 +710,34 @@
 
             $.ajaxSetup({
                 headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 
             $.ajax({
                 type: "POST",
                 url: '/clinic-system/fetchIsmed',
-                data: { key: name, clinic_id: clinic_id}
-            }).done(function( response ) {
-            
-                if(response != ''){
+                data: {
+                    key: name,
+                    clinic_id: clinic_id
+                }
+            }).done(function(response) {
+
+                if (response != '') {
                     var obj = JSON.parse(response);
                     const res = obj.meaning.split("<br>");
 
-                    var fil_res = res.filter(function (el) {
+                    var fil_res = res.filter(function(el) {
                         return el != "";
                     });
 
                     var table = $("#product_info_table");
                     var count_table_tbody_tr = $("#product_info_table tbody tr").length;
                     var $this = $("table#product_info_table tbody");
-                    if (count_table_tbody_tr == 1 && $("#product_search_1").val() == ''){
-                        var row_id =  count_table_tbody_tr;
-                    }else{
-                        var row_id =  count_table_tbody_tr + 1;
+                    if (count_table_tbody_tr == 1 && $("#product_search_1").val() == '') {
+                        var row_id = count_table_tbody_tr;
+                    } else {
+                        var row_id = count_table_tbody_tr + 1;
                     }
                     var html = "";
               
