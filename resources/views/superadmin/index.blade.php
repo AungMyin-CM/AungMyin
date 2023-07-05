@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @extends('layouts.super_layout')
 
 @section('content')

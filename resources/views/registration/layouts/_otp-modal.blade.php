@@ -96,7 +96,7 @@ body {
         <i class="bx bxs-check-shield"></i>
       </header>
       <h4>Enter OTP Code</h4>
-      <form  id="form" disabled>
+      <div  id="form" disabled>
         <div class="input-field">
           <input type="number" id="otp-number" />
           <input type="number" id="otp-number" disabled />
@@ -104,8 +104,8 @@ body {
           <input type="number" id="otp-number" disabled />
         </div>
         <button id="verify-btn" onclick="verifyOtp()"><i class="fa fa-spinner fa-spin d-none" id="loader"></i><span id="verify">Verify</span></button>
-        <span class="text-danger" id="otp-validation"></span>
-      </form>
+        <span class="text-danger text-center" id="otp-validation"></span>
+      </div>
       <small>Please check your <span id="mail" class="badge badge-primary text-black"></span> mailbox. We have sent an otp verification.</small>
 
     </div>

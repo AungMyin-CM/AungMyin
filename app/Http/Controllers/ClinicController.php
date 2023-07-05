@@ -120,7 +120,7 @@ class ClinicController extends Controller
             'code' => $request->clinic_name . '-' . $this->generateClinicCode(),
             'name' => $request->clinic_name,
             'email' => Auth::user()->email,
-            'phoneNumber' => Auth::user()->phoneNumber,
+            'phoneNumber' => $request->phoneNumber,
             'package_id' => $request->package_id,
             'address' => $request->address,
             'package_purchased_data' => Carbon::now(),
