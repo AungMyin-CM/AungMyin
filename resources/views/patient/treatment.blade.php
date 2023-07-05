@@ -439,10 +439,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="procedure">Procedure</label>
-                                                    <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..." name="procedure">{{ old('procedure') }}</textarea>
+
+                                            <div class="col-md-5">
+                                                <div class="d-flex justify-content-center" id="followUp">
+                                                    <div class="form-check" style="padding:6px !important;">
+                                                        <div class="icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            <label for="isFollowup">Follow up</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
