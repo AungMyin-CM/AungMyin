@@ -16,6 +16,8 @@ use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProcedureController;
+use App\Http\Controllers\InvestigationController;
+
 use App\Http\Controllers\SuperAdminController;
 
 /*
@@ -82,6 +84,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::post('/fetchIsmed', [PatientController::class, 'fetchIsmedData']);
 
     Route::post('/search', [SearchController::class, 'searchPatient']);
+    Route::post('/second_search', [SearchController::class, 'secondsearchPatient']);
+
 
     Route::post('/searchMed', [SearchController::class, 'searchMedicine']);
 

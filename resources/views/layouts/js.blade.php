@@ -78,6 +78,10 @@
 
     }
 
+    function removeRow(tr_id){
+        $("#product_info_table tbody tr#row_"+tr_id).remove();
+    }
+
     $(document).ready(function(){
 
             $('body').addClass('sidebar-collapse');
@@ -169,5 +173,44 @@
                 window.location = '/clinic-system/'+id;
             });
         })
+
+        $('#input-search').keyup(function() {
+            var query = $(this).val();
+
+            var clinic_id = '{{Session::get('cc_id')}}';
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            
+            $.ajax({
+                type: "POST",
+                url: '/clinic-system/second_search',
+                data: {
+                    key: query,
+                    clinic_id: clinic_id
+                }
+            }).done(function(response) {
+
+                if (query != '') {
+                    // if(response == ''){
+                    $("#search").removeAttr("class", "fa fa-search");
+                    $("#search").attr("class", "fa fa-plus");
+                    $("#addRoute").attr("href", "{{ route('patient.create') }}" + "?name=" + query);
+                    // }else{
+                    //     $("#search").removeAttr("class","fa fa-plus");
+                    //     $("#search").attr("class","fa fa-search");
+                    //     $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
+                    // }
+                    $('#patientList').css("display", "block");
+                    $('#patientList').html(response);
+                } else {
+                    $('#patientList').css("display", "none");
+                    $('#patientList').html("");
+                }
+            });
+        });
 })
 </script>

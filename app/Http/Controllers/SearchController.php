@@ -126,6 +126,107 @@ class SearchController extends Controller
         echo $output;
     }
 
+    public function secondsearchPatient(Request $request)
+    {
+        $ref = str_replace(' ', '_', $request->key);
+
+        $clinic_id = UserClinic::where('user_id', $request->clinic_id)->pluck('clinic_id')->first();
+
+        $data = Patient::select('id', 'name', 'age', 'father_name')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $request->clinic_id)->where('status', 1)->get();
+
+        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+
+        if ($role->role_type == 1) {
+
+            if (count($data) == 0) {
+                $output = '';
+            } else {
+                $output = '<ul class="list-group" style="display:block;">';
+                // <li class="list-group-item search-get-results-1-result"><span class="col-md-4 float-left">Name</span><span class="col-md-4">Age</span><span class="col-md-4 float-right">Father\'s Name</span></li>';
+
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach ($data as $row) {
+                    $output .= '
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
+                        '<span class="col-lg-6">Age: ' . $row->age . '</span>' .
+                        '</a>  
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <i class="fas fa-edit fa-lg" style="color:black;"></i>
+                        </a>
+                        </div>
+                        </li>';
+                }
+                $output .= '</ul>';
+            }
+        } elseif ($role->role_type == 2) {
+
+            if (count($data) == 0) {
+                $output = '';
+            } else {
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach ($data as $row) {
+                    $output .= '
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <a  class="col-md-11 row" href="' . route('add.queue', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
+                        '<span class="col-lg-6">Age: ' . $row->age . '</span>' .
+                        ' </a>  
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <i class="fas fa-users fa-lg" style="color:black;"></i>
+                        </a>
+                        </div>
+                        </li>';
+                }
+                $output .= '</ul>';
+            }
+        } else if ($role->role_type == 3) {
+            if (count($data) == 0) {
+                $output = '';
+            } else {
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach ($data as $row) {
+                    $output .= '
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <a  class="col-md-11 row" href="' . route('pos-patient', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
+                        '<span class="col-lg-6">Age: ' . $row->age . '</span>'.
+                        '</a>  
+                        <a class="col-md-1" href="' . route('add.queue', $row->id) . '" class="btn btn-sm btn-tool">
+                        <i class="fas fa-users fa-lg" style="color:black;"></i>
+                        </a>
+                        </div>
+                        </li>';
+                }
+                $output .= '</ul>';
+            }
+        } else if ($role->role_type == 5) {
+
+            if (count($data) == 0) {
+                $output = '';
+            } else {
+                $output = '<ul class="list-group" style="display:block; position:relative;">';
+
+                foreach ($data as $row) {
+                    $output .= '
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
+                        '<span class="col-lg-6">Age: ' . $row->age . '</span>'.
+                        '</a>  
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <i class="fas fa-edit fa-lg" style="color:black;"></i>
+                        </a>
+                        </div>
+                        </li>';
+                }
+                $output .= '</ul>';
+            }
+        }
+
+        echo $output;
+    }
+
     public function searchMedicine(Request $request)
     {
 

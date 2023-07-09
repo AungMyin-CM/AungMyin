@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 use Auth;
 
+
+
 class UserController extends Controller
 {
     public function index()
@@ -68,6 +70,10 @@ class UserController extends Controller
             'last_name' => $request->last_name,
            
         ]);
+
+        $user_id = User::where('email',$request->email)->value('id');
+
+        Auth::loginUsingId($user_id);
 
         // $hash = $this->generateTokenVerify();
         // $token = $user_id . $hash;
@@ -194,6 +200,107 @@ class UserController extends Controller
         return view('email-template',compact('otp'));
         
     }
+
+    // public function sendOtp(Request $request)
+    // {
+
+    //     $user = new User();
+
+    //     $otp = $this->otpGenerator();
+
+    //     $user = User::where("email",$request->email)->count();
+
+    //     if($user > 0)
+    //     {
+    //         $user_id = User::where('email',$request->email)->value('id');
+    //         User::where('email',$request->email)->update(['otp' => $otp]);
+           
+    //     }else{
+
+    //         $user_id = User::create([
+    //             'email' => $request->email,
+    //             'otp' => $otp
+    //         ])->id;
+
+    //     }
+
+    //     $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
+
+    //     $message = 'Hello, <b>' . $request->email . '</b>';
+    //     $message = 'Thanks for singing up, we just need to verify your email address';
+    //     $mail_data = [
+    //         'recipient' => $request->email,
+    //         'fromEmail' => 'aungmyin.cm@gmail.com',
+    //         'fromName' => 'Aung Myin Authentication',
+    //         'subject' => 'Email Verification',
+    //         'body' => $message,
+    //         'otp' => $otp,
+    //     ];
+    //     \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+    //         $message->to($mail_data['recipient'])
+    //             ->from($mail_data['fromEmail'], $mail_data['fromName'])
+    //             ->subject($mail_data['subject']);
+    //     });
+
+    //     echo "Email Sent";
+
+
+    // }
+
+    // public function checkOtp(Request $request)
+    // {
+
+    //     $otp = str_replace(',','',$request->otp);
+
+    //     $email = $request->email;
+
+    //     $value = User::where('email',$email)->where('otp',$otp)->count();
+
+    //     if($value == 1)
+    //     {
+    //         User::where('email',$email)->update(['email_verified' => 1, 'email_verified_at' => Carbon::now()]);
+
+    //         echo "valid";
+    //     }else{
+    //         echo "invalid";
+    //     }
+
+
+    // }
+
+    // public function showMailTemp()
+    // {
+    //     // $user = new User();
+
+    //     // $user_id = $user->create([
+    //     //    'email' => $request->email
+    //     // ])->id;
+
+    //     // $otp = $this->otpGenerator();
+
+    //     $otp = $this->otpGenerator();
+
+    //     $verifyURL = route('verify', ['otp' => $otp, 'value' => '1', 'service' => 'Email_verification']);
+
+    //     $message = 'Hello, <b>' . 'email' . '</b>';
+    //     $message = 'Thanks for singing up, we just need to verify your email address';
+    //     $mail_data = [
+    //         'recipient' => 'email@gmail.com',
+    //         'fromEmail' => 'aungmyin.cm@gmail.com',
+    //         'fromName' => 'Aung Myin Authentication',
+    //         'subject' => 'Email Verification',
+    //         'body' => $message,
+    //         'otp' => $otp,
+    //     ];
+    //     // \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+    //     //     $message->to($mail_data['recipient'])
+    //     //         ->from($mail_data['fromEmail'], $mail_data['fromName'])
+    //     //         ->subject($mail_data['subject']);
+    //     // });
+
+    //     return view('email-template',compact('otp'));
+        
+    // }
 
     public function generateTokenVerify()
     {

@@ -120,7 +120,7 @@ class ClinicController extends Controller
             'code' => $request->clinic_name . '-' . $this->generateClinicCode(),
             'name' => $request->clinic_name,
             'email' => Auth::user()->email,
-            'phoneNumber' => Auth::user()->phoneNumber,
+            'phoneNumber' => $request->phoneNumber,
             'package_id' => $request->package_id,
             'address' => $request->address,
             'package_purchased_data' => Carbon::now(),
@@ -152,10 +152,7 @@ class ClinicController extends Controller
 
         $clinic = Clinic::find(session()->get('cc_id'));
 
-        return $clinic;
-
         $package = Package::find($clinic->package_id);
-
 
         $clinic_user = UserClinic::where('clinic_id',$clinic->id)->where('user_id',Auth::id())->first();
 
