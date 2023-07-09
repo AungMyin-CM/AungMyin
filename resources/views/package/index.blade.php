@@ -29,11 +29,11 @@
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Price</th>
-                                <th>Trial Period (Days)</th>
+                                <th>Trial Period</th>
                                 <th>Is Discount</th>
                                 <th>Discount Percentage</th>
-                                <th>Discount Start Date</th>
-                                <th>Discount End Date</th>
+                                <th>Discount Starts</th>
+                                <th>Discount Ends</th>
                                 <th style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
@@ -43,11 +43,26 @@
                                 <td>{{ $package->name }}</td>
                                 <td>{{ $package->type }}</td>
                                 <td>{{ $package->price }}</td>
-                                <td>{{ $package->trialPeriod }}</td>
+
+                                @php
+                                $days = $package->trialPeriod;
+                                if ($days >= 30 && $days % 30 === 0) {
+                                $number = $days / 30;
+                                $unit = 'months';
+                                } elseif ($days >= 7 && $days % 7 === 0) {
+                                $number = $days / 7;
+                                $unit = 'weeks';
+                                } else {
+                                $number = $days;
+                                $unit = 'days';
+                                }
+                                @endphp
+
+                                <td>{{ $package->trialPeriod ? $number . ' ' . $unit : '---' }}</td>
                                 <td>{{ $package->isDiscount === 0 ? 'no' : 'yes' }}</td>
-                                <td>{{ $package->discountPercentage }}</td>
-                                <td>{{ substr($package->discountStartDate, 0, 10) }}</td>
-                                <td>{{ substr($package->discountEndDate, 0, 10) }}</td>
+                                <td>{{ $package->discountPercentage ? $package->discountPercentage : '---' }}</td>
+                                <td>{{ $package->discountStartDate ? substr($package->discountStartDate, 0, 10) : '---' }}</td>
+                                <td>{{ $package->discountEndDate ? substr($package->discountEndDate, 0, 10) : '---' }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center" style="gap: 10px">
                                         <div>
