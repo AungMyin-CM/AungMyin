@@ -67,7 +67,7 @@
                                 <div class="col-md-6">
                                     <div class="form-check mb-3">
                                         <input type="hidden" name="isDiscount" value="0">
-                                        <input class="form-check-input" type="checkbox" name="isDiscount" value="1" {{ $package->isDiscount ? 'checked' : '' }} onchange="this.previousElementSibling.value = this.checked ? '1' : '0'">
+                                        <input class="form-check-input" type="checkbox" name="isDiscount" value="1" {{ $package->isDiscount ? 'checked' : '' }} onchange="handleDiscountDates(this)">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Is Discount
                                         </label>
@@ -75,7 +75,7 @@
                                     <div class="form-group">
                                         <label for="discountPercentage">Discount Percentage</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" name="discountPercentage" value="{{ $package->discountPercentage }}">
+                                            <input type="text" class="form-control" name="discountPercentage" id="discountPercentage" value="{{ $package->discountPercentage }}" {{ $package->isDiscount ? '' : 'disabled' }}>
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -88,14 +88,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="discountStartDate">Discount Start Date</label>
-                                        <input type="date" class="form-control" name="discountStartDate" value="{{ substr($package->discountStartDate, 0, 10) }}">
+                                        <input type="date" class="form-control" name="discountStartDate" id="discountStartDate" value="{{ substr($package->discountStartDate, 0, 10) }}" {{ $package->isDiscount ? '' : 'disabled' }}>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="discountEndDate">Discount End Date</label>
-                                        <input type="date" class="form-control" name="discountEndDate" value="{{ substr($package->discountEndDate, 0, 10) }}">
+                                        <input type="date" class="form-control" name="discountEndDate" id="discountEndDate" value="{{ substr($package->discountEndDate, 0, 10) }}" {{ $package->isDiscount ? '' : 'disabled' }}>
                                     </div>
                                 </div>
                             </div>
@@ -110,5 +110,28 @@
         </div>
     </div>
 </body>
+
+<script>
+    function handleDiscountDates(checkbox) {
+        let discountPercentage = document.getElementById('discountPercentage');
+        let discountStartDate = document.getElementById('discountStartDate');
+        let discountEndDate = document.getElementById('discountEndDate');
+
+        if (checkbox.checked) {
+            discountPercentage.disabled = false;
+            discountStartDate.disabled = false;
+            discountEndDate.disabled = false;
+        } else {
+            discountPercentage.disabled = true;
+            discountPercentage.value = '';
+            discountStartDate.disabled = true;
+            discountStartDate.value = '';
+            discountEndDate.disabled = true;
+            discountEndDate.value = '';
+        }
+
+        checkbox.previousElementSibling.value = checkbox.checked ? '1' : '0';
+    }
+</script>
 
 @endsection
