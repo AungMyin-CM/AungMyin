@@ -168,6 +168,36 @@ class SuperAdminController extends Controller
         return view('superadmin.clinics.index')->with('clinics', $clinics);
     }
 
+    public function clinicEdit(String $id)
+    {
+        $clinic = Clinic::findOrFail($id);
+        return view('superadmin.clinics.edit')->with('clinic', $clinic);
+    }
+
+    public function clinicUpdate(Request $request, String $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required',
+            'phoneNumber' => 'required',
+            'expire_at' => 'required',
+        ]);
+
+        $formFields = [
+            'name' => $request->name,
+            'code' => $request->code,
+            'phoneNumber' => $request->phoneNumber,
+            'address' => $request->address,
+        ];
+
+        Clinic::whereId($id)->update($formFields);
+        PackagePurchase::where('clinic_id', $id)->update([
+            'expire_at' => $request->expire_at
+        ]);
+
+        return redirect('aung_myin/admin_dashboard/clinics')->with('success', 'Clinic updated successfully!');
+    }
+
     // Patients
     public function patients()
     {
