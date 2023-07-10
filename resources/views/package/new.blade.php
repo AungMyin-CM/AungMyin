@@ -66,7 +66,7 @@
                                 <div class="col-md-6">
                                     <div class="form-check mb-3">
                                         <input type="hidden" name="isDiscount" value="0">
-                                        <input class="form-check-input" type="checkbox" name="isDiscount" id="isDiscount" value="1" onchange="handleDiscountDates(this)">
+                                        <input class="form-check-input" type="checkbox" name="isDiscount" value="1" onchange="handleDiscountDates(this)">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             Is Discount
                                         </label>
