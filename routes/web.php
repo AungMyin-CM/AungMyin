@@ -33,9 +33,9 @@ use App\Http\Controllers\SuperAdminController;
 
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
-Route::post('/send-otp',[UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
+Route::post('/send-otp', [UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
 
-Route::get('/',[HomeController::class,'welcome'])->name('aung-myin.welcome');
+Route::get('/', [HomeController::class, 'welcome'])->name('aung-myin.welcome');
 
 Route::get('package-selection', [ClinicController::class, 'stepOneRegister'])->name('package.selection')->middleware('auth');
 
@@ -50,7 +50,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact-us')
 //     return view('email-template');
 // });
 
-Route::get('/email-view',[UserController::class,'showMailTemp'])->name('contact-us');
+Route::get('/email-view', [UserController::class, 'showMailTemp'])->name('contact-us');
 
 
 Route::get('clinic-login', function () {
@@ -141,7 +141,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
 
-    Route::get('/complete-payment/{id}',[ClinicController::class, 'completePayment'])->name('complete.payment');
+    Route::get('/complete-payment/{id}', [ClinicController::class, 'completePayment'])->name('complete.payment');
 });
 
 Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
@@ -163,9 +163,9 @@ Route::post('user-register', [UserController::class, 'register'])->name('user.re
 
 Route::get('/verify', [UserController::class, 'verify'])->name('verify');
 
-Route::post('/checkOtp',[UserController::class,'checkOtp'])->name('verify-otp');
+Route::post('/checkOtp', [UserController::class, 'checkOtp'])->name('verify-otp');
 
-Route::post('/feedback-store',[FeedBackController::class, 'store'])->name('feedback.store');
+Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feedback.store');
 
 Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
 
@@ -195,6 +195,8 @@ Route::prefix('aung_myin/admin_dashboard')->group(function () {
 
         // Clinic route
         Route::get('/clinics', [SuperAdminController::class, 'clinics'])->name('superadmin.clinics');
+        Route::get('/clinics/{id}', [SuperAdminController::class, 'clinicEdit'])->name('superadmin.clinicEdit');
+        Route::patch('/clinics/{id}', [SuperAdminController::class, 'clinicUpdate'])->name('superadmin.clinicUpdate');
 
         // Patient route
         Route::get('/patients', [SuperAdminController::class, 'patients'])->name('superadmin.patients');

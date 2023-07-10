@@ -14,6 +14,9 @@
 
             <div class="col py-5">
                 <div class="container-fluid">
+                    @if (Session::has('success'))
+                    @include('partials._toast')
+                    @endif
                     <table id="clinicTable" class="table table-striped table-bordered mb-3">
                         <thead>
                             <tr>
@@ -24,6 +27,8 @@
                                 <th>Address</th>
                                 <th>Total Patients</th>
                                 <th>Created At</th>
+                                <th>Expire At</th>
+                                <th style="width: 10%;">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +40,17 @@
                                 <td>{{ $clinic->package->name }}</td>
                                 <td>{{ $clinic->address }}</td>
                                 <td>{{ $clinic->patient_count }}</td>
-                                <td>{{ $clinic->created_at->format('F jS Y') }}</td>
+                                <td>{{ substr($clinic->created_at, 0, 10) }}</td>
+                                <td>{{ $clinic->package_purchase[0]->expire_at }}</td>
+                                <td>
+                                    <div class="d-flex justify-content-center" style="gap: 10px">
+                                        <div>
+                                            <a href="{{ route('superadmin.clinicEdit', $clinic->id) }}" class="btn btn-default">
+                                                <i class="bi bi-pencil-square fs-4" style=" color: {{config('app.color')}}"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
