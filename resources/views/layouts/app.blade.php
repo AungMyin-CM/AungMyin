@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{{ asset('css/draggable.css') }}">
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <link rel="stylesheet" href="{{asset('css/package.css')}}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- Daterange picker -->

@@ -147,10 +147,10 @@ class ClinicController extends Controller
         return redirect('/home');
     }
 
-    public function completePayment()
+    public function completePayment($id)
     {
 
-        $clinic = Clinic::find(session()->get('cc_id'));
+        $clinic = Clinic::find(Crypt::decrypt($id));
 
         $package = Package::find($clinic->package_id);
 
@@ -194,7 +194,9 @@ class ClinicController extends Controller
 
         $encryptedHashValue = hash_hmac('sha256', $data_pay, '130fb2878f107a57d8dfb637d4cb7d53');
 
-        $redirect_url = "http://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+        $redirect_url = "https://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
+
+        return redirect()->intended($redirect_url);
 
     }
 
@@ -322,7 +324,7 @@ class ClinicController extends Controller
 
         $user_id = Auth::id();
 
-        $data = Package::where('status', 1)->first();
+        $data = Package::where('status', 1)->orderBy('id','desc')->get();
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 

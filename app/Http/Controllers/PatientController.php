@@ -11,6 +11,9 @@ use App\Models\Visit;
 use App\Models\Role;
 use App\Models\UserClinic;
 use App\Models\Pharmacy;
+use App\Models\Procedure;
+use App\Models\Investigation;
+
 use App\Models\Notification;
 use App\Models\PatientDoctor;
 use App\Events\NoticeEvent;
@@ -225,6 +228,23 @@ class PatientController extends Controller
         } catch (DecryptException $e) {
             abort(404);
         }
+    }
+
+    public function fetchProcedureLabData()
+    {
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
+        $array = [];
+
+        $procedure = Procedure::get()->toArray();
+
+        $invesigation = Investigation::get()->toArray();
+
+        $data = array_merge($procedure,$invesigation);
+
+        return $data;
     }
 
     public function saveTreatment(Request $request, $id)

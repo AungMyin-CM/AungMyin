@@ -309,12 +309,12 @@
                                         {{-- </fieldset> --}}
 
                                         <div class="row mb-3">
-                                            <div class="col-md-6 mb-2">
-                                                <textarea class="form-control c-field" id="procedure" rows="3" placeholder="Procedure" name="procedure">{{ old('procedure') }}</textarea>
+                                            <div class="col-md-6 m-3">  
+                                                <a href="#"  class="nav-link app-text-color" id="procedure_lab_action">Select Procedures & Investigation</a>
                                             </div>
-                                            <div class="col-md-6 mb-2">
-                                                <textarea class="form-control c-field" id="investigation" rows="3" placeholder="Investigation" name="investigation">{{ old('investigation') }}</textarea>
-                                            </div>
+                                            @if(Helper::checkPermission('p_update', $permissions))
+                                                @include('partials._procedure-lab-modal')
+                                            @endif
                                         </div>
 
                                         <div class="row">
@@ -402,10 +402,13 @@
     // Get the modal
     let viewModal = document.getElementById("viewModal");
     let editModal = document.getElementById("editModal");
+    let procedure_lab_modal = document.getElementById("procedure_modal");
+
 
     // Get the button that opens the modal
     let viewBtn = document.getElementById("viewBtn");
     let editBtn = document.getElementById("editBtn");
+    let procedureBtn = document.getElementById("procedure_lab_action");
 
     // When the user clicks the button, open the modal
     viewBtn.onclick = function() {
@@ -416,6 +419,28 @@
         editModal.style.display = "block";
     }
 
+    procedureBtn.onclick = function() {
+        procedure_lab_modal.style.display = "block";
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            url: '/clinic-system/fetchData',
+            type: 'GET',
+            success: function(response) {
+
+                console.log(response);
+
+            },
+        });
+
+        
+    }
+
     // Close the modal
     $("#viewClose").click(function(e) {
         viewModal.style.display = "none";
@@ -423,6 +448,10 @@
 
     $("#editClose").click(function(e) {
         editModal.style.display = "none";
+    })
+
+    $("#procedureClose").click(function(e){
+        procedure_lab_modal.style.display = "none";
     })
     $("#add_tret_med_row").on('click', function() {
         var table = $("#product_info_table");
