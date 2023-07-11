@@ -431,9 +431,21 @@
         $.ajax({
             url: '/clinic-system/fetchData',
             type: 'GET',
+            beforeSend: function() {
+                $('.lds-ring').removeClass('d-none');
+            },
             success: function(response) {
 
-                console.log(response);
+                var html = '';
+
+                $.each(response,function(index,value){
+
+                    html += '<li><input type="checkbox" id="checkbox_'+value.id+'" value="Rainbow Dash"><label for="checkbox_'+value.id+'">'+value.code+'</label></li> ';
+                      
+                });
+
+                $("#ps-list").append(html);
+                $('.lds-ring').addClass('d-none');
 
             },
         });

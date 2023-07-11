@@ -89,10 +89,7 @@
             $.ajax({
             type: "GET",
             url: '/clinic-system/check-noti',
-              beforeSend: function(){
-                $('.wrapper').css('opacity','0.1');
-                $('.middle').css('opacity','1');
-              },
+              
               success: function( response ) {
                 if(response != 'no-data'){
 
@@ -125,9 +122,7 @@
                   $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
 
                 }
-                $('.wrapper').css('opacity','1');
-                $('.middle').css('opacity','0.1');
-
+               
               },
               error: function(httpObj, textStatus) {       
                         console.log(textStatus);              

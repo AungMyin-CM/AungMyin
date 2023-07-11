@@ -68,6 +68,43 @@ ul.ks-cboxtags li input[type="checkbox"] {
 ul.ks-cboxtags li input[type="checkbox"]:focus + label {
   border: 2px solid #e9a1ff;
 }
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  margin: 8px;
+  border: 8px solid #003049;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #003049 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>
 <div id="procedure_modal" class="modal">
 
@@ -81,9 +118,10 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
             <div class="card">
                 <div class="card-body">
                   <div class="container">
-                    <ul class="ks-cboxtags">
-                      {{-- <li><input type="checkbox" id="checkboxOne" value="Rainbow Dash"><label for="checkboxOne">Rainbow Dash</label></li>
-                      <li><input type="checkbox" id="checkboxTwo" value="Cotton Candy" checked><label for="checkboxTwo">Cotton Candy</label></li> --}}
+                    <div class="lds-ring d-none"><div></div><div></div><div></div><div></div></div>
+
+                    <ul class="ks-cboxtags" id="ps-list">
+                      
                       {{-- <li><input type="checkbox" id="checkboxThree" value="Rarity" checked><label for="checkboxThree">Rarity</label></li>
                       <li><input type="checkbox" id="checkboxFour" value="Moondancer"><label for="checkboxFour">Moondancer</label></li>
                       <li><input type="checkbox" id="checkboxFive" value="Surprise"><label for="checkboxFive">Surprise</label></li>
