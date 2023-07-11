@@ -11,6 +11,7 @@ use App\Models\UserClinic;
 use App\Models\Patient;
 use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
+use App\Models\PackagePurchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -132,7 +133,6 @@ class SuperAdminController extends Controller
         }
 
         $formFields = [
-<<<<<<< HEAD
             'name' => $request->name,
             'speciality' => $request->speciality,
             'avatar' => $filename,
@@ -247,8 +247,6 @@ class SuperAdminController extends Controller
         }
 
         $requests = [
-=======
->>>>>>> a5ad6b3 (feat: user status)
             'name' => $request->name,
             'speciality' => $request->speciality,
             'avatar' => $filename,
@@ -319,10 +317,11 @@ class SuperAdminController extends Controller
     //     return redirect('aung_myin/admin_dashboard/users')->with('success', 'User updated successfully!');
     // }
 
+
     public function profile()
     {
         $user = auth()->user();
-        return view('superadmin.profile')->with('user', $user);
+        return view('superadmin.profile.profile')->with('user', $user);
     }
 
     public function profileUpdate(Request $request, String $id)
