@@ -281,9 +281,9 @@ class PosController extends Controller
 
         $clinic_id = session()->get('cc_id');
         $history_List = POS::where("clinic_id", $clinic_id)
-                    ->where('status', 1)
-                    ->orderBy('updated_at', 'desc')
-                    ->get();
+            ->where('status', 1)
+            ->orderBy('updated_at', 'desc')
+            ->get();
         return view('pos/history')->with(['history_list' => $history_List]);
     }
 
@@ -309,7 +309,7 @@ class PosController extends Controller
             $pos_detail = PosItem::where("pos_id", $id)->get();
             $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
 
-            return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
+            return view('pos/invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
         } catch (DecryptException $e) {
             abort(404);
         }
