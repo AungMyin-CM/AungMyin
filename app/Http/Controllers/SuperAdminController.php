@@ -11,7 +11,6 @@ use App\Models\UserClinic;
 use App\Models\Patient;
 use App\Models\PackagePurchase;
 use Illuminate\Http\Request;
-use App\Models\PackagePurchase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -223,11 +222,7 @@ class SuperAdminController extends Controller
     }
 
     // Profile
-    public function profile()
-    {
-        $user = auth()->user();
-        return view('superadmin.profile.profile')->with('user', $user);
-    }
+  
 
     public function profileUpdate(Request $request, String $id)
     {
@@ -324,46 +319,46 @@ class SuperAdminController extends Controller
         return view('superadmin.profile.profile')->with('user', $user);
     }
 
-    public function profileUpdate(Request $request, String $id)
-    {
-        $request->validate([
-            'name' => 'required|min:3|max:50',
-            'email' => 'required|email',
-            'phoneNumber' => 'required',
-            'password' => 'confirmed',
-        ]);
+    // public function profileUpdate(Request $request, String $id)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|min:3|max:50',
+    //         'email' => 'required|email',
+    //         'phoneNumber' => 'required',
+    //         'password' => 'confirmed',
+    //     ]);
 
-        if ($request->file('avatar')) {
-            $file = $request->file('avatar');
-            $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
-            $file->move(public_path('images/avatars'), $filename);
-        } else {
-            $filename = User::where('id', $id)->value('avatar');
-        }
+    //     if ($request->file('avatar')) {
+    //         $file = $request->file('avatar');
+    //         $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
+    //         $file->move(public_path('images/avatars'), $filename);
+    //     } else {
+    //         $filename = User::where('id', $id)->value('avatar');
+    //     }
 
-        $requests = [
-            'name' => $request->name,
-            'speciality' => $request->speciality,
-            'avatar' => $filename,
-            'credentials' => $request->credentials,
-            'email' => $request->email,
-            'phoneNumber' => $request->phoneNumber,
-            'city' => $request->city,
-            'country' => $request->country,
-            'address' => $request->address,
-            'gender' => $request->gender,
-            'short_bio' => $request->short_bio,
-            'fees' => $request->fees,
-        ];
+    //     $requests = [
+    //         'name' => $request->name,
+    //         'speciality' => $request->speciality,
+    //         'avatar' => $filename,
+    //         'credentials' => $request->credentials,
+    //         'email' => $request->email,
+    //         'phoneNumber' => $request->phoneNumber,
+    //         'city' => $request->city,
+    //         'country' => $request->country,
+    //         'address' => $request->address,
+    //         'gender' => $request->gender,
+    //         'short_bio' => $request->short_bio,
+    //         'fees' => $request->fees,
+    //     ];
 
-        if ($request->password != null && trim($request->password) != '') {
-            $requests += ['password' => Hash::make($request->password)];
-        }
+    //     if ($request->password != null && trim($request->password) != '') {
+    //         $requests += ['password' => Hash::make($request->password)];
+    //     }
 
-        User::whereId($id)->update($requests);
+    //     User::whereId($id)->update($requests);
 
-        return redirect('aung_myin/admin_dashboard/profile')->with('success', 'User updated successfully!');
-    }
+    //     return redirect('aung_myin/admin_dashboard/profile')->with('success', 'User updated successfully!');
+    // }
 
     public function logout(Request $request)
     {
