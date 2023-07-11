@@ -68,6 +68,7 @@ ul.ks-cboxtags li input[type="checkbox"] {
 ul.ks-cboxtags li input[type="checkbox"]:focus + label {
   border: 2px solid #e9a1ff;
 }
+<<<<<<< HEAD
 
 .lds-ring {
   display: inline-block;
@@ -105,6 +106,8 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
   }
 }
 
+=======
+>>>>>>> 4809799 (Merge conflict solved)
 </style>
 <div id="procedure_modal" class="modal">
 
@@ -118,10 +121,16 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
             <div class="card">
                 <div class="card-body">
                   <div class="container">
+<<<<<<< HEAD
                     <div class="lds-ring d-none"><div></div><div></div><div></div><div></div></div>
 
                     <ul class="ks-cboxtags" id="ps-list">
                       
+=======
+                    <ul class="ks-cboxtags">
+                      {{-- <li><input type="checkbox" id="checkboxOne" value="Rainbow Dash"><label for="checkboxOne">Rainbow Dash</label></li>
+                      <li><input type="checkbox" id="checkboxTwo" value="Cotton Candy" checked><label for="checkboxTwo">Cotton Candy</label></li> --}}
+>>>>>>> 4809799 (Merge conflict solved)
                       {{-- <li><input type="checkbox" id="checkboxThree" value="Rarity" checked><label for="checkboxThree">Rarity</label></li>
                       <li><input type="checkbox" id="checkboxFour" value="Moondancer"><label for="checkboxFour">Moondancer</label></li>
                       <li><input type="checkbox" id="checkboxFive" value="Surprise"><label for="checkboxFive">Surprise</label></li>
