@@ -337,10 +337,15 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="procedure">Procedure</label>
-                                                    <textarea class="form-control c-field" id="procedure" rows="5" placeholder="Start Typing here..." name="procedure">{{ old('procedure') }}</textarea>
+
+                                            <div class="col-md-5">
+                                                <div class="d-flex justify-content-center" id="followUp">
+                                                    <div class="form-check" style="padding:6px !important;">
+                                                        <div class="icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            <label for="isFollowup">Follow up</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -759,8 +764,8 @@
                             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
                             '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
                             '</td>' +
-                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" value="' + data[2] + '" ></td>' +
-                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"  value="' + data[3] + '"></td>' +
+                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" value="' + data[2] + '" ></td>' +
+                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" value="' + data[3] + '"></td>' +
                             '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
                             '</tr>';
                         row_id++;
@@ -881,7 +886,6 @@
             }
         }).done(function(response) {
             $("#treatment_data_" + id).slideUp();
-<<<<<<< HEAD
 
             if (response === "updated") {
                 let currentPage = $('.pagination .active').text();
@@ -892,8 +896,6 @@
                     fetch_data(currentPage);
                 }
             }
-=======
->>>>>>> ec62096 (feat: update treatment ui #wip)
         });
     }
 </script>
