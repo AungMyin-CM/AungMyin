@@ -14,14 +14,9 @@
 
             <div class="col py-3">
                 <div class="container-fluid">
-                    @if (Session::has('success'))
-                    @include('partials._toast')
-                    @endif
-                    <div class="d-flex mb-3">
-                        <a href="{{ route('package.create') }}" class="btn text-white ms-auto" style="background-color: {{config('app.color')}};">
-                            <i class="bi bi-plus-lg"></i> Add New
-                        </a>
-                    </div>
+                    <a href="{{ route('package.create') }}" class="btn text-white float-end mb-3" style="background-color: {{config('app.color')}};">
+                        <i class="bi bi-plus-lg"></i> Add New
+                    </a>
 
                     <table id="userTable" class="table table-striped table-bordered mb-3">
                         <thead>
