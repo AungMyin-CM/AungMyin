@@ -440,6 +440,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        //  Invoke click event of target so that non-form submit behaviors will work
 
         $.ajax({
             url: '/clinic-system/fetchData',

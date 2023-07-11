@@ -160,11 +160,8 @@
                                     font-size: 16px;
                                     line-height: 24px;
                                 ">
-<<<<<<< HEAD
                             <small style="margin: 0; color: gray;">
-=======
-                            <p style="margin: 0">
->>>>>>> 788a02e (feat: superadmin feedback)
+                            <small style="margin: 0; color: gray;">
                                 If you have any further feedback,
                                 suggestions, or questions, please don't
                                 hesitate to reach out to us. We're here to
