@@ -14,6 +14,9 @@
 
             <div class="col py-3">
                 <div class="container-fluid">
+                    @if (Session::has('success'))
+                    @include('partials._toast')
+                    @endif
                     <a href="{{ route('package.create') }}" class="btn text-white float-end mb-3" style="background-color: {{config('app.color')}};">
                         <i class="bi bi-plus-lg"></i> Add New
                     </a>
