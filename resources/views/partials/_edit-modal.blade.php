@@ -67,6 +67,10 @@
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
                                     @if($patient->gender == 1)
+                                    <?php
+                                        $m_checked = 'checked';
+                                        $f_checked = '';
+                                    ?>
                                     @else
                                     <?php
                                     $m_checked = '';
