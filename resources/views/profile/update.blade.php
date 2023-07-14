@@ -60,7 +60,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="code">Name</label>
-                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ $user->name }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="Name" value="{{ $user->name }}">
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -69,7 +69,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}">
+                                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}">
                                                     @error('email') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -114,7 +114,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="phNumber">Phone Number</label>
-                                                    <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}">
+                                                    <input type="tel" class="form-control @error('phoneNumber') is-invalid @enderror" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}">
                                                     @error('phoneNumber') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -126,8 +126,9 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                                    <small class=""></small>
+                                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password">
+
+                                                    @error('password') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
 
@@ -138,12 +139,9 @@
                                                         <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                                     </div>
                                                     <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password">
+                                                    
+                                                    @error('password_confirmation') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
-                                                @error('password_confirmation')
-                                                <span class="invalid-feedback" role="alert" id="alert-message">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                                @enderror
                                             </div>
                                             <small>* Leave blank if you do not want to update password</small>
                                         </div>
