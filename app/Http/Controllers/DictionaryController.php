@@ -44,7 +44,6 @@ class DictionaryController extends Controller
         $request->validate([
             'code' => ['required',Rule::unique('dictionary')->where(fn ($query) => $query->where('code', request()->code)->where('user_id',Auth::guard('user')->user()->id)), //assuming the request has platform information
         ],
-            'meaning' => 'required'
         ]);
 
     

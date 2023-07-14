@@ -275,7 +275,7 @@ class SuperAdminController extends Controller
             $filename = User::where('id', $id)->value('avatar');
         }
 
-        $requests = [
+        $formFields = [
             'name' => $request->name,
             'speciality' => $request->speciality,
             'avatar' => $filename,
@@ -291,14 +291,21 @@ class SuperAdminController extends Controller
         ];
 
         if ($request->password != null && trim($request->password) != '') {
-            $requests += ['password' => Hash::make($request->password)];
+            $formFields += ['password' => Hash::make($request->password)];
         }
 
-        User::whereId($id)->update($requests);
+        if ($request->status === null) {
+            $formFields += ['status' => '1'];
+        } else {
+            $formFields += ['status' => $request->status];
+        }
+
+        User::whereId($id)->update($formFields);
 
         return redirect('aung_myin/admin_dashboard/profile')->with('success', 'User updated successfully!');
     }
 
+    // Logout
     public function logout(Request $request)
     {
         Auth::guard('user')->logout();

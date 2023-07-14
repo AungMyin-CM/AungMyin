@@ -49,7 +49,10 @@
                     <section>
                         <span class="text-muted">Summary: </span>
                         <span id="modalSummary">{{ $patient->summary }}</span>
+
+                        {{-- <h5 id="modalName" class="mb-3">{{ $patient->name }}</h5> --}}
                     </section>
+                    
                 </div>
             </div>
         </div>

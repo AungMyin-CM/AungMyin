@@ -39,7 +39,7 @@ class Patient extends Model
 
     public function visits(): HasMany
     {
-        return $this->hasMany(Visit::class, 'patient_id')->where('status', 1);
+        return $this->hasMany(Visit::class, 'patient_id')->where('deleted_at',null);
     }
 
     // public function doctors(): BelongsToMany

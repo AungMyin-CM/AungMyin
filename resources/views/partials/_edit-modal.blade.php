@@ -63,14 +63,13 @@
                                     <label for="disease">Disease</label>
                                     <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ $patient->disease }}</textarea>
                                     <span id="diseaseError" class="text-danger small"></span>
-                                </div>
 
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
                                     @if($patient->gender == 1)
                                     <?php
-                                    $m_checked = 'checked';
-                                    $f_checked = '';
+                                        $m_checked = 'checked';
+                                        $f_checked = '';
                                     ?>
                                     @else
                                     <?php

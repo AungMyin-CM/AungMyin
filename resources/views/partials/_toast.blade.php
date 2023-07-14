@@ -1,5 +1,5 @@
 <body>
-    <div class="position-fixed px-2 py-3" style="z-index: 5; right: 0px; bottom: 0;">
+    <div class="position-fixed p-2" style="z-index: 1; right: 0; bottom: 0;">
         <div id="toast" class="alert" style="background-color: {{config('app.color')}}; padding: 5px 10px !important;">
             <div class="text-white">
                 {{ Session::get('success') }}

@@ -16,7 +16,7 @@
             <div class="modal-body">
                 <div id="accordion" class="">
                     @php
-                    $sortedData = $patient->visits->sortByDesc('updated_at');
+                    $sortedData = $patient->visits->where('deleted_at',null)->sortByDesc('updated_at');
                     @endphp
 
                     @foreach ($sortedData as $row)

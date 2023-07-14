@@ -309,12 +309,12 @@
                                         {{-- </fieldset> --}}
 
                                         <div class="row mb-3">
-                                            <div class="col-md-6 mb-2">
-                                                <textarea class="form-control c-field" id="procedure" rows="3" placeholder="Procedure" name="procedure">{{ old('procedure') }}</textarea>
+                                            <div class="col-md-6 m-3">  
+                                                <a href="#"  class="nav-link app-text-color" id="procedure_lab_action">Select Procedures & Investigation</a>
                                             </div>
-                                            <div class="col-md-6 mb-2">
-                                                <textarea class="form-control c-field" id="investigation" rows="3" placeholder="Investigation" name="investigation">{{ old('investigation') }}</textarea>
-                                            </div>
+                                            @if(Helper::checkPermission('p_update', $permissions))
+                                                @include('partials._procedure-lab-modal')
+                                            @endif
                                         </div>
 
                                         <div class="row">
@@ -362,6 +362,19 @@
                                             </div> --}}
                                         </div>
 
+                                            {{-- <div class="col-md-5">
+                                                <div class="d-flex justify-content-center" id="followUp">
+                                                    <div class="form-check" style="padding:6px !important;">
+                                                        <div class="icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            <label for="isFollowup">Follow up</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div> --}}
+                                        </div>
+
                                         <div id="imgModal" class="modal">
                                             <span id="imgClose" class="close">&times;</span>
                                             <div id="carousel" class="carousel slide">
@@ -402,10 +415,13 @@
     // Get the modal
     let viewModal = document.getElementById("viewModal");
     let editModal = document.getElementById("editModal");
+    let procedure_lab_modal = document.getElementById("procedure_modal");
+
 
     // Get the button that opens the modal
     let viewBtn = document.getElementById("viewBtn");
     let editBtn = document.getElementById("editBtn");
+    let procedureBtn = document.getElementById("procedure_lab_action");
 
     // When the user clicks the button, open the modal
     viewBtn.onclick = function() {
@@ -416,13 +432,52 @@
         editModal.style.display = "block";
     }
 
-    // Close Modal
+    procedureBtn.onclick = function() {
+        procedure_lab_modal.style.display = "block";
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        //  Invoke click event of target so that non-form submit behaviors will work
+
+        $.ajax({
+            url: '/clinic-system/fetchData',
+            type: 'GET',
+            beforeSend: function() {
+                $('.lds-ring').removeClass('d-none');
+            },
+            success: function(response) {
+
+                var html = '';
+
+                $.each(response,function(index,value){
+
+                    html += '<li><input type="checkbox" id="checkbox_'+value.id+'" value="Rainbow Dash"><label for="checkbox_'+value.id+'">'+value.code+'</label></li> ';
+                      
+                });
+
+                $("#ps-list").append(html);
+                $('.lds-ring').addClass('d-none');
+
+            },
+        });
+
+        
+    }
+
+    // Close the modal
     $("#viewClose").click(function(e) {
         viewModal.style.display = "none";
     })
 
     $("#editClose").click(function(e) {
         editModal.style.display = "none";
+    })
+
+    $("#procedureClose").click(function(e){
+        procedure_lab_modal.style.display = "none";
     })
     $("#add_tret_med_row").on('click', function() {
         var table = $("#product_info_table");
@@ -706,8 +761,8 @@
                             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
                             '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
                             '</td>' +
-                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" value="' + data[2] + '" ></td>' +
-                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"  value="' + data[3] + '"></td>' +
+                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" value="' + data[2] + '" ></td>' +
+                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" value="' + data[3] + '"></td>' +
                             '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
                             '</tr>';
                         row_id++;

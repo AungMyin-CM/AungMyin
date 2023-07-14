@@ -73,6 +73,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::resource('pharmacy', PharmacyController::class);
 
+    Route::get('fetchData',[PatientController::class,'fetchProcedureLabData'])->name('fetch.data');
+
     Route::patch('patient-update/{patient}', [PatientController::class, 'updatePatient'])->name('patient.updatePatient');
 
     Route::get('patient/{patient}/treatment', [PatientController::class, 'treatment'])->name('patient.treatment');

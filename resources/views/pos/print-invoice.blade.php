@@ -53,7 +53,7 @@
           <div class="col text-end">
             <b>{{ $patient_data->clinic->name }}</b><br />
             <span class="text-muted small">{{ $patient_data->clinic->address }}</span><br />
-            <span class="text-muted small">aungmyin@gmail.com</span><br />
+            <span class="text-muted small">aungmyin.cm@gmail.com</span><br />
             <span class="text-muted small"> {{ $patient_data->clinic->phoneNumber }} </span>
           </div>
         </div>
