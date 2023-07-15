@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DocController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProcedureController;
 use App\Http\Controllers\InvestigationController;
@@ -73,7 +74,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::resource('pharmacy', PharmacyController::class);
 
-    Route::get('fetchData',[PatientController::class,'fetchProcedureLabData'])->name('fetch.data');
+    Route::get('fetchData', [PatientController::class, 'fetchProcedureLabData'])->name('fetch.data');
 
     Route::patch('patient-update/{patient}', [PatientController::class, 'updatePatient'])->name('patient.updatePatient');
 
@@ -172,6 +173,8 @@ Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feed
 Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
 
 Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
+
+Route::get('/docs', [DocController::class, 'index']);
 
 Route::group(['middleware' => 'auth'], function () {
 
