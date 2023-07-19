@@ -43,5 +43,5 @@
 </div>
 
 <div class="float-right">
-    {!! $data->links('pagination.bootstrap-4') !!}
+    {{ $data->links('pagination.bootstrap-4') }}
 </div>

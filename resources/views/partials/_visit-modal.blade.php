@@ -161,7 +161,7 @@
         @endif
 
         <div class="d-flex justify-content-center">
-            {!! $visit->links('pagination.bootstrap-4') !!}
+            {{ $visit->links('pagination.bootstrap-4') }}
         </div>
     </div>
 
