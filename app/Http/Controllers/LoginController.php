@@ -33,16 +33,16 @@ class LoginController extends Controller
             $data = User::where("email", $request->email)->get()->first();
 
             if ($data == null) {
-                return redirect('/login')->with('message', "User does not exists!");
+                return back()->withErrors(['email' => 'User does not exists!'])->onlyInput('email');
             } elseif ($data->email_verified == 0) {
-                return redirect('/login')->with('alert', "Please verify your email!");
+                return back()->withErrors(['email' => 'Please verify your email'])->onlyInput('email');
             } else {
                 $userCredentials = $request->only('email', 'password');
 
                 if (Auth::guard('user')->attempt($userCredentials)) {
                     return redirect('home')->with('message', "");
                 } else {
-                    return redirect('/login')->with('message', "Invalid Credentials!");
+                    return back()->withErrors(['email' => 'Invalid Credentials!'])->onlyInput('email');
                 }
             }
         }

@@ -16,20 +16,8 @@
                         <div class="col-md-7 pe-0">
                             <div class="form-left h-100 py-5 px-5">
                                 <h3 class="mb-3 text-center">Login</h3>
-                                @if (Session::has('message'))
-                                <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-                                    {{ Session::get('message') }}
-                                </div>
-                                @elseif (Session::has('alert'))
-                                <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-                                    {{ Session::get('alert') }}
-                                </div>
-                                @elseif (Session::has('success'))
-                                <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-                                    {{ Session::get('success') }}
-                                </div>
-                                @endif
-                                <form action="{{ route('login') }}" class="row g-4" method="post">
+
+                                <form action="{{ route('login') }}" class="row g-4 mb-2" method="post">
                                     @csrf
                                     <div class="col-12 mb-1">
                                         <label>Email<span class="text-danger">*</span></label>
