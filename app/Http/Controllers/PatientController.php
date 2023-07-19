@@ -49,6 +49,11 @@ class PatientController extends Controller
                 ->orderBy('updated_at', 'desc')
                 ->paginate(12);
         }
+
+        if ($request->ajax()) {
+            return view('partials/_patient-card')->with('data', $patientData);
+        }
+
         return view('patient/index')->with('data', $patientData);
     }
 
@@ -239,7 +244,7 @@ class PatientController extends Controller
 
         $invesigation = Investigation::get()->toArray();
 
-        $data = array_merge($procedure,$invesigation);
+        $data = array_merge($procedure, $invesigation);
 
         return $data;
     }
@@ -366,7 +371,7 @@ class PatientController extends Controller
         $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => null, 'user_id' =>  $user_id])->first();
 
 
-        
+
         if ($data == '') {
             echo '';
         } else {
