@@ -39,13 +39,28 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
                                 <li class="breadcrumb-item active">Patient</li>
                             </ol>
                         </div>
-                        <div class="col-sm-6">
+                        @if(Helper::checkPermission('p_create', $permissions))
+                        <div class="col-sm-4">
+                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left" onclick="exportTasks(event.target);">Export</span>
+
+                            <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left">
+                                @csrf
+                                <input type="file" name="importFile" id="importFile" accept=".csv" class="inputfile" required />
+                                <label for="importFile">Choose a file....</label>
+                                <input type="submit" value="Import" name="import" class="btn btn-success btn-sm" style="background: {{config('app.color')}};
+                                color:white;
+                                border-radius: 5px;
+                                cursor: pointer;" />
+                            </form>
+                        </div>
+                        @endif
+                        <div class="col-sm-4">
                             <a href="{{ route('patient.create') }}" class="btn float-right" style="color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
                         </div>
                     </div>
@@ -59,23 +74,6 @@
 
             <section class="content">
                 <div class="container-fluid">
-                    <!-- /.card-header -->
-                    @if(Helper::checkPermission('p_create', $permissions))
-                    <div class="pb-5">
-                        <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left" onclick="exportTasks(event.target);">Export</span>
-
-                        <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left">
-                            @csrf
-                            <input type="file" name="importFile" id="importFile" accept=".csv" class="inputfile" required />
-                            <label for="importFile">Choose a file....</label>
-                            <input type="submit" value="Import" name="import" class="btn btn-success btn-sm" style="background: {{config('app.color')}};
-                                color:white;
-                                border-radius: 5px;
-                                cursor: pointer;" />
-                        </form>
-                    </div>
-                    @endif
-
                     <div id="patient-lists">
                         @include('partials._patient-card')
                     </div>

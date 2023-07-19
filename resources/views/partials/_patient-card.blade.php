@@ -1,25 +1,20 @@
 <div class="row">
     @foreach ($data as $row)
-    <div class="col-md-4">
-        <div class="card d-flex flex-row align-items-center justify-content-center" style="height: 250px; overflow: hidden;">
-            <img src="https://placehold.co/150x250" style="flex: 2 1 0%; width: 150px; height: 250px" alt="" />
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3" style="gap: 10px;">
+                    <img src="{{ asset('images/web-photos/no-image.jpg') }}" alt="Avatar" class="rounded-circle img-thumbnail" width="40" height="40">
+                    <h5>{{ $row->name }}</h5>
+                </div>
 
-            <div class="card-body" style="flex: 3 1 0%">
-                <section class="mb-1">
-                    <h5 class="mb-3">{{ $row->name }}</h5>
-                    <!-- <span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span> -->
-                </section>
+                <ul class="list-unstyled">
+                    <li><span class="text-muted">Father name: </span>{{ $row->father_name }}</li>
+                    <li><span class="text-muted">Age: </span>{{ $row->age }}</li>
+                    <li><span class="text-muted">Gender: </span>{{ $row->gender == 1 ? 'male' : 'female' }}</li>
+                </ul>
 
-                <section class="mb-1">
-                    <span class="text-muted">Father name: </span>{{ $row->father_name }}
-                </section>
-                <section class="mb-1">
-                    <span class="text-muted">Age: </span>{{ $row->age }}
-                </section>
-                <section class="mb-3">
-                    <span class="text-muted">Gender: </span>{{ $row->gender == 1 ? 'male' : 'female' }}
-                </section>
-                <section class="d-flex flex-row" style="gap: 10px;">
+                <section class="d-flex" style="gap: 10px;">
                     <div>
                         @if(Helper::checkPermission('p_update', $permissions))
                         <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" color: {{config('app.color')}}" class="btn btn-default">
