@@ -27,10 +27,6 @@
                         <span id="modalDrugAllergy">{{ $patient->drug_allergy }}</span>
                     </section>
                     <section>
-                        <span class="text-muted">Diseases: </span>
-                        <span id="modalDisease">{{ $patient->disease }}</span>
-                    </section>
-                    <section>
                         <span class="text-muted">Father name: </span>
                         <span id="modalFatherName">{{ $patient->father_name }}</span>
                     </section>

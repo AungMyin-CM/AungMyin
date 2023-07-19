@@ -176,7 +176,7 @@
                                     <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h6 id="disease"><b>Diseases :</b> {{ $patient->disease }}</h6>
+                                    <h6 id="father_name"><b>Father :</b> {{ $patient->father_name }}</h6>
                                 </div>
                                 <div class="col-sm-2">
                                     <nav aria-label="breadcrumb" class="float-right">
@@ -561,7 +561,7 @@
                 $('#gender').html("<span class='text-danger'>" + gender + "</span>");
                 $('#age').html("<span>" + response.age + ' years' + "</span>");
                 $('#drug_allergy').html("<b>Allergy :</b> " + drug_allergy);
-                $('#disease').html("<b>Disease :</b> " + response.disease);
+                $('#father_name').html("<b>Father :</b> " + response.father_name);
 
                 let modalGender = response.gender == 1 ? 'Male' : 'Female';
 

@@ -77,13 +77,7 @@
                                             <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $patient->address }}</textarea>
                                             @error('address') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="disease">Disease</label>
-                                            <textarea class="form-control @error('disease') is-invalid @enderror" placeholder="Disease" name="disease">{{ $patient->disease }}</textarea>
-                                            @error('disease') <span class="text-danger small">{{ $message }}</span>@enderror
-                                        </div>
-
+                                        
                                         <div class="form-group">
 
                                             <label for="gender">Gender</label>

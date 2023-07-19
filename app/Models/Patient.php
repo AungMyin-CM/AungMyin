@@ -22,7 +22,6 @@ class Patient extends Model
         'age',
         'phoneNumber',
         'address',
-        'disease',
         'gender',
         'summary',
         'drug_allergy',
