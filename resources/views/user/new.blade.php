@@ -15,7 +15,7 @@
                             <div class="text-danger col-sm-3">
                                 <ul>
                                     <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
-                                </ul>a
+                                </ul>
                             </div>
                             
                             <div class="col-sm-6 text-right">
@@ -53,6 +53,8 @@
                                                 <div class="form-group">
                                                     <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
                                                     <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ old('name') }}">
+
+                                                    <span id="nameError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
@@ -61,6 +63,8 @@
                                                     <label for="code">Username<b><sup class="text-danger">*</sup></b></label>
                                                     <input type="text" class="form-control" id="code" name="code" required placeholder="Code" value="{{ old('code') }}">
                                                     <span class="small" id="a-text"></span>
+
+                                                    <span id="codeError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
@@ -75,34 +79,35 @@
                                                         @endforeach
 
                                                     </select>
+
+                                                    <span id="roleError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
-                                        <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
-
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" id="gender" type="radio" value="1" name="gender">
-                                                    <label class="form-check-label" for="male">
-                                                        Male
-                                                    </label>
+                                        <div class="form-group">
+                                            <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="1" name="gender">
+                                                        <label class="form-check-label" for="male">
+                                                            Male
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="gender" type="radio" value="0" name="gender">
+                                                        <label class="form-check-label" for="female">
+                                                            Female
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-3">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" id="gender" type="radio" value="0" name="gender">
-                                                    <label class="form-check-label" for="female">
-                                                        Female
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                        </div><br />
+                                            <span id="genderError" class="text-danger small alert-msg"></span>
+                                        </div>
 
                                         <div class="row" id="doctor_section">
                                             <div class="col-md-6">
@@ -127,6 +132,7 @@
                                                     <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
                                                     <span class="small" id="em-text"></span>
 
+                                                    <span id="emailError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -134,6 +140,8 @@
                                                 <div class="form-group">
                                                     <label for="password">Password <b><sup class="text-danger">*</sup></b></label>
                                                     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+
+                                                    <span id="passwordError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -147,6 +155,8 @@
                                         <div class="form-group">
                                             <label for="phNumber">Phone Number <b><sup class="text-danger">*</sup></b></label>
                                             <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value={{ old('phoneNumber') }}>
+
+                                            <span id="phoneError" class="text-danger small alert-msg"></span>
                                         </div>
 
                                         <div class="row">
@@ -168,6 +178,8 @@
                                         <div class="form-group">
                                             <label for="address">Address <b><sup class="text-danger">*</sup></b></label>
                                             <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
+
+                                            <span id="addressError" class="text-danger small alert-msg"></span>
                                         </div>
 
                                         <div class="form-group" id="short_bio">
@@ -361,7 +373,7 @@
 
         if ($('#form-user :checkbox:checked').length > 0) {
             $.ajax({
-                url: '{{route('clinic-user.register')}}',
+                url: "{{route('clinic-user.register')}}",
                 type: 'POST',
                 data: $("#form-user").serialize(),
                 beforeSend: function() {
@@ -376,14 +388,26 @@
                 error: function(xhr, status, error) {
                     var err = eval("(" + xhr.responseText + ")");
                     var response = JSON.parse(xhr.responseText);
-                    var errorString = '';
-                    $.each(response.errors, function(key, value) {
-                        errorString += '<p>' + value + '</p>';
-                    });
 
-                    alertify.alert(errorString, function() {
-                        alertify.message('Please fill the fields with *');
-                    }).setHeader('<em>Some errors occured</em>');
+                    let name = response.errors.name ? response.errors.name[0] : '';
+                    let code = response.errors.code ? response.errors.code[0] : '';
+                    let role_type = response.errors.role_type ? response.errors.role_type[0] : '';
+                    let gender = response.errors.gender ? response.errors.gender[0] : '';
+                    let email = response.errors.email ? response.errors.email[0] : '';
+                    let password = response.errors.password ? response.errors.password[0] : '';
+                    let phoneNumber = response.errors.phoneNumber ? response.errors.phoneNumber[0] : '';
+                    let address = response.errors.address ? response.errors.address[0] : '';
+
+                    $('#nameError').html(name);
+                    $('#codeError').html(code);
+                    $('#roleError').html(role_type);
+                    $('#genderError').html(gender);
+                    $('#emailError').html(email);
+                    $('#passwordError').html(password);
+                    $('#phoneError').html(phoneNumber);
+                    $('#addressError').html(address);
+
+                    $(".alert-msg").show().delay(5000).fadeOut();
 
                     $('.wrapper').css('opacity', '1');
                     $('.middle').css('opacity', '0.1');
@@ -398,9 +422,12 @@
             $("html, body").animate({
                 scrollTop: 0
             }, "slow");
-            $("#alert").removeClass('d-none');
-            $("#alert").show().delay(5000).fadeOut();
 
+            let errorString = 'Please check at least one property!';
+
+            alertify.alert(errorString, function() {
+                alertify.message('Please fill the fields with *');
+            }).setHeader('<em>Some errors occured</em>');
         }
     }
 
