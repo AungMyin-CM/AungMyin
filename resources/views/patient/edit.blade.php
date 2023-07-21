@@ -28,7 +28,7 @@
                 <section class="content">
                     <div class="container-fluid">
 
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <div class="col-md-6">
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color: {{config('app.color')}}">
@@ -77,7 +77,7 @@
                                             <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $patient->address }}</textarea>
                                             @error('address') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
-                                        
+
                                         <div class="form-group">
 
                                             <label for="gender">Gender</label>

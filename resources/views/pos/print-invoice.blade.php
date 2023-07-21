@@ -84,15 +84,12 @@
           <div class="col">
             <b>Age:</b><br />
             <span class="text-muted small">{{ $patient_data->age }}</span>
-          </div>
-          <div class="col">
-            <b>Services:</b><br />
-            <span class="text-muted small">Dental Treatment</span>
-          </div>
-          <div class="col">
+          </div>          
+          <div class="col">            
             <b>Followup Date:</b><br />
             <span class="text-muted small"></span>
           </div>
+          <div class="col"></div>
         </div>
 
         <div class="mb-4">

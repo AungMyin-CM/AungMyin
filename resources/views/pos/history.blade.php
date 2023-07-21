@@ -5,6 +5,10 @@
     .pagination .active .page-link {
         background-color: #003049;
     }
+
+    .pagination .active {
+        z-index: 0;
+    }
 </style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -28,6 +32,7 @@
                     <table id="posTable" class="table table-striped table-bordered mb-3">
                         <thead>
                             <tr>
+                                <th style="display: none;">Updated at</th>
                                 <th>Invoice code</th>
                                 <th>Patient name</th>
                                 <th>Total price</th>
@@ -38,6 +43,7 @@
                         <tbody>
                             @foreach ($history_list as $row)
                             <tr>
+                                <td style="display: none;">{{ $row->updated_at }}</td>
                                 <td>{{ $row->invoice_code }}<span class="text-muted small float-right">{{$row->updated_at->diffForHumans()}}</span></td>
                                 <td>{{ $row->customer_name }}</td>
                                 <td>{{ $row->total_price }}</td>
@@ -82,6 +88,7 @@
     new DataTable("#posTable", {
         "paging": true,
         "info": false,
+        "order": [0, 'desc'],
         search: {
             caseInsensitive: true
         },
