@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use App\Models\Clinic;
+use App\Models\UserClinic;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 use Illuminate\Support\Facades\Session;
 use Auth;
@@ -40,7 +43,9 @@ class LoginController extends Controller
                 $userCredentials = $request->only('email', 'password');
 
                 if (Auth::guard('user')->attempt($userCredentials)) {
-                    return redirect('home')->with('message', "");
+                    $user_clinic = UserClinic::where('user_id',Auth::id())->first();
+
+                    return redirect('/clinic-system/'.Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
                 } else {
                     return back()->withErrors(['email' => 'Invalid Credentials!'])->onlyInput('email');
                 }

@@ -42,7 +42,7 @@
                             <tr>
                                 <td>{{ $package->name }}</td>
                                 <td>{{ $package->type }}</td>
-                                <td>{{ $package->price }}</td>
+                                <td>{{ number_format($package->price) }}</td>
 
                                 @php
                                 $days = $package->trialPeriod;

@@ -15,6 +15,7 @@ use App\Models\Patient;
 use App\Models\Role;
 use App\Models\Master;
 use App\Models\Package;
+use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -29,6 +30,8 @@ use Session;
 use DB;
 
 use Response;
+
+
 
 // require_once 'phpseclib/Crypt/RSA.php';
 
@@ -105,14 +108,36 @@ class ClinicController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
         $clinic = new Clinic();
         $package = Package::find($request->package_id)->first();
+        
+        if($package->price == '300000'){
 
-        $permissions = [
-            "p_view", "p_create", "p_update", "p_delete", "p_treatment",
-            "d_view", "d_create", "d_update", "d_delete",
-            "ph_view", "ph_create", "ph_update", "ph_delete",
-            "pos_view", "pos_create", "pos_update", "pos_delete",
-            "user_view", "user_create", "user_update", "user_delete"
-        ];
+            $permissions = [
+                "p_view", "p_create", "p_update", "p_delete", "p_treatment",
+                "d_view", "d_create", "d_update", "d_delete",
+                "ph_view", "ph_create", "ph_update", "ph_delete",
+                "pos_view", "pos_create", "pos_update", "pos_delete",
+                "user_view", "user_create", "user_update", "user_delete"
+            ];
+        }else if($package->price == '100000'){
+
+            $permissions = [
+                "p_view", "p_create", "p_update", "p_delete", "p_treatment",
+                "d_view", "d_create", "d_update", "d_delete",
+                "ph_view", "ph_create", "ph_update", "ph_delete",
+                "pos_view", "pos_create", "pos_update", "pos_delete",
+                "user_view", "user_update", "user_delete"
+            ];
+
+        }else if($package->price == '50000'){
+
+            $permissions = [
+                "p_view", "p_create", "p_update", "p_delete", "p_treatment",
+                "d_view", "d_create", "d_update", "d_delete",
+                "ph_view", "ph_create", "ph_update", "ph_delete",
+                "pos_view", "pos_create", "pos_update", "pos_delete",
+            ];
+
+        }
 
         $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
@@ -132,8 +157,20 @@ class ClinicController extends Controller
             'user_id' => $user_id,
             'clinic_id' => $clinic_id,
             'price' => $package['price'],
-            'expire_at' => Carbon::parse($now)->addMonths(1),
+            'expire_at' => Carbon::parse($now)->addDays($package->trialPeriod),
             'status' => 1
+        ]);
+
+
+        Transaction::create([
+            'guid' => Str::uuid(),
+            'user_id' => Auth::guard('user')->user()['id'],
+            'package_id' => $package->id,
+            'cost_amount' => $package->price,
+            'discount' => $package->discount,
+            'on_trial' => '1',
+            'create_at' => Carbon::now(),
+
         ]);
 
         UserClinic::create([
@@ -324,11 +361,12 @@ class ClinicController extends Controller
 
         $user_id = Auth::id();
 
-        $data = Package::where('status', 1)->orderBy('id','desc')->get();
+        $data = Package::where('status', 1)->orderBy('price','desc')->get();
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
         if ($clinic_data > 2) {
+            abort(404);
         } else {
 
             return view('registration/clinic_name')->with('data', $data);

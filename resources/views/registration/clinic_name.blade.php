@@ -1,124 +1,513 @@
 @extends('layouts.app')
 @section('content')
+<style>
+    /* RESET RULES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,700&display=swap");
+
+:root {
+  --white: white;
+  --gray: #999;
+  --lightgray: whitesmoke;
+  --darkgreen: #2a9d8f;
+  --popular: #ffdd40;
+  --starter: #003049;
+  --essential: #0372ad;
+  --professional: #003049;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+body {
+  font: 18px/1.5 "Noto Sans", sans-serif;
+  background: var(--lightgray);
+  margin-bottom: 100px;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+.container {
+  max-width: 1000px;
+  text-align: center;
+  padding: 0 10px;
+  margin: 0 auto;
+}
+
+.intro-text {
+  padding: 50px 0;
+}
+
+.intro-text a {
+  text-decoration: underline;
+}
+
+/* SWITCH STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.switch-wrapper {
+  position: relative;
+  display: inline-flex;
+  padding: 4px;
+  border: 1px solid lightgrey;
+  margin-bottom: 40px;
+  border-radius: 30px;
+  background: var(--white);
+}
+
+.switch-wrapper [type="radio"] {
+  position: absolute;
+  left: -9999px;
+}
+
+.switch-wrapper [type="radio"]:checked#monthly ~ label[for="monthly"],
+.switch-wrapper [type="radio"]:checked#yearly ~ label[for="yearly"] {
+  color: var(--white);
+}
+
+.switch-wrapper [type="radio"]:checked#monthly ~ label[for="monthly"]:hover,
+.switch-wrapper [type="radio"]:checked#yearly ~ label[for="yearly"]:hover {
+  background: transparent;
+}
+
+.switch-wrapper
+  [type="radio"]:checked#monthly
+  + label[for="yearly"]
+  ~ .highlighter {
+  transform: none;
+}
+
+.switch-wrapper
+  [type="radio"]:checked#yearly
+  + label[for="monthly"]
+  ~ .highlighter {
+  transform: translateX(100%);
+}
+
+.switch-wrapper label {
+  font-size: 16px;
+  z-index: 1;
+  min-width: 100px;
+  line-height: 32px;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: color 0.25s ease-in-out;
+}
+
+.switch-wrapper label:hover {
+  background: var(--lightgray);
+}
+
+.switch-wrapper .highlighter {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  border-radius: 30px;
+  background: var(--starter);
+  transition: transform 0.25s ease-in-out;
+}
+
+/* TABLE STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.table-wrapper {
+  background: var(--white);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+table tr {
+  display: flex;
+}
+
+table th,
+table td {
+  width: 25%;
+  min-width: 150px;
+}
+
+table th:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  padding: 1rem 10px;
+}
+
+table th:nth-child(1) .svg-wrapper {
+  margin-top: 10px;
+}
+
+table th:nth-child(1) svg {
+  width: 22px;
+  height: 22px;
+}
+
+table th .heading {
+  padding: 1rem;
+  color: var(--white);
+}
+
+table th:nth-child(2) .heading {
+  background: var(--starter);
+}
+
+table th:nth-child(3) .heading {
+  background: var(--essential);
+}
+
+table th:nth-child(4) .heading {
+  background: var(--professional);
+}
+
+table th .info {
+  position: relative;
+  padding: 1.5rem 0;
+  border-left: 1px solid var(--lightgray);
+}
+
+table th .popular {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  font-size: 11px;
+  background: var(--popular);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+table th .amount {
+  font-size: 2rem;
+}
+
+table th .amount span {
+  display: block;
+  transform: translateY(-8px);
+}
+
+table th:nth-child(2) .amount {
+  color: var(--starter);
+}
+
+table th:nth-child(3) .amount {
+  color: var(--essential);
+}
+
+table th:nth-child(4) .amount {
+  color: var(--professional);
+}
+
+table th .billing-msg,
+table th .amount span {
+  font-weight: normal;
+  font-size: 0.8rem;
+}
+
+table th button {
+  border-radius: 20px;
+  padding: 8px 20px;
+  margin-top: 10px;
+  transition: all 0.2s;
+}
+
+table th:nth-child(2) button {
+  color: var(--starter);
+  border: 1px solid var(--starter);
+}
+
+table th:nth-child(2) button:hover {
+  background: var(--starter);
+}
+
+table th:nth-child(3) button {
+  color: var(--essential);
+  border: 1px solid var(--essential);
+}
+
+table th:nth-child(3) button:hover {
+  background: var(--essential);
+}
+
+table th:nth-child(4) button {
+  color: var(--professional);
+  border: 1px solid var(--professional);
+}
+
+table th:nth-child(4) button:hover {
+  background: var(--professional);
+}
+
+table th button:hover {
+  color: var(--white);
+}
+
+table td {
+  padding: 10px;
+}
+
+table td:not(:first-child) {
+  border-left: 1px solid var(--lightgray);
+}
+
+table td:first-child {
+  font-size: 1rem;
+  text-align: left;
+}
+
+table svg {
+  width: 18px;
+  height: 18px;
+}
+
+table svg.not-included {
+  fill: var(--gray);
+}
+
+table svg.starter {
+  fill: var(--starter);
+}
+
+table svg.essential {
+  fill: var(--essential);
+}
+
+table svg.professional {
+  fill: var(--professional);
+}
+
+table .hide {
+  display: none;
+}
+
+/* MQ
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media screen and (min-width: 780px) {
+  table td {
+    padding: 20px;
+  }
+}
+
+/* FOOTER STYLES
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+.page-footer {
+  position: fixed;
+  right: 0;
+  bottom: 50px;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  z-index: 1;
+  font-size: 16px;
+  background: var(--lightgray);
+}
+
+.page-footer a {
+  display: flex;
+  margin-left: 4px;
+}
+
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper" id="mydiv">
                 <div class="content-wrapper">
                     <section class="content">
                         <div class="container-fluid">
                             <div class="container">
-                                    <div class="package-grid">
-                                        <div class="row mt-5">
-                                            {{-- <div class="col-md-6 text-center" >
-                                                <label class="package-card " style="background-color: #d8d6d6">
-                                                    <p class="mt-2">Solo Practice </p>
-                                                    <p  class="m-2">ဆရာဝန်တစ်ဦးတည်းထိုင်တဲ့</p>
-                                                    <p> ဆေးခန်းအတွက်</p>
-                                                    
-                                                    <h3 class = "m-3 font-weight-bold ">၂၁၀၀၀ကျပ်/ဆေးခန်း</h3>
-                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
-                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt(1).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
-                                                </label>
-                                            </div> --}}
-                                            {{-- <div class="col-md-12 text-center" >
-                                                <label class="package-card " style="background-color: #d8d6d6">
-                                                    <p class="m-3">{{$data['name']}}</p>
-                                                    <p  class="m-2">ဆရာဝန်အများထိုင်တဲ့</p>
-                                                    <p> ဆေးခန်းအတွက်</p>
-                                                    
-                                                    <h3 class = "m-3 font-weight-bold ">{{$data['price']}}ကျပ်/ဆေးခန်း</h3>
-                                                    <p>ပထမဆုံး ၁လ ၁၀၀% Free</p>
-                                                    <a href="{{route('clinic.info','_token='.Crypt::encrypt($data['id']).'&value=1')}}" class="btn btn-info m-2" style="background-color: {{config('app.color')}}">Get Started</a>
-                                                </label>
-                                            </div> --}}
-                                            <div class="section bg-transparent my-0 my-lg-5 pb-0 pb-lg-5">
-                                                <div class="container m-auto">
-                            
-                                                {{-- <h3 class="h1 mb-5 text-center">Our Packages</h3> --}}
-                            
-                                                <div class="row pricing block-pricing-10 justify-content-center align-items-stretch">
-                                                    @foreach($data as $clinic)
-                                                        <div class="col-lg-6 col-md-6 mb-5 mb-lg-0">
-                                                            <div class="pricing-box d-flex flex-column justify-content-between align-items-center h-100 rounded-5 pricing-simple px-5 py-0 border text-center bg-white overflow-visible">
-                                                                <h3 class="pricing-title ls-0 bg-white fw-normal">{{$clinic->name}}</h3>
-                                                                <div class="pricing-price fw-medium"><span class="price-unit"></span>Free</div>
-                                                                <div class="pricing-features">
-                                                                    <h5 class="mb-2 fw-semibold">Plan Includes:</h5>
-                                                                    <ul class="d-flex flex-column align-items-center justify-content-center">
-                                                                        <li>Full Access of all Features</li>
-                                                                        <li>Upto 100 User Accounts Access</li>
-                                                                        <li>1 Year License Available</li>
-                                                                        <li>24/7 Support with Chats</li>
-                                                                    </ul>
-                                                                </div>
-                                                                @if($clinic->type == 'one-month-free-trial')
-                                                                    <a href="#" class="btn btn-action border bg-white h-bg-dark text-dark h-text-light btn-lg px-4">Free Trail for 30 Days</a>
-                                                                @else
-                                                                <a href="#" class="btn btn-action btn-warning btn-lg px-4 mt-auto">Buy Now</a>
-                                                                @endif
-
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                            
-                                                    {{-- <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-                                                        <div class="pricing-box d-flex flex-column justify-content-between align-items-center h-100 rounded-5 pricing-simple px-5 py-0 border border-width-2 border-color text-center bg-white overflow-visible">
-                                                            <h3 class="pricing-title ls-0 bg-white color">Business</h3>
-                                                            <div class="pricing-price fw-medium"><span class="price-unit">&euro;</span>49<span class="price-tenure">/monthly</span></div>
-                                                            <div class="pricing-features">
-                                                                <h5 class="mb-2 fw-semibold">Plan Includes:</h5>
-                                                                <ul class="d-flex flex-column align-items-center justify-content-center">
-                                                                    <li>Full Access of all Features</li>
-                                                                    <li>Upto 100 User Accounts Access</li>
-                                                                    <li>1 Year License Available</li>
-                                                                    <li>24/7 Support with Chats</li>
-                                                                </ul>
-                                                            </div>
-                                                            <a href="#" class="btn btn-dark btn-action bg-secondary btn-lg px-4">Subscribe Now</a>
-                                                        </div>
-                                                    </div>
-                            
-                                                    <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-                                                        <div class="pricing-box d-flex flex-column align-items-center h-100 rounded-5 pricing-simple px-5 py-0 border text-center bg-white overflow-visible">
-                                                            <h3 class="pricing-title ls-0 bg-white fw-normal">Professional</h3>
-                                                            <div class="pricing-price fw-medium"><span class="price-unit">&euro;</span>99<span class="price-tenure">/monthly</span></div>
-                                                            <div class="pricing-features">
-                                                                <h5 class="mb-2 fw-semibold">Plan Includes:</h5>
-                                                                <p class="mb-0">Lorem ipsum, dolor sit amet consectetur adipisicing, elit. Nobis enim iure veritatis consectetur. Sequi fuga, qui unde dolore laudantium fugiat iste facilis.</p>
-                                                            </div>
-                                                            <a href="#" class="btn btn-action btn-warning btn-lg px-4 mt-auto">Contact Us</a>
-                                                        </div>
-                                                    </div> --}}
-                            
+                                <div class="container">
+                                    
+                                    {{-- <div class="switch-wrapper">
+                                      <input id="monthly" type="radio" name="switch" checked>
+                                      <input id="yearly" type="radio" name="switch">
+                                      <label for="monthly">Monthly</label>
+                                      <label for="yearly">Yearly</label>
+                                      <span class="highlighter"></span>
+                                    </div> --}}
+                                    <div class="table-wrapper">
+                                      <table>
+                                        <thead>
+                                          <tr>
+                                            <th>
+                                              <div>
+                                                Select your plan
+                                                <div class="svg-wrapper">
+                                                  <svg viewBox="0 0 24 24">
+                                                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 17v-4h-8v-2h8v-4l6 5-6 5z" />
+                                                  </svg>
                                                 </div>
-                            
-                                            </div>
-                                            </div>
-
-                                            
-                                            {{-- @foreach ($data as $package)
-
-                                                <label class="package-card m-4">
-                                                
-                                                    <span class="plan-details">
-                                                        <span class="plan-type">{{ $package->name }}</span>
-                                                        <span class="plan-cost">{{ $package->price }}<span class="slash">/</span><abbr class="plan-cycle" title="month">mo</abbr></span>
-                                                        <span>1 team member:</span>
-                                                        <span>100 GB/mo</span>
-                                                        <span>1 concurrent build</span>
-                                                        <span>1 team member:</span>
-                                                        <span>100 GB/mo</span>
-                                                        <span>1 concurrent build</span> <span>1 team member:</span>
-                                                        <span>100 GB/mo</span>
-                                                        <span>1 concurrent build</span> <span>1 team member:</span>
-                                                        <span>100 GB/mo</span>
-                                                        <span>1 concurrent build</span>
-                                                        <a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="btn btn-info m-auto" style="background-color: {{config('app.color')}}">Start Your Free Trial</a>
-                                                    </span>
-                                                </label>
-
-                                            @endforeach --}}
-                                        </div>
+                                              </div>
+                                            </th>
+                                            {{-- <th>
+                                              <div class="heading">Starter</div>
+                                              <div class="info">
+                                                <div class="price monthly">
+                                                  <div class="amount">$10 <span>month</span></div>
+                                                </div>
+                                                <div class="price yearly hide">
+                                                  <div class="amount">$7 <span>month</span></div>
+                                                  <div class="billing-msg">billed annually</div>
+                                                </div>
+                                                <button type="button">Get started</button>
+                                              </div>
+                                            </th>
+                                            <th>
+                                              <div class="heading">Essential</div>
+                                              <div class="info">
+                                                <div class="popular">Popular</div>
+                                                <div class="price monthly">
+                                                  <div class="amount">$22 <span>month</span></div>
+                                                </div>
+                                                <div class="price yearly hide">
+                                                  <div class="amount">$17 <span>month</span></div>
+                                                  <div class="billing-msg">billed annually</div>
+                                                </div>
+                                                <button type="button">Get started</button>
+                                              </div>
+                                            </th> --}}
+                                            @foreach($data as $package)
+                                              <th>
+                                                  <div class="heading">{{ $package->name }}</div>
+                                                <div class="info">
+                                                  <div class="price monthly">
+                                                    <div class="amount">{{ number_format($package->price) }} <span>month</span></div>
+                                                  </div>
+                                                  <div class="price yearly hide">
+                                                    <div class="amount">$29 <span>month</span></div>
+                                                    <div class="billing-msg">billed annually</div>
+                                    
+                                                  </div>
+                                    
+                                                  <button type="button"><a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="nav-link">Get started</a></button><br>
+                                                  <small>Free for {{$package->trialPeriod}} days</small>
+                                                </div>
+                                              </th>
+                                            @endforeach
+                                          </tr>
+                                        </thead>
+                                        <tbody> 
+                                          <tr>
+                                            <td>Patient Treatment</td>
+                                            <td>
+                                              <svg class="starter" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="essential" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="professional" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>Dictionary</td>
+                                            <td>
+                                              <svg class="starter" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="essential" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="professional" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td></td>
+                                            <td>
+                                              <svg class="starter" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="essential" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="professional" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>Free website setup</td>
+                                            <td>
+                                              <svg class="starter" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="essential" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="professional" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                          </tr>
+                                          
+                                          <tr>
+                                            <td>Unlimited websites</td>
+                                            <td>
+                                              <svg class="not-included" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="not-included" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z" />
+                                              </svg>
+                                            </td>
+                                            <td>
+                                              <svg class="professional" viewBox="0 0 24 24">
+                                                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z" />
+                                              </svg>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
                                     </div>
+                                  </div>
+                                  <footer class="page-footer">
+                                    <span>made by </span>
+                                    <a href="https://georgemartsoukos.com/" target="_blank">
+                                      <img width="24" height="24" src="https://assets.codepen.io/162656/george-martsoukos-small-logo.svg" alt="George Martsoukos logo">
+                                    </a>
+                                  </footer>
                             </div>
                         </div>
                     </section>
@@ -129,5 +518,25 @@
             <!-- jQuery -->
 
         </body>
+        <script>
+          const tableWrapper = document.querySelector(".table-wrapper");
+          const switchInputs = document.querySelectorAll(".switch-wrapper input");
+          const prices = tableWrapper.querySelectorAll(".price");
+          const toggleClass = "hide";
+
+          for (const switchInput of switchInputs) {
+            switchInput.addEventListener("input", function () {
+              for (const price of prices) {
+                price.classList.add(toggleClass);
+              }
+              const activePrices = tableWrapper.querySelectorAll(
+                `.price.${switchInput.id}`
+              );
+              for (const activePrice of activePrices) {
+                activePrice.classList.remove(toggleClass);
+              }
+            });
+          }
+        </script>
 
 @endsection
