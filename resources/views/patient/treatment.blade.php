@@ -156,6 +156,16 @@
     ::-webkit-scrollbar-thumb:hover {
         background-color: #858383;
     }
+
+    .tooltip-text {
+        display: none;
+        position: fixed;
+        padding-top: 80px;
+    }
+
+    .tooltip-content {
+        margin-left: 7px;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -211,6 +221,36 @@
                         <div class="row">
                             <div id="visit-lists" class="col-md-4">
                                 @include('partials._visit-modal')
+                            </div>
+
+                            <!-- Shorthand Data -->
+                            <div id="dictionaryData" class="tooltip-text">
+                                <div class="tooltip-content">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            @foreach($dictionaries as $dictionary)
+                                            <ul class="list-unstyled">
+                                                <li>{{ $dictionary->code }}</li>
+                                            </ul>
+                                            @endforeach
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pharmacy Data -->
+                            <div id="medicineData" class="tooltip-text">
+                                <div class="tooltip-content">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            @foreach($medicines as $medicine)
+                                            <ul class="list-unstyled">
+                                                <li>{{ $medicine->code }}</li>
+                                            </ul>
+                                            @endforeach
+                                        </div>                                    
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-8">
@@ -269,51 +309,51 @@
                                         </div>
 
                                         {{-- <fieldset class="scheduler-border mb-3"> --}}
-                                            {{-- <legend class="scheduler-border">
+                                        {{-- <legend class="scheduler-border">
                                                 <input type="text" class="form-control" id="medicine_dictionary" placeholder="Search medicine" name="medicines">
                                             </legend> --}}
 
-                                            <div class="form-group" id="medtable">
-                                                <section class="content">
-                                                    <div class="container-fluid">
-                                                        <table class="table table-bordered" id="product_info_table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style="width:45%; padding">Medicine</th>
-                                                                    <th style="width:25%">Dosage</th>
-                                                                    <th style="width:20%">Days</th>
-                                                                    <th><button type="button" id="add_tret_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr id="row_1">
-                                                                    <td>
-                                                                        <input type="text" name="med_name[]" id="product_search_1"  med-data-id = "1"  onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine">
-                                                                        <input type="hidden" name="med_id[]" id="med_id_1">
-                                                                        <div id="medList_1" style="display:none;width:35%;">
-                                                                        </div>
-                                                                    </td>
+                                        <div class="form-group" id="medtable">
+                                            <section class="content">
+                                                <div class="container-fluid">
+                                                    <table class="table table-bordered" id="product_info_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="width:45%;">Medicine</th>
+                                                                <th style="width:25%">Dosage</th>
+                                                                <th style="width:20%">Days</th>
+                                                                <th><button type="button" id="add_tret_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="row_1">
+                                                                <td>
+                                                                    <input type="text" name="med_name[]" id="product_search_1" med-data-id="1" onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine">
+                                                                    <input type="hidden" name="med_id[]" id="med_id_1">
+                                                                    <div id="medList_1" style="display:none;width:35%;">
+                                                                    </div>
+                                                                </td>
 
-                                                                    <td>
-                                                                        <input type="text" name="quantity[]" id="qty_1" class="form-control" placeholder="Dosage">
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days">
-                                                                    </td>
+                                                                <td>
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" placeholder="Dosage">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days">
+                                                                </td>
 
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                </section>
-                                            </div>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                            </section>
+                                        </div>
                                         {{-- </fieldset> --}}
 
                                         <div class="row mb-3">
-                                            <div class="col-md-6 m-3">  
-                                                <a href="#"  class="nav-link app-text-color" id="procedure_lab_action">Select Procedures & Investigation</a>
+                                            <div class="col-md-6 m-3">
+                                                <a href="#" class="nav-link app-text-color" id="procedure_lab_action">Select Procedures & Investigation</a>
                                             </div>
                                             @if(Helper::checkPermission('p_update', $permissions))
-                                                @include('partials._procedure-lab-modal')
+                                            @include('partials._procedure-lab-modal')
                                             @endif
                                         </div>
 
@@ -350,7 +390,7 @@
                                             </div>
                                         </div>
 
-                                            {{-- <div class="col-md-5">
+                                        {{-- <div class="col-md-5">
                                                 <div class="d-flex justify-content-center" id="followUp">
                                                     <div class="form-check" style="padding:6px !important;">
                                                         <div class="icheck-primary d-inline mt-2">
@@ -360,51 +400,51 @@
                                                     </div>
                                                 </div>
                                             </div> --}}
-                                        </div>
-
-                                            {{-- <div class="col-md-5">
-                                                <div class="d-flex justify-content-center" id="followUp">
-                                                    <div class="form-check" style="padding:6px !important;">
-                                                        <div class="icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
-                                                            <label for="isFollowup">Follow up</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div> --}}
-                                        </div>
-
-                                        <div id="imgModal" class="modal">
-                                            <span id="imgClose" class="close">&times;</span>
-                                            <div id="carousel" class="carousel slide">
-                                                <div class="carousel-inner" id="carousel-inner"></div>
-                                                <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                            </div>
-                                            <div id="caption"></div>
-                                        </div>
-
-                                        <div class="form-group" id="image">
-                                            {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
-                                        </div>
                                     </div>
-                                    <!-- Bootstrap Switch -->
-                                    <!-- /.card -->
-                                </div>
-                                <!-- /.col (right) -->
-                            </div>
-                        </div>
-                </section>
-            </form>
 
+                                    {{-- <div class="col-md-5">
+                                                <div class="d-flex justify-content-center" id="followUp">
+                                                    <div class="form-check" style="padding:6px !important;">
+                                                        <div class="icheck-primary d-inline mt-2">
+                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            <label for="isFollowup">Follow up</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div> --}}
+                                </div>
+
+                                <div id="imgModal" class="modal">
+                                    <span id="imgClose" class="close">&times;</span>
+                                    <div id="carousel" class="carousel slide">
+                                        <div class="carousel-inner" id="carousel-inner"></div>
+                                        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                    <div id="caption"></div>
+                                </div>
+
+                                <div class="form-group" id="image">
+                                    {{-- <img id="myImg" src="" style='margin:4px;width:100px;border-radius:5px;' alt="img" /> --}}
+                                </div>
+                            </div>
+                            <!-- Bootstrap Switch -->
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col (right) -->
+                    </div>
         </div>
+        </section>
+        </form>
+
+    </div>
     </div>
 </body>
 <script src="{{ asset('js/dictionary.js') }}"></script>
@@ -416,8 +456,7 @@
     let viewModal = document.getElementById("viewModal");
     let editModal = document.getElementById("editModal");
     let procedure_lab_modal = document.getElementById("procedure_modal");
-
-
+    
     // Get the button that opens the modal
     let viewBtn = document.getElementById("viewBtn");
     let editBtn = document.getElementById("editBtn");
@@ -452,10 +491,10 @@
 
                 var html = '';
 
-                $.each(response,function(index,value){
+                $.each(response, function(index, value) {
 
-                    html += '<li><input type="checkbox" id="checkbox_'+value.id+'" value="Rainbow Dash"><label for="checkbox_'+value.id+'">'+value.code+'</label></li> ';
-                      
+                    html += '<li><input type="checkbox" id="checkbox_' + value.id + '" value="Rainbow Dash"><label for="checkbox_' + value.id + '">' + value.code + '</label></li> ';
+
                 });
 
                 $("#ps-list").append(html);
@@ -464,7 +503,7 @@
             },
         });
 
-        
+
     }
 
     // Close the modal
@@ -476,7 +515,7 @@
         editModal.style.display = "none";
     })
 
-    $("#procedureClose").click(function(e){
+    $("#procedureClose").click(function(e) {
         procedure_lab_modal.style.display = "none";
     })
     $("#add_tret_med_row").on('click', function() {
@@ -514,13 +553,11 @@
 
                 //  Invoke click event of target so that non-form submit behaviors will work
                 event.target.click();
-            } 
-            else if(event.keyCode === 13 && id.includes("product_search")){
-                 
-                 searchMed(event);
-                 event.preventDefault();
-             }
-            else if (event.keyCode === 13) {
+            } else if (event.keyCode === 13 && id.includes("product_search")) {
+
+                searchMed(event);
+                event.preventDefault();
+            } else if (event.keyCode === 13) {
                 event.preventDefault();
             }
         });
@@ -532,6 +569,29 @@
         });
         //  Invoke click event of target so that non-form submit behaviors will work
 
+    });
+    
+    $(document).ready(function() {
+        let dictionaryTooltip = $('#dictionaryTooltip');
+        let medicineTooltip = $('#medicineTooltip');
+        let dictionaryData = $('#dictionaryData');
+        let medicineData = $('#medicineData');
+
+        dictionaryTooltip.on('mouseenter', function() {
+            dictionaryData.css('display', 'block');
+        });
+
+        medicineTooltip.on('mouseenter', function() {
+            medicineData.css('display', 'block');
+        });
+
+        dictionaryTooltip.on('mouseleave', function() {
+            dictionaryData.css('display', 'none');
+        });
+
+        medicineTooltip.on('mouseleave', function() {
+            medicineData.css('display', 'none');
+        });
     });
 
     $.ajaxSetup({
@@ -747,13 +807,13 @@
                         var row_id = count_table_tbody_tr + 1;
                     }
                     var html = "";
-              
-                    data = res[0].split('^');           
-                    var current_rowid =  event.target.getAttribute("med-data-id");      
-                    document.getElementById("product_search_"+current_rowid).value = data[1];
-                    document.getElementById("qty_"+current_rowid).value = data[2];
-                    document.getElementById("days_"+current_rowid).value = data[3];
-                    for (i =1; i<fil_res.length ; i++){
+
+                    data = res[0].split('^');
+                    var current_rowid = event.target.getAttribute("med-data-id");
+                    document.getElementById("product_search_" + current_rowid).value = data[1];
+                    document.getElementById("qty_" + current_rowid).value = data[2];
+                    document.getElementById("days_" + current_rowid).value = data[3];
+                    for (i = 1; i < fil_res.length; i++) {
                         data = res[i].split('^');
                         html += '<tr id="row_' + row_id + '">' +
                             '<td>' +
@@ -780,7 +840,7 @@
     }
 
     function searchMed(event) {
-        if(event.keyCode == 13){
+        if (event.keyCode == 13) {
             medicine_dictionary(event)
         } else {
             var rowid = event.target.getAttribute("med-data-id");
@@ -810,7 +870,7 @@
                     $('#medList_' + rowid).html("");
                 }
             });
-          }
+        }
     };
 
     function s_option(rowid) {
@@ -886,7 +946,7 @@
 
             if (response === "updated") {
                 let currentPage = $('.pagination .active').text();
-                
+
                 if (currentPage > 1) {
                     fetch_data(currentPage - 1);
                 } else {

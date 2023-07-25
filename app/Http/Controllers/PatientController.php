@@ -213,20 +213,27 @@ class PatientController extends Controller
 
         try {
             $id = Crypt::decrypt($id);
+            $userId = auth()->id();
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->paginate(1);
+            $dictionaries = Dictionary::where('user_id', $userId)->where('deleted_at', null)->get();
+            $medicines = Pharmacy::where('clinic_id', session()->get('cc_id'))->where('deleted_at', null)->get();
 
             Notification::where('patient_id', $id)->update(['is_read' => 1]);
 
             if ($request->ajax()) {
                 return view('partials/_visit-modal')
                     ->with('patient', $patient)
-                    ->with('visit', $visit);
+                    ->with('visit', $visit)
+                    ->with('dictionaries', $dictionaries)
+                    ->with('medicines', $medicines);
             }
 
             return view('patient/treatment')
                 ->with('patient', $patient)
-                ->with('visit', $visit);
+                ->with('visit', $visit)
+                ->with('dictionaries', $dictionaries)
+                ->with('medicines', $medicines);
         } catch (DecryptException $e) {
             abort(404);
         }
