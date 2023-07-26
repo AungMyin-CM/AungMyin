@@ -145,7 +145,7 @@
                 $.ajax({
                 type: "GET",
                 url: "{{route('wait.list')}}",
-                data: {code: '{{ Crypt::encrypt(session()->get('cc_id')) }}'},
+                data: {code: "{{ Crypt::encrypt( session()->get('cc_id') ) }}"},
 
                 beforeSend: function(){
                   $('.wrapper').css('opacity','0.1');
