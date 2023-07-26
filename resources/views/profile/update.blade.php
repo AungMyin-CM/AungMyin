@@ -5,17 +5,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('user.list') }}">User</a></li>
-                        <li class="breadcrumb-item active">Update</li>
-                    </ol>
-                    @if (Session::has('success'))
-                        @include('partials._toast')
-                    @endif                            
-                </div><!-- /.container-fluid -->
-            </section>
+            <section class="content-header"></section>
 
             <form action="{{ route('settings.save', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -25,7 +15,7 @@
                         <div class="row">
                             <!-- left column -->
                             <div class="col-md-8">
-                                
+
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color:{{config('app.color')}}">
@@ -139,7 +129,7 @@
                                                         <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                                     </div>
                                                     <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password">
-                                                    
+
                                                     @error('password_confirmation') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -157,32 +147,32 @@
 
                             @if($role->role_type == 5)
 
-                                <div class="col-md-4">
-                                    <div class="card card-primary">
-                                        <div class="card-header" style="background-color:{{config('app.color')}}">
-                                            <h3 class="card-title">Package Info</h3>
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="card card-primary">
+                                    <div class="card-header" style="background-color:{{config('app.color')}}">
+                                        <h3 class="card-title">Package Info</h3>
+                                    </div>
 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <p>Clinic Name</p>
-                                                    <p>Price</p>
-                                                    <p>Purchase Date</p>
-                                                    <p>Expire Date</p>
-                                                    <p>Days Left</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p>{{ $package->clinic->name }}</p>
-                                                    <p>{{ number_format($package->price) }}</p>
-                                                    <p>{{ date("F jS Y", $purchase_date) }}</p>
-                                                    <p>{{ date("F jS Y", $expire_date) }}</p>
-                                                    <p>{{ $days_left }} days</p>
-                                                </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p>Clinic Name</p>
+                                                <p>Price</p>
+                                                <p>Purchase Date</p>
+                                                <p>Expire Date</p>
+                                                <p>Days Left</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p>{{ $package->clinic->name }}</p>
+                                                <p>{{ number_format($package->price) }}</p>
+                                                <p>{{ date("F jS Y", $purchase_date) }}</p>
+                                                <p>{{ date("F jS Y", $expire_date) }}</p>
+                                                <p>{{ $days_left }} days</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             @endif
                         </div>
                 </section>
@@ -198,7 +188,6 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 
 <script>
-
     var loadFile = function(event) {
         for (var i = 0; i < event.target.files.length; i++) {
             var src = URL.createObjectURL(event.target.files[i]);

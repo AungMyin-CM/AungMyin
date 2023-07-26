@@ -13,12 +13,7 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
-                                <li class="breadcrumb-item active">Procedure-Lab</li>
-                            </ol>
-                        </div>
+                        <div class="col-sm-6"></div>
                         <div class="col-sm-6">
                             <a href="{{ route('procedure.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
                                 <i class="fas fa-plus"></i> Add new

@@ -30,6 +30,105 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
     </ul>
+
+    <ul class="navbar-nav">
+        @if(Request::is('clinic-system/*') && \Route::currentRouteName() === 'user.list')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">User</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'patient.index')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Patient</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'dictionary.index')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Shorthand</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pharmacy.index')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Pharmacy</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pos.index')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">POS</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pos.history')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="small" href="{{ route('pos.index') }}">POS</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">History</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'procedure.index')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Procedure-Lab</a>
+        </li>
+
+        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'clinic.settings')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Update</a>
+        </li>
+
+        @endif
+    </ul>
+
     <ul class="navbar-nav ml-auto">
         <!-- Messages Dropdown Menu -->
         <li class="nav-item row" id="date-time" style="margin-top: 8px; color:#0077B6">

@@ -10,25 +10,19 @@
         z-index: 0;
     }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('pos.index') }}">POS</a></li>
-                        <li class="breadcrumb-item active">History</li>
-                    </ol>
-                    @if (Session::has('success'))
-                        @include('partials._toast')
-                    @endif
-                </div><!-- /.container-fluid -->
+                @if (Session::has('success'))
+                @include('partials._toast')
+                @endif
             </section>
 
             <section class="content mb-3">
-                <div class="container-fluid">                    
+                <div class="container-fluid">
                     <table id="posTable" class="table table-striped table-bordered mb-3">
                         <thead>
                             <tr>

@@ -39,12 +39,7 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm-4">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a></li>
-                                <li class="breadcrumb-item active">Patient</li>
-                            </ol>
-                        </div>
+                        <div class="col-sm-4"></div>
                         @if(Helper::checkPermission('p_create', $permissions))
                         <div class="col-sm-4">
                             <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left" onclick="exportTasks(event.target);">Export</span>
@@ -64,12 +59,11 @@
                             <a href="{{ route('patient.create') }}" class="btn float-right" style="color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
                         </div>
                     </div>
-
-                    @if (Session::has('success'))
-                    @include('partials._toast')
-                    @endif
                 </div><!-- /.container-fluid -->
-
+                
+                @if (Session::has('success'))
+                @include('partials._toast')
+                @endif
             </section>
 
             <section class="content">
