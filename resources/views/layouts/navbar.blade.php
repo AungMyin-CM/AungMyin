@@ -4,7 +4,7 @@
     }
 
     .search {
-        width: 300px;
+        width: 400px;
         font-size: 18px;
         letter-spacing: 1px;
         border-radius: 15px !important;
