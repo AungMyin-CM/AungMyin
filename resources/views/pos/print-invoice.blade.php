@@ -68,25 +68,30 @@
         </div>
         <div class="row mb-3">
           <div class="col">
-            <b>Patient Name:</b><br />
+            <i class="fas fa-user fa-sm"></i>
+            <b>Patient: </b>
             <span class="text-muted small">{{ $patient_data->name }}</span>
           </div>
           <div class="col">
-            <b>Phone Number:</b><br />
+            <i class="fas fa-phone fa-sm"></i>
+            <b>Phone: </b>
             <span class="text-muted small">{{ $patient_data->phoneNumber }}</span>
           </div>
           <div class="col">
-            <b>Address:</b><br />
+            <i class="fas fa-map-marker-alt fa-sm"></i>
+            <b>Address: </b>
             <span class="text-muted small">{{ $patient_data->address }}</span>
           </div>
         </div>
         <div class="row mb-4">
           <div class="col">
-            <b>Age:</b><br />
+            <i class="fas fa-exclamation-circle fa-sm"></i>
+            <b>Age: </b>
             <span class="text-muted small">{{ $patient_data->age }}</span>
-          </div>          
-          <div class="col">            
-            <b>Followup Date:</b><br />
+          </div>
+          <div class="col">
+            <i class="far fa-calendar-alt fa-sm"></i>
+            <b>Followup Date: </b>
             <span class="text-muted small"></span>
           </div>
           <div class="col"></div>
