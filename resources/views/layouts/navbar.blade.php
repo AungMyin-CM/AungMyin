@@ -176,18 +176,7 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
-        </li>
-
-        <li class="nav-item">
-            @if (Auth::guard('user')->user())
-            <form action="{{ route('user.logout') }}" method="post" id="logout">
-                @endif
-                @csrf
-                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                    <i class="fas fa-sign-out-alt" title="Logout" id="logout_btn"></i>
-                </a>
-            </form>
-        </li>
+        </li>        
     </ul>
 </nav>
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
@@ -227,10 +216,6 @@
             hr = '0' + hr;
         }
         clock.textContent = hr + ':' + min + ':' + sec + " " + day;
-    });
-
-    $('#logout_btn').click(function() {
-        $('#logout').submit();
     });
 
     $('document').ready(function() {

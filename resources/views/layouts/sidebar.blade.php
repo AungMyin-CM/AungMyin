@@ -1,3 +1,9 @@
+<style>
+    .logout:hover {
+        opacity: 0.7;
+    }
+</style>
+
 @if ( Auth::guard('user')->user())
 <aside class="main-sidebar sidebar-collapse sidebar-no-expand sidebar-light-primary elevation-4" style="background-color:#F5F5F5;">
     <!-- Brand Logo -->
@@ -186,6 +192,7 @@
                         </p>
                     </a>
                 </li>
+
                 {{-- <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
@@ -205,6 +212,39 @@
                 </form>
                 </li> --}}
             </ul>
+
+            <hr>
+            <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ route('feedback.create') }}" class="nav-link" title="Feedback">
+                        <i class="nav-icon fas fa-comment-alt"></i>
+                        <p>
+                            Feedback
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('docs.index') }}" class="nav-link" title="Help">
+                        <i class="nav-icon fas fa-question-circle"></i>
+                        <p>
+                            Help
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item mt-2 logout" style="margin-left: 17px;">
+                    @if (Auth::guard('user')->user())
+                    <form action="{{ route('user.logout') }}" method="post">
+                    @endif
+                    @csrf
+                        <button class="nav-link text-dark" type="submit" style="display: contents;">
+                            <i class="nav-icon fas fa-sign-out-alt"></i>
+                            <p>
+                                Logout
+                            </p>
+                        </button>
+                    </form>
+                </li>                
+            </ul>
         </nav>
     </div>
 </aside>
@@ -214,7 +254,6 @@
 
 <script>
     $(document).ready(function() {
-
         var someSession = {{ Session::get('cc_id') }};
         $('select option[name=' + someSession + ']').attr('selected', true);
         $("#u_clinics").change(function() {
