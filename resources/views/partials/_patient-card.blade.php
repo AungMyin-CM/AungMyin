@@ -4,7 +4,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3" style="gap: 10px;">
+                    @if($row->gender === 1)
                     <img src="{{ asset('images/web-photos/no-image.jpg') }}" alt="Avatar" class="rounded-circle img-thumbnail" width="40" height="40">
+                    @else
+                    <img src="{{ asset('images/web-photos/female.jpg') }}" alt="Avatar" class="rounded-circle img-thumbnail" width="40" height="40">
+                    @endif
                     <h5>{{ $row->name }}</h5>
                 </div>
 
