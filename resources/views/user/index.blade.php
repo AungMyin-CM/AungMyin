@@ -5,7 +5,12 @@
     .pagination .active .page-link {
         background-color: #003049;
     }
+
+    .addDataBtn {
+        background-color: #003049;
+    }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
@@ -15,13 +20,15 @@
                     <div class="row mb-2">
                         <div class="col-sm-6"></div>
                         <div class="col-sm-6">
-                            <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>                            
+                            @if(count($data) !== 0)
+                            <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                            @endif
                         </div>
-                    </div>                    
+                    </div>
                 </div><!-- /.container-fluid -->
 
                 @if (Session::has('success'))
-                    @include('partials._toast')
+                @include('partials._toast')
                 @endif
             </section>
 
@@ -81,12 +88,12 @@
                                             </form>
                                         </div>
                                     </div>
-                                </td>                                
+                                </td>
                             </tr>
                             @endforeach
-                        </tbody>                        
+                        </tbody>
                     </table>
-              
+
                 </div>
             </section>
         </div>
@@ -104,7 +111,14 @@
         language: {
             searchPlaceholder: "Search users...",
             search: "",
+            emptyTable: "No data available in table.<br><br><button id='addDataBtn' class='btn text-white addDataBtn'><i class='fas fa-plus'></i> Add new</button>"
         },
+    });
+
+    $(document).ready(function() {
+        $('#addDataBtn').on('click', function() {
+            window.location.href = "{{ route('user.create') }}";
+        });
     });
 </script>
 

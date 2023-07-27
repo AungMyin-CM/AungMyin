@@ -34,6 +34,10 @@
     .pagination .active .page-link {
         background-color: #003049;
     }
+
+    .addDataBtn {
+        background-color: #003049;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -57,11 +61,13 @@
                         </div>
                         @endif
                         <div class="col-sm-4">
+                            @if(count($data) !== 0)
                             <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                            @endif
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
-                
+
                 @if (Session::has('success'))
                 @include('partials._toast')
                 @endif
@@ -137,7 +143,14 @@
         language: {
             searchPlaceholder: "Search medicine...",
             search: "",
+            emptyTable: "No data available in table.<br><br><button id='addDataBtn' class='btn text-white addDataBtn'><i class='fas fa-plus'></i> Add new</button>"
         },
+    });
+
+    $(document).ready(function() {
+        $('#addDataBtn').on('click', function() {
+            window.location.href = "{{ route('pharmacy.create') }}";
+        });
     });
 
     $('#fileUpload').change(function(e) {

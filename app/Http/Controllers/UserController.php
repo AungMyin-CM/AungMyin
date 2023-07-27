@@ -62,16 +62,16 @@ class UserController extends Controller
         // }
 
 
-         $user->where('email', $request->email)->update([
-            'name' => $request->first_name.' '.$request->last_name,
+        $user->where('email', $request->email)->update([
+            'name' => $request->first_name . ' ' . $request->last_name,
             'avatar' => $filename,
             'password' => Hash::make($request->password),
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-           
+
         ]);
 
-        $user_id = User::where('email',$request->email)->value('id');
+        $user_id = User::where('email', $request->email)->value('id');
 
         Auth::loginUsingId($user_id);
 
@@ -107,20 +107,17 @@ class UserController extends Controller
 
         $otp = $this->otpGenerator();
 
-        $user = User::where("email",$request->email)->count();
+        $user = User::where("email", $request->email)->count();
 
-        if($user > 0)
-        {
-            $user_id = User::where('email',$request->email)->value('id');
-            User::where('email',$request->email)->update(['otp' => $otp]);
-           
-        }else{
+        if ($user > 0) {
+            $user_id = User::where('email', $request->email)->value('id');
+            User::where('email', $request->email)->update(['otp' => $otp]);
+        } else {
 
             $user_id = User::create([
                 'email' => $request->email,
                 'otp' => $otp
             ])->id;
-
         }
 
         $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
@@ -142,29 +139,24 @@ class UserController extends Controller
         });
 
         echo "Email Sent";
-
-
     }
 
     public function checkOtp(Request $request)
     {
 
-        $otp = str_replace(',','',$request->otp);
+        $otp = str_replace(',', '', $request->otp);
 
         $email = $request->email;
 
-        $value = User::where('email',$email)->where('otp',$otp)->count();
+        $value = User::where('email', $email)->where('otp', $otp)->count();
 
-        if($value == 1)
-        {
-            User::where('email',$email)->update(['email_verified' => 1, 'email_verified_at' => Carbon::now()]);
+        if ($value == 1) {
+            User::where('email', $email)->update(['email_verified' => 1, 'email_verified_at' => Carbon::now()]);
 
             echo "valid";
-        }else{
+        } else {
             echo "invalid";
         }
-
-
     }
 
     public function showMailTemp()
@@ -197,8 +189,7 @@ class UserController extends Controller
         //         ->subject($mail_data['subject']);
         // });
 
-        return view('email-template',compact('otp'));
-        
+        return view('email-template', compact('otp'));
     }
 
     // public function sendOtp(Request $request)
@@ -214,7 +205,7 @@ class UserController extends Controller
     //     {
     //         $user_id = User::where('email',$request->email)->value('id');
     //         User::where('email',$request->email)->update(['otp' => $otp]);
-           
+
     //     }else{
 
     //         $user_id = User::create([
@@ -299,7 +290,7 @@ class UserController extends Controller
     //     // });
 
     //     return view('email-template',compact('otp'));
-        
+
     // }
 
     public function generateTokenVerify()
@@ -362,7 +353,7 @@ class UserController extends Controller
     {
         if ($request->get('email')) {
             $email = $request->get('email');
-            $data = User::where('email', $email)->where('email_verified','1')
+            $data = User::where('email', $email)->where('email_verified', '1')
                 ->count();
             if ($data > 0) {
                 echo 'not_unique';

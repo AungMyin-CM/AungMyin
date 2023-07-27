@@ -5,7 +5,12 @@
     .pagination .active .page-link {
         background-color: #003049;
     }
+
+    .addDataBtn {
+        background-color: #003049;
+    }
 </style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
@@ -15,17 +20,19 @@
                     <div class="row mb-2">
                         <div class="col-sm-6"></div>
                         <div class="col-sm-6">
+                            @if(count($data) !== 0)
                             <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
                                 <i class="fas fa-plus"></i> Add new
-                            </a>                      
+                            </a>
+                            @endif
                         </div>
-                    </div>                    
+                    </div>
                 </div><!-- /.container-fluid -->
-                
+
                 @if (Session::has('success'))
-                    @include('partials._toast')
+                @include('partials._toast')
                 @endif
-            </section>            
+            </section>
 
             <section class="content mb-3">
                 <div class="container-fluid">
@@ -44,39 +51,38 @@
                         <tbody>
                             <?php $i = 1; ?>
                             @foreach ($data as $row)
-                                <tr>
-                                    <td>{{ $i++ }} </td>
-                                    <td>{{ $row->code }}</td>
-                                    <td>
-                                        <?php echo Str::limit(str_replace("^" , " " ,$row->meaning ) , $limit = 100, $end = '...') ?>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex justify-content-center" style="gap: 20px">
-                                            <div>
-                                                @if(Helper::checkPermission('d_update', $permissions))
-                                                    <a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
-                                                        <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"  ></i>
-                                                    </a>
-                                                @endif
-                                            </div>
-
-                                            <div>
-                                                @if(Helper::checkPermission('d_delete', $permissions))
-                                                    <form action="{{ route('dictionary.destroy', $row->id) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
-                                                    </form>
-                                                @endif
-                                            </div>
+                            <tr>
+                                <td>{{ $i++ }} </td>
+                                <td>{{ $row->code }}</td>
+                                <td>
+                                    <?php echo Str::limit(str_replace("^", " ", $row->meaning), $limit = 100, $end = '...') ?>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center" style="gap: 20px">
+                                        <div>
+                                            @if(Helper::checkPermission('d_update', $permissions))
+                                            <a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
+                                                <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
+                                            </a>
+                                            @endif
                                         </div>
-                                    </td>                                    
-                                </tr>
+
+                                        <div>
+                                            @if(Helper::checkPermission('d_delete', $permissions))
+                                            <form action="{{ route('dictionary.destroy', $row->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-default" type="submit"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
+                                            </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
-                    </table>                    
-                </div>            
+                    </table>
+                </div>
             </section>
         </div>
     </div>
@@ -93,7 +99,14 @@
         language: {
             searchPlaceholder: "Search shorthand...",
             search: "",
+            emptyTable: "No data available in table.<br><br><button id='addDataBtn' class='btn text-white addDataBtn'><i class='fas fa-plus'></i> Add new</button>"
         },
+    });
+
+    $(document).ready(function() {
+        $('#addDataBtn').on('click', function() {
+            window.location.href = "{{ route('dictionary.create') }}";
+        });
     });
 </script>
 
