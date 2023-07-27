@@ -42,16 +42,40 @@
                         <div class="col-sm-4"></div>
                         @if(Helper::checkPermission('p_create', $permissions))
                         <div class="col-sm-4">
-                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left" onclick="exportTasks(event.target);">Export</span>
+                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportTasks(event.target);"><i class="fas fa-download"></i></span>
 
-                            <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left">
+                            <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
                                 @csrf
-                                <input type="file" name="importFile" id="importFile" accept=".csv" class="inputfile" required />
+
+                                <!-- Import Excel File -->
+                                <div class="import-container">
+                                    <input type="file" id="excel-file-input" accept=".xls, .xlsx" style="display:none" required />
+                                    <button class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
+                                        <i class="fas fa-file-excel"></i> Excel
+                                    </button>
+                                    <span class="file-name excel-file-name"></span>
+                                </div>
+
+                                <!-- Import CSV File -->
+                                <div class="import-container">
+                                    <input type="file" name="importFile" id="csv-file-input" accept=".csv" style="display:none" required />
+                                    <button class="btn btn-sm text-white import-button csv" style="background-color: {{config('app.color')}}">
+                                        <i class="fas fa-file-csv"></i> CSV
+                                    </button>
+                                    <span class="file-name csv-file-name"></span>
+                                </div>
+
+                                <!-- Import File -->
+                                <button type="submit" class="btn btn-sm text-white" style="background-color: {{config('app.color')}}">
+                                    <i class="fas fa-file-import"></i> Import
+                                </button>
+
+                                <!-- <input type="file" name="importFile" id="importFile" accept=".csv" class="inputfile" required />
                                 <label for="importFile">Choose a file....</label>
-                                <input type="submit" value="Import" name="import" class="btn btn-success btn-sm" style="background: {{config('app.color')}};
+                                <input type="submit" value="Import" name="import" class="btn text-white btn-sm" style="background: {{config('app.color')}};
                                 color:white;
                                 border-radius: 5px;
-                                cursor: pointer;" />
+                                cursor: pointer;" /> -->
                             </form>
                         </div>
                         @endif
@@ -60,7 +84,7 @@
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
-                
+
                 @if (Session::has('success'))
                 @include('partials._toast')
                 @endif
@@ -103,5 +127,31 @@
             }
         });
     }
+
+    // Excel - CSV
+    $(document).ready(function() {
+        $('.import-button.excel').click(function() {
+            $('#excel-file-input').click();
+        });
+
+        $('.import-button.csv').click(function() {
+            $('#csv-file-input').click();
+        });
+
+        $('#excel-file-input').change(function(event) {
+            const file = event.target.files[0];
+            displayFileName(file, $(this).siblings('.excel-file-name'));
+        });
+
+        $('#csv-file-input').change(function(event) {
+            const file = event.target.files[0];
+            displayFileName(file, $(this).siblings('.csv-file-name'));
+        });
+
+        function displayFileName(file, $element) {
+            const fileName = file ? file.name : 'No file selected';
+            $element.text(fileName);
+        }
+    });
 </script>
 @endsection
