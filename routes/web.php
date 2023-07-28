@@ -86,6 +86,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('/fetchIsmed', [PatientController::class, 'fetchIsmedData']);
 
+    Route::post('/fetchProLab',[PatientController::class,'fetchProLab']);
+
     Route::post('/search', [SearchController::class, 'searchPatient']);
     Route::post('/second_search', [SearchController::class, 'secondsearchPatient']);
 

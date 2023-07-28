@@ -461,6 +461,8 @@
     let viewBtn = document.getElementById("viewBtn");
     let editBtn = document.getElementById("editBtn");
     let procedureBtn = document.getElementById("procedure_lab_action");
+    var clinic_id = {{ session()->get('cc_id') }};
+
 
     // When the user clicks the button, open the modal
     viewBtn.onclick = function() {
@@ -495,16 +497,47 @@
 
                     html += '<li><input type="checkbox" id="checkbox_' + value.id + '" value="Rainbow Dash"><label for="checkbox_' + value.id + '">' + value.code + '</label></li> ';
 
+                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(index+1)+'"  procedure-data='+value.name+' value="'+value.code+'"><label for="checkbox_'+(index+1)+'">'+value.code+'</label></li> ';
+                      
                 });
 
                 $("#ps-list").append(html);
                 $('.lds-ring').addClass('d-none');
 
-            },
+                $.each($("[procedure-data]"),function(index,value){
+
+                    $("#checkbox_"+(index+1)).on('change',function(){
+                        if($(this).is(':checked')){
+                            var key = $(this).val();
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                url: '/clinic-system/fetchProLab',
+                                data: {
+                                    key: key,
+                                    id: clinic_id,
+                                }
+                            }).done(function(response) {
+                                console.log(response);
+
+                                        
+                            });
+                        }
+                    });
+                });
+            }
+
+
+
         });
 
-
     }
+    
 
     // Close the modal
     $("#viewClose").click(function(e) {
@@ -515,9 +548,12 @@
         editModal.style.display = "none";
     })
 
-    $("#procedureClose").click(function(e) {
+    $("#procedureClose").click(function(e){
+        $('[id=procedure-lab-list]').remove();
+
         procedure_lab_modal.style.display = "none";
-    })
+    });
+
     $("#add_tret_med_row").on('click', function() {
         var table = $("#product_info_table");
         var count_table_tbody_tr = $("#product_info_table tbody tr").length;

@@ -423,6 +423,33 @@ class PatientController extends Controller
         }
     }
 
+    public function fetchProLab(Request $request)
+    {
+
+        if (!$this->checkPermission('p_treatment')) {
+            abort(404);
+        }
+
+
+        $text = $request->key;
+
+        $clinic_id = $request->id;
+
+       
+        $data = Procedure::select('name', 'price')->where(['code' => $text, 'clinic_id' => $clinic_id])->first();
+
+        if($data == '')
+        {
+            $data = Investigation::select('name', 'price')->where(['code' => $text, 'clinic_id' => $clinic_id])->first();
+
+        }
+
+
+        echo $data;
+
+        
+    }
+
     public function updatePatientStatus(Request $request)
     {
         $status = $request->status;
