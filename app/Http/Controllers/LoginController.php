@@ -45,7 +45,13 @@ class LoginController extends Controller
                 if (Auth::guard('user')->attempt($userCredentials)) {
                     $user_clinic = UserClinic::where('user_id',Auth::id())->first();
 
-                    return redirect('/clinic-system/'.Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
+                    if($user_clinic != null)
+                    {   
+
+                        return redirect('/clinic-system/'.Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
+                    }else{
+                        return redirect('/home');
+                    }
                 } else {
                     return back()->withErrors(['email' => 'Invalid Credentials!'])->onlyInput('email');
                 }

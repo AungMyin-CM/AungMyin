@@ -247,9 +247,11 @@ class PatientController extends Controller
 
         $array = [];
 
-        $procedure = Procedure::get()->toArray();
+        $clinic_id = session()->get('cc_id');
 
-        $invesigation = Investigation::get()->toArray();
+        $procedure = Procedure::where('clinic_id',$clinic_id)->get()->toArray();
+
+        $invesigation = Investigation::where('clinic_id',$clinic_id)->get()->toArray();
 
         $data = array_merge($procedure, $invesigation);
 
@@ -434,16 +436,17 @@ class PatientController extends Controller
         $clinic_id = $request->id;
 
        
-        $data = Procedure::select('name', 'price')->where(['code' => $text, 'clinic_id' => $clinic_id])->first();
+        $data = Procedure::where(['code' => $text, 'clinic_id' => $clinic_id])->first();
 
-        if($data == '')
+        if($data == null)
         {
-            $data = Investigation::select('name', 'price')->where(['code' => $text, 'clinic_id' => $clinic_id])->first();
+            $data = Investigation::where(['code' => $text, 'clinic_id' => $clinic_id])->first();
 
         }
 
+        echo json_encode($data);
 
-        echo $data;
+
 
         
     }
@@ -518,7 +521,7 @@ class PatientController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
 
         try {
-            Patient::whereId($id)->update(['p_status' => '1', 'user_id' => $user_id]);
+            Patient::whereId(Crypt::decrypt($id))->update(['p_status' => '1', 'user_id' => $user_id]);
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 

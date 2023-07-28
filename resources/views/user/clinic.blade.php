@@ -178,8 +178,9 @@
         }).done(function(response) {
             $.each(response, function(i, data) {
                 var val = $('#d-id' + data.id).attr('receiver-id');
+                var speciality = ( data.speciality  === null ) ? '-' : data.speciality;
                 if (val == undefined) {
-                    $("#data").append("<tr ><td>" + data.name + "</td><td>" + data.speciality + "</td><td><a href='#/" + data.id + "' class='btn btn-primary' id='d-id" + data.id + "' receiver-id='" + data.id + "' data-patient-id='" + patient_id + "' data-status='2' onclick='updateStatus(this)'>Assign</a></td></tr>");
+                    $("#data").append("<tr ><td>" + data.name + "</td><td>" + speciality  + "</td><td><a href='#/" + data.id + "' class='btn btn-primary' id='d-id" + data.id + "' receiver-id='" + data.id + "' data-patient-id='" + patient_id + "' data-status='2' onclick='updateStatus(this)'>Assign</a></td></tr>");
                     $('#myModal').modal({
                         backdrop: 'static',
                     });

@@ -166,6 +166,55 @@
     .tooltip-content {
         margin-left: 7px;
     }
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.quantity__minus,
+.quantity__plus {
+  display: block;
+  width: 22px;
+  height: 23px;
+  margin: 0;
+  background: #003049;
+  text-decoration: none;
+  text-align: center;
+  line-height: 23px;
+}
+.quantity__minus:hover,
+.quantity__plus:hover {
+  background: #575b71;
+  color: #fff;
+} 
+.quantity__minus {
+  border-radius: 3px 0 0 3px;
+}
+.quantity__plus {
+  border-radius: 0 3px 3px 0;
+}
+.quantity__input {
+  width: 32px;
+  height: 19px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  border-top: 2px solid #dee0ee;
+  border-bottom: 2px solid #dee0ee;
+  border-left: 1px solid #dee0ee;
+  border-right: 2px solid #dee0ee;
+  background: #fff;
+  color: #8184a1;
+}
+.quantity__minus:link,
+.quantity__plus:link {
+  color: #8184a1;
+} 
+.quantity__minus:visited,
+.quantity__plus:visited {
+  color: #fff;
+}
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -497,36 +546,124 @@
 
                     html += '<li><input type="checkbox" id="checkbox_' + value.id + '" value="Rainbow Dash"><label for="checkbox_' + value.id + '">' + value.code + '</label></li> ';
 
-                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(index+1)+'"  procedure-data='+value.name+' value="'+value.code+'"><label for="checkbox_'+(index+1)+'">'+value.code+'</label></li> ';
+                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(value.id)+'"  procedure-data='+value.name+' value="'+value.code+'" attr="'+value.id+'"><label for="checkbox_'+(value.id)+'">'+value.code+'</label></li> ';
                       
                 });
 
                 $("#ps-list").append(html);
                 $('.lds-ring').addClass('d-none');
+                $('.lds-ring').detach().appendTo('#lab_pro_list');
+
+                
 
                 $.each($("[procedure-data]"),function(index,value){
 
-                    $("#checkbox_"+(index+1)).on('change',function(){
-                        if($(this).is(':checked')){
-                            var key = $(this).val();
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
+                    var id = $(this).attr('attr');//show expression (for debug)
 
-                            $.ajax({
-                                type: "POST",
-                                url: '/clinic-system/fetchProLab',
-                                data: {
-                                    key: key,
-                                    id: clinic_id,
-                                }
-                            }).done(function(response) {
-                                console.log(response);
+                    $("#checkbox_"+id).on('change',function(){
+                            if($(this).is(':checked')){
+                                var key = $(this).val();
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/clinic-system/fetchProLab',
+                                    data: {
+                                        key: key,
+                                        id: clinic_id,
+                                    },
+
+                                    beforeSend: function() {
+                                        $('.lds-ring').removeClass('d-none');
+                                    },
+                                
+                                    success: function(response) {
+
+
+                                    var result = JSON.parse(response);
+
+                                    var name = result.name.split('^').filter(function(i){return i});
+
+                                    var price = result.price.split('^').filter(function(i){return i});
+
+                                    var value = result.id;
+
+                                    var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                                    var html = '';
+
+                                    var j = 0;
+                                    
+                                    for(i = 0; i < name.length; i++)
+                                    {   
+
+                                            html += '<tr id="row_' + value + '" class="row_'+i+'">' +
+                                                    '<td>' +
+                                                    name[i]+
+                                                    '</td>' +
+                                                    '<td>'+
+                                                        '<div class="quantity">'+
+                                        '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'"><span>-</span></a>'+
+                                                        '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1">'+
+                                                        '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'"><span>+</span></a>'+
+                                                        '</div>'+
+                                                    '</td>'+
+                                                    '<td><input type="text" name="quantity[]" id="price_' +i+ '" readonly class="form-control input-sm" value="'+price[i]+'"><small>'+'1'+' * '+price[i]+'</small></td>' +
+
+                                                    '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+i+'\')"><i class="fa fa-minus"></i></button></td>' +
+                                                    '</tr>';
+
+                                                   
+                                    }
+
+                                    const minus = $('#quantity__minus_stectch');
+                                                    const plus = $('#quantity__plus_stectch');
+                                                    const input = $('#quantity__input_stectch');
+
+                                                    minus.click(function(e) {
+                                                        alert("hello");
+                                                        // e.preventDefault();
+                                                        // console.log(e);
+                                                        // var value = input.val();
+                                                        // if (value > 1) {
+
+                                                        //     value--;
+                                                        // }
+                                                        // input.val(value);
+                                                    });
+                                                
+                                                    plus.click(function(e) {
+                                                    e.preventDefault();
+                                                    var value = input.val();
+                                                    value++;
+                                                    input.val(value);
+                                                    })
+
 
                                         
+
+                                    if (count_table_tbody_tr >= 1) {
+                                        $("#lab_pro_list tbody tr:last").after(html);
+                                    } else {
+                                        $("#lab_pro_list tbody").html(html);
+                                    }
+
+                                        $('.lds-ring').addClass('d-none');
+
+                                        
+                                          
+                                        
+                                        
+                                        
+      
+                                },
                             });
+                        }else{
+                            $("#lab_pro_list tbody tr#row_" +id).remove();
                         }
                     });
                 });
@@ -537,6 +674,10 @@
         });
 
     }
+
+    $(document).ready(function() {
+       
+    });
     
 
     // Close the modal
@@ -922,6 +1063,10 @@
 
     function removeRow(id) {
         $("#medtable table tr#row_" + id).remove();
+    }
+
+    function removeProLabRow(id){
+        $("#lab_pro_list table tr.row_" + id).remove();
     }
 
     function copyData(id) {

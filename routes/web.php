@@ -176,7 +176,7 @@ Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.c
 
 Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
 
-Route::get('/docs', [DocController::class, 'index'])->name('docs.index');
+Route::get('/++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++', [DocController::class, 'index']);
 
 Route::group(['middleware' => 'auth'], function () {
 

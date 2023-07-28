@@ -48,7 +48,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="100" value="{{ old('quantity') }}">
+                                                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10000" value="{{ old('quantity') }}">
                                                     @error('quantity') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>

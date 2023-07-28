@@ -139,6 +139,10 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
                       <li><input type="checkbox" id="checkboxFourteen" value="Medley"><label for="checkboxFourteen">Medley</label></li>
                       <li><input type="checkbox" id="checkboxFifteen" value="Firefly"><label for="checkboxFifteen">Firefly</label></li> --}}
                     </ul>
+
+                    <div class="container">
+                      <table class="table table-striped" id="lab_pro_list"><thead><th>Name</th><th>Quantity</th><th>Price</th></thead><tbody></tbody></table>
+                    </div>
                   
                   </div>
                       
