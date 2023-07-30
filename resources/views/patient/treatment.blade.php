@@ -619,6 +619,12 @@
 
                                                    
                                     }
+
+                                    if(count_table_tbody_tr == 0)
+                                    {
+                                        $("#lab_pro_list").after('<button class="float-right btn btn-secondary app-color" id="save_btn">Save</button>');
+
+                                    }
    
 
                                     if (count_table_tbody_tr >= 1) {
@@ -631,7 +637,15 @@
                                 },
                             });
                         }else{
-                            $("#pro_lab_row_" +id).remove();
+
+                            $('[id=pro_lab_row_'+id+']').remove();
+                            
+                            var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                            if (count_table_tbody_tr == 0)
+                            {
+                                $("#save_btn").remove();
+                            }
                         }
                     });
                 });
@@ -979,12 +993,7 @@
                         row_id++;
                     }
                     $("#product_info_table tbody").append(html)
-                    // if(count_table_tbody_tr == 1 && $("#product_search_1").val() == '')
-                    // {
-                    //     $("#product_info_table tbody").html(html)
-                    // }else{
-                    //     $("#product_info_table tr:last").after(html)
-                    // }                   
+                               
                 }
             });
         }
@@ -1041,9 +1050,13 @@
 
     function removeProLabRow(id){
         $("#pro_lab_row_"+id).remove();
-        console.log(id);
+        var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+        if (count_table_tbody_tr == 0)
+        {
+            $("#save_btn").remove();
+        }
+
         $('#checkbox_'+id).prop('checked', this.value == 0); // Unchecks it
-        console.log(document.getElementById('#checkbox_'+id));
     }
 
     function inQty(id){
