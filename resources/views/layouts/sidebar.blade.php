@@ -224,7 +224,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('docs.index') }}" class="nav-link" title="Help">
+                    <a href="{{ route('docs.index') }}" class="nav-link" title="Help" target="_blank">
                         <i class="nav-icon fas fa-question-circle"></i>
                         <p>
                             Help

@@ -44,10 +44,10 @@ class LoginController extends Controller
 
                 if (Auth::guard('user')->attempt($userCredentials)) {
                     $user_clinic = UserClinic::where('user_id',Auth::id())->first();
+                    $count_user_clinic = UserClinic::where('user_id',Auth::id())->count();
 
-                    if($user_clinic != null)
+                    if($count_user_clinic == 1)
                     {   
-
                         return redirect('/clinic-system/'.Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
                     }else{
                         return redirect('/home');

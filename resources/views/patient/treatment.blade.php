@@ -399,7 +399,8 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-6 m-3">
-                                                <a href="#" class="nav-link app-text-color" id="procedure_lab_action">Select Procedures & Investigation</a>
+                                                <a href="#" class="nav-link app-text-color lable lable-secondary text-white" id="procedure_lab_action">Procedures & Investigation <label for="" class="badge badge-secondary" id="c_p_i"></label>
+                                                </a>
                                             </div>
                                             @if(Helper::checkPermission('p_update', $permissions))
                                             @include('partials._procedure-lab-modal')
@@ -428,7 +429,7 @@
                                             </div>
 
                                             <div class="col-md-5">
-                                                <div class="d-flex justify-content-center" id="followUp">
+                                                <div class="d-flex" id="followUp">
                                                     <div class="form-check" style="padding:6px !important;">
                                                         <div class="icheck-primary d-inline mt-2">
                                                             <input type="checkbox" id="isFollowup" name="is_followup" value="1">
@@ -544,8 +545,7 @@
 
                 $.each(response, function(index, value) {
 
-                    html += '<li><input type="checkbox" id="checkbox_' + value.id + '" value="Rainbow Dash"><label for="checkbox_' + value.id + '">' + value.code + '</label></li> ';
-
+                
                     html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(value.id)+'"  procedure-data='+value.name+' value="'+value.code+'" attr="'+value.id+'"><label for="checkbox_'+(value.id)+'">'+value.code+'</label></li> ';
                       
                 });
@@ -601,69 +601,37 @@
                                     for(i = 0; i < name.length; i++)
                                     {   
 
-                                            html += '<tr id="row_' + value + '" class="row_'+i+'">' +
+                                        html += '<tr id="pro_lab_row_'+value+'" class="row_'+value+'">' +
                                                     '<td>' +
-                                                    name[i]+
+                                                        name[i]+
                                                     '</td>' +
                                                     '<td>'+
                                                         '<div class="quantity">'+
-                                        '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'"><span>-</span></a>'+
-                                                        '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1">'+
-                                                        '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'"><span>+</span></a>'+
+                                                            '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'" onclick="deQty(\''+name[i]+'\')" attr="minus"><span>-</span></a>'+
+                                                            '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1">'+
+                                                            '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'" onclick="inQty(\''+name[i]+'\')" attr="plus"><span>+</span></a>'+
                                                         '</div>'+
                                                     '</td>'+
-                                                    '<td><input type="text" name="quantity[]" id="price_' +i+ '" readonly class="form-control input-sm" value="'+price[i]+'"><small>'+'1'+' * '+price[i]+'</small></td>' +
+                                                    '<td><small id="price_'+name[i]+'" attr-value-id='+price[i]+'>'+price[i]+'</small></td>' +
 
-                                                    '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+i+'\')"><i class="fa fa-minus"></i></button></td>' +
-                                                    '</tr>';
+                                                    '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+value+'\')"><i class="fa fa-minus"></i></button></td>' +
+                                                '</tr>';
 
                                                    
                                     }
-
-                                    const minus = $('#quantity__minus_stectch');
-                                                    const plus = $('#quantity__plus_stectch');
-                                                    const input = $('#quantity__input_stectch');
-
-                                                    minus.click(function(e) {
-                                                        alert("hello");
-                                                        // e.preventDefault();
-                                                        // console.log(e);
-                                                        // var value = input.val();
-                                                        // if (value > 1) {
-
-                                                        //     value--;
-                                                        // }
-                                                        // input.val(value);
-                                                    });
-                                                
-                                                    plus.click(function(e) {
-                                                    e.preventDefault();
-                                                    var value = input.val();
-                                                    value++;
-                                                    input.val(value);
-                                                    })
-
-
-                                        
+   
 
                                     if (count_table_tbody_tr >= 1) {
                                         $("#lab_pro_list tbody tr:last").after(html);
                                     } else {
                                         $("#lab_pro_list tbody").html(html);
                                     }
-
                                         $('.lds-ring').addClass('d-none');
 
-                                        
-                                          
-                                        
-                                        
-                                        
-      
                                 },
                             });
                         }else{
-                            $("#lab_pro_list tbody tr#row_" +id).remove();
+                            $("#pro_lab_row_" +id).remove();
                         }
                     });
                 });
@@ -690,9 +658,15 @@
     })
 
     $("#procedureClose").click(function(e){
-        $('[id=procedure-lab-list]').remove();
 
+        $('[id=procedure-lab-list]').remove();
         procedure_lab_modal.style.display = "none";
+        var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+        if(count_table_tbody_tr > 0)
+        {
+            $("#c_p_i").text(count_table_tbody_tr);
+        }
     });
 
     $("#add_tret_med_row").on('click', function() {
@@ -1066,8 +1040,50 @@
     }
 
     function removeProLabRow(id){
-        $("#lab_pro_list table tr.row_" + id).remove();
+        $("#pro_lab_row_"+id).remove();
+        console.log(id);
+        $('#checkbox_'+id).prop('checked', this.value == 0); // Unchecks it
+        console.log(document.getElementById('#checkbox_'+id));
     }
+
+    function inQty(id){
+        const plus = $('#quantity__plus_'+id);
+        const input = $('#quantity__input_'+id);
+        const price = $('#price_'+id);
+        const or_price = $('#price_'+id).attr('attr-value-id');
+
+
+            if (value > 1) {
+
+                value--;
+            }        
+            var value = input.val();
+            value++;
+            input.val(value);
+            price.text(parseInt(input.val()) * parseInt(or_price));
+            
+    }
+
+    function deQty(id){
+        const minus = $('#quantity__minus_'+id);
+        const input = $('#quantity__input_'+id);
+        const price = $('#price_'+id);
+        const or_price = $('#price_'+id).attr('attr-value-id');
+
+
+            var value = input.val();
+            if (value > 1) {
+
+                value--;
+            }
+            input.val(value);
+            
+            price.text(parseInt(input.val()) * parseInt(or_price));
+
+    }
+
+
+    
 
     function copyData(id) {
         $.ajaxSetup({
