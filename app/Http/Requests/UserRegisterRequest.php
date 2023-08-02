@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRegisterRequest extends FormRequest
 {
@@ -38,7 +39,11 @@ class UserRegisterRequest extends FormRequest
             'country' => 'nullable',
             'address' => 'required',
             'short_bio' => 'nullable',
-            'fees' => 'nullable',
+            'fees' => [
+                Rule::requiredIf(function () {
+                    return $this->input('role_type') == 1;
+                }),
+            ],
         ];
     }
 }

@@ -180,6 +180,8 @@
                                             <div class="form-group">
                                                 <label class="fees">Fees</label>
                                                 <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" />
+
+                                                @error('fees') <span class="text-danger small">{{ $message }}</span>@enderror
                                             </div>
                                         </div>
 

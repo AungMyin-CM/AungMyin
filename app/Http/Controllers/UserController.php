@@ -43,7 +43,7 @@ class UserController extends Controller
         return view('user/index')->with('data', $userData);
     }
 
-    public function register(UserRegisterRequest $request)
+    public function register(Request $request)
     {
         $user = new User();
 

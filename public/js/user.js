@@ -11041,9 +11041,9 @@ __webpack_require__.r(__webpack_exports__);
 	function hideOrShowFields() {
         const roleType = $("#role_type").val();
         if (roleType != 1 && roleType != 5) {
-            $("#doctor_section").hide();;
-            $("#short_bio").hide();;
-            $("#fees").hide();;
+            $("#doctor_section").hide();
+            $("#short_bio").hide();
+            $("#fees").hide();
         } else {
             $("#doctor_section").show();
             $("#short_bio").show();

@@ -190,7 +190,9 @@
                                         <div class="col-md-6" id="fees">
                                             <div class="form-group">
                                                 <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
-                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
+                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" />
+
+                                                <span id="feesError" class="text-danger small alert-msg"></span>
                                             </div>
                                         </div>
 
@@ -397,6 +399,7 @@
                     let password = response.errors.password ? response.errors.password[0] : '';
                     let phoneNumber = response.errors.phoneNumber ? response.errors.phoneNumber[0] : '';
                     let address = response.errors.address ? response.errors.address[0] : '';
+                    let fees = response.errors.fees ? response.errors.fees[0] : '';
 
                     $('#nameError').html(name);
                     $('#codeError').html(code);
@@ -406,6 +409,7 @@
                     $('#passwordError').html(password);
                     $('#phoneError').html(phoneNumber);
                     $('#addressError').html(address);
+                    $('#feesError').html(fees);
 
                     $(".alert-msg").show().delay(5000).fadeOut();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateRequest extends FormRequest
@@ -39,7 +40,11 @@ class UserUpdateRequest extends FormRequest
             'city' => 'nullable',
             'country' => 'nullable',
             'short_bio' => 'nullable',
-            'fees' => 'nullable',
+            'fees' => [
+                Rule::requiredIf(function () {
+                    return $this->input('role_type') == 1;
+                }),
+            ],
         ];
     }
 }
