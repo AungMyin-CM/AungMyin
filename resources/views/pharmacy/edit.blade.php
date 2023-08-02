@@ -40,13 +40,13 @@
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            {{-- <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">Code</label>
                                                     <input class="form-control" name="code" value="{{ $pharmacy->code }}" />
                                                     @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="expire_date">Expire Date</label>

@@ -24,7 +24,6 @@ class PharmacyRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required',
             'name' => 'required',
             'expire_date' => 'required',
             'quantity' => 'required',

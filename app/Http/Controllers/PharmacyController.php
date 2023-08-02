@@ -37,6 +37,10 @@ class PharmacyController extends Controller
 
     public function create(Request $request)
     {
+        if (!Auth::guard('user')->user()->isAdmin()) {
+            abort(404);
+        }
+
         if (!$this->checkPermission('ph_create')) {
             abort(403);
         }
@@ -46,6 +50,10 @@ class PharmacyController extends Controller
 
     public function store(PharmacyRequest $request)
     {
+        if (!Auth::guard('user')->user()->isAdmin()) {
+            abort(404);
+        }
+
         if ($request->validated()) {
             $pharmacy = new Pharmacy();
 
@@ -77,6 +85,10 @@ class PharmacyController extends Controller
 
     public function edit($id)
     {
+        if (!Auth::guard('user')->user()->isAdmin()) {
+            abort(404);
+        }
+
         try {
             $id = Crypt::decrypt($id);
             $pharmacy = Pharmacy::findOrfail($id);
@@ -92,6 +104,10 @@ class PharmacyController extends Controller
 
         $clinic_id = session()->get('cc_id');
         $user_id = Auth::guard('user')->user()['id'];
+
+        if (!Auth::guard('user')->user()->isAdmin()) {
+            abort(404);
+        }
 
         if ($request->validated()) {
 
@@ -121,6 +137,10 @@ class PharmacyController extends Controller
 
     public function destroy($id)
     {
+        if (!Auth::guard('user')->user()->isAdmin()) {
+            abort(404);
+        }
+        
         Pharmacy::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('clinic-system/pharmacy')->with('success', 'Medicine deleted successfully!');

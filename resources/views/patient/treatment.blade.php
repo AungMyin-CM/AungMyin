@@ -96,7 +96,6 @@
         color: #f1f1f1;
         font-size: 40px;
         font-weight: bold;
-        transition: 0.3s;
     }
 
     .close:hover,
@@ -524,143 +523,144 @@
     }
 
     procedureBtn.onclick = function() {
-        procedure_lab_modal.style.display = "block";
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        //  Invoke click event of target so that non-form submit behaviors will work
+        console.log($("#c_p_i").text());
 
-        $.ajax({
-            url: '/clinic-system/fetchData',
-            type: 'GET',
-            beforeSend: function() {
-                $('.lds-ring').removeClass('d-none');
-            },
-            success: function(response) {
+        if($("#c_p_i").text() == ''){
 
-                var html = '';
-
-                $.each(response, function(index, value) {
-
-                
-                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(value.id)+'"  procedure-data='+value.name+' value="'+value.code+'" attr="'+value.id+'"><label for="checkbox_'+(value.id)+'">'+value.code+'</label></li> ';
-                      
-                });
-
-                $("#ps-list").append(html);
-                $('.lds-ring').addClass('d-none');
-                $('.lds-ring').detach().appendTo('#lab_pro_list');
-
-                
-
-                $.each($("[procedure-data]"),function(index,value){
-
-                    var id = $(this).attr('attr');//show expression (for debug)
-
-                    $("#checkbox_"+id).on('change',function(){
-                            if($(this).is(':checked')){
-                                var key = $(this).val();
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                                });
-
-                                $.ajax({
-                                    type: "POST",
-                                    url: '/clinic-system/fetchProLab',
-                                    data: {
-                                        key: key,
-                                        id: clinic_id,
-                                    },
-
-                                    beforeSend: function() {
-                                        $('.lds-ring').removeClass('d-none');
-                                    },
-                                
-                                    success: function(response) {
+            procedure_lab_modal.style.display = "block";
 
 
-                                    var result = JSON.parse(response);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //  Invoke click event of target so that non-form submit behaviors will work
 
-                                    var name = result.name.split('^').filter(function(i){return i});
+            $.ajax({
+                url: '/clinic-system/fetchData',
+                type: 'GET',
+                beforeSend: function() {
+                    $('.lds-ring').removeClass('d-none');
+                },
+                success: function(response) {
 
-                                    var price = result.price.split('^').filter(function(i){return i});
+                    var html = '';
 
-                                    var value = result.id;
+                    $.each(response, function(index, value) {
 
-                                    var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
-
-                                    var html = '';
-
-                                    var j = 0;
-                                    
-                                    for(i = 0; i < name.length; i++)
-                                    {   
-
-                                        html += '<tr id="pro_lab_row_'+value+'" class="row_'+value+'">' +
-                                                    '<td>' +
-                                                        name[i]+
-                                                    '</td>' +
-                                                    '<td>'+
-                                                        '<div class="quantity">'+
-                                                            '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'" onclick="deQty(\''+name[i]+'\')" attr="minus"><span>-</span></a>'+
-                                                            '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1">'+
-                                                            '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'" onclick="inQty(\''+name[i]+'\')" attr="plus"><span>+</span></a>'+
-                                                        '</div>'+
-                                                    '</td>'+
-                                                    '<td><small id="price_'+name[i]+'" attr-value-id='+price[i]+'>'+price[i]+'</small></td>' +
-
-                                                    '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+value+'\')"><i class="fa fa-minus"></i></button></td>' +
-                                                '</tr>';
-
-                                                   
-                                    }
-
-                                    if(count_table_tbody_tr == 0)
-                                    {
-                                        $("#lab_pro_list").after('<button class="float-right btn btn-secondary app-color" id="save_btn">Save</button>');
-
-                                    }
-   
-
-                                    if (count_table_tbody_tr >= 1) {
-                                        $("#lab_pro_list tbody tr:last").after(html);
-                                    } else {
-                                        $("#lab_pro_list tbody").html(html);
-                                    }
-                                        $('.lds-ring').addClass('d-none');
-
-                                },
-                            });
-                        }else{
-
-                            $('[id=pro_lab_row_'+id+']').remove();
-                            
-                            var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
-
-                            if (count_table_tbody_tr == 0)
-                            {
-                                $("#save_btn").remove();
-                            }
-                        }
+                    
+                        html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(value.id)+'"  procedure-data='+value.name+' value="'+value.code+'" attr="'+value.id+'"><label for="checkbox_'+(value.id)+'">'+value.code+'</label></li> ';
+                        
                     });
-                });
-            }
+
+                    $("#ps-list").append(html);
+                    $('.lds-ring').addClass('d-none');
+                    $('.lds-ring').detach().appendTo('#lab_pro_list');
+
+                    
+
+                    $.each($("[procedure-data]"),function(index,value){
+
+                        var id = $(this).attr('attr');//show expression (for debug)
+
+                        $("#checkbox_"+id).on('change',function(){
+                                if($(this).is(':checked')){
+                                    var key = $(this).val();
+                                    $.ajaxSetup({
+                                        headers: {
+                                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                        }
+                                    });
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '/clinic-system/fetchProLab',
+                                        data: {
+                                            key: key,
+                                            id: clinic_id,
+                                        },
+
+                                        beforeSend: function() {
+                                            $('.lds-ring').removeClass('d-none');
+                                        },
+                                    
+                                        success: function(response) {
 
 
+                                        var result = JSON.parse(response);
 
-        });
+                                        var name = result.name.split('^').filter(function(i){return i});
 
-    }
+                                        var price = result.price.split('^').filter(function(i){return i});
 
-    $(document).ready(function() {
-       
-    });
+                                        var value = result.id;
+
+                                        var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                                        var html = '';
+
+                                        var j = 0;
+                                        
+                                        for(i = 0; i < name.length; i++)
+                                        {   
+
+                                            html += '<tr id="pro_lab_row_'+value+'" class="row_'+value+'">' +
+                                                        '<td>' +
+                                                            name[i]+
+                                                        '</td>' +
+                                                        '<td>'+
+                                                            '<div class="quantity">'+
+                                                                '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'" onclick="deQty(\''+name[i]+'\')" attr="minus"><span>-</span></a>'+
+                                                                '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1" readonly>'+
+                                                                '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'" onclick="inQty(\''+name[i]+'\')" attr="plus"><span>+</span></a>'+
+                                                            '</div>'+
+                                                        '</td>'+
+                                                        '<td><small id="price_'+name[i]+'" attr-value-id='+price[i]+'>'+price[i]+'</small></td>' +
+
+                                                        '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+value+'\')"><i class="fa fa-minus"></i></button></td>' +
+                                                    '</tr>';
+
+                                                    
+                                        }
+
+                                        if(count_table_tbody_tr == 0)
+                                        {
+                                            $(".pro-action").removeClass('d-none');
+
+                                        }
     
+
+                                        if (count_table_tbody_tr >= 1) {
+                                            $("#lab_pro_list tbody tr:last").after(html);
+                                        } else {
+                                            $("#lab_pro_list tbody").html(html);
+                                        }
+                                            $('.lds-ring').addClass('d-none');
+
+                                    },
+                                });
+                            }else{
+
+                                $('[id=pro_lab_row_'+id+']').remove();
+                                
+                                var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                                if (count_table_tbody_tr == 0)
+                                {
+                                    $(".pro-action").addClass('d-none');
+                                }
+                            }
+                        });
+                    });
+                }
+
+            });
+        }else{
+            procedure_lab_modal.style.display = "block";
+        }
+    }
 
     // Close the modal
     $("#viewClose").click(function(e) {
@@ -672,15 +672,13 @@
     })
 
     $("#procedureClose").click(function(e){
-
         $('[id=procedure-lab-list]').remove();
+        $("#lab_pro_list tr").remove();
+        $(".pro-action").addClass('d-none');
+       
         procedure_lab_modal.style.display = "none";
-        var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
 
-        if(count_table_tbody_tr > 0)
-        {
-            $("#c_p_i").text(count_table_tbody_tr);
-        }
+        
     });
 
     $("#add_tret_med_row").on('click', function() {
@@ -1053,7 +1051,8 @@
         var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
         if (count_table_tbody_tr == 0)
         {
-            $("#save_btn").remove();
+            $(".pro-action").addClass('d-none');
+
         }
 
         $('#checkbox_'+id).prop('checked', this.value == 0); // Unchecks it

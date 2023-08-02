@@ -112,7 +112,19 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
     <div class="modal-content">
         <div class="modal-header" style="background-color: {{config('app.color')}}">
             <h5 class="modal-title text-white">Procedure and Lab</h5>
-            <span id="procedureClose" class="close">&times;</span>
+            <div class="row close">
+
+              <div class="col-md-6 d-none pro-action">
+                <a href="#" class="btn btn-secondary app-color" id="save_pro_btn">Save</a>
+              </div>
+            
+                
+              <div class="col-md-6">
+                <span id="procedureClose">
+                  <a href="#" class="btn btn-danger" value="Cancel">Cancel</a>
+                </span>
+              </div>
+            </div>
         </div>
         <div class="modal-body">
             <div class="card">
