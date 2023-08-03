@@ -157,64 +157,94 @@
         background-color: #858383;
     }
 
-    .tooltip-text {
-        display: none;
+    .tooltip-card {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.8s;
         position: fixed;
-        padding-top: 80px;
+        padding-top: 90px;
+        margin-left: 12px;
     }
 
-    .tooltip-content {
-        margin-left: 7px;
+    .tooltip-card .tooltip-content {
+        position: relative;
+        width: 200px;
+        background-color: #003049;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
-.quantity {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-.quantity__minus,
-.quantity__plus {
-  display: block;
-  width: 22px;
-  height: 23px;
-  margin: 0;
-  background: #003049;
-  text-decoration: none;
-  text-align: center;
-  line-height: 23px;
-}
-.quantity__minus:hover,
-.quantity__plus:hover {
-  background: #575b71;
-  color: #fff;
-} 
-.quantity__minus {
-  border-radius: 3px 0 0 3px;
-}
-.quantity__plus {
-  border-radius: 0 3px 3px 0;
-}
-.quantity__input {
-  width: 32px;
-  height: 19px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  border-top: 2px solid #dee0ee;
-  border-bottom: 2px solid #dee0ee;
-  border-left: 1px solid #dee0ee;
-  border-right: 2px solid #dee0ee;
-  background: #fff;
-  color: #8184a1;
-}
-.quantity__minus:link,
-.quantity__plus:link {
-  color: #8184a1;
-} 
-.quantity__minus:visited,
-.quantity__plus:visited {
-  color: #fff;
-}
+
+    .tooltip-content .arrow {
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        margin-top: -10px;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #003049;
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .quantity__minus,
+    .quantity__plus {
+        display: block;
+        width: 22px;
+        height: 23px;
+        margin: 0;
+        background: #003049;
+        text-decoration: none;
+        text-align: center;
+        line-height: 23px;
+    }
+
+    .quantity__minus:hover,
+    .quantity__plus:hover {
+        background: #575b71;
+        color: #fff;
+    }
+
+    .quantity__minus {
+        border-radius: 3px 0 0 3px;
+    }
+
+    .quantity__plus {
+        border-radius: 0 3px 3px 0;
+    }
+
+    .quantity__input {
+        width: 32px;
+        height: 19px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        border-top: 2px solid #dee0ee;
+        border-bottom: 2px solid #dee0ee;
+        border-left: 1px solid #dee0ee;
+        border-right: 2px solid #dee0ee;
+        background: #fff;
+        color: #8184a1;
+    }
+
+    .quantity__minus:link,
+    .quantity__plus:link {
+        color: #8184a1;
+    }
+
+    .quantity__minus:visited,
+    .quantity__plus:visited {
+        color: #fff;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -273,32 +303,30 @@
                             </div>
 
                             <!-- Shorthand Data -->
-                            <div id="dictionaryData" class="tooltip-text">
+                            <div id="dictionaryData" class="tooltip-card">
                                 <div class="tooltip-content">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            @foreach($dictionaries as $dictionary)
-                                            <ul class="list-unstyled">
-                                                <li>{{ $dictionary->code }}</li>
-                                            </ul>
-                                            @endforeach
-                                        </div>                                    
+                                    <div class="arrow"></div>
+                                    <div class="content">
+                                        @foreach($dictionaries as $dictionary)
+                                        <ul class="list-unstyled">
+                                            <li>{{ $dictionary->code }}</li>
+                                        </ul>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Pharmacy Data -->
-                            <div id="medicineData" class="tooltip-text">
+                            <div id="medicineData" class="tooltip-card">
                                 <div class="tooltip-content">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            @foreach($medicines as $medicine)
-                                            <ul class="list-unstyled">
-                                                <li>{{ $medicine->code }}</li>
-                                            </ul>
-                                            @endforeach
-                                        </div>                                    
-                                    </div>
+                                    <div class="arrow"></div>
+                                    <div class="content">
+                                        @foreach($medicines as $medicine)
+                                        <ul class="list-unstyled">
+                                            <li>{{ $medicine->code }}</li>
+                                        </ul>
+                                        @endforeach
+                                    </div>                                    
                                 </div>
                             </div>
 
@@ -506,12 +534,12 @@
     let viewModal = document.getElementById("viewModal");
     let editModal = document.getElementById("editModal");
     let procedure_lab_modal = document.getElementById("procedure_modal");
-    
+
     // Get the button that opens the modal
     let viewBtn = document.getElementById("viewBtn");
     let editBtn = document.getElementById("editBtn");
     let procedureBtn = document.getElementById("procedure_lab_action");
-    var clinic_id = {{ session()->get('cc_id') }};
+    var clinic_id = {{ session() -> get('cc_id') }};
 
 
     // When the user clicks the button, open the modal
@@ -545,50 +573,54 @@
 
                 $.each(response, function(index, value) {
 
-                
-                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_'+(value.id)+'"  procedure-data='+value.name+' value="'+value.code+'" attr="'+value.id+'"><label for="checkbox_'+(value.id)+'">'+value.code+'</label></li> ';
-                      
+
+                    html += '<li id="procedure-lab-list"><input type="checkbox" id="checkbox_' + (value.id) + '"  procedure-data=' + value.name + ' value="' + value.code + '" attr="' + value.id + '"><label for="checkbox_' + (value.id) + '">' + value.code + '</label></li> ';
+
                 });
 
                 $("#ps-list").append(html);
                 $('.lds-ring').addClass('d-none');
                 $('.lds-ring').detach().appendTo('#lab_pro_list');
 
-                
 
-                $.each($("[procedure-data]"),function(index,value){
 
-                    var id = $(this).attr('attr');//show expression (for debug)
+                $.each($("[procedure-data]"), function(index, value) {
 
-                    $("#checkbox_"+id).on('change',function(){
-                            if($(this).is(':checked')){
-                                var key = $(this).val();
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                                });
+                    var id = $(this).attr('attr'); //show expression (for debug)
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: '/clinic-system/fetchProLab',
-                                    data: {
-                                        key: key,
-                                        id: clinic_id,
-                                    },
+                    $("#checkbox_" + id).on('change', function() {
+                        if ($(this).is(':checked')) {
+                            var key = $(this).val();
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
 
-                                    beforeSend: function() {
-                                        $('.lds-ring').removeClass('d-none');
-                                    },
-                                
-                                    success: function(response) {
+                            $.ajax({
+                                type: "POST",
+                                url: '/clinic-system/fetchProLab',
+                                data: {
+                                    key: key,
+                                    id: clinic_id,
+                                },
+
+                                beforeSend: function() {
+                                    $('.lds-ring').removeClass('d-none');
+                                },
+
+                                success: function(response) {
 
 
                                     var result = JSON.parse(response);
 
-                                    var name = result.name.split('^').filter(function(i){return i});
+                                    var name = result.name.split('^').filter(function(i) {
+                                        return i
+                                    });
 
-                                    var price = result.price.split('^').filter(function(i){return i});
+                                    var price = result.price.split('^').filter(function(i) {
+                                        return i
+                                    });
 
                                     var value = result.id;
 
@@ -597,41 +629,40 @@
                                     var html = '';
 
                                     var j = 0;
-                                    
-                                    for(i = 0; i < name.length; i++)
-                                    {   
 
-                                        html += '<tr id="pro_lab_row_'+value+'" class="row_'+value+'">' +
-                                                    '<td>' +
-                                                        name[i]+
-                                                    '</td>' +
-                                                    '<td>'+
-                                                        '<div class="quantity">'+
-                                                            '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'" onclick="deQty(\''+name[i]+'\')" attr="minus"><span>-</span></a>'+
-                                                            '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1">'+
-                                                            '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'" onclick="inQty(\''+name[i]+'\')" attr="plus"><span>+</span></a>'+
-                                                        '</div>'+
-                                                    '</td>'+
-                                                    '<td><small id="price_'+name[i]+'" attr-value-id='+price[i]+'>'+price[i]+'</small></td>' +
+                                    for (i = 0; i < name.length; i++) {
 
-                                                    '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\''+value+'\')"><i class="fa fa-minus"></i></button></td>' +
-                                                '</tr>';
+                                        html += '<tr id="pro_lab_row_' + value + '" class="row_' + value + '">' +
+                                            '<td>' +
+                                            name[i] +
+                                            '</td>' +
+                                            '<td>' +
+                                            '<div class="quantity">' +
+                                            '<a href="#" class="quantity__minus" id="quantity__minus_' + name[i] + '" onclick="deQty(\'' + name[i] + '\')" attr="minus"><span>-</span></a>' +
+                                            '<input name="quantity" type="text" class="quantity__input" id="quantity__input_' + name[i] + '" value="1">' +
+                                            '<a href="#" class="quantity__plus" id="quantity__plus_' + name[i] + '" onclick="inQty(\'' + name[i] + '\')" attr="plus"><span>+</span></a>' +
+                                            '</div>' +
+                                            '</td>' +
+                                            '<td><small id="price_' + name[i] + '" attr-value-id=' + price[i] + '>' + price[i] + '</small></td>' +
 
-                                                   
+                                            '<td><button type="button" class="btn btn-default" onclick="removeProLabRow(\'' + value + '\')"><i class="fa fa-minus"></i></button></td>' +
+                                            '</tr>';
+
+
                                     }
-   
+
 
                                     if (count_table_tbody_tr >= 1) {
                                         $("#lab_pro_list tbody tr:last").after(html);
                                     } else {
                                         $("#lab_pro_list tbody").html(html);
                                     }
-                                        $('.lds-ring').addClass('d-none');
+                                    $('.lds-ring').addClass('d-none');
 
                                 },
                             });
-                        }else{
-                            $("#pro_lab_row_" +id).remove();
+                        } else {
+                            $("#pro_lab_row_" + id).remove();
                         }
                     });
                 });
@@ -644,9 +675,9 @@
     }
 
     $(document).ready(function() {
-       
+
     });
-    
+
 
     // Close the modal
     $("#viewClose").click(function(e) {
@@ -657,14 +688,13 @@
         editModal.style.display = "none";
     })
 
-    $("#procedureClose").click(function(e){
+    $("#procedureClose").click(function(e) {
 
         $('[id=procedure-lab-list]').remove();
         procedure_lab_modal.style.display = "none";
         var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
 
-        if(count_table_tbody_tr > 0)
-        {
+        if (count_table_tbody_tr > 0) {
             $("#c_p_i").text(count_table_tbody_tr);
         }
     });
@@ -721,28 +751,34 @@
         //  Invoke click event of target so that non-form submit behaviors will work
 
     });
-    
+
     $(document).ready(function() {
         let dictionaryTooltip = $('#dictionaryTooltip');
         let medicineTooltip = $('#medicineTooltip');
         let dictionaryData = $('#dictionaryData');
         let medicineData = $('#medicineData');
 
-        dictionaryTooltip.on('mouseenter', function() {
-            dictionaryData.css('display', 'block');
-        });
+        dictionaryTooltip.hover(
+            function() {
+                dictionaryData.css('visibility', 'visible');
+                dictionaryData.css('opacity', 1);
+            },
+            function() {
+                dictionaryData.css('visibility', 'hidden');
+                dictionaryData.css('opacity', 0);
+            }
+        );
 
-        medicineTooltip.on('mouseenter', function() {
-            medicineData.css('display', 'block');
-        });
-
-        dictionaryTooltip.on('mouseleave', function() {
-            dictionaryData.css('display', 'none');
-        });
-
-        medicineTooltip.on('mouseleave', function() {
-            medicineData.css('display', 'none');
-        });
+        medicineTooltip.hover(
+            function() {
+                medicineData.css('visibility', 'visible');
+                medicineData.css('opacity', 1);
+            },
+            function() {
+                medicineData.css('visibility', 'hidden');
+                medicineData.css('opacity', 0);
+            }
+        );
     });
 
     $.ajaxSetup({
@@ -1039,51 +1075,51 @@
         $("#medtable table tr#row_" + id).remove();
     }
 
-    function removeProLabRow(id){
-        $("#pro_lab_row_"+id).remove();
+    function removeProLabRow(id) {
+        $("#pro_lab_row_" + id).remove();
         console.log(id);
-        $('#checkbox_'+id).prop('checked', this.value == 0); // Unchecks it
-        console.log(document.getElementById('#checkbox_'+id));
+        $('#checkbox_' + id).prop('checked', this.value == 0); // Unchecks it
+        console.log(document.getElementById('#checkbox_' + id));
     }
 
-    function inQty(id){
-        const plus = $('#quantity__plus_'+id);
-        const input = $('#quantity__input_'+id);
-        const price = $('#price_'+id);
-        const or_price = $('#price_'+id).attr('attr-value-id');
+    function inQty(id) {
+        const plus = $('#quantity__plus_' + id);
+        const input = $('#quantity__input_' + id);
+        const price = $('#price_' + id);
+        const or_price = $('#price_' + id).attr('attr-value-id');
 
 
-            if (value > 1) {
+        if (value > 1) {
 
-                value--;
-            }        
-            var value = input.val();
-            value++;
-            input.val(value);
-            price.text(parseInt(input.val()) * parseInt(or_price));
-            
-    }
-
-    function deQty(id){
-        const minus = $('#quantity__minus_'+id);
-        const input = $('#quantity__input_'+id);
-        const price = $('#price_'+id);
-        const or_price = $('#price_'+id).attr('attr-value-id');
-
-
-            var value = input.val();
-            if (value > 1) {
-
-                value--;
-            }
-            input.val(value);
-            
-            price.text(parseInt(input.val()) * parseInt(or_price));
+            value--;
+        }
+        var value = input.val();
+        value++;
+        input.val(value);
+        price.text(parseInt(input.val()) * parseInt(or_price));
 
     }
 
+    function deQty(id) {
+        const minus = $('#quantity__minus_' + id);
+        const input = $('#quantity__input_' + id);
+        const price = $('#price_' + id);
+        const or_price = $('#price_' + id).attr('attr-value-id');
 
-    
+
+        var value = input.val();
+        if (value > 1) {
+
+            value--;
+        }
+        input.val(value);
+
+        price.text(parseInt(input.val()) * parseInt(or_price));
+
+    }
+
+
+
 
     function copyData(id) {
         $.ajaxSetup({

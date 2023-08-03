@@ -234,8 +234,8 @@
                 <li class="nav-item mt-2 logout" style="margin-left: 17px;">
                     @if (Auth::guard('user')->user())
                     <form action="{{ route('user.logout') }}" method="post">
-                    @endif
-                    @csrf
+                        @endif
+                        @csrf
                         <button class="nav-link text-dark" type="submit" style="display: contents;">
                             <i class="nav-icon fas fa-sign-out-alt"></i>
                             <p>
@@ -243,7 +243,7 @@
                             </p>
                         </button>
                     </form>
-                </li>                
+                </li>
             </ul>
         </nav>
     </div>
