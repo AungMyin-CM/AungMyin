@@ -522,6 +522,33 @@
         editModal.style.display = "block";
     }
 
+    $("#save_pro_btn").click(function(e){
+        e.preventDefault();
+
+        var patient_id={{ $patient->id }};
+
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //  Invoke click event of target so that non-form submit behaviors will work
+
+        $.ajax({
+            url: '/clinic-system/patient/'+patient_id+'/lab',
+            type: 'POST',
+            data: {
+                    key: name,
+                    patient_id: patient_id
+                } 
+            beforeSend: function() {
+                $('.lds-ring').removeClass('d-none');
+            },
+        })
+        
+        
+    })
+
     procedureBtn.onclick = function() {
 
         console.log($("#c_p_i").text());
