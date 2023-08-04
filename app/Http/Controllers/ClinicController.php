@@ -108,8 +108,8 @@ class ClinicController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
         $clinic = new Clinic();
         $package = Package::find($request->package_id)->first();
-        
-        if($package->price == '300000'){
+
+        if ($package->price == '300000') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",
@@ -118,7 +118,7 @@ class ClinicController extends Controller
                 "pos_view", "pos_create", "pos_update", "pos_delete",
                 "user_view", "user_create", "user_update", "user_delete"
             ];
-        }else if($package->price == '100000'){
+        } else if ($package->price == '100000') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",
@@ -127,8 +127,7 @@ class ClinicController extends Controller
                 "pos_view", "pos_create", "pos_update", "pos_delete",
                 "user_view", "user_update", "user_delete"
             ];
-
-        }else if($package->price == '50000'){
+        } else if ($package->price == '50000') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",
@@ -136,7 +135,6 @@ class ClinicController extends Controller
                 "ph_view", "ph_create", "ph_update", "ph_delete",
                 "pos_view", "pos_create", "pos_update", "pos_delete",
             ];
-
         }
 
         $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
@@ -179,7 +177,7 @@ class ClinicController extends Controller
         ]);
 
         User::where('id', $user_id)->update(['user_type' => '3', 'role_id' => $role_id]); // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
-       
+
 
         return redirect('/home');
     }
@@ -191,17 +189,17 @@ class ClinicController extends Controller
 
         $package = Package::find($clinic->package_id);
 
-        $clinic_user = UserClinic::where('clinic_id',$clinic->id)->where('user_id',Auth::id())->first();
+        $clinic_user = UserClinic::where('clinic_id', $clinic->id)->where('user_id', Auth::id())->first();
 
         $user = User::find($clinic_user->user_id);
 
         // return $user->name.','.$package->price;
 
-         $items_data = array(
+        $items_data = array(
             "name" => $user->name,
             "amount" => $package->price,
             "quantity" => "1"
-        );  
+        );
 
 
         $data_pay = json_encode(array(
@@ -234,7 +232,25 @@ class ClinicController extends Controller
         $redirect_url = "https://form.dinger.asia/?hashValue=$encryptedHashValue&payload=$urlencode_value";
 
         return redirect()->intended($redirect_url);
+    }
 
+    public function updateClinic(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'phoneNumber' => 'required',
+            'address' => 'required',
+        ]);
+
+        Clinic::whereId($id)->update([
+            'name' => $request->name,
+            'phoneNumber' => $request->phoneNumber,
+            'address' => $request->address,
+        ]);
+
+        $clinic = (Clinic::where('id', $id)->get())[0];
+
+        return response()->json($clinic);
     }
 
     public function newUser()
@@ -361,7 +377,7 @@ class ClinicController extends Controller
 
         $user_id = Auth::id();
 
-        $data = Package::where('status', 1)->orderBy('price','desc')->get();
+        $data = Package::where('status', 1)->orderBy('price', 'desc')->get();
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
@@ -432,9 +448,9 @@ class ClinicController extends Controller
                 $user_id = Auth::guard('user')->user()['id'];
                 $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
                 $now = new Carbon;
-    
+
                 if ($role->role_type == 2) {
-    
+
                     $patientData = Patient::where('clinic_code', $clinic_id)
                         ->where('user_id', $user_id)
                         ->where('p_status', 1)
@@ -509,13 +525,12 @@ class ClinicController extends Controller
                             $output .= '<a href="' . route('patient.edit',  Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                                                 <i class="fas fa-edit fa-lg" style="color:black;"></i>
                                             </a>';
-    
-                                        }
-                                        
-    
-                                        if($role->role_type == 2){
-    
-                                            $output .='<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = '.$row->id.'>
+                        }
+
+
+                        if ($role->role_type == 2) {
+
+                            $output .= '<a href="#" class="btn btn-sm btn-tool" onclick="assignTo(this)" id="status" data-status="2" data-patient-id = ' . $row->id . '>
                                                 <i class="fas fa-stethoscope fa-lg" style="color:blue;"></i>
                                             </a>
                                             <div class="modal fade" id="myModal" role="dialog">
@@ -575,8 +590,6 @@ class ClinicController extends Controller
             } catch (DecryptException $e) {
                 abort(404);
             }
-           
-
         }
     }
 

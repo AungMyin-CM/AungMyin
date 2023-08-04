@@ -2,29 +2,112 @@
 
 @section('content')
 
+<style>
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Add Animation */
+    .modal-content {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px) {
+
+        .modal-content {
+            width: 100%;
+        }
+    }
+</style>
+
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
             <section class="content-header"></section>
 
-            <form action="{{ route('settings.save', $user->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
 
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <!-- left column -->
-                            <div class="col-md-8">
+                        <div class="col-md-8">
+
+                            <form action="{{ route('settings.save', $user->id) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
 
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color:{{config('app.color')}}">
                                         <h3 class="card-title">Update Profile</h3>
                                     </div>
-
-                                    <!-- /.card-header -->
-                                    <!-- form start -->
-
 
                                     <div class="card-body">
                                         <div class="row">
@@ -142,41 +225,45 @@
                                         <input type="submit" class="btn btn-primary" value="Update Profile" style="background-color: {{config('app.color')}}">
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+                        </div>
 
-
+                        <div class="col-md-4">
                             @if($role->role_type == 5)
 
-                            <div class="col-md-4">
-                                <div class="card card-primary">
-                                    <div class="card-header" style="background-color:{{config('app.color')}}">
-                                        <h3 class="card-title">Package Info</h3>
-                                    </div>
+                            <div class="card card-primary">
+                                <div class="card-header" style="background-color:{{config('app.color')}}">
+                                    <h3 class="card-title">Package Info</h3>
+                                    <span id="clinicEdit" class="float-right" style="cursor: pointer;">
+                                        Edit
+                                    </span>
+                                    @include('profile._clinic-edit')
+                                </div>
 
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p>Clinic Name</p>
-                                                <p>Price</p>
-                                                <p>Purchase Date</p>
-                                                <p>Expire Date</p>
-                                                <p>Days Left</p>
-                                            </div>
-                                            <div class="col-6">
-                                                <p>{{ $package->clinic->name }}</p>
-                                                <p>{{ number_format($package->price) }}</p>
-                                                <p>{{ date("F jS Y", $purchase_date) }}</p>
-                                                <p>{{ date("F jS Y", $expire_date) }}</p>
-                                                <p>{{ $days_left }} days</p>
-                                            </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <p>Clinic Name</p>
+                                            <p>Price</p>
+                                            <p>Purchase Date</p>
+                                            <p>Expire Date</p>
+                                            <p>Days Left</p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p id="clinicName">{{ $package->clinic->name }}</p>
+                                            <p>{{ number_format($package->price) }}</p>
+                                            <p>{{ date("F jS Y", $purchase_date) }}</p>
+                                            <p>{{ date("F jS Y", $expire_date) }}</p>
+                                            <p>{{ $days_left }} days</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             @endif
                         </div>
-                </section>
-            </form>
+
+                    </div>
+            </section>
 
         </div>
     </div>
@@ -196,6 +283,58 @@
 
         }
     };
+
+    let editModal = document.getElementById("clinicEditModal");
+    let editBtn = document.getElementById("clinicEdit");
+
+    editBtn.onclick = function() {
+        editModal.style.display = "block";
+    }
+
+    $("#clinicClose").click(function(e) {
+        editModal.style.display = "none";
+    })
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $('#updateClinic').submit(function(event) {
+        event.preventDefault();
+
+        let formData = $(this).serialize();
+
+        $.ajax({
+            url: action = "{{ route('clinic.update', $package->clinic->id) }}",
+            type: 'PATCH',
+            data: formData,
+            success: function(response) {
+                editModal.style.display = "none";
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
+
+                $('#clinicName').html("<p>" + response.name + "</p>");
+            },
+            error: function(xhr) {
+                // Handle the error response
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
+
+                let data = JSON.parse(xhr.responseText);
+
+                let name = data.errors.name ? data.errors.name[0] : '';
+                let phoneNumber = data.errors.phoneNumber ? data.errors.phoneNumber[0] : '';
+                let address = data.errors.address ? data.errors.address[0] : '';
+                console.log(name, phoneNumber, address);
+
+                $('#nameError').html(name);
+                $('#phoneError').html(phoneNumber);
+                $('#addressError').html(address);
+            }
+        });
+    });
 </script>
 @endsection
 {{-- @include('layouts.js') --}}

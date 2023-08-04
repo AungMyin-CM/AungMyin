@@ -112,6 +112,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('users', [UserController::class, 'userList'])->name('user.list');
 
+    Route::patch('clinic/{id}', [ClinicController::class, 'updateClinic'])->name('clinic.update');
+
     Route::get('user/create', [ClinicController::class, 'newUser'])->name('user.create');
 
     Route::get('user/{user}', [ClinicController::class, 'editUser'])->name('user.edit');
