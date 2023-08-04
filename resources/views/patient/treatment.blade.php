@@ -527,6 +527,10 @@
 
         var patient_id={{ $patient->id }};
 
+        $("#lab_pro_list > tbody > tr").each(function () {
+            console.log($(this).find('td').eq(0).text() + " " + $(this).find('td').eq(2).text() );
+        });
+
         $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -539,8 +543,9 @@
             type: 'POST',
             data: {
                     key: name,
-                    patient_id: patient_id
-                } 
+                    patient_id: patient_id,
+                },
+
             beforeSend: function() {
                 $('.lds-ring').removeClass('d-none');
             },
