@@ -215,8 +215,7 @@
 
             <hr>
             <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <!-- href="{{ route('feedback.create') }}" -->
+                <li class="nav-item">                    
                     <a class="nav-link" title="Feedback" id="feedbackBtn">
                         <i class="nav-icon fas fa-comment-alt"></i>
                         <p>
