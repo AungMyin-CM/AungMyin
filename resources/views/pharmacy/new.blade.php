@@ -30,14 +30,14 @@
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            {{-- <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">Code</label>
                                                     <input class="form-control" name="code" id="code" value="{{ old('code') }}" />
                                                     <span class="small" id="a-text"></span>
                                                     @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="expire_date">Expire Date</label>
@@ -85,7 +85,18 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Unit</label>
-                                                    <input class="form-control" name="unit" value="{{ old('unit') }}" />
+                                                    <select name="unit" id="unit" class="form-control" >
+                                                        <option value="" selected disabled>Select</option>
+                                                        <option value="Syrup">Syrup</option>
+                                                        <option value="Tablet">Tablet</option>
+                                                        <option value="Capsules">Capsules</option>
+                                                        <option value="Cream">Cream</option>
+                                                        <option value="Ointment">Ointment</option>
+                                                        <option value="Suppsitories">Suppsitories</option>
+                                                        <option value="Drops">Drops</option>
+                                                        <option value="Inhaler">Inhaler</option>
+                                                        <option value="Injection">Injection</option>
+                                                    </select>
                                                     @error('unit') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>

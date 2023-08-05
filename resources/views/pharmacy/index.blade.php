@@ -88,11 +88,14 @@
                             </form>
                         </div>
                         @endif
-                        <div class="col-sm-4">
-                            @if(count($data) !== 0)
-                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
-                            @endif
-                        </div>
+                        @if (Auth::guard('user')->user()->isAdmin())
+
+                            <div class="col-sm-4">
+                                @if(count($data) !== 0)
+                                <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 </div><!-- /.container-fluid -->
 
@@ -108,45 +111,47 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Code</th>
                                 <th>Expire Date</th>
                                 <th>Quantity</th>
                                 <th>Status</th>
-                                <th style="width: 10%;">Actions</th>
+                                @if (Auth::guard('user')->user()->isAdmin())
+                                    <th style="width: 10%;">Actions</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $row)
                             <tr>
                                 <td>{{ $row->name }}</td>
-                                <td>{{ $row->code }}</td>
                                 <td>{{ $row->expire_date }}</td>
                                 <td>{{ $row->quantity }}</td>
                                 <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
-                                <td>
-                                    <div class="d-flex justify-content-center" style="gap: 20px">
-                                        <div>
-                                            @if(Helper::checkPermission('ph_update', $permissions))
-                                            <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
-                                                <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
-                                            </a>
-                                            @endif
-                                        </div>
+                                @if (Auth::guard('user')->user()->isAdmin())
+                                    <td>
+                                        <div class="d-flex justify-content-center" style="gap: 20px">
+                                            <div>
+                                                @if(Helper::checkPermission('ph_update', $permissions))
+                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
+                                                    <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
+                                                </a>
+                                                @endif
+                                            </div>
 
-                                        <div>
-                                            @if(Helper::checkPermission('ph_delete', $permissions))
-                                            <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
+                                            <div>
+                                                @if(Helper::checkPermission('ph_delete', $permissions))
+                                                <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
 
-                                                <button class="btn btn-default" type="Submit">
-                                                    <i class="fas fa-trash" style="color:#E95A4A; "></i>
-                                                </button>
-                                            </form>
-                                            @endif
+                                                    <button class="btn btn-default" type="Submit">
+                                                        <i class="fas fa-trash" style="color:#E95A4A; "></i>
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>

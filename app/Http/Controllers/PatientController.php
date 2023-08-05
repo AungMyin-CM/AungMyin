@@ -13,6 +13,7 @@ use App\Models\UserClinic;
 use App\Models\Pharmacy;
 use App\Models\Procedure;
 use App\Models\Investigation;
+use App\Models\PatientProcedure;
 
 use App\Models\Notification;
 use App\Models\PatientDoctor;
@@ -23,6 +24,8 @@ use Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Str;
+Use Exception;
 
 use File;
 
@@ -356,6 +359,37 @@ class PatientController extends Controller
         }
 
         return redirect('clinic-system/patient')->with('success', "Done!");
+    }
+
+    public function saveProLabData(Request $request,$id)
+    {
+
+        
+        $assign_tasks = '';
+
+        $count = count($request->id);
+        for ($x = 0; $x < $count; $x++) {
+            $assign_tasks .= $request->id.'^'.$request->name . '^' . $request->price[$x] .'<br>';
+        }
+
+        try{
+
+            PatientProcedure::create([
+                'uuid' => Str::uuid(),
+                'patient_id' => $request->id,
+                'assigned_tasks' => $assign_tasks,
+                'is_pos' => 0
+
+            ]);
+
+            echo 'true';
+
+        }catch(Exception $e)
+        {
+            echo 'false';
+
+        }
+        
     }
 
 
