@@ -327,7 +327,6 @@
                 let name = data.errors.name ? data.errors.name[0] : '';
                 let phoneNumber = data.errors.phoneNumber ? data.errors.phoneNumber[0] : '';
                 let address = data.errors.address ? data.errors.address[0] : '';
-                console.log(name, phoneNumber, address);
 
                 $('#nameError').html(name);
                 $('#phoneError').html(phoneNumber);

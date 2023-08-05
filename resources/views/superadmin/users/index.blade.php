@@ -5,6 +5,10 @@
     .pagination .active .page-link {
         background-color: #003049;
     }
+
+    .pagination .active {
+        z-index: 0;
+    }
 </style>
 
 <body>

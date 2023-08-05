@@ -182,6 +182,8 @@
 
 @yield('content')
 
+@include('partials._feedback')
+
 </body>
 
 

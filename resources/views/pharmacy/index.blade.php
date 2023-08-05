@@ -35,6 +35,10 @@
         background-color: #003049;
     }
 
+    .pagination .active {
+        z-index: 0;
+    }
+
     .addDataBtn {
         background-color: #003049;
     }
