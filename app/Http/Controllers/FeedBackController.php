@@ -11,12 +11,6 @@ use Auth;
 
 class FeedBackController extends Controller
 {
-
-    public function create(Request $request)
-    {
-        return view('feedback/new');
-    }
-
     public function store(FeedBackRequest $request)
     {
         if ($request->validated()) {
@@ -36,8 +30,6 @@ class FeedBackController extends Controller
             ]);
 
             return response()->json($result);
-
-            // return redirect('feedback')->with('success', "Thank you for your feedback");
         }
     }
 }

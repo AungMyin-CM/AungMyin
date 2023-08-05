@@ -176,8 +176,6 @@ Route::post('/checkOtp', [UserController::class, 'checkOtp'])->name('verify-otp'
 
 Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feedback.store');
 
-Route::get('/feedback', [FeedBackController::class, 'create'])->name('feedback.create');
-
 Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
 
 Route::get('/docs', [DocController::class, 'index'])->name('docs.index');
