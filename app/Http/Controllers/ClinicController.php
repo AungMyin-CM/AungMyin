@@ -242,10 +242,19 @@ class ClinicController extends Controller
             'address' => 'required',
         ]);
 
+        if ($request->file('avatar')) {
+            $file = $request->file('avatar');
+            $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
+            $file->move(public_path('images/clinic-logos'), $filename);
+        } else {
+            $filename = Clinic::where('id', $id)->value('avatar');
+        }
+
         Clinic::whereId($id)->update([
             'name' => $request->name,
             'phoneNumber' => $request->phoneNumber,
             'address' => $request->address,
+            'avatar' => $filename,
         ]);
 
         $clinic = (Clinic::where('id', $id)->get())[0];

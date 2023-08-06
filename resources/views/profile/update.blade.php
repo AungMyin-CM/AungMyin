@@ -275,12 +275,11 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
 
 <script>
-    var loadFile = function(event) {
-        for (var i = 0; i < event.target.files.length; i++) {
-            var src = URL.createObjectURL(event.target.files[i]);
+    let loadFile = function(event) {
+        for (let i = 0; i < event.target.files.length; i++) {
+            let src = URL.createObjectURL(event.target.files[i]);
             $("#image_logo").remove();
             $("#image_upload").append("<img id='image_logo' onclick='showImage(" + i + ")' src=" + src + " class='avatar mb-3' alt='img' />");
-
         }
     };
 
@@ -295,6 +294,17 @@
         editModal.style.display = "none";
     })
 
+    let selectedLogo = null;
+
+    let loadClinicLogo = function(event) {
+        if (event.target.files && event.target.files[0]) {
+            let file = event.target.files[0];
+            selectedLogo = file;
+            let src = URL.createObjectURL(file);
+            $('#clinicLogoImage').attr('src', src);
+        }
+    };
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -304,13 +314,26 @@
     $('#updateClinic').submit(function(event) {
         event.preventDefault();
 
-        let formData = $(this).serialize();
+        let formData = new FormData(this);
+
+        if (selectedLogo !== null) {
+            formData.append('avatar', selectedLogo);
+        } else {
+            formData.delete('avatar');
+        }
 
         $.ajax({
-            url: action = "{{ route('clinic.update', $package->clinic->id) }}",
-            type: 'PATCH',
+            url: "{{ route('clinic.update', $package->clinic->id) }}",
+            type: 'POST',
             data: formData,
+            contentType: false,
+            processData: false,
             success: function(response) {
+                if (selectedLogo !== null) {
+                    let updatedLogoUrl = "{{ asset('images/clinic-logos/') }}/" + response.avatar;
+                    $('#clinicLogoImage').attr('src', updatedLogoUrl);
+                }
+
                 editModal.style.display = "none";
                 $('.wrapper').css('opacity', '1');
                 $('.middle').css('opacity', '0.1');

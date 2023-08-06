@@ -5,14 +5,31 @@
             <span id="clinicClose" class="close">&times;</span>
         </div>
         <div class="modal-body">
-            <form method="post" id="updateClinic">
+            <form method="post" id="updateClinic" enctype="multipart/form-data">
                 @csrf
-                @method('PATCH')
                 <div class="row justify-content-center">
                     <div class="col-md-12">
 
                         <div class="card card-primary">
                             <div class="card-body">
+                                <div class="row">
+                                    <div class="input-group m-auto">
+                                        <input type="file" class="@error('avatar') is-invalid @enderror" onchange="loadClinicLogo(event)" name="avatar" id="clinicLogoUpload" hidden />
+                                        <label class="file_upload m-auto hover" for="clinicLogoUpload" id="clinicLogoContainer">
+                                            @if($package->clinic->avatar != '')
+                                            <img src="{{ asset('images/clinic-logos/'.$package->clinic->avatar) }}" alt="Clinic Logo" class="avatar img-thumbnail mb-2" id="clinicLogoImage">
+                                            @else
+                                            <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="avatar img-thumbnail mb-2" alt="Clinic Logo" id="clinicLogoImage">
+                                            @endif
+                                        </label>
+
+                                        @error('avatar')
+                                        <span class="invalid-feedback" role="alert" id="clinicLogoAlertMessage">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <div class="row">
                                     <div class="col-md-6">

@@ -82,13 +82,13 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('patient/{patient}/treatment', [PatientController::class, 'saveTreatment'])->name('create.treatment');
 
-    Route::post('patient/{patient}/lab',[PatientController::class,'saveProLabData'])->name('save.prolab');
+    Route::post('patient/{patient}/lab', [PatientController::class, 'saveProLabData'])->name('save.prolab');
 
     Route::post('/fetchDictionary', [PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
     Route::post('/fetchIsmed', [PatientController::class, 'fetchIsmedData']);
 
-    Route::post('/fetchProLab',[PatientController::class,'fetchProLab']);
+    Route::post('/fetchProLab', [PatientController::class, 'fetchProLab']);
 
     Route::post('/search', [SearchController::class, 'searchPatient']);
     Route::post('/second_search', [SearchController::class, 'secondsearchPatient']);
@@ -114,7 +114,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('users', [UserController::class, 'userList'])->name('user.list');
 
-    Route::patch('clinic/{id}', [ClinicController::class, 'updateClinic'])->name('clinic.update');
+    Route::post('clinic/{id}', [ClinicController::class, 'updateClinic'])->name('clinic.update');
 
     Route::get('user/create', [ClinicController::class, 'newUser'])->name('user.create');
 
