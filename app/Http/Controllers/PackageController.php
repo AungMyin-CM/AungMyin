@@ -25,7 +25,9 @@ class PackageController extends Controller
      */
     public function create()
     {
-        return view('package.new');
+        $types = ['single', 'group', 'ultimate'];
+
+        return view('package.new')->with('types', $types);
     }
 
     /**
@@ -94,6 +96,7 @@ class PackageController extends Controller
     {
         $package = Package::findOrFail($id);
 
+        $types = ['single', 'group', 'ultimate'];
         $categories = ['days', 'weeks', 'months'];
 
         $days = $package->trialPeriod;
@@ -110,6 +113,7 @@ class PackageController extends Controller
 
         return view('package.edit')
             ->with('package', $package)
+            ->with('types', $types)
             ->with('categories', $categories)
             ->with('number', $number)
             ->with('unit', $unit);

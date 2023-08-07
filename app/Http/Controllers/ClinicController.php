@@ -109,7 +109,7 @@ class ClinicController extends Controller
         $clinic = new Clinic();
         $package = Package::find($request->package_id)->first();
 
-        if ($package->price == '300000') {
+        if ($package->type == 'ultimate') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",
@@ -118,7 +118,7 @@ class ClinicController extends Controller
                 "pos_view", "pos_create", "pos_update", "pos_delete",
                 "user_view", "user_create", "user_update", "user_delete"
             ];
-        } else if ($package->price == '100000') {
+        } else if ($package->type == 'group') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",
@@ -127,7 +127,7 @@ class ClinicController extends Controller
                 "pos_view", "pos_create", "pos_update", "pos_delete",
                 "user_view", "user_update", "user_delete"
             ];
-        } else if ($package->price == '50000') {
+        } else if ($package->type == 'single') {
 
             $permissions = [
                 "p_view", "p_create", "p_update", "p_delete", "p_treatment",

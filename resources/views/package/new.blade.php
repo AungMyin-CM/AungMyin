@@ -24,7 +24,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="type">Type</label>
-                                        <input type="text" class="form-control @error('type') is-invalid @enderror" name="type">
+                                        <select class="form-select @error('type') is-invalid @enderror" name="type">
+                                            @foreach($types as $type)
+                                            <option value="{{ $type }}">{{ $type }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     @error('type')
                                     <span class="text-danger small">{{ $message }}</span>
