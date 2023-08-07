@@ -18,6 +18,7 @@ use App\Models\PatientProcedure;
 use App\Models\Notification;
 use App\Models\PatientDoctor;
 use App\Events\NoticeEvent;
+use App\Models\Package;
 use Carbon\Carbon;
 
 use Auth;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
-Use Exception;
+use Exception;
 
 use File;
 
@@ -252,9 +253,9 @@ class PatientController extends Controller
 
         $clinic_id = session()->get('cc_id');
 
-        $procedure = Procedure::where('clinic_id',$clinic_id)->get()->toArray();
+        $procedure = Procedure::where('clinic_id', $clinic_id)->get()->toArray();
 
-        $invesigation = Investigation::where('clinic_id',$clinic_id)->get()->toArray();
+        $invesigation = Investigation::where('clinic_id', $clinic_id)->get()->toArray();
 
         $data = array_merge($procedure, $invesigation);
 
@@ -340,7 +341,11 @@ class PatientController extends Controller
                 break;
         }
 
-        if ($action != 'no-action') {
+        $package_type = (Clinic::whereId(session()->get('cc_id'))->get())[0]
+            ->package
+            ->type;
+
+        if ($action != 'no-action' && $package_type != 'single') {
 
             $clinic_id = session()->get('cc_id');
             foreach ($receiver_ids as $rd) {
@@ -361,18 +366,18 @@ class PatientController extends Controller
         return redirect('clinic-system/patient')->with('success', "Done!");
     }
 
-    public function saveProLabData(Request $request,$id)
+    public function saveProLabData(Request $request, $id)
     {
 
-        
+
         $assign_tasks = '';
 
         $count = count($request->id);
         for ($x = 0; $x < $count; $x++) {
-            $assign_tasks .= $request->id.'^'.$request->name . '^' . $request->price[$x] .'<br>';
+            $assign_tasks .= $request->id . '^' . $request->name . '^' . $request->price[$x] . '<br>';
         }
 
-        try{
+        try {
 
             PatientProcedure::create([
                 'uuid' => Str::uuid(),
@@ -383,13 +388,9 @@ class PatientController extends Controller
             ]);
 
             echo 'true';
-
-        }catch(Exception $e)
-        {
+        } catch (Exception $e) {
             echo 'false';
-
         }
-        
     }
 
 
@@ -414,7 +415,7 @@ class PatientController extends Controller
         $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => 0, 'user_id' =>  $user_id])->first();
 
         if ($data == '') {
-            echo 'no-data'.','.$text.','.$user_id;
+            echo 'no-data' . ',' . $text . ',' . $user_id;
         } else {
             echo $data;
         }
@@ -469,20 +470,14 @@ class PatientController extends Controller
 
         $clinic_id = $request->id;
 
-       
+
         $data = Procedure::where(['code' => $text, 'clinic_id' => $clinic_id])->first();
 
-        if($data == null)
-        {
+        if ($data == null) {
             $data = Investigation::where(['code' => $text, 'clinic_id' => $clinic_id])->first();
-
         }
 
         echo json_encode($data);
-
-
-
-        
     }
 
     public function updatePatientStatus(Request $request)
@@ -515,7 +510,11 @@ class PatientController extends Controller
                 break;
         }
 
-        if ($action != 'no-action') {
+        $package_type = (Clinic::whereId(session()->get('cc_id'))->get())[0]
+            ->package
+            ->type;
+
+        if ($action != 'no-action' && $package_type != 'single') {
 
             if ($action == 'treatment') {
 
