@@ -15,7 +15,7 @@ class Clinic extends Model
     protected $table = 'clinic';
 
     protected $fillable = [
-        'user_id', 'code', 'name', 'address', 'phoneNumber', 'package_id', 'package_purchased_date', 'package_purchased_times'
+        'user_id', 'code', 'name', 'avatar', 'address', 'phoneNumber', 'package_id', 'package_purchased_date', 'package_purchased_times'
     ];
 
     public function expireDate()

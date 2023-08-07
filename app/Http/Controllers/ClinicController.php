@@ -139,8 +139,17 @@ class ClinicController extends Controller
 
         $role_id = Role::create(['role_type' => '5', 'permissions' => json_encode($permissions)])->id;
 
+        if ($request->file('avatar')) {
+            $file = $request->file('avatar');
+            $filename = date('YmdHi') . '-' . $file->getClientOriginalName();
+            $file->move(public_path('images/clinic-logos'), $filename);
+        } else {
+            $filename = NULL;
+        }
+
         $clinic_id = $clinic->create([
             'code' => $request->clinic_name . '-' . $this->generateClinicCode(),
+            'avatar' => $filename,
             'name' => $request->clinic_name,
             'email' => Auth::user()->email,
             'phoneNumber' => $request->phoneNumber,
