@@ -32,68 +32,150 @@
     </ul>
 
     <ul class="navbar-nav">
-        @if(Request::is('clinic-system/*') && \Route::currentRouteName() === 'user.list')
+        @if(Request::is('clinic-system/*') && \Route::currentRouteName() !== 'user.clinic')
         <li class="nav-item">
             <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+
+        @if(\Route::currentRouteName() === 'user.list')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">User</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'patient.index')
+        @elseif(\Route::currentRouteName() === 'user.create')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('user.list') }}">User</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Create</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'user.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('user.list') }}">User</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'patient.index')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">Patient</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'dictionary.index')
+        @elseif(\Route::currentRouteName() === 'patient.create')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('patient.index') }}">Patient</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Create</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'patient.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('patient.index') }}">Patient</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'patient.treatment')
+        <li class="nav-item">
+            <a class="small" href="{{ route('patient.index') }}">Patient</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Treatment</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'dictionary.index')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">Shorthand</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pharmacy.index')
+        @elseif(\Route::currentRouteName() === 'dictionary.create')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('dictionary.index') }}">Shorthand</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Create</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'dictionary.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('dictionary.index') }}">Shorthand</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'pharmacy.index')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">Pharmacy</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pos.index')
+        @elseif(\Route::currentRouteName() === 'pharmacy.create')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('pharmacy.index') }}">Pharmacy</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Create</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'pharmacy.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('pharmacy.index') }}">Pharmacy</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'pos.index')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">POS</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'pos.history')
+        @elseif(\Route::currentRouteName() === 'pos.edit')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('pos.index') }}">POS</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'pos.history')
         <li class="nav-item">
             <a class="small" href="{{ route('pos.index') }}">POS</a>
             &nbsp;
@@ -104,28 +186,50 @@
             <a class="text-dark small" role="link" aria-disabled="true">History</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'procedure.index')
-        <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
-            &nbsp;
-            <i class="fas fa-arrow-right fa-xs"></i>
-            &nbsp;
-        </li>
+        @elseif(\Route::currentRouteName() === 'procedure.index')
         <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">Procedure-Lab</a>
         </li>
 
-        @elseif(Request::is('clinic-system/*') && \Route::currentRouteName() === 'clinic.settings')
+        @elseif(\Route::currentRouteName() === 'procedure.create')
         <li class="nav-item">
-            <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
+            <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
         <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Create</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'procedure.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'investigation.edit')
+        <li class="nav-item">
+            <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
+        </li>
+
+        @elseif(\Route::currentRouteName() === 'clinic.settings')
+        <li class="nav-item">
             <a class="text-dark small" role="link" aria-disabled="true">Update</a>
         </li>
 
+        @endif
         @endif
     </ul>
 
@@ -176,7 +280,7 @@
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
-        </li>        
+        </li>
     </ul>
 </nav>
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
