@@ -84,6 +84,10 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('patient/{patient}/lab', [PatientController::class, 'saveProLabData'])->name('save.prolab');
 
+    Route::post('/fetchDiagnosis',[PatientController::class,'fetchDiagnosis'])->name('get.diagnosis');
+
+    Route::post('/fetchDisease',[PatientController::class,'fetchDisease'])->name('get.disease');
+
     Route::post('/fetchDictionary', [PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
     Route::post('/fetchIsmed', [PatientController::class, 'fetchIsmedData']);

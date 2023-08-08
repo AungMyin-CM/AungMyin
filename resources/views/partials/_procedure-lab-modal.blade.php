@@ -105,6 +105,94 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
   }
 }
 
+.dot-elastic {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  top: 16px;
+  right: 20px;
+  background-color: #fff;
+  color: #fff;
+  animation: dot-elastic 1s infinite linear;
+}
+.dot-elastic::before, .dot-elastic::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot-elastic::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #fff;
+  animation: dot-elastic-before 1s infinite linear;
+}
+.dot-elastic::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #fff;
+  animation: dot-elastic-after 1s infinite linear;
+}
+
+@keyframes dot-elastic-before {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1.5);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 1.5);
+  }
+  75% {
+    transform: scale(1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+@keyframes dot-elastic-after {
+  0% {
+    transform: scale(1, 1);
+  }
+  25% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1, 0.67);
+  }
+  75% {
+    transform: scale(1, 1.5);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
 </style>
 <div id="procedure_modal" class="modal">
 
@@ -112,10 +200,18 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
     <div class="modal-content">
         <div class="modal-header" style="background-color: {{config('app.color')}}">
             <h5 class="modal-title text-white">Procedure and Lab</h5>
+            <input class="d-none" name="pro_lab_data" id="is_saved"/>
             <div class="row close">
 
               <div class="col-md-6 d-none pro-action">
                 <a href="#" class="btn btn-secondary app-color" id="save_pro_btn">Save</a>
+                <a href="#" class="btn btn-secondary app-color d-none" id="update_pro_btn">Update</a>
+
+              </div>
+              <div class="snippet d-none" data-title="dot-elastic">
+                <div class="stage">
+                  <div class="dot-elastic"></div>
+                </div>
               </div>
             
                 
