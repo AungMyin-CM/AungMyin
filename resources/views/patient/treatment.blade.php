@@ -555,8 +555,14 @@
 
         var patient_id={{ $patient->id }};
 
+        var task = [];
+        var qty = [];
+        var price = [];
+
         $("#lab_pro_list > tbody > tr").each(function () {
-            console.log($(this).find('td').eq(0).text() + " " + $(this).find('td').eq(2).text() );
+            task.push($(this).find('td').eq(0).text());
+            qty.push($(this).find('td').find('input').val());
+            price.push($(this).find('td').eq(2).text());
         });
 
         $.ajaxSetup({
@@ -570,13 +576,30 @@
             url: '/clinic-system/patient/'+patient_id+'/lab',
             type: 'POST',
             data: {
-                    key: name,
+                    name: task,
+                    quantity: qty,
+                    price: price,
                     patient_id: patient_id,
                 },
 
             beforeSend: function() {
                 $('.lds-ring').removeClass('d-none');
             },
+            success: function(response) {
+                if(response == 'true')
+                {
+
+                    var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                    procedure_lab_modal.style.display = "none";
+
+                    if (count_table_tbody_tr > 0) {
+                        $("#c_p_i").text(count_table_tbody_tr);
+                    }
+
+                }
+            }
+
         })
         
         
@@ -690,7 +713,7 @@
                                             $(".pro-action").removeClass('d-none');
 
                                         }
-    
+
 
                                         if (count_table_tbody_tr >= 1) {
                                             $("#lab_pro_list tbody tr:last").after(html);
@@ -719,8 +742,9 @@
             });
         }else{
             procedure_lab_modal.style.display = "block";
+            alert('value exists');
         }
-    }
+}
 
     // Close the modal
     $("#viewClose").click(function(e) {

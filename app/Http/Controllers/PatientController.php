@@ -372,7 +372,7 @@ class PatientController extends Controller
 
         $assign_tasks = '';
 
-        $count = count($request->id);
+        $count = count($request->name);
         for ($x = 0; $x < $count; $x++) {
             $assign_tasks .= $request->id . '^' . $request->name . '^' . $request->price[$x] . '<br>';
         }
@@ -381,7 +381,7 @@ class PatientController extends Controller
 
             PatientProcedure::create([
                 'uuid' => Str::uuid(),
-                'patient_id' => $request->id,
+                'patient_id' => $request->patient_id,
                 'assigned_tasks' => $assign_tasks,
                 'is_pos' => 0
 
