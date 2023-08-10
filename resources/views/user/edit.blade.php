@@ -317,15 +317,15 @@
 
                                                 <div class="row">
                                                     <div class="col md-4 icheck-primary d-inline mt-2">
-                                                        <input type="checkbox" id="user_create" name="permission[]" value="user_create" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                        <input type="checkbox" id="user_create" name="permission[]" value="user_create" {{Helper::checkPermission('user_create', $role->permissions) ? 'checked' : ''}}>
                                                         <label for="user_create">Create</label>
                                                     </div>
                                                     <div class="col md-4 icheck-primary d-inline mt-2">
-                                                        <input type="checkbox" id="user_update" name="permission[]" value="user_update" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                        <input type="checkbox" id="user_update" name="permission[]" value="user_update" {{Helper::checkPermission('user_update', $role->permissions) ? 'checked' : ''}}>
                                                         <label for="user_update">Update</label>
                                                     </div>
                                                     <div class="col md-4 icheck-primary d-inline mt-2">
-                                                        <input id="user_delete" type="checkbox" name="permission[]" value="user_delete" {{Helper::checkPermission('user_view', $role->permissions) ? 'checked' : ''}}>
+                                                        <input id="user_delete" type="checkbox" name="permission[]" value="user_delete" {{Helper::checkPermission('user_delete', $role->permissions) ? 'checked' : ''}}>
                                                         <label for="user_delete">Delete</label>
                                                     </div>
                                                 </div>

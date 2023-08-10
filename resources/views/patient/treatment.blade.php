@@ -322,7 +322,7 @@
                                     <div class="content">
                                         @foreach($medicines as $medicine)
                                         <ul class="list-unstyled">
-                                            <li>{{ $medicine->code }}</li>
+                                            <li>{{ $medicine->name }}</li>
                                         </ul>
                                         @endforeach
                                     </div>                                    
@@ -341,22 +341,22 @@
                                         <div class="form-group mb-3">
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="sys_bp" placeholder="Sys">
+                                                    <input type="text" class="form-control c-field" name="sys_bp" id="sys_bp" placeholder="Sys">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="dia_bp" placeholder="Dia">
+                                                    <input type="text" class="form-control c-field" name="dia_bp" id="dia_bp" placeholder="Dia">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="pr" placeholder="P.R">
+                                                    <input type="text" class="form-control c-field" name="pr" id="pr" placeholder="P.R">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="temp" placeholder="Temp">
+                                                    <input type="text" class="form-control c-field" name="temp" id="temp" placeholder="Temp">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="spo2" placeholder="Spo2">
+                                                    <input type="text" class="form-control c-field" name="spo2" id="spo2" placeholder="Spo2">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control" name="rbs" placeholder="Rbs">
+                                                    <input type="text" class="form-control c-field" name="rbs" id="rbs" placeholder="Rbs">
                                                 </div>
                                             </div>
                                         </div>
@@ -371,17 +371,23 @@
                                                     <div class="input-group-prepand">
                                                         <span class="input-group-text">Diagnosis</span>
                                                     </div>
-                                                    <textarea class="form-control c-field" id="diagnosis_dictionary" rows="1" name="diag">{{ old('diag') }}</textarea>
+                                                    <textarea class="form-control c-field" id="diagnosis_dictionary" rows="1" name="diag" onkeyup="fetchDiagnosis()">{{ old('diag') }}</textarea>
+
                                                 </div>
+                                            <ul id="diagList" style="position:absolute;width:35%;" class="list-group d-none"></ul>
+
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepand">
                                                         <span class="input-group-text">Diseases</span>
                                                     </div>
-                                                    <input type="text" name="disease" class="form-control">
+                                                    <input type="text" name="disease" class="form-control" id="disease" onkeyup="fetchDisease()" value="{{old('disease')}}">
                                                 </div>
+                                                <ul id="diseaseList" style="position:absolute;width:35%;" class="list-group d-none"></ul>
+
                                             </div>
+
                                         </div>
 
                                         {{-- <fieldset class="scheduler-border mb-3"> --}}
@@ -459,11 +465,15 @@
                                                 <div class="d-flex" id="followUp">
                                                     <div class="form-check" style="padding:6px !important;">
                                                         <div class="icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="isFollowup" name="is_followup" value="1">
+                                                            {{-- <input type="checkbox" name="is_followup" value="1"> --}}
                                                             <label for="isFollowup">Follow up</label>
                                                         </div>
                                                     </div>
+                                                    <div class='form-group' id='followupdate' style='margin:0px !important;'>
+                                                        <input type='date' class='form-control' name='followup_date' placeholder='dd-mm-yyyy' id="datePickerId">
+                                                    </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
 
@@ -555,8 +565,14 @@
 
         var patient_id={{ $patient->id }};
 
+        var task = [];
+        var qty = [];
+        var price = [];
+
         $("#lab_pro_list > tbody > tr").each(function () {
-            console.log($(this).find('td').eq(0).text() + " " + $(this).find('td').eq(2).text() );
+            task.push($(this).find('td').eq(0).text());
+            qty.push($(this).find('td').find('input').val());
+            price.push($(this).find('td').eq(2).text());
         });
 
         $.ajaxSetup({
@@ -570,18 +586,104 @@
             url: '/clinic-system/patient/'+patient_id+'/lab',
             type: 'POST',
             data: {
-                    key: name,
+                    name: task,
+                    quantity: qty,
+                    price: price,
                     patient_id: patient_id,
                 },
 
             beforeSend: function() {
-                $('.lds-ring').removeClass('d-none');
+                $('.snippet').removeClass('d-none');
+                $('.pro-action').addClass('d-none');
             },
+            success: function(response) {
+                if(response.match(/true.*/))
+                {
+                    $('.snippet').addClass('d-none');
+
+                    $("#is_saved").val(response.slice('4'));
+
+                    var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                    procedure_lab_modal.style.display = "none";
+
+                    if (count_table_tbody_tr > 0) {
+                        $("#c_p_i").text(count_table_tbody_tr);
+                    }
+
+                }
+            }
+
         })
         
         
     })
 
+    $("#update_pro_btn").click(function(e){
+        e.preventDefault();
+
+
+        var patient_id={{ $patient->id }};
+        var uuid = $("#is_saved").val();
+
+        var task = [];
+        var qty = [];
+        var price = [];
+
+        $("#lab_pro_list > tbody > tr").each(function () {
+            task.push($(this).find('td').eq(0).text());
+            qty.push($(this).find('td').find('input').val());
+            price.push($(this).find('td').eq(2).text());
+        });
+
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            //  Invoke click event of target so that non-form submit behaviors will work
+
+        $.ajax({
+            url: '/clinic-system/patient/'+patient_id+'/lab',
+            type: 'POST',
+            data: {
+                    uuid: uuid,
+                    name: task,
+                    quantity: qty,
+                    price: price,
+                    patient_id: patient_id,
+                },
+
+            beforeSend: function() {
+                $('.snippet').removeClass('d-none');
+                $('.pro-action').addClass('d-none');
+            },
+            success: function(response) {
+                if(response == 'true')
+                {
+                    $('.snippet').addClass('d-none');
+
+                    var count_table_tbody_tr = $("#lab_pro_list tbody tr").length;
+
+                    procedure_lab_modal.style.display = "none";
+
+                    if (count_table_tbody_tr > 0) {
+                        $("#c_p_i").text(count_table_tbody_tr);
+                    }
+
+                }else{
+                    let errorString = 'Server error ! Please try again later.';
+
+                    alertify.alert(errorString, function() {
+                        alertify.message('Server error');
+                    }).setHeader('<em>Some errors occured</em>');
+                }
+            }
+
+        })
+        
+        
+    })
     procedureBtn.onclick = function() {
 
         console.log($("#c_p_i").text());
@@ -673,7 +775,7 @@
                                                         '<td>'+
                                                             '<div class="quantity">'+
                                                                 '<a href="#" class="quantity__minus" id="quantity__minus_'+name[i]+'" onclick="deQty(\''+name[i]+'\')" attr="minus"><span>-</span></a>'+
-                                                                '<input name="quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1" readonly>'+
+                                                                '<input name="lab_quantity" type="text" class="quantity__input" id="quantity__input_'+name[i]+'" value="1" readonly>'+
                                                                 '<a href="#" class="quantity__plus" id="quantity__plus_'+name[i]+'" onclick="inQty(\''+name[i]+'\')" attr="plus"><span>+</span></a>'+
                                                             '</div>'+
                                                         '</td>'+
@@ -690,7 +792,7 @@
                                             $(".pro-action").removeClass('d-none');
 
                                         }
-    
+
 
                                         if (count_table_tbody_tr >= 1) {
                                             $("#lab_pro_list tbody tr:last").after(html);
@@ -718,9 +820,13 @@
 
             });
         }else{
+            $("#save_pro_btn").remove();
+            $("#update_pro_btn").removeClass('d-none');
+            $(".pro-action").removeClass('d-none');
             procedure_lab_modal.style.display = "block";
+            
         }
-    }
+}
 
     // Close the modal
     $("#viewClose").click(function(e) {
@@ -731,14 +837,20 @@
         editModal.style.display = "none";
     })
 
-    $("#procedureClose").click(function(e){
-        $('[id=procedure-lab-list]').remove();
-        $("#lab_pro_list tr").remove();
-        $(".pro-action").addClass('d-none');
-       
+    $("#procedureClose").click(function(e) {
+
+        var count_table_tbody_tr = $("#product_info_table tbody tr").length;
+
+        if (count_table_tbody_tr > 0 && $("#is_saved").val() != '') {
+            $("#c_p_i").text(count_table_tbody_tr);
+        }else{
+            $('[id=procedure-lab-list]').remove();
+            $("#lab_pro_list tr").remove();
+            $(".pro-action").addClass('d-none');
+
+        }
         procedure_lab_modal.style.display = "none";
 
-        
     });
 
     $("#add_tret_med_row").on('click', function() {
@@ -762,6 +874,8 @@
         }
     });
     $(document).ready(function() {
+        datePickerId.min = new Date().toISOString().split("T")[0];
+
         $(window).on("keydown", function(event) {
             var id = event.target.id;
 
@@ -996,6 +1110,70 @@
         }
     });
 
+    function fetchDiagnosis(event){
+        var value = $("#diagnosis_dictionary").val();
+        var patient = {{$patient->id}};
+        $.ajax({
+                type: "POST",
+                url: '/clinic-system/fetchDiagnosis',
+                data: { key: value, patient_id: patient}
+            }).done(function( response ) {  
+                console.log(response);
+            if(response.length !== 0)
+            {
+                $('#diagList').removeClass('d-none');
+                $('#diagList').css("display", "contents");
+                $('#diagList').css("position", "relative");
+                $('#diagList').css("top", '14rem');
+                $('#diagList').html(response);
+            }
+            else{
+                $('#diagList').css("display","none");  
+                $('#diagList').html("");
+            }
+        })
+
+    }
+
+    function fetchDisease(event){
+        var value = $("#disease").val();
+        var patient = {{$patient->id}};
+        $.ajax({
+                type: "POST",
+                url: '/clinic-system/fetchDisease',
+                data: { key: value, patient_id: patient}
+            }).done(function( response ) {  
+                console.log(response);
+            if(response.length !== 0)
+            {
+                $('#diseaseList').removeClass('d-none');
+                $('#diseaseList').css("display", "contents");
+                $('#diseaseList').css("position", "relative");
+                $('#diseaseList').css("top", '14rem');
+                $('#diseaseList').html(response);
+            }
+            else{
+                $('#diseaseList').css("display","none");  
+                $('#diseaseList').html("");
+            }
+        })
+
+    }
+
+    function sp_option(event)
+    {
+        var diagnosis = event.getAttribute('data-name');
+        $("#diagnosis_dictionary").val(diagnosis);
+        $("#diagList").css('display','none');
+    }
+
+    function sd_option(event)
+    {
+        var disease = event.getAttribute('data-name');
+        $("#disease").val(disease);
+        $("#diseaseList").css('display','none');
+    }
+
     var dictCode = '';
 
     function medicine_dictionary(event) {
@@ -1184,6 +1362,12 @@
                 $("#diagnosis_dictionary").text(response.diag);
                 $("#investigation").text(response.investigation);
                 $("#procedure").text(response.procedure);
+                $("#sys_bp").val(response.sys_bp);
+                $("#dia_bp").val(response.dia_bp);
+                $("#pr").val(response.pr);
+                $("#temp").val(response.temp);
+                $("#spo2").val(response.spo2);
+                $("#rbs").val(response.rbs);
             },
             complete: function(response) {
                 $('.c-field').removeAttr('style', 'opacity:0.1');
@@ -1198,6 +1382,12 @@
         $("#diagnosis_dictionary").text('');
         $("#investigation").text('');
         $("#procedure").text('');
+        $("#sys_bp").val('');
+        $("#dia_bp").val('');
+        $("#pr").val('');
+        $("#temp").val('');
+        $("#spo2").val('');
+        $("#rbs").val('');
 
         $('#copy_' + id).css('display', 'block');
         $('#undo_' + id).css('display', 'none');

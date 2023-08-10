@@ -44,9 +44,9 @@
                                           
                                             @if($dictionary->isMed == 1)
                                                 <div class="form-group">
+                                                    <label for="med">Medicine</label>    
                                                     <input type="checkbox" id="med" name="isMed"
                                                     value="1" {{ $dictionary->isMed == 1 ? 'checked' : ''}} onclick="return false;">
-                                                    <label for="med">Is Medicine</label>    
                                                 </div> 
                                             @endif
                                             @if($dictionary->isMed == 1)

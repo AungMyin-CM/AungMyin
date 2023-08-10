@@ -343,10 +343,10 @@ class ClinicController extends Controller
 
     public function updateUser(UserUpdateRequest $request, $id)
     {
-
         if (!$this->checkPermission("user_update")) {
             abort(404);
         }
+
 
         $permissions = json_encode($request->permission);
         $origin_password = User::where('id', $id)->pluck('password');

@@ -14,6 +14,9 @@ use App\Models\Pharmacy;
 use App\Models\Procedure;
 use App\Models\Investigation;
 use App\Models\PatientProcedure;
+use App\Models\PatientDisease;
+use App\Models\PatientDiagnosis;
+
 
 use App\Models\Notification;
 use App\Models\PatientDoctor;
@@ -105,37 +108,7 @@ class PatientController extends Controller
                 'Ref' => $reference
             ])->id;
 
-            if ($role->role_type == 1) {
-
-                $images = [];
-
-                if ($request->hasfile('images')) {
-                    foreach ($request->file('images') as $file) {
-                        $name = $this->imageNameGenerate($patient_id) . '.' . $file->extension();
-                        $path = public_path() . '/images/' . $code;
-                        File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
-                        $file->move($path, $name);
-                        $images[] = $name;
-                    }
-                }
-
-
-                Visit::create([
-                    'patient_id' => $patient_id,
-                    'prescription' => $request->prescription,
-                    'diag' => $request->diag,
-                    'disease' => $request->disease,
-                    'images' => json_encode($images),
-                    'fees' => $request->fees == null ? 0.00 : $request->fees,
-                    'is_foc' => $request->is_foc,
-                    'user_id' => $user_id,
-                    'investigation' => $request->investigation,
-                    'procedure' => $request->procedure,
-                    'is_followup' => $request->is_followup,
-                    'followup_date' => $request->followup_date
-                ]);
-            }
-            return redirect()->route('user.clinic', [Crypt::encrypt($clinic_id)])->with('success', "Patient Created Successfully!");
+            return redirect()->route('patient.treatment', [Crypt::encrypt($patient_id)]);
         }
     }
 
@@ -295,8 +268,7 @@ class PatientController extends Controller
             }
         }
 
-
-        Visit::create([
+        $visit_id = Visit::create([
             'patient_id' => $id,
             'sys_bp' => $request->sys_bp,
             'dia_bp' => $request->dia_bp,
@@ -305,8 +277,6 @@ class PatientController extends Controller
             'spo2' => $request->sys_bp,
             'rbs' => $request->rbs,
             'prescription' => $request->prescription,
-            'diag' => $request->diag,
-            'disease' => $request->disease,
             'assigned_medicines' =>  $assign_medicines,
             'images' => json_encode($images),
             'fees' => $request->fees,
@@ -314,10 +284,38 @@ class PatientController extends Controller
             'user_id' => $user_id,
             'investigation' => $request->investigation,
             'procedure' => $request->procedure,
-            'is_followup' => $request->is_followup,
-            'followup_date' => $request->followup_date
-        ]);
+            'followup_date' => $request->followup_date ? $request->followup_date : null,
+        ])->id;
 
+        if($request->diag){
+            PatientDiagnosis::create([
+                'uuid' => Str::uuid(),
+                'clinic' => session()->get('cc_id'),
+                'user' => $user_id,
+                'patient' => $id,
+                'visit' => $visit_id,
+                'diagnosis' => $request->diag,
+            ]);
+        }
+
+        if($request->disease){
+            PatientDisease::create([
+                'uuid' => Str::uuid(),
+                'clinic' => session()->get('cc_id'),
+                'user' => $user_id,
+                'patient' => $id,
+                'visit' => $visit_id,
+                'disease' => $request->disease,
+            ]);
+        }
+
+        if($request->pro_lab_data)
+        {
+            PatientProcedure::where('uuid',$request->pro_lab_data)->update([
+                'is_pos' => 1,
+                'visit_id' => $visit_id,
+            ]);
+        }
 
         switch ('3') {
             case '1':
@@ -372,25 +370,44 @@ class PatientController extends Controller
 
         $assign_tasks = '';
 
-        $count = count($request->id);
+        $count = count($request->name);
         for ($x = 0; $x < $count; $x++) {
-            $assign_tasks .= $request->id . '^' . $request->name . '^' . $request->price[$x] . '<br>';
+            $assign_tasks .= $request->name[$x] . '^' . $request->quantity[$x] . '^' . $request->price[$x] . '<br>';
         }
 
-        try {
+        if($request->uuid){
 
-            PatientProcedure::create([
-                'uuid' => Str::uuid(),
-                'patient_id' => $request->id,
+            PatientProcedure::where('uuid',$request->uuid)->update([
+                'patient_id' => $request->patient_id,
                 'assigned_tasks' => $assign_tasks,
                 'is_pos' => 0
-
             ]);
 
-            echo 'true';
-        } catch (Exception $e) {
-            echo 'false';
+            echo "true";
+
+        }else{
+
+            $uuid = Str::uuid();
+
+            try{
+
+                PatientProcedure::create([
+                    'uuid' => $uuid,
+                    'patient_id' => $request->patient_id,
+                    'assigned_tasks' => $assign_tasks,
+                    'is_pos' => 0
+                ]);
+    
+                echo 'true'.$uuid;
+    
+            }catch(Exception $e)
+            {
+                echo 'false';
+    
+            }
+
         }
+        
     }
 
 
@@ -415,10 +432,56 @@ class PatientController extends Controller
         $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => 0, 'user_id' =>  $user_id])->first();
 
         if ($data == '') {
-            echo 'no-data' . ',' . $text . ',' . $user_id;
+            echo 'no-data';
         } else {
             echo $data;
         }
+    }
+
+    public function fetchDiagnosis(Request $request)
+    {
+        $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
+
+        $data = PatientDiagnosis::select('diagnosis')->where('diagnosis', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id'), 'patient' => $request->patient_id])->get();
+        
+        if (count($data) == 0) {
+            $output = '';
+        } else {
+
+            foreach ($data as $row) {
+                $output = '
+                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;" data-name =' . $row->diagnosis . ' onclick="sp_option(this)">
+                    <span>' . $row->diagnosis . '</span>
+                </li>
+                ';
+            }
+
+            echo $output;   
+      }
+    }
+
+    public function fetchDisease(Request $request)
+    {
+        $text = $request->key;
+        $user_id = Auth::guard('user')->user()['id'];
+
+        $data = PatientDisease::select('disease')->where('disease', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id'), 'patient' => $request->patient_id])->get();
+        
+        if (count($data) == 0) {
+            $output = '';
+        } else {
+
+            foreach ($data as $row) {
+                $output = '
+                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;" data-name ='.$row->disease. ' onclick="sd_option(this)">
+                    <span>' .$row->disease. '</span>
+                </li>
+                ';
+            }
+
+            echo $output;   
+      }
     }
 
     public function fetchIsmedData(Request $request)
