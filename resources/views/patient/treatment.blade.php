@@ -322,7 +322,7 @@
                                     <div class="content">
                                         @foreach($medicines as $medicine)
                                         <ul class="list-unstyled">
-                                            <li>{{ $medicine->code }}</li>
+                                            <li>{{ $medicine->name }}</li>
                                         </ul>
                                         @endforeach
                                     </div>                                    

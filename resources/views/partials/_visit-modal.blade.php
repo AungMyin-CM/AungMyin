@@ -1,8 +1,8 @@
 <div class="card card-primary">
     <div class="card-header" style="background-color: {{config('app.color')}}">
-        <h3 class="card-title">Previous Records</h3>
+        <h3 class="card-title">Records</h3>
         <span id="visitBtn" class="float-right" style="cursor: pointer;">
-            {{ $patient->visits->count() }} visits
+            {{ ($patient->visits->count() == 0 ? '' : $patient->visits->count().' visit').($patient->visits->count() > 1 ? 's' : '')}} 
         </span>
     </div>
 

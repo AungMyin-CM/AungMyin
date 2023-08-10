@@ -38,7 +38,7 @@
                                                 {{-- <div class="icheck-primary d-inline mt-2"> --}}
                                                     <label for="is_med">Medicine</label>   
 
-                                                    <input type="checkbox" id="is_med" name="is_med">
+                                                    <input type="checkbox" id="is_med" name="is_med" value="1">
                                                 {{-- </div>  --}}
                                             </div>
                                             <div class="form-group" id= "dictonary_div">

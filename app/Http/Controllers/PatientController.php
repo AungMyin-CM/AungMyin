@@ -372,10 +372,10 @@ class PatientController extends Controller
 
         $count = count($request->name);
         for ($x = 0; $x < $count; $x++) {
-            $assign_tasks .= $request->id . '^' . $request->name . '^' . $request->price[$x] . '<br>';
+            $assign_tasks .= $request->name[$x] . '^' . $request->quantity[$x] . '^' . $request->price[$x] . '<br>';
         }
 
-        try {
+        if($request->uuid){
 
             PatientProcedure::where('uuid',$request->uuid)->update([
                 'patient_id' => $request->patient_id,
