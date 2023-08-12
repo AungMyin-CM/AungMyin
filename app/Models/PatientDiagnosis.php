@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class PatientDiagnosis extends Model
 {
@@ -21,4 +23,9 @@ class PatientDiagnosis extends Model
         'created_at',
         'updated_at'
     ];
+    
+    public function visit(): BelongsTo
+    {
+        return $this->belongsTo(Visit::class,'visit','id');
+    }
 }

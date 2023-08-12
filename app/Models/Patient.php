@@ -41,6 +41,12 @@ class Patient extends Model
         return $this->hasMany(Visit::class, 'patient_id')->where('deleted_at',null);
     }
 
+    
+    public function disease(): HasMany
+    {
+        return $this->hasMany(PatientDisease::class, 'patient');
+    }
+
     // public function doctors(): BelongsToMany
     // {
     //     return $this->belongsToMany(User::class, 'patient_doctor', 'patient_id', 'user_id');

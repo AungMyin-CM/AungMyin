@@ -315,10 +315,7 @@ class PosController extends Controller
         }
     }
 
-    public function summary()
-    {
-    }
-
+    
     private function posCodeGenerator()
     {
         if (!$this->checkPermission('pos_create')) {

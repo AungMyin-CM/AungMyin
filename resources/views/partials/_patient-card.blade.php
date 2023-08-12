@@ -13,7 +13,7 @@
                 </div>
 
                 <ul class="list-unstyled">
-                    <li><span class="text-muted">Father name: </span>{{ $row->father_name }}</li>
+                    <li><span class="text-muted">Disease: </span>{{ $row->father_name }}</li>
                     <li><span class="text-muted">Age: </span>{{ $row->age }}</li>
                     <li><span class="text-muted">Gender: </span>{{ $row->gender == 1 ? 'male' : 'female' }}</li>
                 </ul>

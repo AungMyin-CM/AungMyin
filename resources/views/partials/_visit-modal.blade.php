@@ -68,7 +68,7 @@
 
     <div class="card-body" style="max-height: 600px; overflow-y: scroll;">
         @if($visit->isEmpty() != 1)
-        @foreach ($visit as $row)
+        @foreach ($visit as $key => $row)
         <div class="card" id="treatment_data_{{$row->id}}">
             <div class="card-header">
                 <div class="row mb-3">
@@ -82,11 +82,11 @@
                         </ul>
                     </div>
                     <div class="col-4 text-right">
-                        <small class="text-muted">{{ $row->updated_at->format('d-M-Y g:iA') }}</small>
+                        <small class="text-muted">{{ $row->updated_at->format('d-M-Y') }}</small>
                     </div>
                 </div>
 
-                <p>Diseases: {{ $row->disease }}</p>
+                <p>Diagnosis: <span id="p_diag">{{$row->diagnosis[0]->diagnosis}}</span></p>
 
                 <ul class="list-unstyled">
                     @if($row->prescription != '')
@@ -120,7 +120,7 @@
                 <div class="row">
                     <div class="col-8">
                         @if($row->is_followup == '1')
-                        <small>Follow-up: {{ date('d-m-Y', strtotime($row->followup_date)) }}</small>
+                        <small>Follow-up: {{ date('d-M-Y', strtotime($row->followup_date)) }}</small>
                         @endif
                     </div>
                     <div class="col-4 text-right">

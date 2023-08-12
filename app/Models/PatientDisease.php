@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+
 
 class PatientDisease extends Model
 {
@@ -16,9 +19,14 @@ class PatientDisease extends Model
         'clinic',
         'user',
         'patient',
-        'visit',
+        'visit_id',
         'disease',
         'created_at',
         'updated_at'
     ];
+
+    public function visit(): BelongsTo
+    {
+        return $this->belongsTo(Patient::class,'patient','id');
+    }
 }

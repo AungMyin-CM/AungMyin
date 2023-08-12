@@ -264,7 +264,7 @@
                                     <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h6 id="father_name"><b>Father :</b> {{ $patient->father_name }}</h6>
+                                    <h6 id="p_di"><b>Disease :</b> <span id="p_disease">{{ $patient->disease[0]->disease }}</span></h6>
                                 </div>
                                 <div class="col-sm-2">
                                     <nav aria-label="breadcrumb" class="float-right">
@@ -1365,7 +1365,8 @@
             },
             success: function(response) {
                 $("#dictionary").text(response.prescription);
-                $("#diagnosis_dictionary").text(response.diag);
+                $("#diagnosis_dictionary").val($("#p_diag").text());
+                $("#disease").val($("#p_disease").text());
                 $("#investigation").text(response.investigation);
                 $("#procedure").text(response.procedure);
                 $("#sys_bp").val(response.sys_bp);

@@ -192,9 +192,12 @@ class PatientController extends Controller
             $id = Crypt::decrypt($id);
             $userId = auth()->id();
             $patient = Patient::findOrfail($id);
-            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->orderBy('updated_at', 'DESC')->paginate(1);
+            $visit = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->with('diagnosis')->orderBy('updated_at', 'DESC')->paginate(1);
+            $data = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->get();
+
             $dictionaries = Dictionary::where('user_id', $userId)->where('deleted_at', null)->get();
             $medicines = Pharmacy::where('clinic_id', session()->get('cc_id'))->where('deleted_at', null)->get();
+
 
             Notification::where('patient_id', $id)->update(['is_read' => 1]);
 
@@ -202,6 +205,7 @@ class PatientController extends Controller
                 return view('partials/_visit-modal')
                     ->with('patient', $patient)
                     ->with('visit', $visit)
+                    ->with('disease',$data)
                     ->with('dictionaries', $dictionaries)
                     ->with('medicines', $medicines);
             }
@@ -209,6 +213,7 @@ class PatientController extends Controller
             return view('patient/treatment')
                 ->with('patient', $patient)
                 ->with('visit', $visit)
+                ->with('disease',$data)
                 ->with('dictionaries', $dictionaries)
                 ->with('medicines', $medicines);
         } catch (DecryptException $e) {
@@ -285,6 +290,7 @@ class PatientController extends Controller
             'investigation' => $request->investigation,
             'procedure' => $request->procedure,
             'followup_date' => $request->followup_date ? $request->followup_date : null,
+            'is_followup' => $request->followup_date ? '1' : null,
         ])->id;
 
         if($request->diag){
@@ -304,7 +310,7 @@ class PatientController extends Controller
                 'clinic' => session()->get('cc_id'),
                 'user' => $user_id,
                 'patient' => $id,
-                'visit' => $visit_id,
+                'visit_id' => $visit_id,
                 'disease' => $request->disease,
             ]);
         }
@@ -443,7 +449,7 @@ class PatientController extends Controller
         $text = $request->key;
         $user_id = Auth::guard('user')->user()['id'];
 
-        $data = PatientDiagnosis::select('diagnosis')->where('diagnosis', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id'), 'patient' => $request->patient_id])->get();
+        $data = PatientDiagnosis::select('diagnosis')->where('diagnosis', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id')])->get();
         
         if (count($data) == 0) {
             $output = '';
