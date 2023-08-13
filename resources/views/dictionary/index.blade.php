@@ -43,7 +43,7 @@
                     @if(Helper::checkPermission('d_create', $permissions))
                     @endif
 
-                    <table id="dictionaryTable" class="table table-striped table-bordered mb-3">
+                    <table id="dictionaryTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -91,10 +91,17 @@
         </div>
     </div>
 </body>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<!-- Datatable -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
+
 <script>
-    let table = new DataTable("#dictionaryTable", {
+    new DataTable("#dictionaryTable", {
+        responsive: true,
         "paging": true,
         "info": false,
         search: {

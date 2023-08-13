@@ -46,10 +46,10 @@
                     @endif
 
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-lg-6 mb-3">
                             <label for="procedure">Procedure</label>
 
-                            <table id="procedureTable" class="table table-striped table-bordered mb-3">
+                            <table id="procedureTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -94,10 +94,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="col-lg-6 mb-3">
                             <label for="procedure">Investigation</label>
 
-                            <table id="investigationTable" class="table table-striped table-bordered mb-3">
+                            <table id="investigationTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -148,11 +149,17 @@
         </div>
     </div>
 </body>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<!-- Datatable -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
 
 <script>
     new DataTable("#procedureTable", {
+        responsive: true,
         "paging": true,
         "info": false,
         search: {
@@ -166,6 +173,7 @@
     });
 
     new DataTable("#investigationTable", {
+        responsive: true,
         "paging": true,
         "info": false,
         search: {

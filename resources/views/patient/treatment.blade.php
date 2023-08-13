@@ -560,6 +560,12 @@
         editModal.style.display = "block";
     }
 
+    $(window).click(function(event) {
+        if (event.target == viewModal) {
+            viewModal.style.display = "none";
+        }
+    });
+
     $("#save_pro_btn").click(function(e){
         e.preventDefault();
 

@@ -466,7 +466,7 @@ class PatientController extends Controller
         $text = $request->key;
         $user_id = Auth::guard('user')->user()['id'];
 
-        $data = PatientDisease::select('disease')->where('disease', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id'), 'patient' => $request->patient_id])->get();
+        $data = PatientDisease::select('disease')->where('disease', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id')])->get();
         
         if (count($data) == 0) {
             $output = '';

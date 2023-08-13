@@ -90,11 +90,11 @@
                         @endif
                         @if (Auth::guard('user')->user()->isAdmin())
 
-                            <div class="col-sm-4">
-                                @if(count($data) !== 0)
-                                <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
-                                @endif
-                            </div>
+                        <div class="col-sm-4">
+                            @if(count($data) !== 0)
+                            <a href="{{ route('pharmacy.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                            @endif
+                        </div>
                         @endif
                     </div>
                 </div><!-- /.container-fluid -->
@@ -107,7 +107,7 @@
             <section class="content mb-3">
                 <div class="container-fluid">
 
-                    <table id="pharmacyTable" class="table table-striped table-bordered mb-3">
+                    <table id="pharmacyTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -115,7 +115,7 @@
                                 <th>Quantity</th>
                                 <th>Status</th>
                                 @if (Auth::guard('user')->user()->isAdmin())
-                                    <th style="width: 10%;">Actions</th>
+                                <th style="width: 10%;">Actions</th>
                                 @endif
                             </tr>
                         </thead>
@@ -127,30 +127,30 @@
                                 <td>{{ $row->quantity }}</td>
                                 <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
                                 @if (Auth::guard('user')->user()->isAdmin())
-                                    <td>
-                                        <div class="d-flex justify-content-center" style="gap: 20px">
-                                            <div>
-                                                @if(Helper::checkPermission('ph_update', $permissions))
-                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
-                                                    <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
-                                                </a>
-                                                @endif
-                                            </div>
-
-                                            <div>
-                                                @if(Helper::checkPermission('ph_delete', $permissions))
-                                                <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button class="btn btn-default" type="Submit">
-                                                        <i class="fas fa-trash" style="color:#E95A4A; "></i>
-                                                    </button>
-                                                </form>
-                                                @endif
-                                            </div>
+                                <td>
+                                    <div class="d-flex justify-content-center" style="gap: 20px">
+                                        <div>
+                                            @if(Helper::checkPermission('ph_update', $permissions))
+                                            <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
+                                                <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
+                                            </a>
+                                            @endif
                                         </div>
-                                    </td>
+
+                                        <div>
+                                            @if(Helper::checkPermission('ph_delete', $permissions))
+                                            <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button class="btn btn-default" type="Submit">
+                                                    <i class="fas fa-trash" style="color:#E95A4A; "></i>
+                                                </button>
+                                            </form>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </td>
                                 @endif
                             </tr>
                             @endforeach
@@ -161,13 +161,18 @@
         </div>
     </div>
 </body>
+
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<!-- Datatable -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap4.min.js"></script>
 
 <script>
-    let table = new DataTable("#pharmacyTable", {
+    new DataTable("#pharmacyTable", {
+        responsive: true,
         "paging": true,
         "info": false,
         search: {
