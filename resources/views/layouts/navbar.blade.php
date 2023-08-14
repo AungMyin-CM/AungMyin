@@ -18,6 +18,16 @@
     .search:focus {
         border: 2px solid #003049;
     }
+
+    @media (max-width: 768px) {
+        #date-time {
+            display: none;
+        }
+
+        .search {
+            width: 100%;
+        }
+    }
 </style>
 
 @if (Auth::guard('user')->user() || Auth::guard('user')->user())
@@ -33,7 +43,7 @@
 
     <ul class="navbar-nav">
         @if(Request::is('clinic-system/*') && \Route::currentRouteName() !== 'user.clinic')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('user.clinic', Crypt::encrypt(session() -> get('cc_id'))) }}">Home</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
@@ -41,191 +51,191 @@
         </li>
 
         @if(\Route::currentRouteName() === 'user.list')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">User</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'user.create')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('user.list') }}">User</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Create</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'user.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('user.list') }}">User</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'patient.index')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Patient</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'patient.create')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('patient.index') }}">Patient</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Create</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'patient.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('patient.index') }}">Patient</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'patient.treatment')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('patient.index') }}">Patient</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Treatment</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'dictionary.index')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Shorthand</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'dictionary.create')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('dictionary.index') }}">Shorthand</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Create</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'dictionary.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('dictionary.index') }}">Shorthand</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pharmacy.index')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Pharmacy</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pharmacy.create')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('pharmacy.index') }}">Pharmacy</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Create</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pharmacy.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('pharmacy.index') }}">Pharmacy</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pos.index')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">POS</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pos.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('pos.index') }}">POS</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'pos.history')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('pos.index') }}">POS</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">History</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'procedure.index')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Procedure-Lab</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'procedure.create')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Create</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'procedure.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'investigation.edit')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('procedure.index') }}">Procedure-Lab</a>
             &nbsp;
             <i class="fas fa-arrow-right fa-xs"></i>
             &nbsp;
         </li>
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Edit</a>
         </li>
 
         @elseif(\Route::currentRouteName() === 'clinic.settings')
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-inline">
             <a class="text-dark small" role="link" aria-disabled="true">Update</a>
         </li>
 
@@ -276,13 +286,14 @@
             </div>
         </li>
         @endif
-        <li class="nav-item">
+        <li class="nav-item d-none d-md-block">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
     </ul>
 </nav>
+
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <script>
     var datetime = new Date();
@@ -322,22 +333,18 @@
         clock.textContent = hr + ':' + min + ':' + sec + " " + day;
     });
 
-    $('document').ready(function() {
-        let searchBtn = $('#search-btn');
-        let searchInput = $('#input-search');
-        let searchBox = $('#search-box');
-        let dateTime = $('#date-time');
+    $(document).ready(function() {
+        $("#search-btn").click(function() {
+            $("#date-time").hide();
+            $("#search-box").show();
+        });
 
-        searchBtn.on('click', function() {
-            event.stopPropagation();
-            dateTime.css('display', 'none');
-            searchBox.css('display', 'block');
-        })
-
-        $(document).on('click', function(event) {
-            if (!searchBtn.is(event.target) && !searchBox.is(event.target) && searchBox.has(event.target).length === 0) {
-                searchBox.css('display', 'none');
-                dateTime.css('display', 'block');
+        $(document).click(function(event) {
+            if (!$(event.target).closest("#search-box").length && !$(event.target).closest("#search-btn").length) {
+                $("#search-box").hide();
+                if ($(window).width() >= 768) {
+                    $("#date-time").show();
+                }
             }
         });
     });

@@ -1,7 +1,7 @@
 <style>
     .logout:hover {
         opacity: 0.7;
-    }    
+    }
 </style>
 
 @if ( Auth::guard('user')->user())
@@ -215,7 +215,7 @@
 
             <hr>
             <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">                    
+                <li class="nav-item">
                     <a class="nav-link" title="Feedback" id="feedbackBtn">
                         <i class="nav-icon fas fa-comment-alt"></i>
                         <p>
@@ -254,7 +254,7 @@
 
 <script>
     $(document).ready(function() {
-        var someSession = {{ Session::get('cc_id') }};        
+        var someSession = {{ Session::get('cc_id') }};
 
         $('select option[name=' + someSession + ']').attr('selected', true);
         $("#u_clinics").change(function() {
@@ -264,6 +264,6 @@
                 window.location.href = url;
             }
         });
-    });    
+    });
 </script>
 @endif

@@ -52,12 +52,6 @@
         }
     }
 
-    @media only screen and (max-width: 700px) {
-        .feedback-modal-content {
-            width: 100%;
-        }
-    }
-
     .feedback-card {
         width: 400px;
         background-color: #003049;
@@ -114,6 +108,17 @@
         width: 100%;
         margin-bottom: 10px;
         resize: none;
+    }
+
+    @media (max-width: 768px) {
+        .feedback-modal {
+            left: 10px;
+            width: 100%;
+        }
+
+        .feedback-modal-content {
+            width: 90%;
+        }
     }
 
     #message {
@@ -182,6 +187,10 @@
         let feedbackBtn = $("#feedbackBtn");
 
         feedbackBtn.click(function() {
+            if (!$('body').hasClass('sidebar-collapse')) {
+                $('[data-widget="pushmenu"]').trigger('click');
+            }
+
             feedbackModal.show();
         });
 
