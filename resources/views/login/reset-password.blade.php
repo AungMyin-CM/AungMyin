@@ -47,11 +47,15 @@
                 <div class="form-group mb-3">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" name="password" placeholder="Password">
+
+                    @error('password') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="password_confirmation">Password Confirmation</label>
                     <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm your Password">
+
+                    @error('password_confirmation') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
                 </div>
 
                 <button type="submit" class="btn px-4 text-white mr-2" style="background-color: {{config('app.color')}}">Reset Password</button>

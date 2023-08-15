@@ -93,10 +93,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav nav me-auto mb-2 mb-lg-0 mt-3 mt-lg-5">
               <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#introduction"><i class="fa-solid fa-house"></i> Introduction</a>
+                <a class="nav-link active link" data-bs-toggle="tab" href="#introduction"><i class="fa-solid fa-house"></i> Introduction</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#getting-started"><i class="fa-solid fa-flag"></i> Getting Started</a>
+                <a class="nav-link link" data-bs-toggle="tab" href="#getting-started"><i class="fa-solid fa-flag"></i> Getting Started</a>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -105,29 +105,29 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#home-panel"><i class="fa-solid fa-house-chimney"></i> Home</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#home-panel"><i class="fa-solid fa-house-chimney"></i> Home</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#users-panel"><i class="fa-solid fa-user"></i> Users</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#users-panel"><i class="fa-solid fa-user"></i> Users</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#patients-panel"><i class="fa-solid fa-clipboard-user"></i> Patients
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#patients-panel"><i class="fa-solid fa-clipboard-user"></i> Patients
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#dictionary-panel"><i class="fa-solid fa-book"></i> Dictionary</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#dictionary-panel"><i class="fa-solid fa-book"></i> Dictionary</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#pharmacy-panel"><i class="fa-solid fa-pills"></i> Pharmacy</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#pharmacy-panel"><i class="fa-solid fa-pills"></i> Pharmacy</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#pos-panel"><i class="fa-solid fa-tv"></i> POS</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#pos-panel"><i class="fa-solid fa-tv"></i> POS</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#procedure-panel"><i class="fa-solid fa-bed-pulse"></i> Procedure</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#procedure-panel"><i class="fa-solid fa-bed-pulse"></i> Procedure</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#setting-panel"><i class="fa-solid fa-gear"></i> Setting</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#setting-panel"><i class="fa-solid fa-gear"></i> Setting</a>
                   </li>
                 </ul>
               </li>
@@ -137,27 +137,27 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#admin"><i class="fa-solid fa-user-shield"></i> Admin</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#admin"><i class="fa-solid fa-user-shield"></i> Admin</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#receptionist"><i class="fa-solid fa-bell-concierge"></i>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#receptionist"><i class="fa-solid fa-bell-concierge"></i>
                       Receptionist</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#doctor"><i class="fa-solid fa-user-doctor"></i> Doctor
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#doctor"><i class="fa-solid fa-user-doctor"></i> Doctor
                     </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" data-bs-toggle="tab" href="#pharmacist"><i class="fa-solid fa-user-tie"></i> Pharmacist</a>
+                    <a class="dropdown-item link" data-bs-toggle="tab" href="#pharmacist"><i class="fa-solid fa-user-tie"></i> Pharmacist</a>
                   </li>
                   <!-- <li><hr class="dropdown-divider" /></li> -->
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
+                <a class="nav-link link" data-bs-toggle="tab" href="#feedback"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#contact"><i class="fa-solid fa-envelope"></i> Contact and Support</a>
+                <a class="nav-link link" data-bs-toggle="tab" href="#contact"><i class="fa-solid fa-envelope"></i> Contact and Support</a>
               </li>
             </ul>
           </div>
@@ -692,5 +692,21 @@
     </div>
   </div>
 </body>
+<script>
+  const navLinks = document.querySelectorAll('.link');
+  const menuToggle = document.getElementById('navbarSupportedContent');
+
+  const bsCollapse = new bootstrap.Collapse(menuToggle, {
+    toggle: false
+  });
+
+  navLinks.forEach((l) => {
+    l.addEventListener('click', () => {
+      if (window.innerWidth < 992) {
+        bsCollapse.toggle();
+      }
+    });
+  })
+</script>
 
 </html>
