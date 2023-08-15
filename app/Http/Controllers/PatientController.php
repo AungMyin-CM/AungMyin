@@ -193,7 +193,6 @@ class PatientController extends Controller
             $userId = auth()->id();
             $patient = Patient::findOrfail($id);
             $visit = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->with('diagnosis')->orderBy('updated_at', 'DESC')->paginate(1);
-            $data = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->orderBy('updated_at','desc')->take(1)->get();
 
             $dictionaries = Dictionary::where('user_id', $userId)->where('deleted_at', null)->get();
             $medicines = Pharmacy::where('clinic_id', session()->get('cc_id'))->where('deleted_at', null)->get();
@@ -205,7 +204,6 @@ class PatientController extends Controller
                 return view('partials/_visit-modal')
                     ->with('patient', $patient)
                     ->with('visit', $visit)
-                    ->with('disease',$data)
                     ->with('dictionaries', $dictionaries)
                     ->with('medicines', $medicines);
             }
@@ -213,7 +211,6 @@ class PatientController extends Controller
             return view('patient/treatment')
                 ->with('patient', $patient)
                 ->with('visit', $visit)
-                ->with('disease',$data)
                 ->with('dictionaries', $dictionaries)
                 ->with('medicines', $medicines);
         } catch (DecryptException $e) {

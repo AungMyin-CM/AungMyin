@@ -14,6 +14,8 @@ use App\Models\PosItem;
 use App\Models\Patient;
 use App\Models\Visit;
 use App\Models\Notification;
+use App\Models\PatientProcedure;
+
 
 
 use Session;
@@ -37,6 +39,7 @@ class PosController extends Controller
         $invoice_code = $this->posCodeGenerator();
         $patient_data = null;
         $visit_data = null;
+        $visit = null;
         $med_data = null;
         $total_qty = null;
         if ($id != null) {
@@ -44,6 +47,8 @@ class PosController extends Controller
                 $id = Crypt::decrypt($id);
                 $patient_data = Patient::findOrfail($id);
                 $visit_data = Visit::where('patient_id', $id)->orderBy('updated_at', 'desc')->get()->first();
+                $visit = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->with('diagnosis')->orderBy('updated_at', 'DESC')->paginate(1);
+
 
                 if ($visit_data) {
 
@@ -76,9 +81,88 @@ class PosController extends Controller
             } catch (DecryptException $e) {
                 abort(404);
             }
+        }    
+            return view('pos/index')->with(['invoice_code' => $invoice_code, 'visit' => $visit,'patient' => $patient_data, 'visit_data' => $visit_data, "med_data" => $med_data, "total_qty" => $total_qty, 'procedures' => '']);
+
+
+
+    }
+
+    public function patientPos($id = null,Request $request)
+    {
+        if (!$this->checkPermission('pos_create')) {
+            abort(404);
         }
 
-        return view('pos/index')->with(['invoice_code' => $invoice_code, 'patient_data' => $patient_data, 'visit_data' => $visit_data, "med_data" => $med_data, "total_qty" => $total_qty]);
+        $invoice_code = $this->posCodeGenerator();
+        $patient_data = null;
+        $visit_data = null;
+        $visit = null;
+        $med_data = null;
+        $total_qty = null;
+        if ($id != null) {
+            try {
+                $id = Crypt::decrypt($id);
+                $patient_data = Patient::findOrfail($id);
+                $visit_data = Visit::where('patient_id', $id)->orderBy('updated_at', 'desc')->get()->first();
+                $visit = Visit::where(['patient_id' => $id, 'status' => 1])->with('disease')->with('diagnosis')->orderBy('updated_at', 'DESC')->paginate(1);
+
+
+                if ($visit_data) {
+
+
+                    $assigned_med = $visit_data['assigned_medicines'];
+
+                    Notification::where('patient_id', $id)->update(['is_read' => 1]);
+                    
+                    $procedure = PatientProcedure::where('visit_id',$visit_data['id'])->get()->first();
+                    
+                    if ($assigned_med != "") {
+                        $medList = explode("<br>", $assigned_med);
+
+                        foreach ($medList as $key =>$row) {
+                            $medInfo = explode("^", $row);
+                            if (!empty($medInfo[0])) {
+                                $qty = explode("-",  $medInfo[1]);
+                                $days = $medInfo[2];
+                                $med = Pharmacy::where('id', $medInfo[0])->get();
+                                if ($med->count() > 0) {
+                                    $med_data[] = $med;
+                                } else {
+                                    $arr = new Pharmacy();
+                                    $arr['name'] = $medInfo[0];
+                                    $med_data[][] =   $arr;
+                                }
+                                $total_qty[] = array(($qty[0] + $qty[1] +  $qty[2]) * $days);
+                            }
+                        }
+                    }
+
+                    $procedures = '';
+
+                    if($procedure != '')
+                    {
+                        $procedures = $procedure['assigned_tasks'];
+                        
+                    }else{
+                        echo "Hello";
+                    }
+                }
+            } catch (DecryptException $e) {
+                abort(404);
+            }
+        }
+
+        if ($request->ajax()) {
+            return view('partials/_visit-modal')
+                ->with('patient', $patient_data)
+                ->with('visit', $visit);
+                
+        }else{
+            return view('pos/index')->with(['invoice_code' => $invoice_code, 'visit' => $visit,'patient' => $patient_data, 'visit_data' => $visit_data, "med_data" => $med_data, "total_qty" => $total_qty,'procedures' => $procedures]);
+
+        }
+
     }
 
     public function getMedData(Request $request)

@@ -1,9 +1,12 @@
 <div class="card card-primary">
     <div class="card-header" style="background-color: {{config('app.color')}}">
         <h3 class="card-title">Records</h3>
-        <span id="visitBtn" class="float-right" style="cursor: pointer;">
-            {{ ($patient->visits->count() == 0 ? '' : $patient->visits->count().' visit').($patient->visits->count() > 1 ? 's' : '')}} 
-        </span>
+        @if(Auth::guard('user')->user()->role->role_type == '1' || Auth::guard('user')->user()->role->role_type == '5')
+
+            <span id="visitBtn" class="float-right" style="cursor: pointer;">
+                {{ ($patient->visits->count() == 0 ? '' : $patient->visits->count().' visit').($patient->visits->count() > 1 ? 's' : '')}} 
+            </span>
+        @endif
     </div>
 
     <!-- Visit Records Modal -->
@@ -106,13 +109,29 @@
                     @endif
                 </ul>
 
-                @php
-                $text = $row->assigned_medicines;
-                $medicines = str_replace("<br>", "\n", $text);
-                @endphp
+                
                 <div>
                     <span>Treatment:</span>
-                    <pre>{{ $medicines }}</pre>
+                    {{-- <pre>{{ $medicines }}</pre> --}}
+                    <p>
+                        @php
+                            $text = $row->assigned_medicines;
+                            $medicines = explode("<br>", $text);
+                            foreach($medicines as $d)
+                            {
+                                $medInfo = explode('^',$d);
+
+                                $medName = DB::table('pharmacy')->where(['id' => $medInfo[0]])->pluck('name')->first();
+
+                                $med = array_filter($medInfo, fn ($value) => !is_null($value));
+
+                                if(isset($med[1]))
+                                {
+                                    print_r(($medName ? $medName : $medInfo[0]).' ^ '.(isset($med[1]) ? $med[1] : null).' ^ '.(isset($med[2]) ? $med[2] : null).'<br/>');
+                                }
+                            }
+                        @endphp
+                    </p>
                 </div>
 
                 <p>Fees - {{ $row->fees }} Kyats</p>
@@ -123,33 +142,35 @@
                         <small>Follow-up: {{ date('d-M-Y', strtotime($row->followup_date)) }}</small>
                         @endif
                     </div>
-                    <div class="col-4 text-right">
-                        <a class="btn btn-sm btn-tool">
-                            <i class="fas fa-copy" id="copy_{{$row->id}}" style="color:black;" onclick="copyData({{$row->id}})"></i>
-                            <i class="fa fa-history" id="undo_{{$row->id}}" style="color:black;display:none;" onclick="deleteData({{$row->id}})"></i>
+                    @if(Auth::guard('user')->user()->role->role_type == '1' || Auth::guard('user')->user()->role->role_type == '5')
+                        <div class="col-4 text-right">
+                            <a class="btn btn-sm btn-tool">
+                                <i class="fas fa-copy" id="copy_{{$row->id}}" style="color:black;" onclick="copyData({{$row->id}})"></i>
+                                <i class="fa fa-history" id="undo_{{$row->id}}" style="color:black;display:none;" onclick="deleteData({{$row->id}})"></i>
 
-                        </a>
-                        <a class="btn btn-sm btn-tool">
-                            <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row->id}})"></i>
-                        </a>
-                    </div>
+                            </a>
+                            <a class="btn btn-sm btn-tool">
+                                <i class="fas fa-trash" style="color:black;" onclick="removeData({{$row->id}})"></i>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
 
             <div class="card-footer">
                 <div class="row">
                     <?php
-                    $images_r = substr($row->images, 1, -1);
+                        $images_r = substr($row->images, 1, -1);
 
-                    $images = explode(",", $images_r);
+                        $images = explode(",", $images_r);
 
-                    for ($i = 0; $i < count($images); $i++) {
-                        if ($images[$i] != '') {
-                            $id = $row->id;
+                        for ($i = 0; $i < count($images); $i++) {
+                            if ($images[$i] != '') {
+                                $id = $row->id;
 
-                            echo "<img id='myImg" . $id . $i . "' onclick='showImage($id, $i)' src=" . asset('images/treatment-images/' . substr($images[$i], 1, -1)) . " style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                                echo "<img id='myImg" . $id . $i . "' onclick='showImage($id, $i)' src=" . asset('images/treatment-images/' . substr($images[$i], 1, -1)) . " style='margin:4px;width:50px;border-radius:5px;cursor:pointer;' alt='img'>";
+                            }
                         }
-                    }
                     ?>
 
                 </div>

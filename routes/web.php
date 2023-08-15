@@ -117,7 +117,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('/pos-history', [PosController::class, 'history'])->name('pos.history');
 
-    Route::get('/pos-patient/{patient_id}', [PosController::class, 'index'])->name('pos-patient');
+    Route::get('/pos-patient/{patient_id}', [PosController::class, 'patientPos'])->name('pos-patient');
 
     Route::get('/pos-print/{id}', [PosController::class, 'printInvoice'])->name('pos-invoice');
 

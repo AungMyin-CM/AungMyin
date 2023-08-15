@@ -20,12 +20,12 @@
           </div>
 
 
-          @if($patient_data != null)
+          @if($patient != null)
 
-          <div class="card card-primary {{$patient_data != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+          {{-- <div class="card card-primary {{$patient_data != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
             <div class="card-body" style="padding: 0.9rem !important;">
               <div class="card-body" style="padding: 0.9rem !important;">
-                <div class="card-body" style="padding: 0.9rem !important;">
+                 <div class="card-body" style="padding: 0.9rem !important;">
                   <div class="row mb-2">
                     <div class="col-sm-2">
                       <h6><b>Name :</b> <span id="p_name">{{$patient_data['name'] != null ? $patient_data['name']  : ""}}</span> </h6>
@@ -64,9 +64,51 @@
 
                   </div>
 
-                </div>
+                </div> --}}
 
-              </div>
+              {{-- </div> --}}
+              <div class="card card-primary {{$patient != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2 mb-2">
+                            <span id="name">{{ $patient->name }}</span>
+                            <span id="gender" class="text-danger" style="font-weight: bold;">{{ $patient->gender == 1 ? 'M' : 'F' }}</span>
+                            <span id="age">{{ $patient->age}} years</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
+                        </div>
+                        @if(isset($patient->disease[0]))
+                            <div class="col-sm-4">
+                                <h6 id="p_di"><b>Disease :</b> <span id="p_disease">{{ $patient->disease[0]->disease }}</span></h6>
+                            </div>
+                        @else
+                        <div class="col-sm-4">
+                            <h6 id="p_di"><b>Father Name :</b> <span id="p_disease">{{ $patient->father_name }}</span></h6>
+                        </div>
+                            
+                        @endif
+                        {{-- <div class="col-sm-2">
+                            <nav aria-label="breadcrumb" class="float-right">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <button id="viewBtn" style="display: contents;">View</button>
+
+                                        @include('partials._view-modal')
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        @if(Helper::checkPermission('p_update', $permissions))
+                                        <button id="editBtn" style="display: contents;">Edit</button>
+
+                                        @include('partials._edit-modal')
+                                        @endif
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
               @else
               <div class="card card-primary d-none mt-2" id="p_detail">
                 <div class="card-body" style="padding: 0.9rem !important;">
@@ -110,156 +152,252 @@
 
                   </div>
                   @endif
-                </div>
+          </div>
       </section>
 
-      <form action="{{ route('pos.store') }}" method="POST">
-
-        @if($patient_data != null)
-        <input type="hidden" name="patient_id" class="form-control" id="patient_id" value={{ $patient_data['id'] }}>
-        <input type="hidden" name="visit_id" class="form-control" value={{ isset($visit_data['id']) ? $visit_data['id'] : ''}}>
-        <input type="hidden" id="fees" class="form-control" value={{ isset($visit_data['fees']) ? $visit_data['fees'] : ''}}>
-        <input type="hidden" id="customer_name" name="customer_name" class="form-control" value={{ $patient_data['name'] }}>
-        @else
-        <input type="hidden" name="patient_id" class="form-control" id="patient_id">
-        <input type="hidden" id="fees" class="form-control" value=0>
-        <input type="hidden" id="customer_name" name="customer_name" class="form-control">
-        @endif
-        <input type="hidden" name="invoice_code" class="form-control" value={{ $invoice_code }}>
-        @csrf
-        <section class="content">
-
-          <div class="container-fluid">
-            @if (Session::has('success'))
-            <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-              {{ Session::get('success') }}
-            </div>
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            @if(isset($patient->visits))
+              <div id="visit-lists" class="col-md-3">
+                @include('partials._visit-modal')
+              </div>
             @endif
+            <div class={{isset($patient->visits) ? 'col-md-9' : 'col-md-12'}}>
+              <form action="{{ route('pos.store') }}" method="POST">
 
-            <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}"><i id="search" class="fa fa-history"></i> History</a>
-            <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">Code - {{ $invoice_code }}</span>
-            <table class="table table-bordered mb-2" id="product_info_table">
-              <thead>
-                <tr>
-                  <th style="width:30%">Name</th>
-                  <th style="width:20%">Expire Date</th>
-                  <th style="width:10%">A.Qty</th>
-                  <th style="width:10%">Qty</th>
-                  <th style="width:10%">Sell Price</th>
-                  <th style="width:10%">Discount</th>
-                  <th style="width:10%">Amount</th>
-                  <th><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
-                </tr>
-              </thead>
-
-              <tbody>
-                @if ($med_data)
-                @foreach ($med_data as $key => $md)
-                <tr id="row_{{$key+1}}">
-
-                  <td>
-                    <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Search medicines.." value="{{$md[0]['name']}}" required>
-                    <input type="hidden" name="med_id[]" id="med_id_{{$key+1}}" value={{$md[0]['id']}}>
-                    <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
-
-                    </div>
-                    <span id="product_status1" class="label label-danger"></span>
-                  </td>
-                  <td>
-                    <input type="text" name="expire_date[]" id="expire_date_{{$key+1}}" value="{{$md[0]['expire_date']}}" readonly class="form-control">
-                  </td>
-                  <td>
-                    <input type="text" name="remain_qty[]" id="remain_qty_{{$key+1}}" value="{{$md[0]['quantity']}}" readonly class="form-control">
-                  </td>
-                  <td>
-                    <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key][0]}}">
-                  </td>
-                  <td>
-                    <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" class="form-control" readonly>
-                    <input type="hidden" name="act_price[]" id="act_price_{{$key+1}}" value="{{$md[0]['act_price']}}" class="form-control">
-                    <input type="hidden" name="unit[]" id="unit_{{$key+1}}" value="{{$md[0]['unit']}}" class="form-control">
-                    <input type="hidden" name="margin[]" id="margin_{{$key+1}}" value="{{$md[0]['margin']}}" class="form-control">
-                  </td>
-                  <td>
-                    <input type="discount" name="discount[]" id="discount_{{$key+1}}" class="form-control" onkeyup="getTotal({{$key+1}})">
-                  </td>
-                  <td>
-                    <input type="text" name="amount[]" id="amount_{{$key+1}}" class="form-control" readonly style="width: 90px;">
-                  </td>
-                </tr>
-                @endforeach
+                @if($patient != null)
+                <input type="hidden" name="patient_id" class="form-control" id="patient_id" value={{ $patient['id'] }}>
+                <input type="hidden" name="visit_id" class="form-control" value={{ isset($visit_data['id']) ? $visit_data['id'] : ''}}>
+                <input type="hidden" id="fees" class="form-control" value={{ isset($visit_data['fees']) ? $visit_data['fees'] : ''}}>
+                <input type="hidden" id="customer_name" name="customer_name" class="form-control" value={{ $patient['name'] }}>
                 @else
-                <tr id="row_1">
-                  <td>
-                    <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search medicines" required>
-                    <input type="hidden" name="med_id[]" id="med_id_1">
-                    <div id="medList_1" style="display:none;position:absolute;width:22.5%;">
+                <input type="hidden" name="patient_id" class="form-control" id="patient_id">
+                <input type="hidden" id="fees" class="form-control" value=0>
+                <input type="hidden" id="customer_name" name="customer_name" class="form-control">
+                @endif
+                <input type="hidden" name="invoice_code" class="form-control" value={{ $invoice_code }}>
+                @csrf
+                <section class="content">
+
+                  <div class="container-fluid">
+                    @if (Session::has('success'))
+                    <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
+                      {{ Session::get('success') }}
+                    </div>
+                    @endif
+
+                    <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}"><i id="search" class="fa fa-history"></i> History</a>
+                    <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">Code - {{ $invoice_code }}</span>
+                    <table class="table table-bordered mb-2" id="product_info_table">
+                      <thead>
+                        <tr>
+                          <th style="width:30%">Name</th>
+                          <th style="width:20%">Expire Date</th>
+                          <th style="width:10%">A.Qty</th>
+                          <th style="width:10%">Qty</th>
+                          <th style="width:10%">Price</th>
+                          <th style="width:10%">Discount</th>
+                          <th style="width:10%">Amount</th>
+                          <th><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        @if ($med_data)
+                        @foreach ($med_data as $key => $md)
+                        <tr id="row_{{$key+1}}">
+
+                          <td>
+                            <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Search medicines.." value="{{$md[0]['name']}}" required>
+                            <input type="hidden" name="med_id[]" id="med_id_{{$key+1}}" value={{$md[0]['id']}}>
+                            <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
+
+                            </div>
+                            <span id="product_status1" class="label label-danger"></span>
+                          </td>
+                          <td>
+                            <input type="text" name="expire_date[]" id="expire_date_{{$key+1}}" value="{{$md[0]['expire_date']}}" readonly class="form-control">
+                          </td>
+                          <td>
+                            <input type="text" name="remain_qty[]" id="remain_qty_{{$key+1}}" value="{{$md[0]['quantity']}}" readonly class="form-control">
+                          </td>
+                          <td>
+                            <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key][0]}}">
+                          </td>
+                          <td>
+                            <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" class="form-control" readonly>
+                            <input type="hidden" name="act_price[]" id="act_price_{{$key+1}}" value="{{$md[0]['act_price']}}" class="form-control">
+                            <input type="hidden" name="unit[]" id="unit_{{$key+1}}" value="{{$md[0]['unit']}}" class="form-control">
+                            <input type="hidden" name="margin[]" id="margin_{{$key+1}}" value="{{$md[0]['margin']}}" class="form-control">
+                          </td>
+                          <td>
+                            <input type="discount" name="discount[]" id="discount_{{$key+1}}" class="form-control" onkeyup="getTotal({{$key+1}})">
+                          </td>
+                          <td colspan="2">
+                            <input type="text" name="amount[]" id="amount_{{$key+1}}" class="form-control" readonly style="width: 100%;">
+                          </td>
+                        </tr>
+                        @endforeach
+                        @else
+                        <tr id="row_1">
+                          <td>
+                            <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search medicines" required>
+                            <input type="hidden" name="med_id[]" id="med_id_1">
+                            <div id="medList_1" style="display:none;position:absolute;width:22.5%;">
+
+                            </div>
+                            <span id="product_status1" class="label label-danger"></span>
+                          </td>
+                          <td>
+                            <input type="text" name="expire_date[]" id="expire_date_1" readonly class="form-control">
+                          </td>
+                          <td>
+                            <input type="text" name="remain_qty[]" id="remain_qty_1" readonly class="form-control">
+                          </td>
+                          <td>
+                            <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)">
+                          </td>
+                          <td>
+                            <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" readonly>
+                            <input type="hidden" name="act_price[]" id="act_price_1" class="form-control">
+                            <input type="hidden" name="unit[]" id="unit_1" class="form-control">
+                            <input type="hidden" name="margin[]" id="margin_1" class="form-control">
+                          </td>
+                          <td>
+                            <input type="discount" name="discount[]" id="discount_1" class="form-control" onkeyup="getTotal(1)">
+                          </td>
+                          <td>
+                            <input type="text" name="amount[]" id="amount_1" class="form-control" readonly style="width: 90px;">
+                          </td>
+                        </tr>
+                        @endif
+                      </tbody>
+                    </table>
+                    @if($procedures)
+                      <table class="table table-bordered mt-2">
+                        <tbody>
+                            <span class="show" id="proData">
+                              @php
+
+                                $pro = explode('<br>',preg_replace('/(<br>)+$/', '', $procedures));
+
+                                $proInfo = [];
+                                
+                                foreach ($pro as $key =>$row) {
+                                  $proInfo[] = explode("^", $row);
+                                }
+                                
+                                foreach($proInfo as $d){
+                                    echo '<tr>
+                                        <td style="width:54%;">
+                                          <label for="pro_name">'.$d[0].'</label>
+                                        </td>
+                                        <td style="width:8%;">
+                                          <input type="text" class="form-control" name="p_quantity" value="'.$d[1].'">
+                                        </td>
+                                        <td>
+                                          <input type="text" class="form-control" name="p_price" value="'.$d[2].'">
+                                        </td>
+                                        <td>
+                                          <input type="text" class="form-control" name="chargeType" readonly>
+                                        </td>
+                                        <td style="width:16%;">
+                                          <input type="text" class="form-control" name="total" value="'.$d[1] * $d[2].'" readonly>
+                                        </td>';
+                                  }
+                                  
+                              @endphp</span>
+                              <tr>
+                                <td>
+                                  <label for="consult_title">Consultation Fees</label>
+                                </td>
+                                <td>  
+                                  <input type="number" value="1" readonly class="form-control">
+                                </td>
+                                <td>
+                                  <input id="consult_title" class="form-control" value="{{$visit_data['fees']}}"/>
+                                </td>
+                                <td>
+                                  @if($visit_data['is_foc'] == 1)
+                                    <label for="foc">FOC</label>
+                                  @else
+                                    <input type="text" class="form-control" name="chargeType" readonly>
+                                  @endif
+                                </td>
+                                <td>
+                                  <input type="text" class="form-control" name="total" value="{{1 * $visit_data['fees']}}" readonly>
+
+                                </td>
+                              </tr>
+                              {{-- 
+                                  @foreach(array_filter(explode('<br>',$procedures)) as $pro) 
+                                
+
+                              @endforeach --}}
+                            {{-- <tr>
+                              <td style="width:54%;">
+                                <input type="text" class="form-control" name="type" value="{{$pro[0]}}" >
+                              </td>
+                              <td >
+                                <input type="text" class="form-control" name="p_quantity" value="{{$pro[1]}}">
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" name="p_price" value="{{$pro[2]}}">
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" name="chargeType" readonly>
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" name="total" readonly>
+                              </td>
+                            </tr> --}}
+                        </tbody>
+                      </table>
+                    @else
+                     {{'Hello'}}
+                    @endif
+                    <div class="col-md-4 float-right col-xs-12 mr-3">
+                      <div class="form-group">
+                        <label for="net_amount" class="col-sm-5 control-label">Med Amount</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="med_amount" name="total_med_price" readonly autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
+                        <div class="col-sm-7">
+                          <input type="text" class="form-control" id="net_amount" name="total_price" readonly autocomplete="off">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="payment_status" class="col-sm-5 control-label">Paid Status</label>
+                        <div class="col-sm-7">
+                          <select type="text" class="form-control" id="payment_status" name="payment_status" required>
+                            <option value="1" selected>Paid</option>
+                            <option value="2">Partial Paid</option>
+                            <option value="3">FOC</option>
+                          </select>
+                        </div><br>
+                        <div class="row">
+                          <div class="col-md-3">
+                            <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}" name="submit_type">
+                          </div>
+                          <div class="col-md-3">
+                            <input type="submit" value="Print" class="btn btn-primary" name="submit_type" onclick="print()" style="background-color: {{config('app.color')}}">
+                          </div>
+                          <input id="submittype" type="hidden" name="submit_type" value="" />
+
+                        </div>
+                      </div>
 
                     </div>
-                    <span id="product_status1" class="label label-danger"></span>
-                  </td>
-                  <td>
-                    <input type="text" name="expire_date[]" id="expire_date_1" readonly class="form-control">
-                  </td>
-                  <td>
-                    <input type="text" name="remain_qty[]" id="remain_qty_1" readonly class="form-control">
-                  </td>
-                  <td>
-                    <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)">
-                  </td>
-                  <td>
-                    <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" readonly>
-                    <input type="hidden" name="act_price[]" id="act_price_1" class="form-control">
-                    <input type="hidden" name="unit[]" id="unit_1" class="form-control">
-                    <input type="hidden" name="margin[]" id="margin_1" class="form-control">
-                  </td>
-                  <td>
-                    <input type="discount" name="discount[]" id="discount_1" class="form-control" onkeyup="getTotal(1)">
-                  </td>
-                  <td>
-                    <input type="text" name="amount[]" id="amount_1" class="form-control" readonly style="width: 90px;">
-                  </td>
-                </tr>
-                @endif
-              </tbody>
-            </table>
-            <div class="col-md-4 col-xs-12 float-right">
-              <div class="form-group">
-                <label for="net_amount" class="col-sm-5 control-label">Med Amount</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="med_amount" name="total_med_price" readonly autocomplete="off">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
-                <div class="col-sm-7">
-                  <input type="text" class="form-control" id="net_amount" name="total_price" readonly autocomplete="off">
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="payment_status" class="col-sm-5 control-label">Paid Status</label>
-                <div class="col-sm-7">
-                  <select type="text" class="form-control" id="payment_status" name="payment_status" required>
-                    <option value="1" selected>Paid</option>
-                    <option value="2">Partial Paid</option>
-                    <option value="3">FOC</option>
-                  </select>
-                </div><br>
-                <div class="row">
-                  <div class="col-md-3">
-                    <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}" name="submit_type">
-                  </div>
-                  <div class="col-md-3">
-                    <input type="submit" value="Print" class="btn btn-primary" name="submit_type" onclick="print()" style="background-color: {{config('app.color')}}">
-                  </div>
-                  <input id="submittype" type="hidden" name="submit_type" value="" />
-
-                </div>
-              </div>
-
+                </section>
+              </form>
             </div>
-        </section>
-      </form>
+          </div>
+        </div>
+      </section>
 
     </div>
   </div>
@@ -289,7 +427,71 @@
       getTotal(x);
     }
 
+    $(document).on('click', '.pagination a', function(event) {
+        event.preventDefault();
+        let page = $(this).attr('href').split('page=')[1];
+        fetch_data(page);
+    });
+
+    function fetch_data(page) {
+        $.ajax({
+            url: "?page=" + page,
+            success: function(data) {
+                if (data === "updated") {
+                    fetch_data(page);
+                    bindModalHandlers();
+                } else {
+                    $('#visit-lists').html(data);
+                    bindModalHandlers();
+                }
+            }
+        });
+    }
+
+    function bindModalHandlers() {
+        console.log("hello");
+    }
+
   });
+
+  const resPro = $("#proData").text();
+
+  console.log(resPro.split('<br>'));
+
+
+  // var table_str = '<table class="table table-bordered">'+ 
+                        
+            
+  //     for (i =0; i<fil_res.length ; i++){
+
+  //         data = res[i].split('^');
+      
+  //         table_str +=
+  //         '<tr id="row_'+i+'">'+
+  //             '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
+  //             '<input type="text" name="med_name[]" id="product_search_'+i+'" onkeyup="searchMed('+i+')" class="form-control" value="'+data[1]+'"/>'+
+  //             '<div id="medList_'+i+'" style="display:none;position:absolute;width:35%;"></div>'+
+  //             '</td>'+
+  //             '<td><input type="text"  name="med_qty[]" id="qty_'+i+'" class="form-control" value="'+data[2]+'" /></td>'+
+  //             '<td><input type="text"   name="days[]"  id="days_'+i+'" class="form-control" value="'+data[3]+'"/></td>'+
+  //             '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
+
+  //             '</td>'+
+  //         '</tr>';
+  //     }
+  //     table_str +=  '</table >';
+  
+  // $('#medtable').append(table_str);
+
+  let visitModal = document.getElementById('visitModal');
+
+    // visitBtn.onclick = function() {
+    //     visitModal.style.display = "block";
+    // }
+
+    // $("#visitClose").click(function(e) {
+    //     visitModal.style.display = "none";
+    // })
 
   function print() {
     document.getElementById("submittype").value = "print-type";
