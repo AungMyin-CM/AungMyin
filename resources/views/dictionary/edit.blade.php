@@ -102,10 +102,12 @@
         });
 
         var table_str = '<table class="table table-bordered" id="product_info_table">'+ 
+                        '<thead>'+
                         '<th style="width:45%">Name</th>'+                                              
                         '<th style="width:25%">Qty</th>'+
                         '<th style="width:20%">Days</th>'+
-                        '<th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>';
+                        '<th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>'+
+                        '</thead>';
             
             for (i =0; i<fil_res.length ; i++){
 
@@ -114,9 +116,13 @@
                 table_str +=
                 '<tr id="row_'+i+'">'+
                     '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
-                    '<input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed(1)" class="form-control" value="'+data[1]+'" readonly /> </td>'+
-                    '<td><input type="text"  name="med_qty[]" class="form-control" value="'+data[2]+'" /></td>'+
-                    '<td><input type="text"   name="days[]"  class="form-control" value="'+data[3]+'"/></td>'+
+                    '<input type="text" name="med_name[]" id="product_search_'+i+'" onkeyup="searchMed('+i+')" class="form-control" value="'+data[1]+'"/>'+
+                    '<div id="medList_'+i+'" style="display:none;position:absolute;width:35%;"></div>'+
+                    '</td>'+
+                    '<td><input type="text"  name="med_qty[]" id="qty_'+i+'" class="form-control" value="'+data[2]+'" /></td>'+
+                    '<td><input type="text"   name="days[]"  id="days_'+i+'" class="form-control" value="'+data[3]+'"/></td>'+
+                    '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
+
                     '</td>'+
                 '</tr>';
             }

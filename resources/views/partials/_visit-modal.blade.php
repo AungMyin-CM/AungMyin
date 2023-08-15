@@ -86,7 +86,7 @@
                     </div>
                 </div>
 
-                <p>Diagnosis: <span id="p_diag">{{$row->diagnosis[0]->diagnosis}}</span></p>
+                @if(isset($row->diagnosis[0]))<p>Diagnosis: <span id="p_diag">{{$row->diagnosis[0]->diagnosis}}</span></p>@endif
 
                 <ul class="list-unstyled">
                     @if($row->prescription != '')

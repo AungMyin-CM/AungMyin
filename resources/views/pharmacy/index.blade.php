@@ -126,15 +126,29 @@
                                 <td>{{ $row->expire_date }}</td>
                                 <td>{{ $row->quantity }}</td>
                                 <td>{{ $row->status == '1' ? 'active' : 'inactive' }}</td>
-                                @if (Auth::guard('user')->user()->isAdmin())
-                                <td>
-                                    <div class="d-flex justify-content-center" style="gap: 20px">
-                                        <div>
-                                            @if(Helper::checkPermission('ph_update', $permissions))
-                                            <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
-                                                <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
-                                            </a>
-                                            @endif
+                                @if (Auth::guard('user')->user()->role->role_type == 5)
+                                    <td>
+                                        <div class="d-flex justify-content-center" style="gap: 20px">
+                                            <div>
+                                                @if(Helper::checkPermission('ph_update', $permissions))
+                                                <a href="{{ route('pharmacy.edit' ,  Crypt::encrypt($row->id)) }}" class="btn btn-default">
+                                                    <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
+                                                </a>
+                                                @endif
+                                            </div>
+
+                                            <div>
+                                                @if(Helper::checkPermission('ph_delete', $permissions))
+                                                <form action="{{ route('pharmacy.destroy', $row->id) }}" method="post">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button class="btn btn-default" type="Submit">
+                                                        <i class="fas fa-trash" style="color:#E95A4A; "></i>
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </div>
                                         </div>
 
                                         <div>

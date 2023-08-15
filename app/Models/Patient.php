@@ -44,7 +44,7 @@ class Patient extends Model
     
     public function disease(): HasMany
     {
-        return $this->hasMany(PatientDisease::class, 'patient');
+        return $this->hasMany(PatientDisease::class, 'patient')->orderBy('updated_at','desc')->take(1);
     }
 
     // public function doctors(): BelongsToMany
