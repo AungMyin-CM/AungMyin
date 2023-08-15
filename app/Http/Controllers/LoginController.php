@@ -29,7 +29,6 @@ class LoginController extends Controller
         return view('login/user');
     }
 
-
     public function login(LoginRequest $request)
     {
         if ($request->validated()) {
@@ -43,13 +42,12 @@ class LoginController extends Controller
                 $userCredentials = $request->only('email', 'password');
 
                 if (Auth::guard('user')->attempt($userCredentials)) {
-                    $user_clinic = UserClinic::where('user_id',Auth::id())->first();
-                    $count_user_clinic = UserClinic::where('user_id',Auth::id())->count();
+                    $user_clinic = UserClinic::where('user_id', Auth::id())->first();
+                    $count_user_clinic = UserClinic::where('user_id', Auth::id())->count();
 
-                    if($count_user_clinic == 1)
-                    {   
-                        return redirect('/clinic-system/'.Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
-                    }else{
+                    if ($count_user_clinic == 1) {
+                        return redirect('/clinic-system/' . Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
+                    } else {
                         return redirect('/home');
                     }
                 } else {
@@ -58,8 +56,6 @@ class LoginController extends Controller
             }
         }
     }
-
-
 
     public function logout()
     {

@@ -13,6 +13,9 @@
                                 <p class="fs-1">Clinic Manager</p>
                             </div>
                         </div>
+                        @if (Session::has('success'))
+                        @include('partials._toast')
+                        @endif
                         <div class="col-md-7 pe-0">
                             <div class="form-left h-100 py-5 px-5">
                                 <h3 class="mb-3 text-center">Login</h3>
@@ -39,12 +42,10 @@
                                         </div>
                                         @error('password') <span class="text-danger small">{{ $message }}</span>@enderror
                                     </div>
-                                    {{-- <div class="col-sm-6">
-                                            <a href="#" class="float-end text-primary">Forgot Password?</a>
-                                        </div> --}}
 
-                                    <div class="col-12  text-right">
-                                        <button type="submit" class="btn px-4 float-end mt-4" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Login</button>
+                                    <div class="col-12 text-right mt-4">
+                                        <a href="{{ route('password.request') }}" class="text-dark small mr-2">Forgot Password?</a>
+                                        <button type="submit" class="btn px-4 float-end " style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Login</button>
                                     </div>
                                 </form>
                                 <div class="card-footer text-muted text-center">

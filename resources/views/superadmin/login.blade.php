@@ -11,6 +11,9 @@
                 <span style="font-size: 0.8rem;">Clinic Manager</span>
             </div>
         </div>
+        @if (Session::has('success'))
+        @include('partials._toast')
+        @endif
         <form action="{{ route('superadmin.login') }}" method="post" class="p-5">
             @csrf
             <div class="form-floating mb-3">

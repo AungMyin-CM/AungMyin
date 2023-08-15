@@ -1,25 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ClinicController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\DictionaryController;
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PharmacyController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\PosController;
-use App\Http\Controllers\FeedBackController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\DataController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DocController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\DataController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ClinicController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\FeedBackController;
+use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\ProcedureController;
-use App\Http\Controllers\InvestigationController;
-
+use App\Http\Controllers\DictionaryController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\InvestigationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +35,13 @@ use App\Http\Controllers\SuperAdminController;
 Route::get('/login', [LoginController::class, 'index'])->name('user-login')->middleware('guest');
 
 Route::post('/send-otp', [UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
+
+// Forgot Password
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgetPassword'])->middleware('guest')->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'submitForgetPassword'])->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetPassword'])->middleware('guest')->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'submitResetPassword'])->middleware('guest')->name('password.update');
 
 Route::get('/', [HomeController::class, 'welcome'])->name('aung-myin.welcome');
 
@@ -84,9 +91,9 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('patient/{patient}/lab', [PatientController::class, 'saveProLabData'])->name('save.prolab');
 
-    Route::post('/fetchDiagnosis',[PatientController::class,'fetchDiagnosis'])->name('get.diagnosis');
+    Route::post('/fetchDiagnosis', [PatientController::class, 'fetchDiagnosis'])->name('get.diagnosis');
 
-    Route::post('/fetchDisease',[PatientController::class,'fetchDisease'])->name('get.disease');
+    Route::post('/fetchDisease', [PatientController::class, 'fetchDisease'])->name('get.disease');
 
     Route::post('/fetchDictionary', [PatientController::class, 'fetchDictionary'])->name('dictionary.get');
 
