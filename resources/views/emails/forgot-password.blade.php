@@ -64,7 +64,7 @@
             <tbody>
                 <tr>
                     <td style="width: 596px; vertical-align: top; padding-left: 0; padding-right: 0; padding-top: 15px; padding-bottom: 15px;" width="596">
-                        <img src="{{ asset('images/web-photos/aung-myin.png') }}" style="width: 180px; max-width: 180px; text-align: center; color: #ffffff;" alt="Logo" align="center">
+                        <img src="{{ asset('images/web-photos/aung-myin.png') }}" style="width: 60px; max-width: 60px; text-align: center; color: #ffffff;" alt="Logo" align="center">
                     </td>
                 </tr>
             </tbody>
@@ -91,7 +91,7 @@
                 <tr>
                     <td style="width: 596px; vertical-align: top; padding-left: 30px; padding-right: 30px; padding-top: 30px; padding-bottom: 30px;" width="596">
 
-                        <img style="width: 180px; max-width: 180px; height: 85px; max-height: 85px; text-align: center; color: #ffffff;" alt="Logo" src="{{ asset('images/web-photos/aung-myin.png') }}" align="center" width="180">
+                        <img style="width: 30px; max-width: 30px; text-align: center; color: #ffffff;" alt="Logo" src="{{ asset('images/web-photos/aung-myin.png') }}" align="center">
 
                         <p style="font-size: 13px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #ffffff;">
                             Aung Myin Clinic Manager
