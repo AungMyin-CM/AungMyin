@@ -1,6 +1,6 @@
 <div class="row">
     @foreach ($data as $row)
-    <div class="col-md-3">
+    <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3" style="gap: 10px;">
