@@ -49,7 +49,7 @@
                                 <th>#</th>
                                 <th>Code</th>
                                 <th>Meaning</th>
-                                <th style="width: 10%;">Actions</th>
+                                <th style="width: 10%;"><span class="d-none d-md-block">Actions</span></th>
                             </tr>
                         </thead>
                         <tbody>

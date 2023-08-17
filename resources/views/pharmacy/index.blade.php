@@ -101,7 +101,7 @@
                                 <th>Quantity</th>
                                 <th>Status</th>
                                 @if (Auth::guard('user')->user()->isAdmin())
-                                <th style="width: 10%;">Actions</th>
+                                <th style="width: 10%;"><span class="d-none d-md-block">Actions</span></th>
                                 @endif
                             </tr>
                         </thead>
