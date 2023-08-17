@@ -448,18 +448,20 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="file" multiple="multiple" onchange="loadFile(event)" name="images[]" id="upload" hidden />
+                                            <div class="col-12 col-lg-4">
+                                                <!-- onchange="loadFile(event)" -->
+                                                <input type="file" multiple="multiple" name="images[]" id="upload" hidden />
                                                 <label class="file_upload" for="upload" style="background: #E9ECEF;
                                                 padding: 8px 15px;
                                                 border: 1px solid #CED4DA; 
                                                 border-radius: 5px;
                                                 cursor: pointer;">Upload Images</label>
+                                                <span class="small text-muted" id="fileCount"></span>
                                             </div>
 
                                             <input type="hidden" pattern="{0-9}" class="form-control d-none" name="fees" placeholder="Fees" value="{{Auth::user()->fees}}" />
 
-                                            <div class="col-md-3">
+                                            <div class="col-2 col-lg-3">
                                                 <div class="form-check" style="padding:6px !important;">
                                                     <div class="icheck-primary d-inline mt-2">
                                                         <input type="checkbox" id="foc" name="is_foc" value="1">
@@ -468,7 +470,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-5">
+                                            <div class="col-10 col-lg-5">
                                                 <div class="d-flex" id="followUp">
                                                     <div class="form-check" style="padding:6px !important;">
                                                         <div class="icheck-primary d-inline mt-2">
@@ -1061,13 +1063,25 @@
     })
 
 
-    var loadFile = function(event) {
-        for (var i = 0; i < event.target.files.length; i++) {
-            var src = URL.createObjectURL(event.target.files[i]);
-            $("#image").append("<img id='myImg" + i + "' onclick='showImage(" + i + ")' src=" + src + " style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
+    // var loadFile = function(event) {
+    //     for (var i = 0; i < event.target.files.length; i++) {
+    //         var src = URL.createObjectURL(event.target.files[i]);
+    //         $("#image").append("<img id='myImg" + i + "' onclick='showImage(" + i + ")' src=" + src + " style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
 
+    //     }
+    // };
+
+    const fileInput = document.getElementById('upload');
+    const fileCount = document.getElementById('fileCount');
+
+    fileInput.addEventListener('change', (event) => {
+        const selectedFiles = event.target.files;
+        if (selectedFiles.length === 1) {
+            fileCount.textContent = '1 file selected';
+        } else {
+            fileCount.textContent = `${selectedFiles.length} files selected`;
         }
-    };
+    });
 
     let imgModal = document.getElementById("imgModal");
     let captionText = document.getElementById("caption");
