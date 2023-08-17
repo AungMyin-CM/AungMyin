@@ -22,12 +22,29 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6"></div>
-                        <div class="col-sm-6">
+                        <div class="col-6">
+                            <ul class="nav nav-tabs small" id="myTab" role="tablist" style="border-bottom: none;">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="procedure-tab" data-toggle="tab" data-target="#procedure" type="button" role="tab" aria-controls="procedure" aria-selected="true">
+                                        <i class="fas fa-procedures"></i>
+                                        <span class="d-none d-md-inline">Procedure</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="investigation-tab" data-toggle="tab" data-target="#investigation" type="button" role="tab" aria-controls="investigation" aria-selected="false">
+                                        <i class="fas fa-flask"></i>
+                                        <span class="d-none d-md-inline">Investigation</span>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            @if(Helper::checkPermission('d_create', $permissions))
                             @if(count($data) !== 0 || count($investigations) !== 0)
                             <a href="{{ route('procedure.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
                                 <i class="fas fa-plus"></i> Add new
                             </a>
+                            @endif
                             @endif
                         </div>
                     </div>
@@ -38,15 +55,11 @@
                 </div><!-- /.container-fluid -->
             </section>
 
-
             <section class="content mb-3">
                 <div class="container-fluid">
-                    @if(Helper::checkPermission('d_create', $permissions))
-                    <div class="float-left"></div>
-                    @endif
 
-                    <div class="row">
-                        <div class="col-lg-6 mb-3">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="procedure" role="tabpanel" aria-labelledby="procedure-tab">
                             <label for="procedure">Procedure</label>
 
                             <table id="procedureTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
@@ -95,7 +108,7 @@
                             </table>
                         </div>
 
-                        <div class="col-lg-6 mb-3">
+                        <div class="tab-pane" id="investigation" role="tabpanel" aria-labelledby="investigation-tab">
                             <label for="procedure">Investigation</label>
 
                             <table id="investigationTable" class="table table-striped table-bordered mb-3 nowrap" style="width: 100%;">
