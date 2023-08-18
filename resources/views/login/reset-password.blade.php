@@ -10,11 +10,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 
         body {
             font-family: "Poppins", sans-serif;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .toggle-password,
+        .password-container .toggle-confirm-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -36,24 +52,18 @@
                 @csrf
 
                 <input type="hidden" name="token" value="{{ $token }}">
+                <input type="hidden" name="email" value="{{ $email }}">
 
-                <div class="form-group mb-3">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter your email address">
-
-                    @error('email') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
-                </div>
-
-                <div class="form-group mb-3">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" name="password" placeholder="Password">
+                <div class="form-group mb-3 password-container">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    <i class="toggle-password fas fa-eye-slash"></i>
 
                     @error('password') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="password_confirmation">Password Confirmation</label>
-                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm your Password">
+                <div class="form-group mb-3 password-container">
+                    <input type="password" class="form-control" name="password_confirmation" id="confirm-password" placeholder="Confirm your Password">
+                    <i class="toggle-confirm-password fas fa-eye-slash"></i>
 
                     @error('password_confirmation') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
                 </div>
@@ -69,6 +79,28 @@
     setInterval(function() {
         $(".alert-msg").fadeOut();
     }, 5000);
+
+    $(document).ready(function() {
+        function togglePassword(inputField, toggleButton) {
+            if (inputField.attr('type') === 'password') {
+                inputField.attr('type', 'text');
+                toggleButton.removeClass('fa-eye-slash').addClass('fa-eye');
+            } else {
+                inputField.attr('type', 'password');
+                toggleButton.removeClass('fa-eye').addClass('fa-eye-slash');
+            }
+        }
+
+        $('.toggle-password').on('click', function() {
+            const passwordInput = $('#password');
+            togglePassword(passwordInput, $(this));
+        });
+
+        $('.toggle-confirm-password').on('click', function() {
+            const confirmPasswordInput = $('#confirm-password');
+            togglePassword(confirmPasswordInput, $(this));
+        });
+    });
 </script>
 
 </html>

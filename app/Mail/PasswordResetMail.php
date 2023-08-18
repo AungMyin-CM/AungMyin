@@ -41,6 +41,7 @@ class PasswordResetMail extends Mailable
         return $this->from($this->fromEmail, $this->fromName)
             ->subject($this->subject)
             ->view('emails.forgot-password')
+            ->with('email', $this->recipient)
             ->with('token', $this->token);
     }
 }

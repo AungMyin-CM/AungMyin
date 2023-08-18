@@ -65,6 +65,10 @@
                 <tr>
                     <td style="width: 596px; vertical-align: top; padding-left: 0; padding-right: 0; padding-top: 15px; padding-bottom: 15px;" width="596">
                         <img src="{{ asset('images/web-photos/aung-myin.png') }}" style="width: 60px; max-width: 60px; text-align: center; color: #ffffff;" alt="Logo" align="center">
+
+                        <p style="font-size: 13px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #ffffff;">
+                            Aung Myin Clinic Manager
+                        </p>
                     </td>
                 </tr>
             </tbody>
@@ -78,7 +82,7 @@
 
                         <h1 style="font-size: 20px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 600; text-decoration: none; color: #000000;">Reset Password</h1>
 
-                        <p style="font-size: 15px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #919293;">You can reset your password from this link: <a target="_blank" style="text-decoration: underline; color: #000000;" href="{{ route('password.reset', $token) }}"><small style="text-decoration: underline;">Reset Password</small></a></p>
+                        <p style="font-size: 15px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #919293;">You can reset your password from this link: <a target="_blank" style="text-decoration: underline; color: #000000;" href="{{ route('password.reset', ['email' => encrypt($email), 'token' => $token]) }}"><small style="text-decoration: underline;">Reset Password</small></a></p>
                     </td>
                 </tr>
             </tbody>
@@ -90,12 +94,6 @@
             <tbody>
                 <tr>
                     <td style="width: 596px; vertical-align: top; padding-left: 30px; padding-right: 30px; padding-top: 30px; padding-bottom: 30px;" width="596">
-
-                        <img style="width: 30px; max-width: 30px; text-align: center; color: #ffffff;" alt="Logo" src="{{ asset('images/web-photos/aung-myin.png') }}" align="center">
-
-                        <p style="font-size: 13px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #ffffff;">
-                            Aung Myin Clinic Manager
-                        </p>
 
                         <p style="margin-bottom: 0; font-size: 10px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #ffffff;">
                             <a target="_blank" style="text-decoration: underline; color: #ffffff;" href="https://test.aungmyin.io/">

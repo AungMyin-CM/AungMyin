@@ -36,7 +36,6 @@
                 @csrf
                 <p class="small p-2" style="background-color: {{config('app.bg_color')}}">Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.</p>
                 <div class="form-group mb-3">
-                    <label for="Email">Email</label>
                     <input type="text" name="email" class="form-control" placeholder="Enter your email address">
 
                     @error('email') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
