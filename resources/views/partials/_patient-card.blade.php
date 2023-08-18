@@ -1,3 +1,4 @@
+@if(count($data) !== 0)
 <div class="row">
     @foreach ($data as $row)
     <div class="col-sm-6 col-md-4 col-lg-3">
@@ -13,7 +14,7 @@
                 </div>
 
                 <ul class="list-unstyled">
-                    <li><span class="text-muted">Disease: </span>{{ $row->father_name }}</li>
+                    <li><span class="text-muted">Father: </span>{{ $row->father_name }}</li>
                     <li><span class="text-muted">Age: </span>{{ $row->age }}</li>
                     <li><span class="text-muted">Gender: </span>{{ $row->gender == 1 ? 'male' : 'female' }}</li>
                 </ul>
@@ -45,6 +46,12 @@
     </div>
     @endforeach
 </div>
+@else
+<div class="text-center" style="margin-top: 100px;">
+    <p>No data available.</p>
+    <a href="{{ route('patient.create') }}" class="btn" style="color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+</div>
+@endif
 
 <div class="float-right">
     {{ $data->links('pagination.bootstrap-4') }}

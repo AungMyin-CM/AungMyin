@@ -63,7 +63,9 @@
                         </div>
                         @endif
                         <div class="col-6">
+                            @if(count($data) !== 0)
                             <a href="{{ route('patient.create') }}" class="btn float-right" style="color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                            @endif
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
