@@ -20,8 +20,8 @@ $(function() {
             '</td>'+ 
             '<td><input type="text" name="expire_date[]" id="expire_date_'+row_id+'" readonly class="form-control"></td>'+
             '<td><input type="text" name="remain_qty[]" id="remain_qty_'+row_id+'" class="form-control"required readonly></td>'+
-            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')"></td>'+
-            '<td><input type="text" name="sell_price[]" id="sell_price_'+row_id+'" class="form-control" readonly>'+
+            '<td><input type="text" name="quantity[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" required></td>'+
+            '<td><input type="text" name="sell_price[]" id="sell_price_'+row_id+'" class="form-control" required>'+
             '<input type="hidden" name="act_price[]" id="act_price_'+row_id+'" class="form-control">'+
             '<input type="hidden" name="unit[]" id="unit_'+row_id+'"" class="form-control">'+
             '<input type="hidden" name="margin[]" id="margin_'+row_id+'"" class="form-control">'+

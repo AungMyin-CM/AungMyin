@@ -41,6 +41,10 @@ class Patient extends Model
         return $this->hasMany(Visit::class, 'patient_id')->where('deleted_at',null);
     }
 
+    public function getLastVisit(): HasMany{
+        return $this->hasMany(Visit::class, 'patient_id')->orderBy('updated_at','desc')->take(1);
+    }
+
     
     public function disease(): HasMany
     {

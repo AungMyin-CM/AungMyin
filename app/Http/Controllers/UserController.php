@@ -12,6 +12,9 @@ use App\Models\Role;
 use App\Models\UserClinic;
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 use Auth;
 
 
@@ -365,7 +368,7 @@ class UserController extends Controller
 
     public function updateProfile($id)
     {
-        $user = User::findOrfail($id);
+        $user = User::findOrfail(Crypt::decrypt($id));
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         // Get package info

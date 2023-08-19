@@ -286,9 +286,9 @@
     let editModal = document.getElementById("clinicEditModal");
     let editBtn = document.getElementById("clinicEdit");
 
-    editBtn.onclick = function() {
-        editModal.style.display = "block";
-    }
+    // editBtn.onclick = function() {
+    //     editModal.style.display = "block";
+    // }
 
     $("#clinicClose").click(function(e) {
         editModal.style.display = "none";
@@ -305,58 +305,17 @@
         }
     };
 
+    
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
 
-    $('#updateClinic').submit(function(event) {
-        event.preventDefault();
+    console.log(window.location.pathname);
 
-        let formData = new FormData(this);
-
-        if (selectedLogo !== null) {
-            formData.append('avatar', selectedLogo);
-        } else {
-            formData.delete('avatar');
-        }
-
-        $.ajax({
-            url: "{{ route('clinic.update', $package->clinic->id) }}",
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (selectedLogo !== null) {
-                    let updatedLogoUrl = "{{ asset('images/clinic-logos/') }}/" + response.avatar;
-                    $('#clinicLogoImage').attr('src', updatedLogoUrl);
-                }
-
-                editModal.style.display = "none";
-                $('.wrapper').css('opacity', '1');
-                $('.middle').css('opacity', '0.1');
-
-                $('#clinicName').html("<p>" + response.name + "</p>");
-            },
-            error: function(xhr) {
-                // Handle the error response
-                $('.wrapper').css('opacity', '1');
-                $('.middle').css('opacity', '0.1');
-
-                let data = JSON.parse(xhr.responseText);
-
-                let name = data.errors.name ? data.errors.name[0] : '';
-                let phoneNumber = data.errors.phoneNumber ? data.errors.phoneNumber[0] : '';
-                let address = data.errors.address ? data.errors.address[0] : '';
-
-                $('#nameError').html(name);
-                $('#phoneError').html(phoneNumber);
-                $('#addressError').html(address);
-            }
-        });
-    });
+    // 
 </script>
 @endsection
 {{-- @include('layouts.js') --}}

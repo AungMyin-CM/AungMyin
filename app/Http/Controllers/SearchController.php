@@ -281,6 +281,7 @@ class SearchController extends Controller
                             <span hidden  id= "gender_'.$row->id.'">'.$row->gender.'</span>
                             <span hidden  id= "phoneNumber_'.$row->id.'">'.$row->phoneNumber.'</span>
                             <span hidden  id= "address_'.$row->id.'">'.$row->address.'</span>
+                            <span hidden  id="disease_'.$row->id.'">'.$row->disease[0]->disease.'</span>
                             <span hidden  id= "allergy_'.$row->id.'">'.$row->drug_allergy.'</span>
                         </div>
                     </li>';

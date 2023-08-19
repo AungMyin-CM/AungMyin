@@ -144,8 +144,6 @@ class PosController extends Controller
                     {
                         $procedures = $procedure['assigned_tasks'];
                         
-                    }else{
-                        echo "Hello";
                     }
                 }
             } catch (DecryptException $e) {
@@ -192,7 +190,7 @@ class PosController extends Controller
             'clinic_id' => $clinic_id,
             'patient_id' => $request->patient_id,
             'customer_name' => $request->customer_name,
-            'total_price' => $request->total_med_price,
+            'total_price' => $request->total_price,
             'total_discount' => $request->total_discount,
             'description' => $request->description,
             'payment_status' => $request->payment_status,
@@ -386,14 +384,24 @@ class PosController extends Controller
             $pos = Pos::findOrfail($id);
             $patient_data = null;
             $visit_data = null;
+            $procedure_data = null;
+
+
             if ($pos->patient_id != null) {
                 $patient_data = Patient::findOrfail($pos->patient_id);
-                $visit_data = Visit::where('pos_id', $id)->get()->first();
+                $visit_data = Visit::where('pos_id', $pos->id)->get()->first();
+                if($visit_data)
+                {
+                    $procedure_data = PatientProcedure::where('visit_id',$visit_data->id)->get()->first();
+                }
             }
+
             $pos_detail = PosItem::where("pos_id", $id)->get();
             $payment_types = ['1' => 'Paid', '2' => 'Partial Paid', '3' => 'Foc'];
+            $procedure_data = isset($procedure_data) ? $procedure_data['assigned_tasks'] : null;
 
-            return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types']));
+
+            return view('pos/print-invoice', compact(['pos', 'pos_detail', 'patient_data', 'visit_data', 'payment_types','procedure_data']));
         } catch (DecryptException $e) {
             abort(404);
         }

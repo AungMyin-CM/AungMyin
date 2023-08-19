@@ -185,7 +185,7 @@
                 @endif
 
                 <li class="nav-item">
-                    <a href="{{ route('clinic.settings',Auth::guard('user')->user()->id) }}" class="nav-link" title="Settings">
+                    <a href="{{ route('clinic.settings',Crypt::encrypt(Auth::guard('user')->user()->id)) }}" class="nav-link" title="Settings">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
                             Settings

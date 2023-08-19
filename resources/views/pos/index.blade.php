@@ -1,5 +1,248 @@
 @extends("layouts.app")
 @section('content')
+<style>
+  #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    #myImg:hover {
+        opacity: 0.7;
+    }
+
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Sit on top */
+        padding-top: 100px;
+        /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgb(0, 0, 0);
+        /* Fallback color */
+        background-color: rgba(0, 0, 0, 0.9);
+        /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content,
+    .carousel-inner img {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Caption of Modal Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+    }
+
+    /* Add Animation */
+    .modal-content,
+    .carousel-inner img,
+    #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+
+    .pagination .active {
+        z-index: 0;
+    }
+
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px) {
+
+        .modal-content,
+        .carousel-inner img {
+            width: 100%;
+        }
+    }
+
+    /* Scrollbar */
+    /* Adjust the width of the scrollbar */
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Set the background color */
+    ::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
+
+    /* Thumb styles */
+    ::-webkit-scrollbar-thumb {
+        background-color: #a9a9a9;
+    }
+
+    /* Hover styles */
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #858383;
+    }
+
+    .tooltip-card {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.8s;
+        position: fixed;
+        padding-top: 90px;
+        margin-left: 12px;
+    }
+
+    .tooltip-card .tooltip-content {
+        position: relative;
+        width: 200px;
+        background-color: #003049;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .tooltip-content .arrow {
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        margin-top: -10px;
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 10px solid #003049;
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .quantity__minus,
+    .quantity__plus {
+        display: block;
+        width: 22px;
+        height: 23px;
+        margin: 0;
+        background: #003049;
+        text-decoration: none;
+        text-align: center;
+        line-height: 23px;
+    }
+
+    .quantity__minus:hover,
+    .quantity__plus:hover {
+        background: #575b71;
+        color: #fff;
+    }
+
+    .quantity__minus {
+        border-radius: 3px 0 0 3px;
+    }
+
+    .quantity__plus {
+        border-radius: 0 3px 3px 0;
+    }
+
+    .quantity__input {
+        width: 32px;
+        height: 19px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        border-top: 2px solid #dee0ee;
+        border-bottom: 2px solid #dee0ee;
+        border-left: 1px solid #dee0ee;
+        border-right: 2px solid #dee0ee;
+        background: #fff;
+        color: #8184a1;
+    }
+
+    .quantity__minus:link,
+    .quantity__plus:link {
+        color: #8184a1;
+    }
+
+    .quantity__minus:visited,
+    .quantity__plus:visited {
+        color: #fff;
+    }
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
@@ -67,54 +310,50 @@
                 </div> --}}
 
               {{-- </div> --}}
-              <div class="card card-primary {{$patient != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-2 mb-2">
-                            <span id="name">{{ $patient->name }}</span>
-                            <span id="gender" class="text-danger" style="font-weight: bold;">{{ $patient->gender == 1 ? 'M' : 'F' }}</span>
-                            <span id="age">{{ $patient->age}} years</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
-                        </div>
-                        @if(isset($patient->disease[0]))
-                            <div class="col-sm-4">
-                                <h6 id="p_di"><b>Disease :</b> <span id="p_disease">{{ $patient->disease[0]->disease }}</span></h6>
-                            </div>
-                        @else
-                        <div class="col-sm-4">
-                            <h6 id="p_di"><b>Father Name :</b> <span id="p_disease">{{ $patient->father_name }}</span></h6>
-                        </div>
-                            
-                        @endif
-                        {{-- <div class="col-sm-2">
-                            <nav aria-label="breadcrumb" class="float-right">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                        <button id="viewBtn" style="display: contents;">View</button>
+                    <div class="card card-primary {{$patient != null ? "d-block" : "d-none"}} mt-2" id="p_detail">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-sm-2 mb-2">
+                                  <span id="name">{{ $patient->name }}</span>
+                                  <span id="gender" class="text-danger" style="font-weight: bold;">{{ $patient->gender == 1 ? 'M' : 'F' }}</span>
+                                  <span id="age">{{ $patient->age}} years</span>
+                              </div>
+                              <div class="col-sm-4">
+                                  <h6 id="drug_allergy"><b>Drug Allergy :</b> {{ $patient->drug_allergy ? $patient->drug_allergy : 'None'  }} </h6>
+                              </div>
+                              @if(isset($patient->disease[0]))
+                                  <div class="col-sm-4">
+                                      <h6 id="p_di"><b>Disease :</b> <span id="p_disease">{{ $patient->disease[0]->disease }}</span></h6>
+                                  </div>
+                              @else
+                                <div class="col-sm-4">
+                                    <h6 id="p_di"><b>Father Name :</b> <span id="p_disease">{{ $patient->father_name }}</span></h6>
+                                </div>
+                                  
+                              @endif
+                              {{-- <div class="col-sm-2">
+                                  <nav aria-label="breadcrumb" class="float-right">
+                                      <ol class="breadcrumb">
+                                          <li class="breadcrumb-item">
+                                              <button id="viewBtn" style="display: contents;">View</button>
 
-                                        @include('partials._view-modal')
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">
-                                        @if(Helper::checkPermission('p_update', $permissions))
-                                        <button id="editBtn" style="display: contents;">Edit</button>
+                                              @include('partials._view-modal')
+                                          </li>
+                                          <li class="breadcrumb-item active" aria-current="page">
+                                              @if(Helper::checkPermission('p_update', $permissions))
+                                              <button id="editBtn" style="display: contents;">Edit</button>
 
-                                        @include('partials._edit-modal')
-                                        @endif
-                                    </li>
-                                </ol>
-                            </nav>
-                        </div> --}}
+                                              @include('partials._edit-modal')
+                                              @endif
+                                          </li>
+                                      </ol>
+                                  </nav>
+                              </div> --}}
+                          </div>
+                      </div>
                     </div>
-                </div>
-            </div>
               @else
-              <div class="card card-primary d-none mt-2" id="p_detail">
-                <div class="card-body" style="padding: 0.9rem !important;">
-                  <div class="card-body" style="padding: 0.9rem !important;">
-                    <div class="card-body" style="padding: 0.9rem !important;">
-                      <div class="row mb-2">
+                      {{-- <div class="row mb-2">
                         <div class="col-sm-2">
                           <h6><b>Name :</b> <span id="p_name"></span> </h6>
                         </div>
@@ -150,8 +389,48 @@
 
                     </div>
 
+                  </div> --}}
+                  <div class="card card-primary d-none mt-2" id="p_detail">
+
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2 mb-2">
+                            <span id="p_name"></span>
+                            <span id="p_gender" class="text-danger" style="font-weight: bold;"></span>
+                            <span id="p_age"></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <h6 ><b>Drug Allergy :</b><span id="p_allergy"></span></h6>
+                        </div>
+                          <div class="col-sm-4" id="div_disease">
+                              <h6><b>Disease :</b> <span id="p_disease"></span></h6>
+                          </div>
+                        <div class="col-sm-4" id="div_f_name">
+                            <h6><b>Father Name :</b> <span id="p_f_name"></span></h6>
+                        </div>
+                                                    
+                          {{-- <div class="col-sm-2">
+                            <nav aria-label="breadcrumb" class="float-right">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <button id="viewBtn" style="display: contents;">View</button>
+
+                                        @include('partials._view-modal')
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        @if(Helper::checkPermission('p_update', $permissions))
+                                        <button id="editBtn" style="display: contents;">Edit</button>
+
+                                        @include('partials._edit-modal')
+                                        @endif
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div> --}}
+                    </div>
                   </div>
-                  @endif
+                  </div>
+                @endif
           </div>
       </section>
 
@@ -169,26 +448,37 @@
                 @if($patient != null)
                 <input type="hidden" name="patient_id" class="form-control" id="patient_id" value={{ $patient['id'] }}>
                 <input type="hidden" name="visit_id" class="form-control" value={{ isset($visit_data['id']) ? $visit_data['id'] : ''}}>
-                <input type="hidden" id="fees" class="form-control" value={{ isset($visit_data['fees']) ? $visit_data['fees'] : ''}}>
+                <input type="hidden" id="fees" class="form-control" value={{ $visit_data['is_foc'] != '1' ? (isset($visit_data['fees']) ? $visit_data['fees'] : 0): '0'}}>
                 <input type="hidden" id="customer_name" name="customer_name" class="form-control" value={{ $patient['name'] }}>
                 @else
                 <input type="hidden" name="patient_id" class="form-control" id="patient_id">
-                <input type="hidden" id="fees" class="form-control" value=0>
+                <input type="hidden" id="fees" class="form-control" value={{ isset($visit_data['fees'])? $visit_data['fees'] : '0' }}>
                 <input type="hidden" id="customer_name" name="customer_name" class="form-control">
+                
                 @endif
                 <input type="hidden" name="invoice_code" class="form-control" value={{ $invoice_code }}>
                 @csrf
                 <section class="content">
+                  <div class="container">
 
-                  <div class="container-fluid">
-                    @if (Session::has('success'))
-                    <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
-                      {{ Session::get('success') }}
-                    </div>
-                    @endif
+                  
 
+                  <div class="container" style="background-color: {{config('app.color')}};height:50px;padding:4px;border-radius: 5px;">
+                     
+                      <input type="submit" value="Submit" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}" name="submit_type">
+                      <input type="submit" value="Print" class="btn btn-primary m-1 float-right" name="submit_type" onclick="print()" style="background-color: {{config('app.color')}}">
+                    <input id="submittype" type="hidden" name="submit_type" value="" />
                     <a href="{{route('pos.history')}}" class="btn btn-primary m-1 float-right" style="background-color: {{config('app.color')}}"><i id="search" class="fa fa-history"></i> History</a>
-                    <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">Code - {{ $invoice_code }}</span>
+                    <span style="font-size: 100% !important;margin:5px 0px 5px 0px;" class="badge badge-secondary">{{ $invoice_code }}</span>
+                  </div>
+
+
+                    @if (Session::has('success'))
+                  <div class="alert text-white mt-3" style="background-color: {{config('app.color')}} !important">
+                    {{ Session::get('success') }}
+                  </div>
+                  @endif
+                   
                     <table class="table table-bordered mb-2" id="product_info_table">
                       <thead>
                         <tr>
@@ -203,7 +493,7 @@
                         </tr>
                       </thead>
 
-                      <tbody>
+                      <tbody> 
                         @if ($med_data)
                         @foreach ($med_data as $key => $md)
                         <tr id="row_{{$key+1}}">
@@ -214,7 +504,7 @@
                             <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
 
                             </div>
-                            <span id="product_status1" class="label label-danger"></span>
+                            <span id="product_status_1" class="badge badge-danger"></span>
                           </td>
                           <td>
                             <input type="text" name="expire_date[]" id="expire_date_{{$key+1}}" value="{{$md[0]['expire_date']}}" readonly class="form-control">
@@ -226,7 +516,7 @@
                             <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key][0]}}">
                           </td>
                           <td>
-                            <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" class="form-control" readonly>
+                            <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" onkeyup="getTotal({{$key+1}})" class="form-control" required>
                             <input type="hidden" name="act_price[]" id="act_price_{{$key+1}}" value="{{$md[0]['act_price']}}" class="form-control">
                             <input type="hidden" name="unit[]" id="unit_{{$key+1}}" value="{{$md[0]['unit']}}" class="form-control">
                             <input type="hidden" name="margin[]" id="margin_{{$key+1}}" value="{{$md[0]['margin']}}" class="form-control">
@@ -259,7 +549,7 @@
                             <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)">
                           </td>
                           <td>
-                            <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" readonly>
+                            <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" onkeyup="getTotal(1)" required>
                             <input type="hidden" name="act_price[]" id="act_price_1" class="form-control">
                             <input type="hidden" name="unit[]" id="unit_1" class="form-control">
                             <input type="hidden" name="margin[]" id="margin_1" class="form-control">
@@ -274,9 +564,10 @@
                         @endif
                       </tbody>
                     </table>
-                    @if($procedures)
-                      <table class="table table-bordered mt-2">
+                      <table class="table table-bordered mt-2" id="procedureTable">
                         <tbody>
+                          @if($procedures)
+
                             <span class="show" id="proData">
                               @php
 
@@ -287,27 +578,33 @@
                                 foreach ($pro as $key =>$row) {
                                   $proInfo[] = explode("^", $row);
                                 }
+
+                                $amount = 0;
                                 
-                                foreach($proInfo as $d){
-                                    echo '<tr>
+                                foreach($proInfo as $key => $d){
+                                    echo '<tr id=row_'.($key+1).'>
                                         <td style="width:54%;">
                                           <label for="pro_name">'.$d[0].'</label>
                                         </td>
                                         <td style="width:8%;">
-                                          <input type="text" class="form-control" name="p_quantity" value="'.$d[1].'">
+                                          <input type="text" class="form-control" id="p_qty_'.($key+1).'" name="p_quantity" value="'.$d[1].'" readonly>
                                         </td>
                                         <td>
-                                          <input type="text" class="form-control" name="p_price" value="'.$d[2].'">
+                                          <input type="text" class="form-control" id="p_price_'.($key+1).'" name="p_price" value="'.$d[2].'" readonly>
                                         </td>
                                         <td>
                                           <input type="text" class="form-control" name="chargeType" readonly>
                                         </td>
                                         <td style="width:16%;">
-                                          <input type="text" class="form-control" name="total" value="'.$d[1] * $d[2].'" readonly>
-                                        </td>';
+                                          <input type="text" class="form-control" id="p_total_'.($key+1).'" name="total" value="'.$d[1] * $d[2].'" readonly>
+                                        </td></tr>';
+
+                                      $amount += $d[1] * $d[2];
                                   }
-                                  
+
+
                               @endphp</span>
+                            @endif
                               <tr>
                                 <td>
                                   <label for="consult_title">Consultation Fees</label>
@@ -316,69 +613,54 @@
                                   <input type="number" value="1" readonly class="form-control">
                                 </td>
                                 <td>
-                                  <input id="consult_title" class="form-control" value="{{$visit_data['fees']}}"/>
+                                  <input id="consult_title" class="form-control" value="{{isset($visit_data['fees']) ? $visit_data['fees'] : ''}}" readonly/>
                                 </td>
                                 <td>
-                                  @if($visit_data['is_foc'] == 1)
-                                    <label for="foc">FOC</label>
+                                  @if(isset($visit_data['is_foc']))
+                                    <label for="foc" class="text-center">FOC</label>
+                                    <input type="text" class="form-control" id="consult_chargeType" name="chargeType" value="1" readonly hidden>
                                   @else
-                                    <input type="text" class="form-control" name="chargeType" readonly>
+                                    <input type="text" class="form-control" id="consult_chargeType" name="chargeType" value="0"  readonly hidden>
                                   @endif
                                 </td>
                                 <td>
-                                  <input type="text" class="form-control" name="total" value="{{1 * $visit_data['fees']}}" readonly>
+                                  <input type="text" class="form-control" name="total" value="{{1 * isset($visit_data['fees']) ? $visit_data['fees'] : 0}}" readonly>
 
                                 </td>
                               </tr>
-                              {{-- 
-                                  @foreach(array_filter(explode('<br>',$procedures)) as $pro) 
-                                
+                              <span id="p_r_t" class="d-none">{{isset($amount) ? $amount : 0}}</span>
 
-                              @endforeach --}}
-                            {{-- <tr>
-                              <td style="width:54%;">
-                                <input type="text" class="form-control" name="type" value="{{$pro[0]}}" >
-                              </td>
-                              <td >
-                                <input type="text" class="form-control" name="p_quantity" value="{{$pro[1]}}">
-                              </td>
-                              <td>
-                                <input type="text" class="form-control" name="p_price" value="{{$pro[2]}}">
-                              </td>
-                              <td>
-                                <input type="text" class="form-control" name="chargeType" readonly>
-                              </td>
-                              <td>
-                                <input type="text" class="form-control" name="total" readonly>
-                              </td>
-                            </tr> --}}
+                  
                         </tbody>
                       </table>
-                    @else
-                     {{'Hello'}}
-                    @endif
-                    <div class="col-md-4 float-right col-xs-12 mr-3">
+                    <div class="col-md-8 float-right col-xs-12 mr-3">
+    
                       <div class="form-group">
-                        <label for="net_amount" class="col-sm-5 control-label">Med Amount</label>
-                        <div class="col-sm-7">
-                          <input type="text" class="form-control" id="med_amount" name="total_med_price" readonly autocomplete="off">
+                        <div class="row">
+                          <div class="col-md-3">
+                            <select type="text" class="form-control" id="payment_status" name="payment_status" required>
+                              <option value="1" selected>Paid</option>
+                              <option value="3">FOC</option>
+                            </select>
+                            
+                          </div>
+
+                        
+                          <div class="col-md-3">
+                            {{-- <label for="payment_status" class="col-sm-5 control-label">Paid Status</label> --}}
+
+                            
+                            <div class="input-group mb-3">
+                              <div class="input-group-prepand">
+                                  <span class="input-group-text">Total</span>
+                              </div>
+                              <input type="text" class="form-control" id="net_amount" name="total_price" readonly autocomplete="off">
+                          </div>
+                               
+                          </div>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label for="net_amount" class="col-sm-5 control-label">Net Amount</label>
-                        <div class="col-sm-7">
-                          <input type="text" class="form-control" id="net_amount" name="total_price" readonly autocomplete="off">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="payment_status" class="col-sm-5 control-label">Paid Status</label>
-                        <div class="col-sm-7">
-                          <select type="text" class="form-control" id="payment_status" name="payment_status" required>
-                            <option value="1" selected>Paid</option>
-                            <option value="2">Partial Paid</option>
-                            <option value="3">FOC</option>
-                          </select>
-                        </div><br>
+                      {{-- <div class="form-group">
                         <div class="row">
                           <div class="col-md-3">
                             <input type="submit" value="Submit" class="btn btn-primary" style="background-color: {{config('app.color')}}" name="submit_type">
@@ -389,7 +671,7 @@
                           <input id="submittype" type="hidden" name="submit_type" value="" />
 
                         </div>
-                      </div>
+                      </div> --}}
 
                     </div>
                 </section>
@@ -401,6 +683,21 @@
 
     </div>
   </div>
+  <div id="imgModal" class="modal">
+    <span id="imgClose" class="close">&times;</span>
+    <div id="carousel" class="carousel slide">
+        <div class="carousel-inner" id="carousel-inner"></div>
+        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div id="caption"></div>
+</div>
 </body>
 
 <script src="{{ asset('js/pos.js') }}"></script>
@@ -412,6 +709,68 @@
   setInterval(function() {
     $(".alert").fadeOut();
   }, 3000);
+
+  var loadFile = function(event) {
+        for (var i = 0; i < event.target.files.length; i++) {
+            var src = URL.createObjectURL(event.target.files[i]);
+            $("#image").append("<img id='myImg" + i + "' onclick='showImage(" + i + ")' src=" + src + " style='margin:4px;width:100px;border-radius:5px;cursor:pointer;' alt='img' />");
+
+        }
+    };
+
+    let imgModal = document.getElementById("imgModal");
+    let captionText = document.getElementById("caption");
+
+    function showImage(id, i) {
+        let origin_image = document.getElementById("myImg" + id + i);
+        imgModal.style.display = "block";
+        captionText.innerHTML = origin_image.alt;
+
+        let carouselInner = document.getElementById("carousel-inner");
+        // Clear the previous carousel items
+        carouselInner.innerHTML = "";
+
+        let carouselItem = document.createElement("div");
+        carouselItem.classList.add("carousel-item");
+        carouselItem.classList.add("active");
+
+        let carouselImage = document.createElement("img");
+        carouselImage.src = origin_image.src;
+        carouselImage.alt = origin_image.alt;
+
+        carouselItem.appendChild(carouselImage);
+        carouselInner.appendChild(carouselItem);
+
+        // Select all images with the same ID
+        let images = document.querySelectorAll("[id^='myImg" + id + "']");
+        console.log(images);
+
+        for (let j = 0; j < images.length; j++) {
+            if (images[j] !== origin_image) {
+                carouselItem = document.createElement("div");
+                carouselItem.classList.add("carousel-item");
+
+                carouselImage = document.createElement("img");
+                carouselImage.src = images[j].src;
+                carouselImage.alt = images[j].alt;
+
+                carouselItem.appendChild(carouselImage);
+                carouselInner.appendChild(carouselItem);
+            }
+        }
+    }
+
+    // Close image model
+    $("#imgClose").click(function(e) {
+        imgModal.style.display = "none";
+    })
+
+    // When the user clicks anywhere outside of the modal, close it
+    $(window).click(function(event) {
+        if (event.target == imgModal) {
+            imgModal.style.display = "none";
+        }
+    });
 
   $(document).ready(function() {
 
@@ -453,45 +812,6 @@
     }
 
   });
-
-  const resPro = $("#proData").text();
-
-  console.log(resPro.split('<br>'));
-
-
-  // var table_str = '<table class="table table-bordered">'+ 
-                        
-            
-  //     for (i =0; i<fil_res.length ; i++){
-
-  //         data = res[i].split('^');
-      
-  //         table_str +=
-  //         '<tr id="row_'+i+'">'+
-  //             '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
-  //             '<input type="text" name="med_name[]" id="product_search_'+i+'" onkeyup="searchMed('+i+')" class="form-control" value="'+data[1]+'"/>'+
-  //             '<div id="medList_'+i+'" style="display:none;position:absolute;width:35%;"></div>'+
-  //             '</td>'+
-  //             '<td><input type="text"  name="med_qty[]" id="qty_'+i+'" class="form-control" value="'+data[2]+'" /></td>'+
-  //             '<td><input type="text"   name="days[]"  id="days_'+i+'" class="form-control" value="'+data[3]+'"/></td>'+
-  //             '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
-
-  //             '</td>'+
-  //         '</tr>';
-  //     }
-  //     table_str +=  '</table >';
-  
-  // $('#medtable').append(table_str);
-
-  let visitModal = document.getElementById('visitModal');
-
-    // visitBtn.onclick = function() {
-    //     visitModal.style.display = "block";
-    // }
-
-    // $("#visitClose").click(function(e) {
-    //     visitModal.style.display = "none";
-    // })
 
   function print() {
     document.getElementById("submittype").value = "print-type";
@@ -541,13 +861,36 @@
     var phoneNumber = $('#phoneNumber_' + id).text();
     var address = $('#address_' + id).text();
     var allergy = $('#allergy_' + id).text();
+    var disease = $('#disease_' + id).text();
 
     document.getElementById("p_detail").classList.remove('d-none');
+
+    if(gender == 1){
+      gender = 'Male';
+    }else{
+      gender = 'Female';
+    }
+
+    if(allergy == '')
+    {  
+      allergy = ' None';
+    }
+
+    if(disease ==  ' ' ){
+      $("#div_disease").remove()
+      $("#p_f_name").text(f_name);
+
+    }else{
+      $("#div_f_name").remove()
+      $("#p_disease").text(disease);
+
+
+
+    }
 
     $("#p_name").text(name);
     $("#customer_name").val(name);
     $("#p_age").text(age);
-    $("#p_f_name").text(f_name);
     $("#p_gender").text(gender);
     $("#p_phoneNumber").text(phoneNumber);
     $("#p_address").text(address);
@@ -604,10 +947,13 @@
       $("#act_price_" + row_id).val(data[0].act_price)
       $("#margin_" + row_id).val(data[0].margin)
       $("#unit_" + row_id).val(data[0].unit)
-
+      if($("#qty_"+row_id).val()){
+        $("#amount_"+row_id).val(data[0].sell_price * $("#qty_"+row_id).val())
+      }
 
       $('#medList_' + row_id).css("display", "none");
       $('#medList_' + row_id).html("");
+      $("#product_status_"+row_id).text('');
 
     });
   }
@@ -615,6 +961,7 @@
   function subAmount() {
 
     var tableProductLength = $("#product_info_table tbody tr").length;
+
 
     var totalSubAmount = 0;
     for (let y = 0; y < tableProductLength; y++) {
@@ -624,22 +971,26 @@
       count = count.substring(4);
 
       totalSubAmount = Number(totalSubAmount) + Number($("#amount_" + count).val());
-    } // /for
+    } 
 
     // total amount
     var totalAmount = totalSubAmount;
     // $("#net_amount").val(totalAmount);
     // $("#totalAmountValue").val(totalAmount);
+  
     var fees = Number($('#fees').val());
+
+
+    var p_total = Number($('#p_r_t').text());
     var discount = $("#discount").val();
     if (discount) {
       var grandTotal = Number(totalAmount) - (Number(totalAmount) / 100) * discount;
 
       $("#med_amount").val(grandTotal);
-      $("#net_amount").val(Number(grandTotal) + fees);
+      $("#net_amount").val(Number(grandTotal) + fees + p_total);
     } else {
       $("#med_amount").val(totalAmount);
-      $("#net_amount").val(Number(totalAmount) + fees);
+      $("#net_amount").val(Number(totalAmount) + fees + p_total);
 
     } // /else discount 
 
@@ -654,11 +1005,19 @@
 
     if (qty > avaiqty) {
 
-      alert("Not available that amount");
+      $("#product_status_"+row).text("Unavailable Stock");
+
+      var total = rate * qty;
+      var discount = (Number($("#sell_price_" + row).val()) * Number($("#qty_" + row).val()) / 100) * $("#discount_" + row).val();
+      total = (total) - discount;
+
+      $("#amount_" + row).val(total);
+      $("#amount_value_" + row).val(total);
+
+      subAmount();
 
     } else {
 
-      // var tax = (Number($("#rate_value_"+row).val()) * Number($("#qty_"+row).val())/100) * $("#tax_"+row).val();
       var total = rate * qty;
       var discount = (Number($("#sell_price_" + row).val()) * Number($("#qty_" + row).val()) / 100) * $("#discount_" + row).val();
       total = (total) - discount;
