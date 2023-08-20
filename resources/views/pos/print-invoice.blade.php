@@ -178,7 +178,7 @@
                   <td class="small">Subtotal</td>
                   @if(isset($visit_data))
 
-                    <td class="small">{{ $visit_data['fees'] != '1' ? (number_format($visit_data['fees'] + $pos->total_price)) : number_format($pos->total_price) }}</td>
+                    <td class="small">{{ $visit_data['fees'] != '1' ? (number_format($pos->total_price)) : number_format($pos->total_price) }}</td>
                   @else
                     <td class="small">{{isset($visit_data['fees'])? $visit_data['fees'] + $pos->total_price : 0 + $pos->total_price}}</td>
                   @endif

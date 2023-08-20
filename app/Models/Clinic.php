@@ -23,9 +23,9 @@ class Clinic extends Model
         return $this->hasOne(PackagePurchase::class, 'clinic_id', 'id');
     }
 
-    public function package_purchase(): HasMany
+    public function transaction(): HasMany
     {
-        return $this->hasMany(PackagePurchase::class, 'clinic_id');
+        return $this->hasMany(Transaction::class, 'user_id');
     }
 
     public function package(): BelongsTo

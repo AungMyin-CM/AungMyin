@@ -107,7 +107,7 @@ class ClinicController extends Controller
 
         $user_id = Auth::guard('user')->user()['id'];
         $clinic = new Clinic();
-        $package = Package::find($request->package_id)->first();
+        $package = Package::find($request->package_id);
 
         if ($package->type == 'ultimate') {
 

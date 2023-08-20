@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\UserClinic;
+use App\Models\Transaction;
+
 use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Crypt;
@@ -372,7 +374,7 @@ class UserController extends Controller
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         // Get package info
-        $package = PackagePurchase::where('user_id', $id)->first();
+        $package = PackagePurchase::where('user_id', $user->id)->first();
 
         $role = Role::where('id', $user->role_id)->get()->first();
 

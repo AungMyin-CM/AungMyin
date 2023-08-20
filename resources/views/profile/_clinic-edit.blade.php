@@ -16,11 +16,16 @@
                                     <div class="input-group m-auto">
                                         <input type="file" class="@error('avatar') is-invalid @enderror" onchange="loadClinicLogo(event)" name="avatar" id="clinicLogoUpload" hidden />
                                         <label class="file_upload m-auto hover" for="clinicLogoUpload" id="clinicLogoContainer">
-                                            @if($package->clinic->avatar != '')
-                                            <img src="{{ asset('images/clinic-logos/'.$package->clinic->avatar) }}" alt="Clinic Logo" class="avatar img-thumbnail mb-2" id="clinicLogoImage">
+                                            @isset($package->clinic->avatar)
+                                                @if($package->clinic->avatar != '')
+                                                <img src="{{ asset('images/clinic-logos/'.$package->clinic->avatar) }}" alt="Clinic Logo" class="avatar img-thumbnail mb-2" id="clinicLogoImage">
+                                                @else
+                                                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="avatar img-thumbnail mb-2" alt="Clinic Logo" id="clinicLogoImage">
+                                                @endif
                                             @else
-                                            <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="avatar img-thumbnail mb-2" alt="Clinic Logo" id="clinicLogoImage">
-                                            @endif
+                                                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="avatar img-thumbnail mb-2" alt="Clinic Logo" id="clinicLogoImage">
+
+                                            @endisset
                                         </label>
 
                                         @error('avatar')

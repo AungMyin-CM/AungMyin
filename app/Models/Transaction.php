@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class Transaction extends Model
 {
@@ -22,5 +24,10 @@ class Transaction extends Model
         'on_trial',
         'created_at'
     ];
+
+    public function clinic(): HasMany
+    {
+        return $this->hasMany(Clinic::class, 'package_id');
+    }
 
 }
