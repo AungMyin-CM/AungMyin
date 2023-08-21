@@ -876,7 +876,7 @@
       allergy = ' None';
     }
 
-    if(disease ==  ' ' ){
+    if(disease ==  '' ){
       $("#div_disease").remove()
       $("#p_f_name").text(f_name);
 
