@@ -4,10 +4,7 @@
 
     <!-- Modal content -->
     <div class="modal-content">
-        <div class="modal-header" style="background-color: {{config('app.color')}}">
-            <h5 class="modal-title text-white">Patient Info</h5>
-            <span id="viewClose" class="close">&times;</span>
-        </div>
+
         <div class="modal-body">
             <div class="card">
                 <div class="card-body">

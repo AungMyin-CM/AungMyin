@@ -844,10 +844,6 @@
 }
 
     // Close the modal
-    $("#viewClose").click(function(e) {
-        viewModal.style.display = "none";
-    })
-
     $("#editClose").click(function(e) {
         editModal.style.display = "none";
     })
