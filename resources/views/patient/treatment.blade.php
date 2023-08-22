@@ -348,28 +348,28 @@
                                         <div class="form-group mb-3">
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="sys_bp" id="sys_bp" placeholder="Sys">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="sys_bp" id="sys_bp" placeholder="Sys">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="dia_bp" id="dia_bp" placeholder="Dia">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="dia_bp" id="dia_bp" placeholder="Dia">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="pr" id="pr" placeholder="P.R">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="pr" id="pr" placeholder="P.R">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="temp" id="temp" placeholder="Temp">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="temp" id="temp" placeholder="Temp">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="spo2" id="spo2" placeholder="Spo2">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="spo2" id="spo2" placeholder="Spo2">
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" name="rbs" id="rbs" placeholder="Rbs">
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="rbs" id="rbs" placeholder="Rbs">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="mb-3">
-                                            <textarea class="form-control c-field" id="dictionary" rows="3" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
+                                            <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
                                         </div>
 
                                         <div class="row mb-3">
@@ -378,7 +378,7 @@
                                                     <div class="input-group-prepand">
                                                         <span class="input-group-text">Diagnosis</span>
                                                     </div>
-                                                    <textarea class="form-control c-field" id="diagnosis_dictionary" rows="1" name="diag" onkeyup="fetchDiagnosis()">{{ old('diag') }}</textarea>
+                                                    <textarea class="form-control c-field" id="diagnosis_dictionary" autocomplete="off" rows="1" name="diag" onkeyup="fetchDiagnosis()">{{ old('diag') }}</textarea>
 
                                                 </div>
                                             <ul id="diagList" style="position:absolute;width:35%;" class="list-group d-none"></ul>
@@ -389,7 +389,7 @@
                                                     <div class="input-group-prepand">
                                                         <span class="input-group-text">Diseases</span>
                                                     </div>
-                                                    <input type="text" name="disease" class="form-control" id="disease" onkeyup="fetchDisease()" value="{{old('disease')}}">
+                                                    <input type="text" name="disease" class="form-control" autocomplete="off" id="disease" onkeyup="fetchDisease()" value="{{old('disease')}}">
                                                 </div>
                                                 <ul id="diseaseList" style="position:absolute;width:35%;" class="list-group d-none"></ul>
 

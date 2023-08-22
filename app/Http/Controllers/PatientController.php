@@ -454,7 +454,7 @@ class PatientController extends Controller
 
             foreach ($data as $row) {
                 $output = '
-                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;" data-name =' . $row->diagnosis . ' onclick="sp_option(this)">
+                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;z-index:1;" data-name =' . $row->diagnosis . ' onclick="sp_option(this)">
                     <span>' . $row->diagnosis . '</span>
                 </li>
                 ';
@@ -477,7 +477,7 @@ class PatientController extends Controller
 
             foreach ($data as $row) {
                 $output = '
-                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;" data-name ='.$row->disease. ' onclick="sd_option(this)">
+                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;z-index:1;" data-name ='.$row->disease. ' onclick="sd_option(this)">
                     <span>' .$row->disease. '</span>
                 </li>
                 ';
@@ -513,7 +513,7 @@ class PatientController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-                        <li class="list-group-item" id="item_options" data-id =' . $row->id . '  data-name =' . $row->name . ' row-id=' . $row_id . ' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>' . $row->name . '</span></li>';
+                        <li class="list-group-item" id="item_options" data-id =' . $row->id . '  data-name =' . $row->name . ' row-id=' . $row_id . ' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;z-index:1;"><span>' . $row->name . '</span></li>';
                 }
                 $output .= '</ul>';
             }
