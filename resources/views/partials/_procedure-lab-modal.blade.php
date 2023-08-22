@@ -201,11 +201,11 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
         <div class="modal-header" style="background-color: {{config('app.color')}}">
             <h5 class="modal-title text-white">Procedure and Lab</h5>
             <input class="d-none" name="pro_lab_data" id="is_saved"/>
-            <div class="row close">
+            <div class="row">
 
-              <div class="col-md-6 d-none pro-action">
-                <a href="#" class="btn btn-secondary app-color" id="save_pro_btn">Save</a>
-                <a href="#" class="btn btn-secondary app-color d-none" id="update_pro_btn">Update</a>
+              <div class="col-6 d-none pro-action">
+                <a href="#" class="btn btn-secondary btn-sm app-color" id="save_pro_btn">Save</a>
+                <a href="#" class="btn btn-secondary btn-sm app-color d-none" id="update_pro_btn">Update</a>
 
               </div>
               <div class="snippet d-none" data-title="dot-elastic">
@@ -215,9 +215,9 @@ ul.ks-cboxtags li input[type="checkbox"]:focus + label {
               </div>
             
                 
-              <div class="col-md-6">
+              <div class="col-6">
                 <span id="procedureClose">
-                  <a href="#" class="btn btn-danger" value="Cancel">Cancel</a>
+                  <a href="#" class="btn btn-danger btn-sm" value="Cancel">Cancel</a>
                 </span>
               </div>
             </div>
