@@ -87,7 +87,7 @@
                                         </div>
                                     </div> 
                                 @endforeach
-                                    {{-- <div class="col-md-4">
+                                    <div class="col-md-4">
                                         <a href="{{route('package.selection')}}">
 
                                         <div class="card mb-3" style="cursor:pointer;" id="clinic-card">
@@ -105,7 +105,7 @@
                                             </div>
                                         </div>
                                         </a>
-                                    </div> --}}
+                                    </div>
                                 
                             @endif
                         </div>
