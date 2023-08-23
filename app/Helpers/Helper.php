@@ -31,4 +31,9 @@ class Helper
         }
 
     }
+
+    public static function isMobile()
+    {
+        return (bool) preg_match('/(android|webos|iphone|ipod|blackberry|iemobile|opera mini)/i', request()->server('HTTP_USER_AGENT'));
+    }
 }

@@ -133,6 +133,10 @@
         .carousel-inner img {
             width: 100%;
         }
+
+        .close {
+            top: 8px;
+        }
     }
 
     /* Scrollbar */
@@ -243,6 +247,36 @@
     .quantity__minus:visited,
     .quantity__plus:visited {
         color: #fff;
+    }
+
+    .dictionary-container,
+    .medicine-container {
+        position: relative;
+    }
+
+    .dictionary-container .toggle-dictionary,
+    .medicine-container .toggle-medicine {
+        position: absolute;
+        top: 80%;
+        right: 10px;
+        transform: translateY(-80%);
+        cursor: pointer;
+    }
+
+    .dict_meaning {
+        position: absolute;
+        z-index: 1;
+        bottom: 10%;
+        transform: translateY(-10%);
+        right: 10px;
+    }
+
+    .dict_med {
+        position: absolute;
+        z-index: 1;
+        bottom: 5%;
+        transform: translateY(-5%);
+        right: 10px;
     }
 </style>
 
@@ -368,9 +402,23 @@
                                             </div>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-3 dictionary-container">
                                             <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
-                                        </div>
+                                            <i class="toggle-dictionary fas fa-question"></i>
+
+                                            <div class="card d-none text-white dict_meaning" style="background-color: {{config('app.color')}}" id="dict_meaning">
+                                                <div class="card-body">
+                                                    <ul class="list-unstyled">
+                                                        @foreach($dictionaries as $dictionary)
+                                                        @if($dictionary->isMed !== 1)
+                                                        <li>{{ $dictionary->meaning }}</li>
+                                                        @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+                                        
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
@@ -429,10 +477,26 @@
                                                                 <td>
                                                                     <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days">
                                                                 </td>
+                                                                <td class="medicine-container">
+                                                                    <i class="toggle-medicine fas fa-question fa-sm"></i>
+
+                                                                    <div class="card d-none text-white dict_med" style="background-color: {{config('app.color')}}" id="dict_med">
+                                                                        <div class="card-body">
+                                                                            <ul class="list-unstyled">                                                                          
+                                                                                @foreach($dictionaries as $dictionary)
+                                                                                    @if($dictionary->isMed === 1)
+                                                                                    <li>{{ $dictionary->meaning }}</li>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
 
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                    
                                             </section>
                                         </div>
                                         {{-- </fieldset> --}}
@@ -1444,6 +1508,28 @@
             }
         });
     }
+
+    $(document).ready(function() {
+        $('.toggle-dictionary').click(function() {
+            let dictMeaning = $('#dict_meaning');
+
+            if(dictMeaning.hasClass('d-none')) {
+                dictMeaning.removeClass('d-none').addClass('d-block');
+            } else {
+                dictMeaning.removeClass('d-block').addClass('d-none');
+            }
+        })
+
+        $('.toggle-medicine').click(function() {
+            let dictMed = $('#dict_med');
+            
+            if(dictMed.hasClass('d-none')) {
+                dictMed.removeClass('d-none').addClass('d-block');
+            } else {
+                dictMed.removeClass('d-block').addClass('d-none');
+            }
+        })
+    })
 </script>
 @endsection
 {{-- @include('layouts.js') --}}

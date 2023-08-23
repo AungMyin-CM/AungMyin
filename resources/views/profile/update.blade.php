@@ -86,6 +86,10 @@
         .modal-content {
             width: 100%;
         }
+        
+        .close {
+            top: 8px;
+        }
     }
 </style>
 

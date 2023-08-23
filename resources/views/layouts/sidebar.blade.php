@@ -109,9 +109,14 @@
                 </li>
                 @endif
                 @endif
+
+                @php
+                    $isInTreatment = Str::is('clinic-system/patient/*/treatment', request()->path());
+                @endphp
+
                 @if (Auth::guard('user')->user())
                 @if(Helper::checkPermission('d_view', $permissions))
-                @if(Str::is('clinic-system/patient/*/treatment', request()->path()))
+                @if($isInTreatment && !Helper::isMobile())
                 <li class="nav-item">
                     <a href="#" id="dictionaryTooltip" class="nav-link" title="Shorthand">
                         <i class="nav-icon fas fa-book"></i>
@@ -136,7 +141,7 @@
 
                 @if (Auth::guard('user')->user())
                 @if(Helper::checkPermission('ph_view', $permissions))
-                @if(Str::is('clinic-system/patient/*/treatment', request()->path()))
+                @if($isInTreatment && !Helper::isMobile())
                 <li class="nav-item">
                     <a href="#" id="medicineTooltip" class="nav-link" title="Pharmacy">
                         <i class="nav-icon fas fa-pills"></i>
