@@ -112,6 +112,46 @@ class PatientController extends Controller
         }
     }
 
+    public function storePatient(PatientRequest $request)
+    {
+        if (!$this->checkPermission('p_create')) {
+            abort(404);
+        }
+
+        if ($request->validated()) {
+            $patient = new Patient();
+
+            $code = $this->codeGenerator();
+
+            $clinic_id = session()->get('cc_id');
+            $user_id = Auth::guard('user')->user()['id'];
+
+            $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
+            $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name) . str_replace(' ', '_', $code);
+            $p_status = $role->role_type == 1 ? 4 : 1;
+
+            $patient_id = $patient->create([
+                'user_id' => Auth::guard('user')->user()['id'],
+                'code' => $code,
+                'name' => $request->name,
+                'father_name' => $request->father_name,
+                'phoneNumber' => $request->phoneNumber,
+                'age' => $request->age,
+                'address' => $request->address,
+                'gender' => $request->gender,
+                'clinic_code' => $clinic_id,
+                'drug_allergy' => $request->drug_allergy,
+                'summary' => $request->summary,
+                'p_status' => $p_status,
+                'Ref' => $reference
+            ])->id;
+        }
+
+        $patient = (Patient::where('id', $patient_id)->get())[0];
+
+        return response()->json($patient);
+    }
+
     public function edit($id)
     {
         if (!$this->checkPermission('p_update')) {
@@ -290,7 +330,7 @@ class PatientController extends Controller
             'is_followup' => $request->followup_date ? '1' : null,
         ])->id;
 
-        if($request->diag){
+        if ($request->diag) {
             PatientDiagnosis::create([
                 'uuid' => Str::uuid(),
                 'clinic' => session()->get('cc_id'),
@@ -301,7 +341,7 @@ class PatientController extends Controller
             ]);
         }
 
-        if($request->disease){
+        if ($request->disease) {
             PatientDisease::create([
                 'uuid' => Str::uuid(),
                 'clinic' => session()->get('cc_id'),
@@ -312,9 +352,8 @@ class PatientController extends Controller
             ]);
         }
 
-        if($request->pro_lab_data)
-        {
-            PatientProcedure::where('uuid',$request->pro_lab_data)->update([
+        if ($request->pro_lab_data) {
+            PatientProcedure::where('uuid', $request->pro_lab_data)->update([
                 'is_pos' => 1,
                 'visit_id' => $visit_id,
             ]);
@@ -378,21 +417,20 @@ class PatientController extends Controller
             $assign_tasks .= $request->name[$x] . '^' . $request->quantity[$x] . '^' . $request->price[$x] . '<br>';
         }
 
-        if($request->uuid){
+        if ($request->uuid) {
 
-            PatientProcedure::where('uuid',$request->uuid)->update([
+            PatientProcedure::where('uuid', $request->uuid)->update([
                 'patient_id' => $request->patient_id,
                 'assigned_tasks' => $assign_tasks,
                 'is_pos' => 0
             ]);
 
             echo "true";
-
-        }else{
+        } else {
 
             $uuid = Str::uuid();
 
-            try{
+            try {
 
                 PatientProcedure::create([
                     'uuid' => $uuid,
@@ -400,17 +438,12 @@ class PatientController extends Controller
                     'assigned_tasks' => $assign_tasks,
                     'is_pos' => 0
                 ]);
-    
-                echo 'true'.$uuid;
-    
-            }catch(Exception $e)
-            {
-                echo 'false';
-    
-            }
 
+                echo 'true' . $uuid;
+            } catch (Exception $e) {
+                echo 'false';
+            }
         }
-        
     }
 
 
@@ -447,7 +480,7 @@ class PatientController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
 
         $data = PatientDiagnosis::select('diagnosis')->where('diagnosis', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id')])->get();
-        
+
         if (count($data) == 0) {
             $output = '';
         } else {
@@ -460,8 +493,8 @@ class PatientController extends Controller
                 ';
             }
 
-            echo $output;   
-      }
+            echo $output;
+        }
     }
 
     public function fetchDisease(Request $request)
@@ -470,21 +503,21 @@ class PatientController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
 
         $data = PatientDisease::select('disease')->where('disease', 'like', '%' . $text . '%')->where(['clinic' => session()->get('cc_id')])->get();
-        
+
         if (count($data) == 0) {
             $output = '';
         } else {
 
             foreach ($data as $row) {
                 $output = '
-                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;z-index:1;" data-name ='.$row->disease. ' onclick="sd_option(this)">
-                    <span>' .$row->disease. '</span>
+                <li class="list-group-item" style="position:absolute;top:38px;cursor:pointer;border-color:#003049;z-index:1;" data-name =' . $row->disease . ' onclick="sd_option(this)">
+                    <span>' . $row->disease . '</span>
                 </li>
                 ';
             }
 
-            echo $output;   
-      }
+            echo $output;
+        }
     }
 
     public function fetchIsmedData(Request $request)

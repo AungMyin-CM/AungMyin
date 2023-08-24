@@ -85,6 +85,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('fetchData', [PatientController::class, 'fetchProcedureLabData'])->name('fetch.data');
 
+    Route::post('patient-add', [PatientController::class, 'storePatient'])->name('patient.storePatient');
+
     Route::patch('patient-update/{patient}', [PatientController::class, 'updatePatient'])->name('patient.updatePatient');
 
     Route::get('patient/{patient}/treatment', [PatientController::class, 'treatment'])->name('patient.treatment');

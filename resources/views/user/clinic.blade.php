@@ -7,7 +7,7 @@
             <section class="content">
                 <div class="container-fluid">
                     @if (Session::has('success'))
-                        @include('partials._toast')
+                    @include('partials._toast')
                     @endif
 
                     <a href="#" class="btn btn-sm btn-tool mt-1 float-right" title="play" id="myModalBtn" onclick="openVideo()">
@@ -32,12 +32,15 @@
 
                             <h1>{{Str::title($data['name'])}}</h1><br>
                             <div class="input-group text-red">
-                                <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here">
+                                <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here" autocomplete="off">
                                 <input type="hidden" id="clinic_code" value="{{Session::get('cc_id') }}">
                                 <input type="hidden" id="on_home_page" value="1">
-                                <div class="input-group-append">
+                                <div class="input-group-append" style="z-index: 0;">
                                     <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
+
+                                @include('partials._patient-modal')
+
                                 <div id="patientList" class="search-get-results" style="display:none;">
                                 </div>
                             </div>
@@ -71,6 +74,8 @@
         $(".alert").fadeOut();
     }, 3000);
 
+    let patientAddModal = $('#addModal');
+
     $(document).ready(function() {
 
         $('#dat').DataTable({
@@ -81,15 +86,16 @@
             paging: false,
             info: false
         });
+
         $(document).ready(function() {
             $('.middle').css('opacity', '0');
         });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
 
         $('#main_search').keyup(function() {
             var query = $(this).val();
@@ -105,15 +111,18 @@
             }).done(function(response) {
 
                 if (query != '') {
-                    // if(response == ''){
                     $("#search").removeAttr("class", "fa fa-search");
                     $("#search").attr("class", "fa fa-plus");
-                    $("#addRoute").attr("href", "{{ route('patient.create') }}" + "?name=" + query);
-                    // }else{
-                    //     $("#search").removeAttr("class","fa fa-plus");
-                    //     $("#search").attr("class","fa fa-search");
-                    //     $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
-                    // }
+
+                    $("#addRoute").click(function() {
+                        patientAddModal.css("display", "block");
+                        $("#patient_name").val(query);
+                    })
+
+                    $("#addClose").click(function() {
+                        patientAddModal.css("display", "none");
+                    })
+
                     $('#patientList').css("display", "block");
                     $('#patientList').html(response);
                 } else {
@@ -121,6 +130,41 @@
                     $('#patientList').html("");
                 }
             });
+        });
+    });
+
+    $('#patientAddForm').submit(function(event) {
+        event.preventDefault();
+
+        let formData = $(this).serialize();
+
+        $.ajax({
+            url: action = "{{ route('patient.storePatient') }}",
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                patientAddModal.css("display", "none");
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
+                window.location.reload();
+            },
+            error: function(xhr) {
+                // Handle the error response
+                $('.wrapper').css('opacity', '1');
+                $('.middle').css('opacity', '0.1');
+
+                let data = JSON.parse(xhr.responseText);
+
+                let name = data.errors.name ? data.errors.name[0] : '';
+                let age = data.errors.age ? data.errors.age[0] : '';
+                let address = data.errors.address ? data.errors.address[0] : '';
+                let gender = data.errors.gender ? data.errors.gender[0] : '';
+
+                $('#nameError').html(name);
+                $('#ageError').html(age);
+                $('#addressError').html(address);
+                $('#genderError').html(gender);
+            }
         });
     });
 
@@ -178,9 +222,9 @@
         }).done(function(response) {
             $.each(response, function(i, data) {
                 var val = $('#d-id' + data.id).attr('receiver-id');
-                var speciality = ( data.speciality  === null ) ? '-' : data.speciality;
+                var speciality = (data.speciality === null) ? '-' : data.speciality;
                 if (val == undefined) {
-                    $("#data").append("<tr ><td>" + data.name + "</td><td>" + speciality  + "</td><td><a href='#/" + data.id + "' class='btn btn-primary' id='d-id" + data.id + "' receiver-id='" + data.id + "' data-patient-id='" + patient_id + "' data-status='2' onclick='updateStatus(this)'>Assign</a></td></tr>");
+                    $("#data").append("<tr ><td>" + data.name + "</td><td>" + speciality + "</td><td><a href='#/" + data.id + "' class='btn btn-primary' id='d-id" + data.id + "' receiver-id='" + data.id + "' data-patient-id='" + patient_id + "' data-status='2' onclick='updateStatus(this)'>Assign</a></td></tr>");
                     $('#myModal').modal({
                         backdrop: 'static',
                     });
