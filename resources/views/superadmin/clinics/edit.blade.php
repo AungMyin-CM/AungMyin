@@ -45,7 +45,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="expire_at">Expire Date</label>
-                                <input type="date" class="form-control @error('expire_at') is-invalid @enderror" name="expire_at" value="{{ $clinic->package_purchase[0]->expire_at }}">
+                                <input type="date" class="form-control @error('expire_at') is-invalid @enderror" name="expire_at" value="{{ $clinic->expireDate->expire_at }}">
 
                                 @error('expire_at')
                                 <span class="text-danger small">{{ $message }}</span>
