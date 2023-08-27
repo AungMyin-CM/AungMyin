@@ -166,6 +166,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
 
     Route::get('/complete-payment/{id}', [ClinicController::class, 'completePayment'])->name('complete.payment');
+
+    Route::get('/dinger-complete',[ClinicController::class, 'completeDingerPayment'])->name('dinger.complete');
 });
 
 Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {

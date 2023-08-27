@@ -176,7 +176,7 @@ class ClinicController extends Controller
             'cost_amount' => $package->price,
             'discount' => $package->discount,
             'on_trial' => '1',
-            'create_at' => Carbon::now(),
+            'created_at' => Carbon::now(),
 
         ]);
 
@@ -191,6 +191,40 @@ class ClinicController extends Controller
         return redirect('/home');
     }
 
+    public function completeDingerPayment()
+    {
+
+
+        $now = new Carbon;
+
+        $clinic = Clinic::find(session()->get('clinic_id'));
+
+        $package = Package::find($clinic->package_id);
+
+        $clinic_user = UserClinic::where('clinic_id', $clinic->id)->where('user_id', Auth::id())->first();
+
+        $user = User::find($clinic_user->user_id);
+
+        Transaction::where('user_id',$clinic_user->user_id)->where('package_id',$clinic->package_id)->update([
+            'cost_amount' => $package->price,
+            'discount' => $package->discount,
+            'on_trial' => '0',
+            'updated_at' => Carbon::now(),
+        ]);
+
+        PackagePurchase::where('user_id',$clinic_user->user_id)->where('clinic_id',$clinic->id)->update([
+            'price' => $package->price,
+            'expire_at' => Carbon::parse($now)->addMonth(),
+            'status' => 1
+        ]);
+
+        $user_clinic = UserClinic::where('user_id', $clinic->user_id)->with('expire')->with('clinic')->get();
+        
+        return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);
+        
+
+    }
+
     public function completePayment($id)
     {
 
@@ -202,7 +236,7 @@ class ClinicController extends Controller
 
         $user = User::find($clinic_user->user_id);
 
-        // return $user->name.','.$package->price;
+        session()->put('clinic_id', $clinic->id);
 
         $items_data = array(
             "name" => $user->name,
@@ -217,7 +251,7 @@ class ClinicController extends Controller
             "items" => json_encode(array($items_data)),
             "customerName" => $user->name,
             "totalAmount" => $package->price,
-            "merchantOrderId" => "ss-ss-ss",
+            "merchantOrderId" => Str::uuid(),
             "merchantKey" => "s65cfbn.bdg8yh5i04X--occ_JoAkry_ocM",
             "projectName" => "AungMyin",
             "merchantName" => "Kyaw Soe"

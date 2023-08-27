@@ -41,7 +41,7 @@
                                 <td>{{ $clinic->address }}</td>
                                 <td>{{ $clinic->patient_count }}</td>
                                 <td>{{ substr($clinic->created_at, 0, 10) }}</td>
-                                <td>{{ $clinic->expireDate->expire_at }}</td>
+                                <td>{{ $clinic->package_purchase }}</td>
                                 <td>
                                     <div class="d-flex justify-content-center" style="gap: 10px">
                                         <div>
