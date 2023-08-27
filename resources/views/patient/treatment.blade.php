@@ -410,8 +410,8 @@
                                                 <div class="card-body">
                                                     <ul class="list-unstyled">
                                                         @foreach($dictionaries as $dictionary)
-                                                        @if($dictionary->isMed !== 1)
-                                                        <li>{{ $dictionary->meaning }}</li>
+                                                        @if($dictionary->isMed != 1)
+                                                        <li>{{ $dictionary->code }}</li>
                                                         @endif
                                                         @endforeach
                                                     </ul>
@@ -485,7 +485,7 @@
                                                                             <ul class="list-unstyled">                                                                          
                                                                                 @foreach($dictionaries as $dictionary)
                                                                                     @if($dictionary->isMed === 1)
-                                                                                    <li>{{ $dictionary->meaning }}</li>
+                                                                                    <li>{{ $dictionary->code }}</li>
                                                                                     @endif
                                                                                 @endforeach
                                                                             </ul>

@@ -41,7 +41,7 @@
                     <div class="row">
                         @if(Helper::checkPermission('p_create', $permissions))
                         <div class="col-6">
-                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportTasks(event.target);"><i class="fas fa-download"></i></span>
+                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i class="fas fa-download"></i></span>
 
                             <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
                                 @csrf
@@ -89,10 +89,7 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
 
 <script>
-    function exportTasks(_this) {
-        let _url = $(_this).data('href');
-        window.location.href = _url;
-    }
+   
 
     // Ajax Pagination
     $(document).ready(function() {
@@ -102,7 +99,14 @@
             let page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
+
+       
     });
+
+    function exportPatientTasks(_this) {
+        let _url = $(_this).data('href');
+        window.location.href = _url;
+    }
 
     function fetch_data(page) {
         $.ajax({

@@ -116,51 +116,30 @@
 
                 @if (Auth::guard('user')->user())
                 @if(Helper::checkPermission('d_view', $permissions))
-                @if($isInTreatment && !Helper::isMobile())
-                <li class="nav-item">
-                    <a href="#" id="dictionaryTooltip" class="nav-link" title="Shorthand">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>
-                            Shorthand
-                        </p>
-                    </a>
-                </li>
-                @else
-                <li class="nav-item">
-                    <a href="{{ route('dictionary.index') }}" class="nav-link" title="Shorthand">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>
-                            Shorthand
-                        </p>
-                    </a>
-
-                </li>
-                @endif
+                
+                    <li class="nav-item">
+                        <a href="{{ route('dictionary.index') }}" class="nav-link" title="Shorthand">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                Shorthand
+                            </p>
+                        </a>
+                    </li>
                 @endif
                 @endif
 
                 @if (Auth::guard('user')->user())
                 @if(Helper::checkPermission('ph_view', $permissions))
-                @if($isInTreatment && !Helper::isMobile())
-                <li class="nav-item">
-                    <a href="#" id="medicineTooltip" class="nav-link" title="Pharmacy">
-                        <i class="nav-icon fas fa-pills"></i>
-                        <p>
-                            Pharmacy
-                        </p>
-                    </a>
-                </li>
-                @else
-                <li class="nav-item">
-                    <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
-                        <i class="nav-icon fas fa-pills"></i>
-                        <p>
-                            Pharmacy
-                        </p>
-                    </a>
+                
+                    <li class="nav-item">
+                        <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
+                            <i class="nav-icon fas fa-pills"></i>
+                            <p>
+                                Pharmacy
+                            </p>
+                        </a>
 
-                </li>
-                @endif
+                    </li>
                 @endif
                 @endif
 
