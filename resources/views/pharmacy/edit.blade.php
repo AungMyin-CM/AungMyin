@@ -29,14 +29,14 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
-                                                    <input type="text" class="form-control" id="name" name="name" value="{{ $pharmacy->name }}">
+                                                    <input type="text" class="form-control" id="name" name="name" value="{{ $pharmacy->name }}" autocomplete="off">
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
                                             {{-- <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">Code</label>
-                                                    <input class="form-control" name="code" value="{{ $pharmacy->code }}" />
+                                                    <input class="form-control" name="code" value="{{ $pharmacy->code }}" autocomplete="off" />
                                             @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
                                     </div> --}}
@@ -50,7 +50,7 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="quantity">Quantity</label>
-                                            <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10000" value="{{ $pharmacy->quantity }}">
+                                            <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10000" value="{{ $pharmacy->quantity }}" autocomplete="off">
                                             @error('quantity') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
                                     </div>
@@ -61,21 +61,21 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="phoneNumber">Act Price</label>
-                                            <input type="text" class="form-control" id="act_price" name="act_price" value={{ $pharmacy->act_price }}>
+                                            <input type="text" class="form-control" id="act_price" name="act_price" value="{{ $pharmacy->act_price }}" autocomplete="off">
                                             @error('act_price') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Sell price</label>
-                                            <input class="form-control" id="sell_price" name="sell_price" value="{{ $pharmacy->sell_price }}" />
+                                            <input class="form-control" id="sell_price" name="sell_price" value="{{ $pharmacy->sell_price }}" autocomplete="off"/>
                                             @error('sell_price') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Margin</label>
-                                            <input class="form-control" id="margin" name="margin" value="{{ $pharmacy->margin }}" />
+                                            <input class="form-control" id="margin" name="margin" value="{{ $pharmacy->margin }}" autocomplete="off"/>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +87,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Unit</label>
-                                            <input class="form-control" name="unit" value="{{ $pharmacy->unit }}" />
+                                            <input class="form-control" name="unit" value="{{ $pharmacy->unit }}" autocomplete="off"/>
                                             @error('unit') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
                                     </div>
@@ -95,14 +95,14 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Vendor</label>
-                                            <input class="form-control" rows="4" name="vendor" value="{{ $pharmacy->vendor }}" />
+                                            <input class="form-control" rows="4" name="vendor" value="{{ $pharmacy->vendor }}" autocomplete="off"/>
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Vendor Phone-Number</label>
-                                            <input class="form-control" rows="4" name="vendor_phoneNumber" value="{{ $pharmacy->vendor_phoneNumber }}">
+                                            <input class="form-control" rows="4" name="vendor_phoneNumber" value="{{ $pharmacy->vendor_phoneNumber }}" autocomplete="off">
                                         </div>
                                     </div>
 
@@ -114,7 +114,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Description</label>
-                                            <textarea class="form-control" rows="4" name="description">{{ $pharmacy->description }}</textarea>
+                                            <textarea class="form-control" rows="4" name="description" autocomplete="off">{{ $pharmacy->description }}</textarea>
                                         </div>
                                     </div>
 
@@ -122,7 +122,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="address">Storage Place</label>
-                                            <input class="form-control" rows="4" name="storage_place" value="{{ $pharmacy->storage_place }}" />
+                                            <input class="form-control" rows="4" name="storage_place" value="{{ $pharmacy->storage_place }}" autocomplete="off"/>
                                         </div>
                                     </div>
 

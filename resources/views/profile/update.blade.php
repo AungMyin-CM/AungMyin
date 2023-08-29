@@ -137,7 +137,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="code">Name</label>
-                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="Name" value="{{ $user->name }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="username" name="name" placeholder="Name" value="{{ $user->name }}" autocomplete="off">
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -146,7 +146,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}">
+                                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}" autocomplete="off">
                                                     @error('email') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -191,7 +191,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="phNumber">Phone Number</label>
-                                                    <input type="tel" class="form-control @error('phoneNumber') is-invalid @enderror" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}">
+                                                    <input type="tel" class="form-control @error('phoneNumber') is-invalid @enderror" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}" autocomplete="off">
                                                     @error('phoneNumber') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -203,7 +203,7 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
-                                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password">
+                                                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password" autocomplete="off">
 
                                                     @error('password') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
@@ -215,7 +215,7 @@
                                                     <div class="input-group-append">
                                                         <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                                     </div>
-                                                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password">
+                                                    <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" placeholder="Retype password" autocomplete="off">
 
                                                     @error('password_confirmation') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>

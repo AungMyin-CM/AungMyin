@@ -256,7 +256,7 @@
 
         <li class="nav-item" style="margin-top: 8px;">
             <div id="search-box" class="search-box">
-                <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search...">
+                <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search..." autocomplete="off">
                 <div id="patientList" class="search-get-results" style="display:none;">
                 </div>
             </div>

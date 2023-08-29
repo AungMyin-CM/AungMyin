@@ -465,17 +465,17 @@
                                                         <tbody>
                                                             <tr id="row_1">
                                                                 <td>
-                                                                    <input type="text" name="med_name[]" id="product_search_1" med-data-id="1" onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine">
+                                                                    <input type="text" name="med_name[]" id="product_search_1" med-data-id="1" onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine" autocomplete="off">
                                                                     <input type="hidden" name="med_id[]" id="med_id_1">
                                                                     <div id="medList_1" style="display:none;width:35%;">
                                                                     </div>
                                                                 </td>
 
                                                                 <td>
-                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" placeholder="Dosage">
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" placeholder="Dosage" autocomplete="off">
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days">
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" placeholder="Days" autocomplete="off">
                                                                 </td>
                                                                 <td class="medicine-container">
                                                                     <i class="toggle-medicine fas fa-question fa-sm"></i>
@@ -934,12 +934,12 @@
         var row_id = count_table_tbody_tr + 1;
         var html = '<tr id="row_' + row_id + '">' +
             '<td>' +
-            '<input type="search" name="med_name[]" id="product_search_' + row_id + '"  med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" class="form-control" placeholder="Search Medicine">' +
+            '<input type="search" name="med_name[]" id="product_search_' + row_id + '"  med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine" autocomplete="off">' +
             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '">' +
             '<div id="medList_' + row_id + '" style="display:none;position:absolute;width:35%;"></div>' +
             '</td>' +
-            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control"></td>' +
-            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control"></td>' +
+            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" autocomplete="off"></td>' +
+            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" autocomplete="off"></td>' +
             '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
             '</tr>';
         if (count_table_tbody_tr >= 1) {

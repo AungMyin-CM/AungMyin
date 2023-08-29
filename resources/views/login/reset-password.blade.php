@@ -55,14 +55,14 @@
                 <input type="hidden" name="email" value="{{ $email }}">
 
                 <div class="form-group mb-3 password-container">
-                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" autocomplete="off">
                     <i class="toggle-password fas fa-eye-slash"></i>
 
                     @error('password') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="form-group mb-3 password-container">
-                    <input type="password" class="form-control" name="password_confirmation" id="confirm-password" placeholder="Confirm your Password">
+                    <input type="password" class="form-control" name="password_confirmation" id="confirm-password" placeholder="Confirm your Password" autocomplete="off">
                     <i class="toggle-confirm-password fas fa-eye-slash"></i>
 
                     @error('password_confirmation') <span class="text-danger alert-msg small">{{ $message }}</span>@enderror

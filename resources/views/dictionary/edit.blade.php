@@ -39,7 +39,7 @@
                                             <div class="form-group">
                                                 <label for="code">Code</label>
                                                 <input type="code" class="form-control" id="code" name="code"
-                                                    placeholder="Code" value="{{ $dictionary->code }}">
+                                                    placeholder="Code" value="{{ $dictionary->code }}" autocomplete="off">
                                             </div>
                                           
                                             @if($dictionary->isMed == 1)
@@ -60,7 +60,7 @@
                                             @else
                                                 <div class="form-group">
                                                     <label for="meaning">Meaning</label>
-                                                    <textarea class="form-control" rows="7" placeholder="Meaning" name="meaning">{{ $dictionary->meaning }}</textarea>
+                                                    <textarea class="form-control" rows="7" placeholder="Meaning" name="meaning" autocomplete="off">{{ $dictionary->meaning }}</textarea>
                                                 </div>
                                             @endif
 
@@ -116,11 +116,11 @@
                 table_str +=
                 '<tr id="row_'+i+'">'+
                     '<td><input type="hidden"  name="med_id[]"  class="form-control" value="'+data[0]+'" /> '+
-                    '<input type="text" name="med_name[]" id="product_search_'+i+'" onkeyup="searchMed('+i+')" class="form-control" value="'+data[1]+'"/>'+
+                    '<input type="text" name="med_name[]" id="product_search_'+i+'" onkeyup="searchMed('+i+')" class="form-control" value="'+data[1]+'" autocomplete="off"/>'+
                     '<div id="medList_'+i+'" style="display:none;position:absolute;width:35%;"></div>'+
                     '</td>'+
-                    '<td><input type="text"  name="med_qty[]" id="qty_'+i+'" class="form-control" value="'+data[2]+'" /></td>'+
-                    '<td><input type="text"   name="days[]"  id="days_'+i+'" class="form-control" value="'+data[3]+'"/></td>'+
+                    '<td><input type="text"  name="med_qty[]" id="qty_'+i+'" class="form-control" value="'+data[2]+'" autocomplete="off"/></td>'+
+                    '<td><input type="text"   name="days[]"  id="days_'+i+'" class="form-control" value="'+data[3]+'" autocomplete="off"/></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+i+'\')" id="remove_row_'+i+'"><i class="fa fa-minus"></i></button></td>'+
 
                     '</td>'+
@@ -136,12 +136,12 @@
         var row_id = count_table_tbody_tr + 1;
         var html = '<tr id="row_'+row_id+'">'+
             '<td>'+ 
-            '<input type="search" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" class="form-control" placeholder="Search Medicine">'+
+            '<input type="search" name="med_name[]" id="product_search_'+row_id+'" onkeyup="searchMed('+row_id+')" class="form-control" placeholder="Search Medicine" autocomplete="off">'+
             '<input type = "hidden" name = "med_id[]" id = "med_id_'+row_id+'">'+
             '<div id="medList_'+row_id+'" style="display:none;position:absolute;width:35%;"></div>'+
             '</td>'+ 
-            '<td><input type="text" name="med_qty[]" id="qty_'+row_id+'" class="form-control"></td>'+           
-            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control"></td>'+
+            '<td><input type="text" name="med_qty[]" id="qty_'+row_id+'" class="form-control" autocomplete="off"></td>'+           
+            '<td><input type="number" name="days[]" id="days_'+row_id+'" class="form-control" autocomplete="off"></td>'+
             '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
             '</tr>';
         if(count_table_tbody_tr >= 1) {

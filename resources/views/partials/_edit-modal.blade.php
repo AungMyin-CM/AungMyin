@@ -23,7 +23,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">Name</label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $patient->name }}">
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $patient->name }}" autocomplete="off">
                                             <span id="nameError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -31,7 +31,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="father_name">Father name</label>
-                                            <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ $patient->father_name }}">
+                                            <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ $patient->father_name }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="age">Age</label>
-                                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $patient->age }}">
+                                            <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ $patient->age }}" autocomplete="off">
                                             <span id="ageError" class="text-danger small"></span>
                                         </div>
                                     </div>
@@ -48,14 +48,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="phoneNumber">Phone Number</label>
-                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $patient->phoneNumber }}">
+                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $patient->phoneNumber }}" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="address">Address</label>
-                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $patient->address }}</textarea>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address" autocomplete="off">{{ $patient->address }}</textarea>
                                     <span id="addressError" class="text-danger small"></span>
                                 </div>
 
@@ -97,14 +97,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="address">Drug Allergy</label>
-                                            <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy">{{ $patient->drug_allergy }}</textarea>
+                                            <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy" autocomplete="off">{{ $patient->drug_allergy }}</textarea>
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="address">Summary</label>
-                                            <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ $patient->summary }}</textarea>
+                                            <textarea class="form-control" placeholder="Summary" rows="4" name="summary" autocomplete="off">{{ $patient->summary }}</textarea>
                                         </div>
                                     </div>
                                 </div>

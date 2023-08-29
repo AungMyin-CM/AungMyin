@@ -49,7 +49,7 @@
                                                     <div class="form-group">
                                                         <label for="code">Code</label>
 
-                                                        <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" required placeholder="Eg: ..." value="{{old("code")}}" >
+                                                        <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" required placeholder="Eg: ..." value="{{old('code')}}" autocomplete="off">
                                                         @error('code')
                                                             <span class="invalid-feedback" role="alert" id="alert-message">
                                                                 <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="code">Name</label>
-                                                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required placeholder="Eg: ..." value="{{old("name")}}" >
+                                                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required placeholder="Eg: ..." value="{{old('name')}}" autocomplete="off">
                                                         @error('name')
                                                             <span class="invalid-feedback" role="alert" id="alert-message">
                                                                 <strong>{{ $message }}</strong>
@@ -74,7 +74,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group" id= "dictonary_div">
                                                         <label for="meaing">Price</label>
-                                                        <input type="text" class="form-control @error('price') is-invalid @enderror" placeholder="price" name="meaning" rows="7" value="{{old('price')}}" onkeypress="return isNumber(event)">
+                                                        <input type="text" class="form-control @error('price') is-invalid @enderror" placeholder="price" name="meaning" rows="7" value="{{old('price')}}" onkeypress="return isNumber(event)" autocomplete="off">
                                                         @error('price')
                                                             <span class="invalid-feedback" role="alert" id="alert-message">
                                                                 <strong>{{ $message }}</strong>
@@ -98,11 +98,11 @@
                                                              <tbody>
                                                                <tr id="row_1">
                                                                  <td>
-                                                                      <input type="text" name="name[]" id="name_1" class="form-control">
+                                                                      <input type="text" name="name[]" id="name_1" class="form-control" autocomplete="off">
                                                                 </td>
                                                                   
                                                                   <td>
-                                                                    <input type="text" name="price[]" id="price_1" class="form-control" onkeypress="return isNumber(event)"></td>       
+                                                                    <input type="text" name="price[]" id="price_1" class="form-control" onkeypress="return isNumber(event)" autocomplete="off"></td>       
                                                                   
                                                                </tr>
                                                              </tbody>
@@ -142,9 +142,9 @@
             var row_id = count_table_tbody_tr + 1;
             var html = '<tr id="row_'+row_id+'">'+
                 '<td>'+ 
-                '<input type="search" name="name[]" id="name_'+row_id+'" class="form-control">'+
+                '<input type="search" name="name[]" id="name_'+row_id+'" class="form-control" autocomplete="off">'+
                 '</td>'+ 
-                '<td><input type="text" name="price[]" id="price_'+row_id+'" onkeypress ="return isNumber(event)" class="form-control"></td>'+
+                '<td><input type="text" name="price[]" id="price_'+row_id+'" onkeypress ="return isNumber(event)" class="form-control" autocomplete="off"></td>'+
                 '<td><button type="button" class="btn btn-default" onclick="removeRow(\''+row_id+'\')"><i class="fa fa-minus"></i></button></td>'+
                 '</tr>';
             if(count_table_tbody_tr >= 1) {

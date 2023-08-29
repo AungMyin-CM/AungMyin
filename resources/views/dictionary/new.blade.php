@@ -27,7 +27,7 @@
                                             <div class="form-group">
                                                 <label for="code">Code</label>
                                                 <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" required
-                                                    placeholder="Code">
+                                                    placeholder="Code" autocomplete="off">
                                                 @error('code')
                                                     <span class="invalid-feedback" role="alert" id="alert-message">
                                                         <strong>{{ $message }}</strong>
@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="form-group" id= "dictonary_div">
                                                 <label for="meaing">Meaning</label>
-                                                <textarea class="form-control @error('meaning') is-invalid @enderror" placeholder="Meaning" name="meaning" rows="7">{{ old('meaning') }}</textarea>
+                                                <textarea class="form-control @error('meaning') is-invalid @enderror" placeholder="Meaning" name="meaning" rows="7" autocomplete="off">{{ old('meaning') }}</textarea>
                                                 @error('meaning')
                                                     <span class="invalid-feedback" role="alert" id="alert-message">
                                                         <strong>{{ $message }}</strong>
@@ -65,16 +65,16 @@
                                                              <tbody>
                                                                <tr id="row_1">
                                                                  <td>
-                                                                      <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine">
+                                                                      <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search Medicine" autocomplete="off">
                                                                       <input type = "hidden" name = "med_id[]" id = "med_id_1">
                                                                       <div id="medList_1" style="display:none;position:absolute;width:35%;">
                                                                     </div>
                                                                 </td>
                                                                   
                                                                   <td>
-                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control"></td>           
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" autocomplete="off"></td>           
                                                                   <td>
-                                                                    <input type="number" name="days[]" id="days_1" class="form-control" >  
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" autocomplete="off">  
                                                                   </td>
                                                                   
                                                                </tr>

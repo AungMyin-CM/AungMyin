@@ -28,7 +28,7 @@
                                             <div class="input-group-append">
                                                 <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
+                                            <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" autocomplete="off">
                                         </div>
                                         @error('email') <span class="text-danger small">{{ $message }}</span>@enderror
                                     </div>
@@ -38,7 +38,7 @@
                                             <div class="input-group-append">
                                                 <div class="input-group-text"><span class="fas fa-lock"></span></div>
                                             </div>
-                                            <input type="password" class="form-control" name="password" placeholder="Password">
+                                            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off">
                                         </div>
                                         @error('password') <span class="text-danger small">{{ $message }}</span>@enderror
                                     </div>

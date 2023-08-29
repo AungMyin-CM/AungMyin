@@ -138,9 +138,9 @@
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
                                                     @if($data['name'] != '')
-                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $data['name'] }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value=" {{ $data['name'] }}" autocomplete="off">
                                                     @else
-                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value="{{ old('name') }}">
+                                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="patient_name" name="name" placeholder="Name" value="{{ old('name') }}" autocomplete="off">
                                                     @endif
 
                                                     @error('name') <span class="text-danger">{{ $message }}</span>@enderror
@@ -149,13 +149,13 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="father_name">Father name</label>
-                                                    <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ old('father_name') }}">
+                                                    <input type="text" class="form-control" id="f-name" name="father_name" placeholder="Father name" value="{{ old('father_name') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="age">Age</label>
-                                                    <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ old('age') }}">
+                                                    <input type="number" class="form-control @error('age') is-invalid @enderror" id="age" name="age" min="1" max="100" placeholder="Age" value="{{ old('age') }}" autocomplete="off">
 
                                                     @error('age') <span class="text-danger">{{ $message }}</span>@enderror
                                                 </div>
@@ -164,7 +164,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="phoneNumber">Phone Number</label>
-                                                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ old('phoneNumber') }}">
+                                                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ old('phoneNumber') }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
@@ -173,7 +173,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Address</label>
-                                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ old('address') }}</textarea>
+                                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address" autocomplete="off">{{ old('address') }}</textarea>
         
                                                     @error('address') <span class="text-danger">{{ $message }}</span>@enderror
                                                 </div>
@@ -184,14 +184,14 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Drug Allergy</label>
-                                                    <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy">{{ old('drug_allergy') }}</textarea>
+                                                    <textarea class="form-control" placeholder="Drug Allergy" rows="4" name="drug_allergy" autocomplete="off">{{ old('drug_allergy') }}</textarea>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Summary</label>
-                                                    <textarea class="form-control" placeholder="Summary" rows="4" name="summary">{{ old('summary') }}</textarea>
+                                                    <textarea class="form-control" placeholder="Summary" rows="4" name="summary" autocomplete="off">{{ old('summary') }}</textarea>
                                                 </div>
                                             </div>
                                             
@@ -232,7 +232,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-right">
-                                                <input type="submit" value="Submit" class="btn " style="color: {{config('app.secondary_color')}}; background-color:{{config('app.color')}}">
+                                                <input type="submit" value="Submit" class="btn text-white" style="background-color:{{config('app.color')}}">
                                             </div>
                                         </div>
                                     </div>

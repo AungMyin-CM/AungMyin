@@ -40,7 +40,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name" style="color: #6C757D;">Name</label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="clinic_name" name="name" placeholder="Name" value="{{ $package->clinic->name }}">
+                                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="clinic_name" name="name" placeholder="Name" value="{{ $package->clinic->name }}" autocomplete="off">
 
                                             <span id="nameError" class="text-danger small"></span>
                                         </div>
@@ -49,7 +49,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="phoneNumber" style="color: #6C757D;">Phone Number</label>
-                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $package->clinic->phoneNumber }}">
+                                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="09xxxxxxxxx" value="{{ $package->clinic->phoneNumber }}" autocomplete="off">
 
                                             <span id="phoneError" class="text-danger small"></span>
                                         </div>
@@ -58,7 +58,7 @@
 
                                 <div class="form-group">
                                     <label for="address" style="color: #6C757D;">Address</label>
-                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address">{{ $package->clinic->address }}</textarea>
+                                    <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address" autocomplete="off">{{ $package->clinic->address }}</textarea>
                                     <span id="addressError" class="text-danger small"></span>
                                 </div>
                             </div>

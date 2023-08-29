@@ -52,7 +52,7 @@
 
                                                 <div class="form-group">
                                                     <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ old('name') }}">
+                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ old('name') }}" autocomplete="off">
 
                                                     <span id="nameError" class="text-danger small alert-msg"></span>
                                                 </div>
@@ -61,7 +61,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="code">Username<b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="text" class="form-control" id="code" name="code" required placeholder="Code" value="{{ old('code') }}">
+                                                    <input type="text" class="form-control" id="code" name="code" required placeholder="Code" value="{{ old('code') }}" autocomplete="off">
                                                     <span class="small" id="a-text"></span>
 
                                                     <span id="codeError" class="text-danger small alert-msg"></span>
@@ -113,14 +113,14 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="speciality">Speciality</label>
-                                                    <textarea class="form-control" name="speciality" row="10">{{ old('speciality') }}</textarea>
+                                                    <textarea class="form-control" name="speciality" row="10" autocomplete="off">{{ old('speciality') }}</textarea>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
 
                                                 <div class="form-group">
                                                     <label for="credentials">Credentials</label>
-                                                    <textarea class="form-control" name="credentials" row="10">{{ old('credentials') }}</textarea>
+                                                    <textarea class="form-control" name="credentials" row="10" autocomplete="off">{{ old('credentials') }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="email">Email address <b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}">
+                                                    <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}" autocomplete="off">
                                                     <span class="small" id="em-text"></span>
 
                                                     <span id="emailError" class="text-danger small alert-msg"></span>
@@ -139,7 +139,7 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Password <b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
 
                                                     <span id="passwordError" class="text-danger small alert-msg"></span>
                                                 </div>
@@ -148,13 +148,13 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Confirm Password <b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Password">
+                                                    <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Password" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="phNumber">Phone Number <b><sup class="text-danger">*</sup></b></label>
-                                            <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value={{ old('phoneNumber') }}>
+                                            <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ old('phoneNumber') }}" autocomplete="off">
 
                                             <span id="phoneError" class="text-danger small alert-msg"></span>
                                         </div>
@@ -163,34 +163,34 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="city">Country</label>
-                                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ old('country') }}">
+                                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ old('country') }}" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="city">City</label>
-                                                    <input type="text" class="form-control" id="city" name="city" placeholder="City">
+                                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="address">Address <b><sup class="text-danger">*</sup></b></label>
-                                            <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
+                                            <textarea class="form-control" placeholder="Address" name="address" autocomplete="off">{{ old('address') }}</textarea>
 
                                             <span id="addressError" class="text-danger small alert-msg"></span>
                                         </div>
 
                                         <div class="form-group" id="short_bio">
                                             <label for="short_bio">Short Bio</label>
-                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ old('short_bio') }}</textarea>
+                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ old('short_bio') }}</textarea>
                                         </div>
 
                                         <div class="col-md-6" id="fees">
                                             <div class="form-group">
                                                 <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
-                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" />
+                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" autocomplete="off" />
 
                                                 <span id="feesError" class="text-danger small alert-msg"></span>
                                             </div>
@@ -203,7 +203,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="card card-primary">
-                                    <div class="card-header " style="  background-color:{{config('app.color')}}">
+                                    <div class="card-header" style=" background-color:{{config('app.color')}}">
                                         <h3 class="card-title">Permissions<sup class="text-warning"> (Please check at least one property) </sup></h3>
                                         <input type="hidden" id="permission_check">
                                     </div>

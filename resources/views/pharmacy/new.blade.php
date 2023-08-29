@@ -25,7 +25,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="name">Name</label>
-                                                    <input type="text" class="form-control" id="patient_name" name="name" value="{{ old('name') }}">
+                                                    <input type="text" class="form-control" id="patient_name" name="name" value="{{ old('name') }}" autocomplete="off">
                                                     <input type="hidden" id="clinic_id" value="{{session()->get('cc_id')}}">
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
@@ -33,7 +33,7 @@
                                             {{-- <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="code">Code</label>
-                                                    <input class="form-control" name="code" id="code" value="{{ old('code') }}" />
+                                                    <input class="form-control" name="code" id="code" value="{{ old('code') }}" autocomplete="off" />
                                                     <span class="small" id="a-text"></span>
                                                     @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
@@ -48,7 +48,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10000" value="{{ old('quantity') }}">
+                                                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="10000" value="{{ old('quantity') }}" autocomplete="off">
                                                     @error('quantity') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -59,21 +59,21 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="phoneNumber">Act Price</label>
-                                                    <input type="text" class="form-control" id="act_price" name="act_price" value={{ old('act_price') }}>
+                                                    <input type="text" class="form-control" id="act_price" name="act_price" value="{{ old('act_price') }}" autocomplete="off">
                                                     @error('act_price') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Sell price</label>
-                                                    <input class="form-control" id="sell_price" name="sell_price" value="{{ old('sell_price') }}" />
+                                                    <input class="form-control" id="sell_price" name="sell_price" value="{{ old('sell_price') }}" autocomplete="off" />
                                                     @error('sell_price') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Margin</label>
-                                                    <input class="form-control" id="margin" name="margin" value="{{ old('margin') }}" />
+                                                    <input class="form-control" id="margin" name="margin" value="{{ old('margin') }}" autocomplete="off" />
                                                 </div>
                                             </div>
                                         </div>
@@ -104,14 +104,14 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Vendor</label>
-                                                    <input class="form-control" rows="4" name="vendor" value="{{ old('vendor') }}" />
+                                                    <input class="form-control" rows="4" name="vendor" value="{{ old('vendor') }}" autocomplete="off" />
                                                 </div>
                                             </div>
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="address">Vendor Phone-Number</label>
-                                                    <input class="form-control" rows="4" name="vendor_phone_number" value="{{ old('vendor_phone_number') }}" />
+                                                    <input class="form-control" rows="4" name="vendor_phone_number" value="{{ old('vendor_phone_number') }}" autocomplete="off"/>
                                                 </div>
                                             </div>
 
@@ -122,14 +122,14 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="address">Description</label>
-                                                <textarea class="form-control" rows="4" name="description">{{ old('description') }}</textarea>
+                                                <textarea class="form-control" rows="4" name="description" autocomplete="off">{{ old('description') }}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="address">Storage Place</label>
-                                                <input class="form-control" rows="4" name="storage_place">{{ old('storate_place') }}</textarea>
+                                                <input class="form-control" rows="4" name="storage_place" autocomplete="off">{{ old('storate_place') }}</textarea>
                                             </div>
                                         </div>
                                     </div>

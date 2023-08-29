@@ -253,7 +253,7 @@
 
         <div class="container-fluid">
           <div class="input-group col-md-6 text-center m-auto">
-            <input type="search" id="main_search" class="form-control" placeholder="Search Patients..">
+            <input type="search" id="main_search" class="form-control" placeholder="Search Patients.." autocomplete="off">
             <input type="hidden" id="clinic_code" value="{{ session()->get('cc_id') }}">
             <div class="input-group-append">
               <a class="btn btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
@@ -499,7 +499,7 @@
                         <tr id="row_{{$key+1}}">
 
                           <td>
-                            <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Search medicines.." value="{{$md[0]['name']}}" required>
+                            <input type="text" name="med_name[]" id="product_search_{{$key+1}}" onkeyup="searchMed({{$key+1}})" class="form-control" placeholder="Search medicines.." value="{{$md[0]['name']}}" required autocomplete="off">
                             <input type="hidden" name="med_id[]" id="med_id_{{$key+1}}" value={{$md[0]['id']}}>
                             <div id="medList_{{$key+1}}" style="display:none;position:absolute;width:22.5%;">
 
@@ -513,16 +513,16 @@
                             <input type="text" name="remain_qty[]" id="remain_qty_{{$key+1}}" value="{{$md[0]['quantity']}}" readonly class="form-control">
                           </td>
                           <td>
-                            <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key][0]}}">
+                            <input type="text" name="quantity[]" id="qty_{{$key+1}}" class="form-control" required onkeyup="getTotal({{$key+1}})" value="{{$total_qty[$key][0]}}" autocomplete="off">
                           </td>
                           <td>
-                            <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" onkeyup="getTotal({{$key+1}})" class="form-control" required>
+                            <input type="text" name="sell_price[]" id="sell_price_{{$key+1}}" value="{{$md[0]['sell_price']}}" onkeyup="getTotal({{$key+1}})" class="form-control" required autocomplete="off">
                             <input type="hidden" name="act_price[]" id="act_price_{{$key+1}}" value="{{$md[0]['act_price']}}" class="form-control">
                             <input type="hidden" name="unit[]" id="unit_{{$key+1}}" value="{{$md[0]['unit']}}" class="form-control">
                             <input type="hidden" name="margin[]" id="margin_{{$key+1}}" value="{{$md[0]['margin']}}" class="form-control">
                           </td>
                           <td>
-                            <input type="discount" name="discount[]" id="discount_{{$key+1}}" class="form-control" onkeyup="getTotal({{$key+1}})">
+                            <input type="discount" name="discount[]" id="discount_{{$key+1}}" class="form-control" onkeyup="getTotal({{$key+1}})" autocomplete="off">
                           </td>
                           <td colspan="2">
                             <input type="text" name="amount[]" id="amount_{{$key+1}}" class="form-control" readonly style="width: 100%;">
@@ -532,7 +532,7 @@
                         @else
                         <tr id="row_1">
                           <td>
-                            <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search medicines" required>
+                            <input type="text" name="med_name[]" id="product_search_1" onkeyup="searchMed('1')" class="form-control" placeholder="Search medicines" required autocomplete="off">
                             <input type="hidden" name="med_id[]" id="med_id_1">
                             <div id="medList_1" style="display:none;position:absolute;width:22.5%;">
 
@@ -546,16 +546,16 @@
                             <input type="text" name="remain_qty[]" id="remain_qty_1" readonly class="form-control">
                           </td>
                           <td>
-                            <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)">
+                            <input type="text" name="quantity[]" id="qty_1" class="form-control" required onkeyup="getTotal(1)" autocomplete="off">
                           </td>
                           <td>
-                            <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" onkeyup="getTotal(1)" required>
+                            <input type="text" name="sell_price[]" id="sell_price_1" class="form-control" onkeyup="getTotal(1)" required autocomplete="off">
                             <input type="hidden" name="act_price[]" id="act_price_1" class="form-control">
                             <input type="hidden" name="unit[]" id="unit_1" class="form-control">
                             <input type="hidden" name="margin[]" id="margin_1" class="form-control">
                           </td>
                           <td>
-                            <input type="discount" name="discount[]" id="discount_1" class="form-control" onkeyup="getTotal(1)">
+                            <input type="discount" name="discount[]" id="discount_1" class="form-control" onkeyup="getTotal(1)" autocomplete="off">
                           </td>
                           <td>
                             <input type="text" name="amount[]" id="amount_1" class="form-control" readonly style="width: 90px;">

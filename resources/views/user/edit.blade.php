@@ -44,7 +44,7 @@
 
                                                 <div class="form-group">
                                                     <label for="code">Name</label>
-                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ $user->name }}">
+                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ $user->name }}" autocomplete="off">
                                                     @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -53,7 +53,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="code">Code</label>
-                                                    <input type="text" class="form-control" id="code" name="code" placeholder="Enter code" value="{{ $user->code }}">
+                                                    <input type="text" class="form-control" id="code" name="code" placeholder="Enter code" value="{{ $user->code }}" autocomplete="off">
                                                     @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -113,7 +113,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="speciality">Speciality</label>
-                                                    <textarea class="form-control" name="speciality" row="10">{{ $user->speciality }}</textarea>
+                                                    <textarea class="form-control" name="speciality" row="10" autocomplete="off">{{ $user->speciality }}</textarea>
 
                                                 </div>
                                             </div>
@@ -121,7 +121,7 @@
 
                                                 <div class="form-group">
                                                     <label for="credentials">Credentials</label>
-                                                    <textarea class="form-control" name="credentials" row="10">{{ $user->credentials }}</textarea>
+                                                    <textarea class="form-control" name="credentials" row="10" autocomplete="off">{{ $user->credentials }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +130,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}">
+                                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="example@gmail.com" value="{{ $user->email }}" autocomplete="off">
                                                     @error('email') <span class="text-danger small">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
@@ -138,34 +138,34 @@
 
                                                 <div class="form-group">
                                                     <label for="password">Password</label>
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="phNumber">Phone Number</label>
-                                            <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}">
+                                            <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ $user->phoneNumber }}" autocomplete="off">
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="city">Country</label>
-                                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ $user->country }}">
+                                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ $user->country }}" autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="city">City</label>
-                                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" value="{{ $user->city }}">
+                                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" value="{{ $user->city }}" autocomplete="off">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <textarea class="form-control" placeholder="Address" name="address">{{ $user->address }}</textarea>
+                                            <textarea class="form-control" placeholder="Address" name="address" autocomplete="off">{{ $user->address }}</textarea>
                                             @error('address') <span class="text-danger small">{{ $message }}</span>@enderror
                                         </div>
 
@@ -173,13 +173,13 @@
 
                                         <div class="form-group" id="short_bio" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                             <label for="short_bio">Short Bio</label>
-                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ $user->short_bio }}</textarea>
+                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ $user->short_bio }}</textarea>
                                         </div>
 
                                         <div class="col-md-6" id="fees" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
                                             <div class="form-group">
                                                 <label class="fees">Fees</label>
-                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" />
+                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" autocomplete="off" />
 
                                                 @error('fees') <span class="text-danger small">{{ $message }}</span>@enderror
                                             </div>

@@ -31,7 +31,7 @@
 
                                             <input type="hidden" class="form-control" name="package_id" id="package_id" value="{{ $data['package_id']}}">
                                             <div class="input-group">
-                                                <input type="text" id="clinic_name" class="form-control" name="clinic_name" placeholder="Clinic Name" title="Name should contain atleast 5 characters" required>
+                                                <input type="text" id="clinic_name" class="form-control" name="clinic_name" placeholder="Clinic Name" title="Name should contain atleast 5 characters" required autocomplete="off">
                                                 <div class="input-group-append">
                                                     <div class="input-group-text">
                                                         <span class="fas fa-clinic-medical"></span>
@@ -46,7 +46,7 @@
                                                     <span class="text-black">+95</span>
                                                 </div>
                                             </div>
-                                            <input type="tel" class="form-control" placeholder="09xxxxxxx" name="phoneNumber" required value={{ old('phoneNumber') }}>
+                                            <input type="tel" class="form-control" placeholder="09xxxxxxx" name="phoneNumber" required value="{{ old('phoneNumber') }}" autocomplete="off">
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <span class="fas fa-phone"></span>
@@ -55,7 +55,7 @@
                                         </div>
 
                                         <div class="input-group mb-3">
-                                            <textarea rows="5" class="form-control" placeholder="Address" name="address" value="{{ old('address') }}" required></textarea>
+                                            <textarea rows="5" class="form-control" placeholder="Address" name="address" value="{{ old('address') }}" required autocomplete="off"></textarea>
                                             <div class="input-group-append">
 
                                             </div>
