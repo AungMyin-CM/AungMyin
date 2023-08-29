@@ -103,4 +103,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserClinic::class);
     }
+
+    public function clinic(): BelongsTo
+    {
+        return $this->belongsTo(Clinic:: class);
+    }
 }

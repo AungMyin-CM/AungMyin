@@ -13,11 +13,32 @@
     </a>
 
     <div class="sidebar">
+        @php
+            $loggedInUser = Auth::guard('user')->user();
+
+            if ($loggedInUser) {
+                $userClinic = $loggedInUser->user_clinic;
+
+                if ($userClinic) {
+                    $clinic = $userClinic->clinic;
+
+                    if ($clinic) {
+                        $clinicLogo = $clinic[0]->avatar;
+                    }
+                }
+            }
+        @endphp
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             @if(Request::is('clinic-system/*'))
-            <div class="info d-flex">
-                {{-- <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" style="width:3.1rem !important;" class="brand-image" /> --}}
+            <div class="image">
+                @if($clinicLogo != null)
+                <img src="{{ asset('images/clinic-logos/'.$clinicLogo) }}" class="img-responsive" alt="Clinic Logo">                
+                @else
+                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="img-circle elevation-2" alt="Clinic Image" />
+                @endif
+            </div>
 
+            <div class="info">
                 <select class="form-control" name="u_clinics" id="u_clinics">
                     <option disabled>-- Select clinic --</option>
                     @if(isset($user_clinics))
@@ -46,190 +67,190 @@
 
         </div>
         {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                  <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                  <a href="#" class="d-block">Alexander Pierce</a>
-                </div>
-              </div> --}}
+            <div class="image">
+                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="brand-image"/>
+    </div>
+    <div class="info">
+        <a href="#" class="d-block">Alexander Pierce</a>
+    </div>
+    </div> --}}
 
-        @auth <!-- Sidebar Menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+    @auth <!-- Sidebar Menu -->
+    <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-item">
-                    @if (Auth::guard('user')->user())
-                    @if(Request::is('clinic-system/*'))
-
-                    <a href="{{ route('user.clinic', Crypt::encrypt(session()->get('cc_id'))) }}" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            Home
-                        </p>
-                    </a>
-                    @else
-                    <a href="{{ route('user.home') }}" class="nav-link" title="Home">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            Home
-                        </p>
-                    </a>
-                    @endif
-                    @endif
-                </li>
-
-
+            <li class="nav-item">
+                @if (Auth::guard('user')->user())
                 @if(Request::is('clinic-system/*'))
 
-                @if (Auth::guard('user')->user())
-                @if(Helper::checkPermission('user_view', $permissions))
-
-                <li class="nav-item">
-                    <a href="{{ route('user.list') }}" class="nav-link" title="Users">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Users
-                        </p>
-                    </a>
-                </li>
+                <a href="{{ route('user.clinic', Crypt::encrypt(session()->get('cc_id'))) }}" class="nav-link">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        Home
+                    </p>
+                </a>
+                @else
+                <a href="{{ route('user.home') }}" class="nav-link" title="Home">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                        Home
+                    </p>
+                </a>
                 @endif
                 @endif
-                @if (Auth::guard('user')->user())
-                @if(Helper::checkPermission('p_view', $permissions))
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('patient.index') }}" class="nav-link" title="Patients">
-                        <i class="nav-icon fas fa-user-md"></i>
-                        <p>
-                            Patients
-                        </p>
-                    </a>
 
-                </li>
-                @endif
-                @endif
+            @if(Request::is('clinic-system/*'))
 
-                @php
-                    $isInTreatment = Str::is('clinic-system/patient/*/treatment', request()->path());
-                @endphp
+            @if (Auth::guard('user')->user())
+            @if(Helper::checkPermission('user_view', $permissions))
 
-                @if (Auth::guard('user')->user())
-                @if(Helper::checkPermission('d_view', $permissions))
-                
-                    <li class="nav-item">
-                        <a href="{{ route('dictionary.index') }}" class="nav-link" title="Shorthand">
-                            <i class="nav-icon fas fa-book"></i>
-                            <p>
-                                Shorthand
-                            </p>
-                        </a>
-                    </li>
-                @endif
-                @endif
+            <li class="nav-item">
+                <a href="{{ route('user.list') }}" class="nav-link" title="Users">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Users
+                    </p>
+                </a>
+            </li>
+            @endif
+            @endif
+            @if (Auth::guard('user')->user())
+            @if(Helper::checkPermission('p_view', $permissions))
 
-                @if (Auth::guard('user')->user())
-                @if(Helper::checkPermission('ph_view', $permissions))
-                
-                    <li class="nav-item">
-                        <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
-                            <i class="nav-icon fas fa-pills"></i>
-                            <p>
-                                Pharmacy
-                            </p>
-                        </a>
+            <li class="nav-item">
+                <a href="{{ route('patient.index') }}" class="nav-link" title="Patients">
+                    <i class="nav-icon fas fa-user-md"></i>
+                    <p>
+                        Patients
+                    </p>
+                </a>
 
-                    </li>
-                @endif
-                @endif
+            </li>
+            @endif
+            @endif
 
-                @if (Auth::guard('user')->user())
-                @if(Helper::checkPermission('pos_view', $permissions))
-                <li class="nav-item">
-                    <a href="{{ route('pos.index') }}" class="nav-link" title="POS">
-                        <i class="nav-icon fas fa-desktop"></i>
-                        <p>
-                            POS
-                        </p>
-                    </a>
+            @php
+            $isInTreatment = Str::is('clinic-system/patient/*/treatment', request()->path());
+            @endphp
 
-                </li>
-                @endif
-                @endif
+            @if (Auth::guard('user')->user())
+            @if(Helper::checkPermission('d_view', $permissions))
 
-                @if (Auth::guard('user')->user()->isAdmin())
-                <li class="nav-item">
-                    <a href="{{ route('procedure.index') }}" class="nav-link" title="Procedure / Lab">
-                        <i class="nav-icon fas fa-procedures"></i>
-                        <p>
-                            Procedure / Lab
-                        </p>
-                    </a>
-                </li>
-                @endif
+            <li class="nav-item">
+                <a href="{{ route('dictionary.index') }}" class="nav-link" title="Shorthand">
+                    <i class="nav-icon fas fa-book"></i>
+                    <p>
+                        Shorthand
+                    </p>
+                </a>
+            </li>
+            @endif
+            @endif
 
-                <li class="nav-item">
-                    <a href="{{ route('clinic.settings',Crypt::encrypt(Auth::guard('user')->user()->id)) }}" class="nav-link" title="Settings">
-                        <i class="nav-icon fas fa-cog"></i>
-                        <p>
-                            Settings
-                        </p>
-                    </a>
-                </li>
+            @if (Auth::guard('user')->user())
+            @if(Helper::checkPermission('ph_view', $permissions))
 
-                {{-- <li class="nav-item">
+            <li class="nav-item">
+                <a href="{{ route('pharmacy.index') }}" class="nav-link" title="Pharmacy">
+                    <i class="nav-icon fas fa-pills"></i>
+                    <p>
+                        Pharmacy
+                    </p>
+                </a>
+
+            </li>
+            @endif
+            @endif
+
+            @if (Auth::guard('user')->user())
+            @if(Helper::checkPermission('pos_view', $permissions))
+            <li class="nav-item">
+                <a href="{{ route('pos.index') }}" class="nav-link" title="POS">
+                    <i class="nav-icon fas fa-desktop"></i>
+                    <p>
+                        POS
+                    </p>
+                </a>
+
+            </li>
+            @endif
+            @endif
+
+            @if (Auth::guard('user')->user()->isAdmin())
+            <li class="nav-item">
+                <a href="{{ route('procedure.index') }}" class="nav-link" title="Procedure / Lab">
+                    <i class="nav-icon fas fa-procedures"></i>
+                    <p>
+                        Procedure / Lab
+                    </p>
+                </a>
+            </li>
+            @endif
+
+            <li class="nav-item">
+                <a href="{{ route('clinic.settings',Crypt::encrypt(Auth::guard('user')->user()->id)) }}" class="nav-link" title="Settings">
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>
+                        Settings
+                    </p>
+                </a>
+            </li>
+
+            {{-- <li class="nav-item">
                             <a class="nav-link" href="/home" type="submit" style=""><i
                                     class="nav-icon fas fa-sign-out-alt"></i><p> Switch Other Clinic</p></a>
                         </li>  --}}
-                @endif
-                {{-- <li class="nav-item">
+            @endif
+            {{-- <li class="nav-item">
                         @if (Auth::guard('user')->user())
                             <form action="{{ route('user.logout') }}" method="post">
-                @endif
-                @csrf
-                <button class="nav-link" type="submit" style="">
-                    <i class="nav-icon fas fa-sign-out-alt text-red"></i>
-                    <p>
-                        Logout
-                    </p>
-                </button>
-                </form>
-                </li> --}}
-            </ul>
+            @endif
+            @csrf
+            <button class="nav-link" type="submit" style="">
+                <i class="nav-icon fas fa-sign-out-alt text-red"></i>
+                <p>
+                    Logout
+                </p>
+            </button>
+            </form>
+            </li> --}}
+        </ul>
 
-            <hr>
-            <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
-                    <a class="nav-link" title="Feedback" id="feedbackBtn">
-                        <i class="nav-icon fas fa-comment-alt"></i>
+        <hr>
+        <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-item">
+                <a class="nav-link" title="Feedback" id="feedbackBtn">
+                    <i class="nav-icon fas fa-comment-alt"></i>
+                    <p>
+                        Feedback
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('docs.index') }}" class="nav-link" title="Help" target="_blank">
+                    <i class="nav-icon fas fa-question-circle"></i>
+                    <p>
+                        Help
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item mt-2 logout" style="margin-left: 17px;">
+                @if (Auth::guard('user')->user())
+                <form action="{{ route('user.logout') }}" method="post">
+                    @endif
+                    @csrf
+                    <button class="nav-link text-dark" type="submit" style="display: contents;">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
-                            Feedback
+                            Logout
                         </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('docs.index') }}" class="nav-link" title="Help" target="_blank">
-                        <i class="nav-icon fas fa-question-circle"></i>
-                        <p>
-                            Help
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item mt-2 logout" style="margin-left: 17px;">
-                    @if (Auth::guard('user')->user())
-                    <form action="{{ route('user.logout') }}" method="post">
-                        @endif
-                        @csrf
-                        <button class="nav-link text-dark" type="submit" style="display: contents;">
-                            <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>
-                                Logout
-                            </p>
-                        </button>
-                    </form>
-                </li>
-            </ul>
-        </nav>
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </nav>
     </div>
 </aside>
 @endauth
