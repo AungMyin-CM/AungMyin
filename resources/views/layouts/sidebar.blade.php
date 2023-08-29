@@ -12,7 +12,7 @@
         <span class="brand-text font-weight-white text-white">AungMyin</span>
     </a>
 
-    <div class="sidebar">
+    <div class="sidebar" style="position: relative; min-height: 100%;">
         @php
             $loggedInUser = Auth::guard('user')->user();
 
@@ -219,7 +219,7 @@
         </ul>
 
         <hr>
-        <ul class="nav nav-pills nav-sidebar flex-column mt-5" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="position: absolute; bottom: 0; margin-bottom: 60px;">
             <li class="nav-item">
                 <a class="nav-link" title="Feedback" id="feedbackBtn">
                     <i class="nav-icon fas fa-comment-alt"></i>
