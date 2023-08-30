@@ -263,20 +263,15 @@
         cursor: pointer;
     }
 
-    .dict_meaning {
-        position: absolute;
-        z-index: 1;
-        bottom: 10%;
-        transform: translateY(-10%);
-        right: 10px;
-    }
-
+    .dict_meaning,
     .dict_med {
         position: absolute;
         z-index: 1;
-        bottom: 5%;
-        transform: translateY(-5%);
-        right: 10px;
+        right: 30px;
+        width: 16rem;
+        background-color: #003049;
+        top: 50%;
+        transform: translateY(-50%);
     }
 </style>
 
@@ -406,15 +401,26 @@
                                             <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
                                             <i class="toggle-dictionary fas fa-question"></i>
 
-                                            <div class="card d-none text-white dict_meaning" style="background-color: {{config('app.color')}}" id="dict_meaning">
-                                                <div class="card-body">
-                                                    <ul class="list-unstyled">
-                                                        @foreach($dictionaries as $dictionary)
-                                                        @if($dictionary->isMed != 1)
-                                                        <li>{{ $dictionary->code }}</li>
-                                                        @endif
-                                                        @endforeach
-                                                    </ul>
+                                            <div class="card d-none text-white dict_meaning" id="dict_meaning">
+                                                <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img-top img-fluid" alt="">
+                                                <div class="card-body ml-2">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            @php
+                                                                $groupedItems = $dictionaries->where('isMed', '!==', 1)->chunk(3);
+                                                            @endphp
+
+                                                            @foreach($groupedItems as $group)
+                                                            <div class="col-6">
+                                                                <ul>
+                                                                    @foreach($group as $dictionary)
+                                                                    <li>{{ $dictionary->code }}</li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>                                        
@@ -480,15 +486,27 @@
                                                                 <td class="medicine-container">
                                                                     <i class="toggle-medicine fas fa-question fa-sm"></i>
 
-                                                                    <div class="card d-none text-white dict_med" style="background-color: {{config('app.color')}}" id="dict_med">
-                                                                        <div class="card-body">
-                                                                            <ul class="list-unstyled">                                                                          
-                                                                                @foreach($dictionaries as $dictionary)
-                                                                                    @if($dictionary->isMed === 1)
-                                                                                    <li>{{ $dictionary->code }}</li>
-                                                                                    @endif
-                                                                                @endforeach
-                                                                            </ul>
+                                                                    <div class="card d-none text-white dict_med" id="dict_med">
+                                                                        <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img-top img-fluid" alt="">
+                                                                        <div class="card-body ml-2">
+                                                                            <div class="container">
+                                                                                <div class="row">
+                                                                                    @php
+                                                                                        $groupedItems = $dictionaries->where('isMed', '===', 1)->chunk(3);
+                                                                                    @endphp
+
+                                                                                    @foreach($groupedItems as $group)
+                                                                                    <div class="col-6">
+                                                                                        <ul>
+                                                                                            @foreach($group as $dictionary)
+                                                                                            <li>{{ $dictionary->code }}</li>
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    @endforeach
+                                                                                </div>
+                                                                            </div>
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                 </td>
