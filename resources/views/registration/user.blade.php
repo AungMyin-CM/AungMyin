@@ -138,7 +138,7 @@
                     <div class="sub-forms">
                         <div class="sub-form" data-index="0">
                             <div class="form-floating m-5">
-                                <input class="form-control" type="text" name="Email" id="email" placeholder="email" autocomplete="off">
+                                <input class="form-control" type="text" name="Email" id="email" placeholder="email" autocomplete="off" tabindex="-1">
                                 <label for="email">Email</label>
                                 <span class="text-danger d-none" id="email-error">Email already taken !</span>
                             </div>
@@ -161,13 +161,13 @@
                             <div class="row p-2">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-2">
-                                        <input class="form-control" type="text" name="first_name" id="f_name" placeholder="First Name" autocomplete="off">
+                                        <input class="form-control" type="text" name="first_name" id="f_name" placeholder="First Name" autocomplete="off" tabindex="-1">
                                         <label for="f_name">First Name</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating mb-2">
-                                        <input class="form-control" type="text" name="last_name" id="l_name" placeholder="Last Name" autocomplete="off">
+                                        <input class="form-control" type="text" name="last_name" id="l_name" placeholder="Last Name" autocomplete="off" tabindex="-1">
                                         <label for="l_name">Last Name</label>
                                     </div>
                                 </div>
@@ -176,7 +176,7 @@
                             <div class="row p-2">
                                 <div class="col-md-12">
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" type="password" name="password" id="password" placeholder="Password" autocomplete="off">
+                                        <input class="form-control" type="password" name="password" id="password" placeholder="Password" autocomplete="off" tabindex="-1">
                                         <i class="fas fa-eye-slash eye-position" id="togglePassword"></i>
 
                                         <label for="password">Password</label>
@@ -265,11 +265,15 @@
             keyboard: false
         })
         $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
-            if (e.which == 13) {
+            if (e.which == 13 || e.which == 9) {
+                alert("hello");
                 e.preventDefault();
                 return false;
             }
         });
+
+        $('input[notab=notab]').on('keydown', function(e){ if (e.keyCode == 9)  e.preventDefault() });
+
     });
 
 

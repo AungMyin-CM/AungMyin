@@ -1342,6 +1342,9 @@
                     $("#product_info_table tbody").append(html)
                                
                 }
+
+                $('#medList_' + event.target.getAttribute('med-data-id')).css("display", "none");
+
             });
         }
     }
@@ -1349,6 +1352,7 @@
     function searchMed(event) {
         if (event.keyCode == 13) {
             medicine_dictionary(event)
+            return false;
         } else {
             var rowid = event.target.getAttribute("med-data-id");
             var query = $("#product_search_" + rowid).val();
