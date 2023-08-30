@@ -1324,6 +1324,9 @@
                     $("#product_info_table tbody").append(html)
                                
                 }
+
+                $('#medList_' + event.target.getAttribute('med-data-id')).css("display", "none");
+
             });
         }
     }
