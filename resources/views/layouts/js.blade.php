@@ -172,13 +172,17 @@
         $('#input-search').keyup(function() {
             var query = $(this).val();
 
-            var clinic_id = '{{Session::get('cc_id')}}';
+            var clinic_id = "{{Session::get('cc_id')}}";
 
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            // Show loading indicator
+            $('#loading-indicator').show();
+            $('#patientList').hide();
             
             $.ajax({
                 type: "POST",
@@ -188,22 +192,26 @@
                     clinic_id: clinic_id
                 }
             }).done(function(response) {
+                $('#loading-indicator').hide();
 
                 if (query != '') {
                     // if(response == ''){
-                    $("#search").removeAttr("class", "fa fa-search");
-                    $("#search").attr("class", "fa fa-plus");
-                    $("#addRoute").attr("href", "{{ route('patient.create') }}" + "?name=" + query);
+                  $("#search").removeAttr("class", "fa fa-search");
+                  $("#search").attr("class", "fa fa-plus");
+                  $("#addRoute").attr("href", "{{ route('patient.create') }}" + "?name=" + query);
                     // }else{
                     //     $("#search").removeAttr("class","fa fa-plus");
                     //     $("#search").attr("class","fa fa-search");
                     //     $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
                     // }
-                    $('#patientList').css("display", "block");
-                    $('#patientList').html(response);
+                  if (response.trim() !== '') {
+                      $('#patientList').html(response).show();
+                  } else {
+                      $('#patientList').html('<div class="text-white text-center rounded py-1" style="background-color: #6C757D; cursor: auto;">No results found.</div>').show();
+                  }
                 } else {
-                    $('#patientList').css("display", "none");
-                    $('#patientList').html("");
+                  $('#patientList').hide();
+                  $('#patientList').html('');
                 }
             });
         });

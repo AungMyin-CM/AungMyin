@@ -260,7 +260,10 @@
             </div>
             <div class="text-center m-auto" id="patientList" style="display:none;cursor:pointer;position: absolute;z-index:99;top:40px;width:98%;">
             </div>
+
           </div>
+
+          <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
 
 
           @if($patient != null)
@@ -822,6 +825,9 @@
 
     var clinic_id = $("#clinic_code").val();
 
+    $('#loading-indicator').show();
+    $('#patientList').hide();
+
     $.ajax({
       type: "POST",
       url: '/clinic-system/searchMedPatient',
@@ -830,6 +836,7 @@
         clinic_id: clinic_id
       }
     }).done(function(response) {
+      $('#loading-indicator').hide();
 
       if (query != '') {
         if (response == '') {
@@ -843,11 +850,14 @@
           $("#addRoute").attr("href", "{{ route('patient.index') }}" + "?name=" + query);
         }
 
-        $('#patientList').css("display", "block");
-        $('#patientList').html(response);
+        if (response.trim() !== '') {
+          $('#patientList').html(response).show();
+        } else {
+          $('#patientList').html('<div class="text-white text-center rounded py-1" style="background-color: #6C757D; cursor: auto;">No results found.</div>').show();
+        }
       } else {
-        $('#patientList').css("display", "none");
-        $('#patientList').html("");
+        $('#patientList').hide();
+        $('#patientList').html('');
       }
     });
   });

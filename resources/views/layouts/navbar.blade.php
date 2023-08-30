@@ -259,6 +259,8 @@
                 <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search..." autocomplete="off">
                 <div id="patientList" class="search-get-results" style="display:none;">
                 </div>
+
+                <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
             </div>
         </li>
         @endif
