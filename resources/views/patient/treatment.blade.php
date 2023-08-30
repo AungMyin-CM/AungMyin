@@ -1331,6 +1331,7 @@
     function searchMed(event) {
         if (event.keyCode == 13) {
             medicine_dictionary(event)
+            return false;
         } else {
             var rowid = event.target.getAttribute("med-data-id");
             var query = $("#product_search_" + rowid).val();

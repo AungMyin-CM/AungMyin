@@ -51,8 +51,8 @@
                                             <div class="col-md-4">
 
                                                 <div class="form-group">
-                                                    <label for="code">Name<b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ old('name') }}">
+                                                    <label for="code">First Name<b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="text" class="form-control" id="username" name="first_name" value="{{ old('first_name') }}">
 
                                                     <span id="nameError" class="text-danger small alert-msg"></span>
                                                 </div>
@@ -60,14 +60,13 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="code">Username<b><sup class="text-danger">*</sup></b></label>
-                                                    <input type="text" class="form-control" id="code" name="code" required placeholder="Code" value="{{ old('code') }}">
+                                                    <label for="code">Last Name<b><sup class="text-danger"></sup></b></label>
+                                                    <input type="text" class="form-control" id="code" name="last_name" required value="{{ old('last_name') }}">
                                                     <span class="small" id="a-text"></span>
 
                                                     <span id="codeError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
-
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="sel1">Role<b><sup class="text-danger">*</sup></b></label>

@@ -240,7 +240,7 @@ class SearchController extends Controller
         $row_id = $request->rowid;
 
         $data = Pharmacy::select('id', 'name', 'code')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_id', $clinic_id)->where('quantity', '>', '0')->where('expire_date', '>', $current_date)->where('status', 1)->get();
-
+        
         if (count($data) == 0) {
             $output = '';
         } else {
@@ -248,7 +248,7 @@ class SearchController extends Controller
 
             foreach ($data as $row) {
                 $output .= '
-                    <li class="list-group-item" id="item_options" data-id =' . $row->id . '  data-name =' . $row->name . ' row-id=' . $row_id . ' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span>' . $row->name . '</span></li>
+                    <li class="list-group-item" id="item_options" data-id ='.$row->id.'  data-name ="'.$row->name.'" row-id=' . $row_id . ' onclick="s_option(this)" style="background-color:#f3f3f3;cursor:pointer;"><span onclick="s_option(this)">' . $row->name . '</span></li>
                 ';
             }
             $output .= '</ul>';
