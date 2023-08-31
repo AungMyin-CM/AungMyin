@@ -45,6 +45,8 @@
                                 </div>
                             </div>
 
+                            <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+
                             @if($errors->any())
                             {!! implode('', $errors->all('<div>:message</div>')) !!}
                             @endif
@@ -101,6 +103,10 @@
             var query = $(this).val();
 
             var clinic_id = $("#clinic_code").val();
+
+            $('#loading-indicator').show();
+            $('#patientList').hide();
+
             $.ajax({
                 type: "POST",
                 url: '/clinic-system/search',
@@ -109,6 +115,7 @@
                     clinic_id: clinic_id
                 }
             }).done(function(response) {
+                $('#loading-indicator').hide();
 
                 if (query != '') {
                     $("#search").removeAttr("class", "fa fa-search");
