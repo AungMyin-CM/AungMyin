@@ -329,6 +329,13 @@ table .hide {
   margin-left: 4px;
 }
 
+@media only screen and (max-width: 450px) {
+
+html {
+    font-size: 12px;
+}
+}
+
 </style>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper" id="mydiv">
