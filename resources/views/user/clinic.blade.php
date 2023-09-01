@@ -35,8 +35,12 @@
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here" autocomplete="off">
                                 <input type="hidden" id="clinic_code" value="{{Session::get('cc_id') }}">
                                 <input type="hidden" id="on_home_page" value="1">
-                                <div class="input-group-append" style="z-index: 0;">
+                                <div class="input-group-append" id="search-indicator" style="z-index: 0;">
                                     <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
+                                </div>
+                                
+                                <div class="input-group-append">
+                                    <a class="btn btn-lg btn-default" id="loading-indicator" style="display:none;"><i class="fas fa-spinner fa-spin"></i></a>
                                 </div>
 
                                 @include('partials._patient-modal')
@@ -44,8 +48,6 @@
                                 <div id="patientList" class="search-get-results" style="display:none;">
                                 </div>
                             </div>
-
-                            <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
 
                             @if($errors->any())
                             {!! implode('', $errors->all('<div>:message</div>')) !!}
@@ -99,13 +101,22 @@
             }
         });
 
+        let isSearching = false;
         $('#main_search').keyup(function() {
             var query = $(this).val();
 
             var clinic_id = $("#clinic_code").val();
 
-            $('#loading-indicator').show();
+            if(!isSearching) {
+                $('#loading-indicator').show();
+                $('#search-indicator').hide();
+            }
             $('#patientList').hide();
+
+            if (query === '') {
+                $('#loading-indicator').hide();
+                $('#search-indicator').show();
+            }
 
             $.ajax({
                 type: "POST",
@@ -116,6 +127,7 @@
                 }
             }).done(function(response) {
                 $('#loading-indicator').hide();
+                $('#search-indicator').show();
 
                 if (query != '') {
                     $("#search").removeAttr("class", "fa fa-search");
@@ -136,7 +148,9 @@
                     $('#patientList').css("display", "none");
                     $('#patientList').html("");
                 }
+                isSearching = false;
             });
+            isSearching = true;
         });
     });
 
