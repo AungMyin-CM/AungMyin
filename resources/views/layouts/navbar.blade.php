@@ -1,6 +1,15 @@
 <style>
     .search-box {
         display: none;
+        position: relative;
+    }
+
+    .search-box #loading-indicator {
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 30%;
+        transform: translateY(-30%);
     }
 
     .search {
@@ -26,6 +35,15 @@
 
         .search {
             width: 100%;
+        }
+
+        .search-box #loading-indicator {
+            top: 40%;
+            transform: translateY(-40%);
+        }
+
+        .search::placeholder {
+            font-size: 12px;
         }
     }
 </style>
@@ -257,10 +275,9 @@
         <li class="nav-item" style="margin-top: 8px;">
             <div id="search-box" class="search-box">
                 <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search..." autocomplete="off">
-                <div id="patientList" class="search-get-results" style="display:none;">
-                </div>
+                <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
 
-                <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                <div id="patientList" class="search-get-results" style="display:none;"></div>   
             </div>
         </li>
         @endif

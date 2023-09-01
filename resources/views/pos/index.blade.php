@@ -255,16 +255,18 @@
           <div class="input-group col-md-6 text-center m-auto">
             <input type="search" id="main_search" class="form-control" placeholder="Search Patients.." autocomplete="off">
             <input type="hidden" id="clinic_code" value="{{ session()->get('cc_id') }}">
-            <div class="input-group-append">
+            <div class="input-group-append" id="search-indicator">
               <a class="btn btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
             </div>
+
+            <div class="input-group-append">
+                <a class="btn btn-default" id="loading-indicator" style="display:none;"><i class="fas fa-spinner fa-spin"></i></a>
+            </div>
+
             <div class="text-center m-auto" id="patientList" style="display:none;cursor:pointer;position: absolute;z-index:99;top:40px;width:98%;">
             </div>
 
           </div>
-
-          <div id="loading-indicator" class="text-center mt-2" style="display:none;"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
-
 
           @if($patient != null)
 
@@ -820,13 +822,22 @@
     document.getElementById("submittype").value = "print-type";
   }
 
+  let isSearching = false;
   $('#main_search').keyup(function() {
     var query = $(this).val();
 
     var clinic_id = $("#clinic_code").val();
 
-    $('#loading-indicator').show();
+    if(!isSearching) {
+      $('#loading-indicator').show();
+      $('#search-indicator').hide();
+    }
     $('#patientList').hide();
+
+    if (query === '') {
+      $('#loading-indicator').hide();
+      $('#search-indicator').show();
+    }
 
     $.ajax({
       type: "POST",
@@ -837,6 +848,7 @@
       }
     }).done(function(response) {
       $('#loading-indicator').hide();
+      $('#search-indicator').show();
 
       if (query != '') {
         if (response == '') {
@@ -859,7 +871,9 @@
         $('#patientList').hide();
         $('#patientList').html('');
       }
+      isSearching = false;
     });
+    isSearching = true;
   });
 
   function getPatientData(id) {
