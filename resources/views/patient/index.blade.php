@@ -43,12 +43,13 @@
                         <div class="col-6">
                             <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i class="fas fa-download"></i></span>
 
-                            <form method="post" action="{{ route('patient.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
+                            <form method="post" action="{{ route('patient.excel.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
                                 @csrf
+                                @method('post')
 
                                 <!-- Import Excel File -->
                                 <div class="import-container">
-                                    <input type="file" id="excel-file-input" accept=".xls, .xlsx" style="display:none" required />
+                                    <input type="file" id="excel-file-input" name="patient_excel" accept=".xls, .xlsx" style="display:none" required />
                                     <button class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
                                         <i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>
                                     </button>

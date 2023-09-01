@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use File;
 use Response;
+use App\Imports\ImportPatient;
+
 
 class DataController extends Controller
 {
@@ -35,5 +37,21 @@ class DataController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function importPatientExcel(Request $request)
+    {
+        $request->validate([
+            "excel_file"  => "required|mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet|file|max:1024",
+         ],[
+             "excel_file.mimetypes" => "The file format must be .xlsx"
+         ]);
+ //        return $request ;
+         Excel::import(new ImportPatient, request()->file('patient_excel'));
+
+         return 'ok';
+ 
+         return redirect()->back()->with("success","Your excel file is successfully uploaded") ;
+
     }
 }

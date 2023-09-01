@@ -162,6 +162,9 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::get('/exportPatientCSV', [DataController::class, 'exportPatientCSV']);
     Route::get('/exportMedCSV', [DataController::class, 'exportMedCSV']);
 
+    Route::post('/importExcelPatient',[DataController::class,'importPatientExcel'])->name('patient.excel.import');
+    Route::post('/importExcelPharmacy',[DataController::class,'importPharmacyExcel'])->name('pharmacy.excel.import');
+
     Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
 
