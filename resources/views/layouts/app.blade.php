@@ -75,6 +75,8 @@
 
 
     <script src="{{asset('js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
@@ -165,6 +167,17 @@
               });
             }
       });
+
+      $(document).ready(function()  {
+
+        $('#pushmenu').click(function() {
+          if (!$('body').hasClass('sidebar-collapse')) {
+            $('#clinic-logo-container').show();
+          } else {
+            $('#clinic-logo-container').hide();
+          }
+        })
+      })
     </script>
 </head>
 <body class="sidebar-mini layout-fixed sidebar-collapse" data-new-gr-c-s-check-loaded="14.1112.0" data-gr-ext-installed="" cz-shortcut-listen="true" style="height: auto;">

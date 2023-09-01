@@ -30,9 +30,9 @@
         @endphp
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             @if(Request::is('clinic-system/*'))
-            <div class="image">
+            <div class="image" id="clinic-logo-container">
                 @if($clinicLogo != null)
-                <img src="{{ asset('images/clinic-logos/'.$clinicLogo) }}" class="img-responsive" alt="Clinic Logo">                
+                <img src="{{ asset('images/clinic-logos/'.$clinicLogo) }}" class="img-responsive avatar" alt="Clinic Logo">
                 @else
                 <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="img-circle elevation-2" alt="Clinic Image" />
                 @endif

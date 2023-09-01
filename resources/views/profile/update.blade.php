@@ -346,6 +346,7 @@
                     $('.middle').css('opacity', '0.1');
 
                     $('#clinicName').html("<p>" + response.name + "</p>");
+                    location.reload();
                 },
                 error: function(xhr) {
                     // Handle the error response
