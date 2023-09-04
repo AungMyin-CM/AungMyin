@@ -41,7 +41,17 @@
                     <div class="row">
                         @if(Helper::checkPermission('p_create', $permissions))
                         <div class="col-6">
-                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i class="fas fa-download"></i></span>
+                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i data-href="/clinic-system/exportPatientCSV" class="fas fa-download"></i></span>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
 
                             <form method="post" action="{{ route('patient.excel.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
                                 @csrf
@@ -50,9 +60,9 @@
                                 <!-- Import Excel File -->
                                 <div class="import-container">
                                     <input type="file" id="excel-file-input" name="patient_excel" accept=".xls, .xlsx" style="display:none" required />
-                                    <button class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
+                                    <a href="#" class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
                                         <i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>
-                                    </button>
+                                    </a>
                                     <span class="file-name excel-file-name"></span>
                                 </div>
 
