@@ -20,6 +20,15 @@
                         </div>
                     </div><!-- /.container-fluid --> --}}
             </section>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('user.update', $user->id) }}" method="POST">
                 @csrf
@@ -40,39 +49,42 @@
 
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class={{$role->role_type == 5 ? 'col-md-6' : 'col-md-4'}}>
 
                                                 <div class="form-group">
-                                                    <label for="code">Name</label>
-                                                    <input type="text" class="form-control" id="username" name="name" placeholder="Name" value="{{ $user->name }}" autocomplete="off">
-                                                    @error('name') <span class="text-danger small">{{ $message }}</span>@enderror
+                                                    <label for="code">First Name<b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="text" class="form-control" id="username" name="first_name" value="{{ $user->first_name }}" autocomplete="off">
+
+                                                    <span id="nameError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
-
-                                            <div class="col-md-4">
+                                            <div class={{$role->role_type == 5 ? 'col-md-6' : 'col-md-4'}}>
                                                 <div class="form-group">
-                                                    <label for="code">Code</label>
-                                                    <input type="text" class="form-control" id="code" name="code" placeholder="Enter code" value="{{ $user->code }}" autocomplete="off">
-                                                    @error('code') <span class="text-danger small">{{ $message }}</span>@enderror
+                                                    <label for="code">Last Name<b><sup class="text-danger"></sup></b></label>
+                                                    <input type="text" class="form-control" id="code" name="last_name" required value="{{ $user->last_name }}" autocomplete="off">
+                                                    <span class="small" id="a-text"></span>
+
+                                                    <span id="codeError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
+                                            @if($role->role_type != 5)
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="sel1">Role</label>
+                                                        <select class="form-control" id="role_type" name="role_type">
 
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="sel1">Role</label>
-                                                    <select class="form-control" id="role_type" name="role_type">
+                                                            @foreach ($data as $key => $value)
+                                                            <option value="{{ $key }}" {{ $role->role_type == $key ? 'selected' : '' }}>{{ $value }}
+                                                            </option>
 
-                                                        @foreach ($data as $key => $value)
-                                                        <option value="{{ $key }}" {{ $role->role_type == $key ? 'selected' : '' }}>{{ $value }}
-                                                        </option>
+                                                            @endforeach
 
-                                                        @endforeach
-
-                                                    </select>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         </div>
 
                                         <label for="gender">Gender</label>
@@ -91,7 +103,7 @@
                                                 ?>
                                                 @endif
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="gender" type="radio" value="1" name="gender" <?php echo $m_checked; ?>>
+                                                    <input class="form-check-input" id="male" type="radio" value="1" name="gender" <?php echo $m_checked; ?>>
                                                     <label class="form-check-label" for="male">
                                                         Male
                                                     </label>
@@ -100,7 +112,7 @@
 
                                             <div class="col-md-3">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="gender" type="radio" value="0" name="gender" <?php echo $f_checked; ?>>
+                                                    <input class="form-check-input" id="female" type="radio" value="0" name="gender" <?php echo $f_checked; ?>>
                                                     <label class="form-check-label" for="female">
                                                         Female
                                                     </label>

@@ -388,12 +388,19 @@ class ClinicController extends Controller
             abort(404);
         }
 
+        $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
         $permissions = json_encode($request->permission);
         $origin_password = User::where('id', $id)->pluck('password');
         $role_id = User::where('id', $id)->pluck('role_id');
 
-        $role_id = Role::where('id', $role_id)->update(['role_type' => $request->role_type, 'permissions' => $permissions]);
+        if($role->role_type == 5){
+            $role_type = 5;
+        }else{
+            $role_type = $request->role_type;
+        }
+
+        $role_id = Role::where('id', $role_id)->update(['role_type' => $role_type, 'permissions' => $permissions]);
 
         $requests = [
             'name' => $request->name,

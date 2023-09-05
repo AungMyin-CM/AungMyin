@@ -54,7 +54,7 @@
                                                     <label for="code">First Name<b><sup class="text-danger">*</sup></b></label>
                                                     <input type="text" class="form-control" id="username" name="first_name" value="{{ old('first_name') }}" autocomplete="off">
 
-                                                    <span id="nameError" class="text-danger small alert-msg"></span>
+                                                    <span id="firstnameError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
@@ -390,7 +390,7 @@
                     var err = eval("(" + xhr.responseText + ")");
                     var response = JSON.parse(xhr.responseText);
 
-                    let name = response.errors.name ? response.errors.name[0] : '';
+                    let first_name = response.errors.first_name ? response.errors.first_name[0] : '';
                     let code = response.errors.code ? response.errors.code[0] : '';
                     let role_type = response.errors.role_type ? response.errors.role_type[0] : '';
                     let gender = response.errors.gender ? response.errors.gender[0] : '';
@@ -409,6 +409,7 @@
                     $('#phoneError').html(phoneNumber);
                     $('#addressError').html(address);
                     $('#feesError').html(fees);
+                    $("#firstnameError").html(first_name);
 
                     $(".alert-msg").show().delay(5000).fadeOut();
 

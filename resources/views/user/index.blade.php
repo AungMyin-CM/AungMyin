@@ -42,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Code</th>
+                                <th>Email</th>
                                 <th>Phone number</th>
                                 <th>Role type</th>
                                 <th style="width: 10%;"><span class="d-none d-md-block">Actions</span></th>
@@ -51,9 +51,9 @@
                         <tbody>
                             @foreach ($data as $row)
                             <tr>
-                                <td>{{ $row->name }}</td>
-                                <td>{{ $row->code }}</td>
-                                <td>{{ $row->phoneNumber }}</td>
+                                <td>{{ $row->first_name.' '.$row->last_name }}</td>
+                                <td>{{ $row->email }}</td>
+                                <td>{{ $row->phoneNumber ? $row->phoneNumber : '-' }}</td>
                                 <td>
                                     @switch($row->roleType->role_type)
                                     @case('1')
