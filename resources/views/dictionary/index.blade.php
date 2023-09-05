@@ -89,7 +89,7 @@
                                     <div class="d-flex justify-content-center" style="gap: 20px">
                                         <div>
                                             @if(Helper::checkPermission('d_update', $permissions))
-                                            <a href="{{ route('dictionary.edit', $row->id) }}" class="btn btn-default">
+                                            <a href="{{ route('dictionary.edit', Crypt::encrypt($row->id)) }}" class="btn btn-default">
                                                 <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
                                             </a>
                                             @endif

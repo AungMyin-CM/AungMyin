@@ -10,6 +10,10 @@ use App\Models\Dictionary;
 use Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\QueryException;
+
 
 
 class DictionaryController extends Controller
@@ -77,9 +81,16 @@ class DictionaryController extends Controller
             abort(403);
         }
 
-        $dictionary = Dictionary::findOrFail($id);
+        try {
+            $id = Crypt::decrypt($id);
+            $dictionary = Dictionary::findOrFail($id);
 
-        return view('dictionary/edit', compact('dictionary'));
+            return view('dictionary/edit', compact('dictionary'));   
+        } catch (DecryptException $e) {
+            abort(404);
+        }
+
+
     }
 
     /**
