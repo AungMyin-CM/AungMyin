@@ -58,9 +58,33 @@
                             <tr>
                                 <td>{{ $i++ }} </td>
                                 <td>{{ $row->code }}</td>
-                                <td>
-                                    <?php echo Str::limit(str_replace("^", " ", $row->meaning), $limit = 100, $end = '...') ?>
-                                </td>
+                                @if($row->isMed != 1)
+                                    <td>
+                                        <?php echo Str::limit( $row->meaning, $limit = 100, $end = '...') ?>
+                                    </td>
+                                @else
+                                    <td>
+                                        <span class="show">
+                                            @php
+              
+                                              $med = explode('<br>',preg_replace('/(<br>)+$/', '', $row->meaning));
+              
+                                              $medInfo = [];
+                                              
+                                              foreach ($med as $key =>$medRow) {
+                                                $medInfo[] = explode("^", $medRow);
+                                              }
+              
+                                              $amount = 0;
+                                              
+                                                foreach($medInfo as $key => $d){
+                                                  echo '<span class="badge badge-primary">'.$d[1].' </span> <span class="badge badge-secondary">'.$d[2].' </span> <span class="badge badge-info">'.$d[3].' </span><br/>';
+                                                } 
+              
+              
+                                            @endphp</span>
+                                    </td>
+                                @endif
                                 <td>
                                     <div class="d-flex justify-content-center" style="gap: 20px">
                                         <div>
