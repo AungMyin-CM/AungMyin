@@ -270,8 +270,8 @@
         right: 30px;
         width: 16rem;
         background-color: #003049;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 40%;
+        transform: translateY(-40%);
     }
 </style>
 
@@ -401,7 +401,7 @@
                                             <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
                                             <i class="toggle-dictionary fas fa-question"></i>
 
-                                            <div class="card d-none text-white dict_meaning" id="dict_meaning">
+                                            <div class="card text-white dict_meaning" id="dict_meaning" style="display: none;">
                                                 <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img-top img-fluid" alt="">
                                                 <div class="card-body ml-2">
                                                     <div class="container">
@@ -486,7 +486,7 @@
                                                                 <td class="medicine-container">
                                                                     <i class="toggle-medicine fas fa-question fa-sm"></i>
 
-                                                                    <div class="card d-none text-white dict_med" id="dict_med">
+                                                                    <div class="card text-white dict_med" id="dict_med" style="display: none;">
                                                                         <img src="{{asset('images/web-photos/clinic.jpg')}}" class="card-img-top img-fluid" alt="">
                                                                         <div class="card-body ml-2">
                                                                             <div class="container">
@@ -1532,25 +1532,23 @@
     }
 
     $(document).ready(function() {
-        $('.toggle-dictionary').click(function() {
-            let dictMeaning = $('#dict_meaning');
+        let dictMeaning = $('#dict_meaning');
+        let dictMed = $('#dict_med');
 
-            if(dictMeaning.hasClass('d-none')) {
-                dictMeaning.removeClass('d-none').addClass('d-block');
-            } else {
-                dictMeaning.removeClass('d-block').addClass('d-none');
-            }
+        $('.toggle-dictionary').click(function() {
+            dictMeaning.toggle();
         })
 
         $('.toggle-medicine').click(function() {
-            let dictMed = $('#dict_med');
-            
-            if(dictMed.hasClass('d-none')) {
-                dictMed.removeClass('d-none').addClass('d-block');
-            } else {
-                dictMed.removeClass('d-block').addClass('d-none');
-            }
+            dictMed.toggle();
         })
+
+        $(window).click(function(event) {        
+            if (!dictMeaning.is(event.target) && !dictMed.is(event.target) && !$('.toggle-dictionary').is(event.target) && !$('.toggle-medicine').is(event.target)) {
+                dictMeaning.hide();
+                dictMed.hide();
+            }
+        });
     })
 </script>
 @endsection

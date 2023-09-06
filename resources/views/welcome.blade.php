@@ -30,7 +30,7 @@
 
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span>Aung Myin</span><sub>Clinic Manager</sub>
+        <span>AUNGMYIN</span>
       </a>
 
       <nav id="navbar" class="navbar">
