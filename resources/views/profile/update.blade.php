@@ -338,6 +338,7 @@
                 success: function(response) {
                     if (selectedLogo !== null) {
                         let updatedLogoUrl = "{{ asset('images/clinic-logos/') }}/" + response.avatar;
+                        
                         $('#clinicLogoImage').attr('src', updatedLogoUrl);
                     }
 
@@ -346,7 +347,18 @@
                     $('.middle').css('opacity', '0.1');
 
                     $('#clinicName').html("<p>" + response.name + "</p>");
-                    location.reload();
+
+                    $.ajax({
+                        url: "{{ route('clinic.logo', session()->get('cc_id')) }}",
+                        type: 'GET',
+                        success: function(response) {
+                            if (response.logo) {
+                                let updatedLogoUrl = "{{ asset('images/clinic-logos/') }}/" + response.logo;
+                                $('#clinic-logo').attr('src', updatedLogoUrl);
+                            }
+                        },
+                        error: function(xhr) {}
+                    });
                 },
                 error: function(xhr) {
                     // Handle the error response

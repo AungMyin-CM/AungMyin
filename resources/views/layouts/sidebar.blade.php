@@ -20,10 +20,10 @@
                 $userClinic = $loggedInUser->user_clinic;
 
                 if ($userClinic) {
-                    $clinic = $userClinic->clinic;
+                    $clinic = $userClinic->clinic->first();
 
                     if ($clinic) {
-                        $clinicLogo = $clinic[0]->avatar;
+                        $clinicLogo = $clinic->avatar;
                     }
                 }
             }
@@ -32,9 +32,9 @@
             @if(Request::is('clinic-system/*'))
             <div class="image" id="clinic-logo-container">
                 @if($clinicLogo != null)
-                <img src="{{ asset('images/clinic-logos/'.$clinicLogo) }}" class="img-responsive avatar" alt="Clinic Logo">
+                <img src="{{ asset('images/clinic-logos/'.$clinicLogo) }}" class="img-responsive avatar" alt="Clinic Logo" id="clinic-logo">
                 @else
-                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="img-circle elevation-2" alt="Clinic Image" />
+                <img src="{{ asset('images/web-photos/sidebar-clinic-logo.png') }}" class="img-circle elevation-2" alt="Clinic Image" id="clinic-logo" />
                 @endif
             </div>
 

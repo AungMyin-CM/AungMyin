@@ -300,9 +300,16 @@ class ClinicController extends Controller
             'avatar' => $filename,
         ]);
 
-        $clinic = (Clinic::where('id', $id)->get())[0];
+        $clinic = Clinic::where('id', $id)->first();
 
         return response()->json($clinic);
+    }
+
+    public function getLogo($clinicId)
+    {
+        $clinic = Clinic::findOrFail($clinicId);
+
+        return response()->json(['logo' => $clinic->avatar]);
     }
 
     public function newUser()

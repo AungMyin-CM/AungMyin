@@ -131,6 +131,8 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('clinic/{id}', [ClinicController::class, 'updateClinic'])->name('clinic.update');
 
+    Route::get('/clinic/logo/{clinicId}', [ClinicController::class, 'getLogo'])->name('clinic.logo');
+
     Route::get('user/create', [ClinicController::class, 'newUser'])->name('user.create');
 
     Route::get('user/{user}', [ClinicController::class, 'editUser'])->name('user.edit');
