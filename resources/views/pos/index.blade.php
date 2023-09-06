@@ -859,7 +859,7 @@
         } else {
           $("#search").removeAttr("class", "fa fa-plus");
           $("#search").attr("class", "fa fa-search");
-          $("#addRoute").attr("href", "{{ route('patient.index') }}" + "?name=" + query);
+          $("#addRoute").attr("href", "{{ route('patient.index') }}");
         }
 
         if (response.trim() !== '') {

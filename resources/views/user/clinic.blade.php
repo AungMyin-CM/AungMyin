@@ -45,7 +45,7 @@
 
                                 @include('partials._patient-modal')
 
-                                <div id="patientList" class="search-get-results" style="display:none;">
+                                <div id="patientList" class="search-get-results" style="display: none; z-index: 1;">
                                 </div>
                             </div>
 
@@ -130,13 +130,21 @@
                 $('#search-indicator').show();
 
                 if (query != '') {
-                    $("#search").removeAttr("class", "fa fa-search");
-                    $("#search").attr("class", "fa fa-plus");
-
-                    $("#addRoute").click(function() {
-                        patientAddModal.css("display", "block");
-                        $("#patient_name").val(query);
-                    })
+                    if (response == '') {
+                        $("#search").removeAttr("class", "fa fa-search");
+                        $("#search").attr("class", "fa fa-plus");
+    
+                        $("#addRoute").click(function() {
+                            patientAddModal.css("display", "block");
+                            $("#patient_name").val(query);
+                        })
+                    } else {
+                        $("#search").removeAttr("class", "fa fa-plus");
+                        $("#search").attr("class", "fa fa-search");
+                        $("#addRoute").click(function(event) {
+                            event.preventDefault();
+                        });
+                    }
 
                     $("#addClose").click(function() {
                         patientAddModal.css("display", "none");
