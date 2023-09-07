@@ -273,6 +273,26 @@
         top: 40%;
         transform: translateY(-40%);
     }
+
+    .med_name {
+        position: relative;
+    }
+
+    .med_name .loading {
+        display: none;
+        position: absolute;
+        right: 20px;
+        top: 35%;
+        transform: translateY(-35%);
+    }
+
+    .dictionary-container .loading {
+        display: none;
+        position: absolute;
+        right: 10px;
+        top: 10%;
+        transform: translateY(-10%);
+    }
 </style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -399,6 +419,7 @@
 
                                         <div class="mb-3 dictionary-container">
                                             <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
+                                            <i class="fas fa-spinner fa-spin loading" id="loading"></i>
                                             <i class="toggle-dictionary fas fa-question"></i>
 
                                             <div class="card text-white dict_meaning" id="dict_meaning" style="display: none;">
@@ -470,8 +491,11 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr id="row_1">
-                                                                <td>
+                                                                <td class="med_name">
                                                                     <input type="text" name="med_name[]" id="product_search_1" med-data-id="1" onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine" autocomplete="off">
+
+                                                                    <i class="fas fa-spinner fa-spin loading" id="loading_1"></i>
+
                                                                     <input type="hidden" name="med_id[]" id="med_id_1">
                                                                     <div id="medList_1" style="display:none;width:35%;">
                                                                     </div>
@@ -951,8 +975,9 @@
         var count_table_tbody_tr = $("#product_info_table tbody tr").length;
         var row_id = count_table_tbody_tr + 1;
         var html = '<tr id="row_' + row_id + '">' +
-            '<td>' +
-            '<input type="search" name="med_name[]" id="product_search_' + row_id + '"  med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine" autocomplete="off">' +
+            '<td class="med_name">' +
+            '<input type="text" name="med_name[]" id="product_search_' + row_id + '"  med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" class="form-control" placeholder="Medicine" autocomplete="off">' +
+            '<i class="fas fa-spinner fa-spin loading" id="loading_' + row_id + '"></i>' +
             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '">' +
             '<div id="medList_' + row_id + '" style="display:none;position:absolute;width:35%;"></div>' +
             '</td>' +
@@ -1001,34 +1026,34 @@
 
     });
 
-    $(document).ready(function() {
-        let dictionaryTooltip = $('#dictionaryTooltip');
-        let medicineTooltip = $('#medicineTooltip');
-        let dictionaryData = $('#dictionaryData');
-        let medicineData = $('#medicineData');
+    // $(document).ready(function() {
+    //     let dictionaryTooltip = $('#dictionaryTooltip');
+    //     let medicineTooltip = $('#medicineTooltip');
+    //     let dictionaryData = $('#dictionaryData');
+    //     let medicineData = $('#medicineData');
 
-        dictionaryTooltip.hover(
-            function() {
-                dictionaryData.css('visibility', 'visible');
-                dictionaryData.css('opacity', 1);
-            },
-            function() {
-                dictionaryData.css('visibility', 'hidden');
-                dictionaryData.css('opacity', 0);
-            }
-        );
+    //     dictionaryTooltip.hover(
+    //         function() {
+    //             dictionaryData.css('visibility', 'visible');
+    //             dictionaryData.css('opacity', 1);
+    //         },
+    //         function() {
+    //             dictionaryData.css('visibility', 'hidden');
+    //             dictionaryData.css('opacity', 0);
+    //         }
+    //     );
 
-        medicineTooltip.hover(
-            function() {
-                medicineData.css('visibility', 'visible');
-                medicineData.css('opacity', 1);
-            },
-            function() {
-                medicineData.css('visibility', 'hidden');
-                medicineData.css('opacity', 0);
-            }
-        );
-    });
+    //     medicineTooltip.hover(
+    //         function() {
+    //             medicineData.css('visibility', 'visible');
+    //             medicineData.css('opacity', 1);
+    //         },
+    //         function() {
+    //             medicineData.css('visibility', 'hidden');
+    //             medicineData.css('opacity', 0);
+    //         }
+    //     );
+    // });
 
     $.ajaxSetup({
         headers: {
@@ -1328,13 +1353,14 @@
                     for (i = 1; i < fil_res.length; i++) {
                         data = res[i].split('^');
                         html += '<tr id="row_' + row_id + '">' +
-                            '<td>' +
-                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" value="' + data[1] + '"  class="form-control" placeholder="Search Medicine">' +
+                            '<td class="med_name">' +
+                            '<input type="text" name="med_name[]" id="product_search_' + row_id + '" med-data-id = ' + row_id + ' onkeypress="return searchMed(event)" value="' + data[1] + '"  class="form-control" autocomplete="off" placeholder="Medicine">' +
+                            '<i class="fas fa-spinner fa-spin loading" id="loading_' + row_id + '"></i>' +
                             '<input type = "hidden" name = "med_id[]" id = "med_id_' + row_id + '" value="' + data[0] + '" >' +
                             '<div id="medList_' + row_id + '" style="position:absolute;top:10px;display:none;width:35%;"></div>' +
                             '</td>' +
-                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" placeholder="Dosage" value="' + data[2] + '" ></td>' +
-                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" placeholder="Days" value="' + data[3] + '"></td>' +
+                            '<td><input type="text" name="quantity[]" id="qty_' + row_id + '" class="form-control" autocomplete="off" placeholder="Dosage" value="' + data[2] + '" ></td>' +
+                            '<td><input type="number" name="days[]" id="days_' + row_id + '" class="form-control" autocomplete="off" placeholder="Days" value="' + data[3] + '"></td>' +
                             '<td><button type="button" class="btn btn-default" onclick="removeRow(\'' + row_id + '\')"><i class="fa fa-minus"></i></button></td>' +
                             '</tr>';
                         row_id++;
@@ -1362,6 +1388,10 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            $('#loading_' + rowid).show();
+            $('#medList_' + rowid).hide();
+
             $.ajax({
                 type: "POST",
                 url: '/clinic-system/searchMed',
@@ -1371,6 +1401,7 @@
                     rowid: rowid
                 }
             }).done(function(response) {
+                $('#loading_' + rowid).hide();
                 if (query != '') {
                     $('#medList_' + rowid).css("display", "contents");
                     $('#medList_' + rowid).css("position", "relative");
