@@ -47,13 +47,12 @@ class DictionaryController extends Controller
             ],
         ]);
 
-
         $dict = new Dictionary();
         if ($request->is_med == 1) {
-            $count_product = count($request->med_id);
+            $count_product = count($request->med_name);
             $assign_medicines = '';
             for ($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= $request->med_id[$x] . '^' .  $request->med_name[$x] . '^' .  $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
+                $assign_medicines .= (isset($request->med_id[$x]) ? $request->med_id[$x] : 'xx') . '^' .  $request->med_name[$x] . '^' .  $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
             }
             $dict->create([
                 'code' => $request->code,
@@ -98,11 +97,13 @@ class DictionaryController extends Controller
         }
 
         if ($request->isMed == 1) {
-            $count_product = count(array_filter($request->med_id, fn ($value) => !is_null($value)));
+            $count_product = count(array_filter($request->med_name, fn ($value) => !is_null($value)));
             $med_id = array_filter($request->med_id, fn ($value) => !is_null($value));
+            // $med_name = array_filter($request->med_name, fn ($value) => !is_null($value));
+
             $assign_medicines = '';
             for ($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= $med_id[$x] . '^' .  $request->med_name[$x] . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
+                $assign_medicines .= (isset($med_id[$x]) ? $med_id[$x] : 'xx') . '^' .  $request->med_name[$x] . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
             }
             Dictionary::whereId($id)->update([
                 'code' => $request->code,
