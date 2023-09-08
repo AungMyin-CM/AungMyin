@@ -28,7 +28,7 @@
   <header id="header" class="header fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="/" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span>AUNGMYIN</span>
       </a>
@@ -39,7 +39,8 @@
           <li><a class="nav-link scrollto" href="#services">Our Services</a></li>
           <li><a class="nav-link scrollto" href="#pricing">Packages</a></li>
           <li><a class="nav-link scrollto" href="#elearning">E-learning</a></li>
-          <li><a class="nav-link scrollto" href="#job-search">Job search</a></li>
+          <li><a class="nav-link scrollto" href="#job-search">Job Search</a></li>
+          <li><a class="nav-link scrollto" href="#about">About Us</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact Us</a></li>
           @auth
           <li><a class="getstarted" href="{{asset('home')}}">My Dashboard</a></li>
@@ -55,46 +56,29 @@
   </header><!-- End Header -->
 
   <!-- ======= home Section ======= -->
-  <section id="home" class="home d-flex align-items-center">
+  <section id="home" class="home d-flex align-items-center" style="background: url(assets/img/hero-bg.png) top center no-repeat;">
 
     <div class="container">
       <div class="row">
         <div class="col-lg-6 d-flex flex-column justify-content-center">
-          <h1 data-aos="fade-up" style="font-family: 'Times New Roman', Times, serif;  font-style: italic;">Manage your </h1>
-          <h1 data-aos="fade-up" style="font-family: 'Times New Roman', Times, serif;">Clinic in one Place</h1>
-          <br>
-          <h5 data-aos-delay="400">Why you need to upgrade your clinic?</h5>
-          <div class="row mt-3">
-            <div class="col-md-4">
-              <h5>
-                <i class="bi bi-alarm-fill"></i>
-                Save your time
-              </h5>
-            </div>
-            <div class="col-md-4">
-              <h5>
-                <i class="bi bi-lightbulb-fill"></i>
-                Effortless
-              </h5>
-            </div>
-            <div class="col-md-4">
-              <h5>
-                <i class="bi bi-shield-fill-check"></i>
-                Reliable
-              </h5>
-            </div>
-          </div>
+          <h1 data-aos="fade-up">
+            <span>လူနာမှတ်တမ်းနှင့်</span> <br>
+            <span>ဆေးခန်းတစ်ခုလုံးကို Manage လုပ်နိုင်ဖို့</span>
+          </h1>
+          <h2 data-aos="fade-up" data-aos-delay="400">AUNGMYIN CLINIC MANAGER</h2>
           <div data-aos="fade-up" data-aos-delay="600">
             <div class="text-center text-lg-start">
               <a href="{{route('register.user')}}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
-                <span>Get Started</span>
+                <span>Start a free trial</span>
                 <i class="bi bi-arrow-right"></i>
               </a>
             </div>
           </div>
         </div>
         <div class="col-lg-6 home-img" data-aos="zoom-out" data-aos-delay="200">
-          {{-- <img src="assets/img/home-img.png" class="img-fluid" alt=""> --}}
+          <img src="assets/img/home-img.png" class="img-fluid" alt="">
+          <br>
+          <span>100% Cloud-Based Solution!</span>
         </div>
       </div>
     </div>
@@ -108,8 +92,7 @@
     <section id="services" class="services">
       <div class="container" data-aos="fade-up">
         <header class="section-header">
-          <p>What kind of feature are in?</p>
-          <h2>Our Services</h2>
+          <p>ဘာတွေလုပ်လို့ ရနိုင်သလဲ?</p>
         </header>
         <div class="row gx-0">
           <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
@@ -117,10 +100,10 @@
           </div>
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
             <div class="content">
-              <h3>Feature 1</h3>
-              <h2>Assign permission by roles</h2>
+              <h3><i class="bi bi-1-square"></i></h3>
+              <h2>Patient Record Management</h2>
               <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                Shorthand Feature ကို အသုံးပြု၍ ဆေးကုသမှုမှတ်တမ်းများ အချိန်တိုအတွင်း ရေးမှတ်နိုင်ပြီး မှတ်တမ်းဟောင်းများကို လျှပ်တပြက်အတွင်း ပြန်ရှာကြည့်နိုင်ဖို့ အကောင်းဆုံးဖန်တီးထားပါတယ်။
               </p>
             </div>
           </div>
@@ -128,10 +111,10 @@
         <div class="row gx-0">
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
             <div class="content">
-              <h3>Feature 2</h3>
-              <h2>Patient treatment</h2>
+              <h3><i class="bi bi-2-square"></i></h3>
+              <h2>Inventory Management</h2>
               <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                ဆေးပစ္စည်းများကို ဈေးနှုန်း Expired Date နှင့်အတူ အခြားအချက်အလက်များဖြင့် စနစ်တကျ သိမ်းဆည်းထားနိုင်ပါတယ်။
               </p>
             </div>
           </div>
@@ -145,10 +128,10 @@
           </div>
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
             <div class="content">
-              <h3>Feature 3</h3>
-              <h2>Library your keywords</h2>
+              <h3><i class="bi bi-3-square"></i></h3>
+              <h2>Sales & Revenue Management</h2>
               <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                ဆေးရောင်းချသည့် POS System ပါဝင်ပြီး ဝင်ငွေ၊ အမြတ်ငွေစာရင်းများ ကြည့်နိုင်ပါတယ်။
               </p>
             </div>
           </div>
@@ -156,35 +139,18 @@
         <div class="row gx-0">
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
             <div class="content">
-              <h3>Feature 4</h3>
-              <h2>Pharmacy counter</h2>
+              <h3><i class="bi bi-4-square"></i></h3>
+              <h2>Doctor & Staff Management</h2>
               <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+                ဆရာဝန်များ၊ ဝန်ထမ်းများကို လွယ်ကူစွာ စီမံခန့်ခွဲနိုင်ပါတယ်။
               </p>
             </div>
           </div>
           <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
             <img src="" class="img-fluid" alt="">
-          </div>
-        </div>
-        <div class="row gx-0">
-          <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
-            <img src="" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
-            <div class="content">
-              <h3>Feature 5</h3>
-              <h2>POS system for your pharmacy counter</h2>
-              <p>
-                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
-              </p>
-            </div>
           </div>
         </div>
       </div>
-
-      </div>
-
     </section><!-- End Services Section -->
 
     <!-- ======= Pricing Section ======= -->
@@ -287,7 +253,7 @@
         </select>
 
         <div class="row">
-          <div class="col-lg-4 col-md-6 mb-3">
+          <div class="col-lg-4 col-md-6 mb-3" data-aos="fade-up" data-aos-delay="200">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">
@@ -322,7 +288,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+
+          <div class="col-lg-4 col-md-6 mb-3" data-aos="fade-up" data-aos-delay="400">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">
@@ -357,7 +324,8 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 mb-3">
+
+          <div class="col-lg-4 col-md-6 mb-3" data-aos="fade-up" data-aos-delay="600">
             <div class="card">
               <div class="card-body">
                 <div class="card-title">
@@ -401,7 +369,36 @@
     </section>
     <!-- End Job search Section -->
 
-    <!-- ======= Contact Section ======= -->
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+
+      <div class="container" data-aos="fade-up">
+        <div class="row gx-0">
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="content">
+              <h3>Who We Are</h3>
+              <h2>Expedita voluptas omnis cupiditate totam eveniet nobis sint iste. Dolores est repellat corrupti reprehenderit.</h2>
+              <p>
+                Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
+              </p>
+              <div class="text-center text-lg-start">
+                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
+                  <span>Read More</span>
+                  <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+            <img src="assets/img/about.png" class="img-fluid" alt="">
+          </div>
+
+        </div>
+      </div>
+
+    </section><!-- End About Section -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
