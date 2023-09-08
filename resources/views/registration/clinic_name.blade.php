@@ -11,8 +11,8 @@
   --lightgray: whitesmoke;
   --darkgreen: #2a9d8f;
   --popular: #ffdd40;
-  --starter: #003049;
-  --essential: #0372ad;
+  --starter: #00263a;
+  --essential: #00263a;
   --professional: #003049;
 }
 
@@ -398,11 +398,11 @@ html {
                                                   <div class="heading">{{ $package->name }}</div>
                                                 <div class="info">
                                                   <div class="price monthly">
-                                                    <div class="amount">{{ number_format($package->price) }} <span>month</span></div>
+                                                    <div class="amount">{{ number_format($package->price) }}<span>month *</span></div>
                                                   </div>
                                                   <div class="price yearly hide">
-                                                    <div class="amount">$29 <span>month</span></div>
-                                                    <div class="billing-msg">billed annually</div>
+                                                    <div class="amount">{{number_format($package->price * 12)}}<span>year *</span></div>
+                                                    {{-- <div class="billing-msg">billed annually</div> --}}
                                     
                                                   </div>
                                     

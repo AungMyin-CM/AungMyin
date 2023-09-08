@@ -443,7 +443,7 @@ class ClinicController extends Controller
 
         $user_id = Auth::id();
 
-        $data = Package::where('status', 1)->orderBy('price', 'desc')->get();
+        $data = Package::where('status', 1)->orderBy('price', 'asc')->get();
 
         $clinic_data = UserClinic::where('user_id', $user_id)->count();
 
