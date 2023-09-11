@@ -38,8 +38,8 @@
           <li><a class="nav-link scrollto active" href="#home">Home</a></li>
           <li><a class="nav-link scrollto" href="#services">Our Services</a></li>
           <li><a class="nav-link scrollto" href="#pricing">Packages</a></li>
-          <li><a class="nav-link scrollto" href="#elearning">E-learning</a></li>
-          <li><a class="nav-link scrollto" href="#job-search">Job Search</a></li>
+          <!-- <li><a class="nav-link scrollto" href="#elearning">E-learning</a></li> -->
+          <!-- <li><a class="nav-link scrollto" href="#job-search">Job Search</a></li> -->
           <li><a class="nav-link scrollto" href="#about">About Us</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact Us</a></li>
           @auth
@@ -208,7 +208,7 @@
     </section><!-- End Pricing Section -->
 
     <!-- ======= E-learning Section ======= -->
-    <section id="elearning" class="elearning">
+    <!-- <section id="elearning" class="elearning">
 
       <div class="container" data-aos="fade-up">
 
@@ -232,11 +232,11 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End E-learning Section -->
 
     <!-- ======= Job search Section ======= -->
-    <section id="job-search" class="job-search">
+    <!-- <section id="job-search" class="job-search">
 
       <div class="container" data-aos="fade-up">
 
@@ -366,7 +366,7 @@
           <a href="#" class="btn btn-primary">View all jobs</a>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- End Job search Section -->
 
     <!-- ======= About Section ======= -->
@@ -382,12 +382,6 @@
               <p>
                 Quisquam vel ut sint cum eos hic dolores aperiam. Sed deserunt et. Inventore et et dolor consequatur itaque ut voluptate sed et. Magnam nam ipsum tenetur suscipit voluptatum nam et est corrupti.
               </p>
-              <div class="text-center text-lg-start">
-                <a href="#" class="btn-read-more d-inline-flex align-items-center justify-content-center align-self-center">
-                  <span>Read More</span>
-                  <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
             </div>
           </div>
 
