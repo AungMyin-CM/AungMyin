@@ -435,7 +435,7 @@
                                                             <div class="col-6">
                                                                 <ul>
                                                                     @foreach($group as $dictionary)
-                                                                    <li>{{ $dictionary->code }}</li>
+                                                                    <li class="small">{{ $dictionary->code }}</li>
                                                                     @endforeach
                                                                 </ul>
                                                             </div>
@@ -523,7 +523,7 @@
                                                                                     <div class="col-6">
                                                                                         <ul>
                                                                                             @foreach($group as $dictionary)
-                                                                                            <li>{{ $dictionary->code }}</li>
+                                                                                            <li class="small">{{ $dictionary->code }}</li>
                                                                                             @endforeach
                                                                                         </ul>
                                                                                     </div>
