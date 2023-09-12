@@ -255,15 +255,17 @@
           <div class="input-group col-md-6 text-center m-auto">
             <input type="search" id="main_search" class="form-control" placeholder="Search Patients.." autocomplete="off">
             <input type="hidden" id="clinic_code" value="{{ session()->get('cc_id') }}">
-            <div class="input-group-append" id="search-indicator">
-              <a class="btn btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
+            <div class="input-group-append" id="search-indicator" style="z-index: 0;">
+              <a class="btn btn-default" href="" id="addRoute"><i id="search" class="fa fa-search"></i></a>
             </div>
 
             <div class="input-group-append">
                 <a class="btn btn-default" id="loading-indicator" style="display:none;"><i class="fas fa-spinner fa-spin"></i></a>
             </div>
 
-            <div class="text-center m-auto" id="patientList" style="display:none;cursor:pointer;position: absolute;z-index:99;top:40px;width:98%;">
+            @include('partials._patient-modal')
+
+            <div class="text-center m-auto" id="patientList" style="display:none;cursor:pointer;position: absolute;z-index:1;top:40px;width:98%;">
             </div>
 
           </div>
@@ -821,59 +823,73 @@
   function print() {
     document.getElementById("submittype").value = "print-type";
   }
+  
+  $(document).ready(function() {
+    let patientAddModal = $('#addModal');
+    let isSearching = false;
+    let query = "";
 
-  let isSearching = false;
-  $('#main_search').keyup(function() {
-    var query = $(this).val();
-
-    var clinic_id = $("#clinic_code").val();
-
-    if(!isSearching) {
-      $('#loading-indicator').show();
-      $('#search-indicator').hide();
-    }
-    $('#patientList').hide();
-
-    if (query === '') {
-      $('#loading-indicator').hide();
-      $('#search-indicator').show();
-    }
-
-    $.ajax({
-      type: "POST",
-      url: '/clinic-system/searchMedPatient',
-      data: {
-        key: query,
-        clinic_id: clinic_id
-      }
-    }).done(function(response) {
-      $('#loading-indicator').hide();
-      $('#search-indicator').show();
-
-      if (query != '') {
-        if (response == '') {
-          $("#search").removeAttr("class", "fa fa-search");
-          $("#search").attr("class", "fa fa-plus");
-          $("#addRoute").attr("href", "{{ route('patient.create') }}" + "?name=" + query);
-
-        } else {
-          $("#search").removeAttr("class", "fa fa-plus");
-          $("#search").attr("class", "fa fa-search");
-          $("#addRoute").attr("href", "{{ route('patient.index') }}");
-        }
-
-        if (response.trim() !== '') {
-          $('#patientList').html(response).show();
-        } else {
-          $('#patientList').html('<div class="text-white text-center rounded py-1" style="background-color: #6C757D; cursor: auto;">No results found.</div>').show();
-        }
-      } else {
-        $('#patientList').hide();
-        $('#patientList').html('');
-      }
-      isSearching = false;
+    $("#addClose").click(function() {
+        patientAddModal.css("display", "none");
     });
-    isSearching = true;
+
+    $('#main_search').keyup(function() {
+      query = $(this).val();
+      var clinic_id = $("#clinic_code").val();
+
+      if(!isSearching) {
+        $('#loading-indicator').show();
+        $('#search-indicator').hide();
+      }
+      $('#patientList').hide();
+
+      if (query === '') {
+        $('#loading-indicator').hide();
+        $('#search-indicator').show();
+      }
+
+      $.ajax({
+        type: "POST",
+        url: '/clinic-system/searchMedPatient',
+        data: {
+          key: query,
+          clinic_id: clinic_id
+        }
+      }).done(function(response) {
+        $('#loading-indicator').hide();
+        $('#search-indicator').show();
+
+        if (query != '') {
+          if (response == '') {
+            $("#search").removeAttr("class", "fa fa-search");
+            $("#search").attr("class", "fa fa-plus");
+
+            $("#addRoute").click(function(e) {
+              e.preventDefault();
+              $("#patient_name").val(query);
+              patientAddModal.css("display", "block");
+            });
+          } else {
+            $("#search").removeAttr("class", "fa fa-plus");
+            $("#search").attr("class", "fa fa-search");
+
+            $("#addRoute").off("click");
+            $("#addRoute").attr("href", "{{ route('patient.index') }}");
+          }
+
+          if (response.trim() !== '') {
+            $('#patientList').html(response).show();
+          } else {
+            $('#patientList').html('<div class="text-white text-center rounded py-1" style="background-color: #6C757D; cursor: auto;">No results found.</div>').show();
+          }
+        } else {
+          $('#patientList').hide();
+          $('#patientList').html('');
+        }
+        isSearching = false;
+      });
+      isSearching = true;
+    });
   });
 
   function getPatientData(id) {

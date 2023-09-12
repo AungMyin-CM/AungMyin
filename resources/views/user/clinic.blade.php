@@ -36,7 +36,7 @@
                                 <input type="hidden" id="clinic_code" value="{{Session::get('cc_id') }}">
                                 <input type="hidden" id="on_home_page" value="1">
                                 <div class="input-group-append" id="search-indicator" style="z-index: 0;">
-                                    <a class="btn btn-lg btn-default" href="#" id="addRoute"><i id="search" class="fa fa-search"></i></a>
+                                    <a class="btn btn-lg btn-default" href="" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
                                 
                                 <div class="input-group-append">
@@ -102,8 +102,14 @@
         });
 
         let isSearching = false;
+        let query = "";
+
+        $("#addClose").click(function() {
+            patientAddModal.css("display", "none");
+        });
+
         $('#main_search').keyup(function() {
-            var query = $(this).val();
+            query = $(this).val();
 
             var clinic_id = $("#clinic_code").val();
 
@@ -133,22 +139,19 @@
                     if (response == '') {
                         $("#search").removeAttr("class", "fa fa-search");
                         $("#search").attr("class", "fa fa-plus");
-    
-                        $("#addRoute").click(function() {
-                            patientAddModal.css("display", "block");
+
+                        $("#addRoute").click(function(e) {
+                            e.preventDefault();
                             $("#patient_name").val(query);
-                        })
+                            patientAddModal.css("display", "block");
+                        });
                     } else {
                         $("#search").removeAttr("class", "fa fa-plus");
                         $("#search").attr("class", "fa fa-search");
-                        $("#addRoute").click(function(event) {
-                            event.preventDefault();
-                        });
-                    }
 
-                    $("#addClose").click(function() {
-                        patientAddModal.css("display", "none");
-                    })
+                        $("#addRoute").off("click");
+                        $("#addRoute").attr("href", "{{ route('patient.index') }}");
+                    }
 
                     $('#patientList').css("display", "block");
                     $('#patientList').html(response);
