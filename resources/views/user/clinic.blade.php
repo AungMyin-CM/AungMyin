@@ -150,7 +150,7 @@
                         $("#search").attr("class", "fa fa-search");
 
                         $("#addRoute").off("click");
-                        $("#addRoute").attr("href", "{{ route('patient.index') }}");
+                        $("#addRoute").attr("href", "{{ route('patient.show') }}?name=" + encodeURIComponent(query) + "&clinic_id=" + clinic_id);
                     }
 
                     $('#patientList').css("display", "block");

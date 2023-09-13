@@ -824,8 +824,9 @@
     document.getElementById("submittype").value = "print-type";
   }
   
+  let patientAddModal = $('#addModal');
+
   $(document).ready(function() {
-    let patientAddModal = $('#addModal');
     let isSearching = false;
     let query = "";
 
@@ -874,7 +875,7 @@
             $("#search").attr("class", "fa fa-search");
 
             $("#addRoute").off("click");
-            $("#addRoute").attr("href", "{{ route('patient.index') }}");
+            $("#addRoute").attr("href", "{{ route('patient.show') }}?name=" + encodeURIComponent(query) + "&clinic_id=" + clinic_id);
           }
 
           if (response.trim() !== '') {
@@ -889,6 +890,41 @@
         isSearching = false;
       });
       isSearching = true;
+    });
+  });
+
+  $('#patientAddForm').submit(function(event) {
+    event.preventDefault();
+
+    let formData = $(this).serialize();
+
+    $.ajax({
+        url: action = "{{ route('patient.storePatient') }}",
+        type: 'POST',
+        data: formData,
+        success: function(response) {
+            patientAddModal.css("display", "none");
+            $('.wrapper').css('opacity', '1');
+            $('.middle').css('opacity', '0.1');
+            window.location.reload();
+        },
+        error: function(xhr) {
+            // Handle the error response
+            $('.wrapper').css('opacity', '1');
+            $('.middle').css('opacity', '0.1');
+
+            let data = JSON.parse(xhr.responseText);
+
+            let name = data.errors.name ? data.errors.name[0] : '';
+            let age = data.errors.age ? data.errors.age[0] : '';
+            let address = data.errors.address ? data.errors.address[0] : '';
+            let gender = data.errors.gender ? data.errors.gender[0] : '';
+
+            $('#nameError').html(name);
+            $('#ageError').html(age);
+            $('#addressError').html(address);
+            $('#genderError').html(gender);
+        }
     });
   });
 

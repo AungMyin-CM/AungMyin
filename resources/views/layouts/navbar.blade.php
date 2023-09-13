@@ -100,6 +100,17 @@
             <a class="text-dark small" role="link" aria-disabled="true">Patient</a>
         </li>
 
+        @elseif(\Route::currentRouteName() === 'patient.show')
+        <li class="nav-item d-none d-md-inline">
+            <a class="small" href="{{ route('patient.index') }}">Patient</a>
+            &nbsp;
+            <i class="fas fa-arrow-right fa-xs"></i>
+            &nbsp;
+        </li>
+        <li class="nav-item d-none d-md-inline">
+            <a class="text-dark small" role="link" aria-disabled="true">View</a>
+        </li>
+
         @elseif(\Route::currentRouteName() === 'patient.create')
         <li class="nav-item d-none d-md-inline">
             <a class="small" href="{{ route('patient.index') }}">Patient</a>

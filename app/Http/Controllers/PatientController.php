@@ -152,6 +152,20 @@ class PatientController extends Controller
         return response()->json($patient);
     }
 
+    public function show(Request $request)
+    {
+        $clinic_id = $request->query('clinic_id');
+        $ref = str_replace(' ', '_', $request->query('name'));
+        
+        $patient = Patient::select('id', 'name', 'age', 'father_name', 'drug_allergy')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $clinic_id)->where('status', 1)->first();
+
+        $visits = Visit::where('patient_id', $patient->id)->get();
+
+        return view('patient.show')
+            ->with('patient', $patient)
+            ->with('visits', $visits);
+    }
+
     public function edit($id)
     {
         if (!$this->checkPermission('p_update')) {
