@@ -31,6 +31,8 @@
                         <div class="col-md-8 center-screen">
 
                             <h1>{{Str::title($data['name'])}}</h1><br>
+                            
+                            @if(Helper::checkPermission('p_view', $permissions))
                             <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here" autocomplete="off">
                                 <input type="hidden" id="clinic_code" value="{{Session::get('cc_id') }}">
@@ -48,6 +50,7 @@
                                 <div id="patientList" class="search-get-results" style="display: none; z-index: 1;">
                                 </div>
                             </div>
+                            @endif
 
                             @if($errors->any())
                             {!! implode('', $errors->all('<div>:message</div>')) !!}

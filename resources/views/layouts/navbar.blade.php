@@ -283,6 +283,8 @@
 
         @if(Request::is('clinic-system/*') && \Route::currentRouteName() != 'user.home' && \Route::currentRouteName() != 'user.clinic' && \Route::currentRouteName() != 'pos.index')
 
+        @if(Helper::checkPermission('p_view', $permissions))
+
         <li class="nav-item" style="margin-top: 8px;">
             <div id="search-box" class="search-box">
                 <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search..." autocomplete="off">
@@ -291,17 +293,23 @@
                 <div id="patientList" class="search-get-results" style="display:none;"></div>   
             </div>
         </li>
+        
+        @endif
         @endif
     </ul>
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         @if(Request::is('clinic-system/*') && \Route::currentRouteName() != 'user.home' && \Route::currentRouteName() != 'user.clinic' && \Route::currentRouteName() != 'pos.index')
 
+        @if(Helper::checkPermission('p_view', $permissions))
+
         <li class="nav-item" style="margin-top: 8px;">
             <button class="nav-link" style="display: contents;" id="search-btn">
                 <i class="fas fa-search fa-lg"></i>
             </button>
         </li>
+
+        @endif
         @endif
 
         @if(Request::is('clinic-system/*'))

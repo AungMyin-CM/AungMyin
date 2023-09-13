@@ -252,6 +252,7 @@
       <section class="content-header">
 
         <div class="container-fluid">
+          @if(Helper::checkPermission('p_view', $permissions))
           <div class="input-group col-md-6 text-center m-auto">
             <input type="search" id="main_search" class="form-control" placeholder="Search Patients.." autocomplete="off">
             <input type="hidden" id="clinic_code" value="{{ session()->get('cc_id') }}">
@@ -269,6 +270,7 @@
             </div>
 
           </div>
+          @endif
 
           @if($patient != null)
 
