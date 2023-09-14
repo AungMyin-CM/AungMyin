@@ -3,14 +3,19 @@
 <div id="editModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
-        <div class="modal-header" style="background-color: {{config('app.color')}}">
-            <h5 class="modal-title text-white">Edit Patient</h5>
-            <span id="editClose" class="close">&times;</span>
-        </div>
+        
         <div class="modal-body">
             <form method="post" id="updateForm">
                 @csrf
                 @method('PATCH')
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>Edit Patient</h5>
+                    <div class="py-2">
+                        <button type="submit" class="btn text-white" id="updateBtn" style="background-color: {{config('app.color')}}">Submit</button>
+                    </div>
+                </div>
+
                 <div class="row justify-content-center">
                     <div class="col-md-12">
 
@@ -108,10 +113,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="card-footer">
-                                <button type="submit" class="btn" id="updateBtn" style="color: {{config('app.secondary_color')}};background-color: {{config('app.color')}}">Submit</button>
                             </div>
                         </div>
                     </div>

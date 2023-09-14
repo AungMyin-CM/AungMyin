@@ -949,10 +949,12 @@
         }
 }
 
-    // Close the modal
-    $("#editClose").click(function(e) {
-        editModal.style.display = "none";
-    })
+
+    $(window).click(function(event) {
+        if (event.target == editModal) {
+            editModal.style.display = "none";
+        }
+    });
 
     $("#procedureClose").click(function(e) {
 

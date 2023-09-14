@@ -107,8 +107,10 @@
         let isSearching = false;
         let query = "";
 
-        $("#addClose").click(function() {
-            patientAddModal.css("display", "none");
+        $(window).click(function(event) {
+            if ($(event.target).closest(patientAddModal).length && $(event.target).is(patientAddModal)) {
+                patientAddModal.css("display", "none");
+            } 
         });
 
         $('#main_search').keyup(function() {

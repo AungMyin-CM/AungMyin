@@ -55,22 +55,6 @@
         }
     }
 
-    /* The Close Button */
-    .patient-close {
-        padding: 0;
-        color: #495057;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    .patient-close:hover,
-    .patient-close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px) {
 
@@ -84,13 +68,17 @@
     <!-- Modal content -->
     <div class="patient-modal-content">
 
-        <div class="modal-body" style="padding-top: 0;">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5>Add Patient</h5>
-                <span id="addClose" class="patient-close">&times;</span>
-            </div>
+        <div class="modal-body" style="padding-top: 0;">            
             <form method="post" id="patientAddForm">
                 @csrf
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="text-muted">Add Patient</h5>
+                    <div class="py-2">
+                        <button type="submit" class="btn text-white" id="addBtn" style="background-color: {{config('app.color')}}">Submit</button>
+                    </div>
+                </div>
+
                 <div class="row justify-content-center">
                     <div class="col-md-12">
 
@@ -176,10 +164,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="card-footer">
-                                <button type="submit" class="btn text-white" id="addBtn" style="background-color: {{config('app.color')}}">Submit</button>
                             </div>
                         </div>
                     </div>
