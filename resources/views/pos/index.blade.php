@@ -907,10 +907,31 @@
         type: 'POST',
         data: formData,
         success: function(response) {
-            patientAddModal.css("display", "none");
-            $('.wrapper').css('opacity', '1');
-            $('.middle').css('opacity', '0.1');
-            window.location.reload();
+          patientAddModal.css("display", "none");
+          $('.wrapper').css('opacity', '1');
+          $('.middle').css('opacity', '0.1');
+
+          document.getElementById("p_detail").classList.remove('d-none');
+
+          let gender = response.gender == 1 ? 'Male' : 'Female';
+          let drug_allergy = response.drug_allergy ?? 'None';
+
+          // if(disease ==  '' ) {
+          //   $("#div_disease").remove()
+          //   $("#p_f_name").text(f_name);
+          // } else {
+          //   $("#div_f_name").remove()
+          //   $("#p_disease").text(disease);
+          // }
+
+          $("#div_disease").remove();
+
+          $("#p_name").text(response.name);
+          $("#p_age").text(response.age);
+          $("#p_gender").text(gender);
+          $("#p_f_name").text(response.father_name);
+          $("#p_allergy").text(drug_allergy);
+          $('#patientList').css("display", "none");
         },
         error: function(xhr) {
             // Handle the error response
