@@ -931,6 +931,10 @@
           $("#p_gender").text(gender);
           $("#p_f_name").text(response.father_name);
           $("#p_allergy").text(drug_allergy);
+
+          $("#patient_id").val(response.id);
+          $("#customer_name").val(response.name);   
+
           $('#patientList').css("display", "none");
         },
         error: function(xhr) {
