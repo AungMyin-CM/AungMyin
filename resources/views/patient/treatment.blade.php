@@ -951,7 +951,7 @@
 
 
     $(window).click(function(event) {
-        if (event.target == editModal) {
+        if (event.target == editModal || event.target == document.getElementById('updateForm')) {
             editModal.style.display = "none";
         }
     });
