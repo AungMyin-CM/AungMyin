@@ -15,9 +15,24 @@ class IndexExistingPatients extends Command
     {
         $client = ClientBuilder::create()->build();
         $indexName = 'patients';
-        $params = ['index' => $indexName];
 
-        $indexExists = $client->indices()->exists($params);
+        $params = [
+            'index' => $indexName,
+            'body' => [
+                'mappings' => [
+                    'properties' => [
+                        'status' => [
+                            'type' => 'keyword',
+                        ],
+                        'clinic_code' => [
+                            'type' => 'keyword',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $indexExists = $client->indices()->exists(['index' => $indexName]);
 
         if (!$indexExists) {
             $client->indices()->create($params);
@@ -25,6 +40,8 @@ class IndexExistingPatients extends Command
         }
 
         $patients = Patient::all();
+
+        $params = ['body' => []];
 
         foreach ($patients as $patient) {
             $params['body'][] = [
