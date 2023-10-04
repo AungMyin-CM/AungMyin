@@ -27,8 +27,10 @@
                         @endif
                     </div>
                     <div>
-                        @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 || $role_type == 5)
-                        <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="color: {{config('app.color')}}" class="btn btn-default"><i class="fas fa-stethoscope fa-lg"></i></a>
+                        @if($role_type == 1 || $role_type == 5)
+                            <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="color: {{config('app.color')}}" class="btn btn-default"><i class="fas fa-stethoscope fa-lg"></i></a>
+                        @elseif(Helper::checkPermission('p_treatment', $permissions) && $role_type == 2)
+                            <a href="{{route('add.queue', Crypt::encrypt($row['id']))}}"  style="color: {{config('app.color')}}" class="btn btn-default"><i class="fas fa-stethoscope fa-lg"></i></a>
                         @endif
                     </div>
                     <div>

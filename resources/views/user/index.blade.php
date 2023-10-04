@@ -79,7 +79,7 @@
                                 <td>
                                     <div class="d-flex justify-content-center" style="gap: 20px">
                                         <div>
-                                            <a href="{{route('user.edit', $row->id)}}" class="btn btn-default">
+                                            <a href="{{route('user.edit', Crypt::encrypt($row->id))}}" class="btn btn-default">
                                                 <i class="fas fa-edit fa-lg" style=" color: {{config('app.color')}}"></i>
                                             </a>
                                         </div>

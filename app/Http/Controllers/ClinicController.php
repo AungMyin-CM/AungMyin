@@ -342,7 +342,8 @@ class ClinicController extends Controller
         $user = new User();
 
         $user_id = $user->create([
-            'name' => $request->name,
+
+            'name' => $request->first_name . ' ' . $request->last_name,
             'role_id' => $role_id,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
@@ -357,7 +358,10 @@ class ClinicController extends Controller
             'fees' => $request->fees,
             'user_type' => 2, // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
             'gender' => $request->gender,
-            'email_verified' => '1'
+            'email_verified' => '1',
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+
         ])->id;
 
         UserClinic::create([
@@ -375,7 +379,7 @@ class ClinicController extends Controller
             abort(404);
         }
 
-        $user = User::findOrfail($id);
+        $user = User::findOrfail(Crypt::decrypt($id));
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         $role = Role::where('id', $user->role_id)->get()->first();
@@ -394,16 +398,16 @@ class ClinicController extends Controller
         $origin_password = User::where('id', $id)->pluck('password');
         $role_id = User::where('id', $id)->pluck('role_id');
 
-        if($role->role_type == 5){
-            $role_type = 5;
-        }else{
+        if($request->role_type){
             $role_type = $request->role_type;
+        }else{
+            $role_type = 5;
         }
 
         $role_id = Role::where('id', $role_id)->update(['role_type' => $role_type, 'permissions' => $permissions]);
 
         $requests = [
-            'name' => $request->name,
+            'name' => $request->first_name . ' ' . $request->last_name,
             'code' => $request->code,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
@@ -415,6 +419,9 @@ class ClinicController extends Controller
             'gender' => $request->gender,
             'short_bio' => $request->short_bio,
             'fees' => $request->fees,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+
         ];
 
         if ($request->password != null && trim($request->password) != '') {

@@ -202,7 +202,7 @@ Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feed
 
 Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
 
-Route::get('/docs', [DocController::class, 'index'])->name('docs.index');
+Route::get('/documentation', [DocController::class, 'index'])->name('docs.index');
 
 Route::group(['middleware' => 'auth'], function () {
 

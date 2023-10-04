@@ -487,55 +487,55 @@
     //     }
     // });
 
-    // $('#email').blur(function() {
+    $('#email').blur(function() {
 
-    //     var error_email = '';
-    //     var email = $('#email').val();
-    //     var _token = $('input[name="_token"]').val();
-    //     var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    //     if (!filter.test(email)) {
-    //         $('#em-text').removeClass('text-danger');
-    //         $('#em-text').removeClass('text-success');
-    //         $('#em-text').addClass('text-warning');
-    //         $('#em-text').text('Invaid Email');
-    //         $('#a-text').show();
-    //         setTimeout(function() {
-    //             $('#em-text').hide();
-    //         }, 5000);
+        var error_email = '';
+        var email = $('#email').val();
+        var _token = $('input[name="_token"]').val();
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!filter.test(email)) {
+            $('#em-text').removeClass('text-danger');
+            $('#em-text').removeClass('text-success');
+            $('#em-text').addClass('text-warning');
+            $('#em-text').text('Invaid Email');
+            $('#a-text').show();
+            setTimeout(function() {
+                $('#em-text').hide();
+            }, 5000);
 
-    //     } else {
-    //         $.ajax({
-    //             url: "{{ route('email_available.check') }}",
-    //             method: "POST",
-    //             data: {
-    //                 email: email,
-    //                 _token: _token
-    //             },
-    //             success: function(result) {
-    //                 if (result == 'unique') {
-    //                     $('#em-text').removeClass('text-danger');
-    //                     $('#em-text').removeClass('text-warning');
-    //                     $('#em-text').addClass('text-success');
-    //                     $('#em-text').text('Valid Email');
-    //                     $('#a-text').show();
-    //                     setTimeout(function() {
-    //                         $('#em-text').hide();
-    //                     }, 5000);
-    //                 } else {
-    //                     $('#em-text').removeClass('text-danger');
-    //                     $('#em-text').removeClass('text-success');
-    //                     $('#em-text').addClass('text-warning');
-    //                     $('#em-text').text('Email Already taken');
-    //                     $('#a-text').show();
-    //                     setTimeout(function() {
-    //                         $('#em-text').hide();
-    //                     }, 5000);
-    //                 }
+        } else {
+            $.ajax({
+                url: "{{ route('email_available.check') }}",
+                method: "POST",
+                data: {
+                    email: email,
+                    _token: _token
+                },
+                success: function(result) {
+                    if (result == 'unique') {
+                        $('#em-text').removeClass('text-danger');
+                        $('#em-text').removeClass('text-warning');
+                        $('#em-text').addClass('text-success');
+                        $('#em-text').text('Valid Email');
+                        $('#a-text').show();
+                        setTimeout(function() {
+                            $('#em-text').hide();
+                        }, 5000);
+                    } else {
+                        $('#em-text').removeClass('text-danger');
+                        $('#em-text').removeClass('text-success');
+                        $('#em-text').addClass('text-warning');
+                        $('#em-text').text('Email Already taken');
+                        $('#a-text').show();
+                        setTimeout(function() {
+                            $('#em-text').hide();
+                        }, 5000);
+                    }
 
-    //             }
-    //         })
-    //     }
-    // });
+                }
+            })
+        }
+    });
 </script>
 
 
