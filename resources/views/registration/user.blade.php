@@ -261,8 +261,6 @@
             }
         });
         $('#otpModal').modal({
-            backdrop: 'static',
-            keyboard: false
         })
         $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
             if (e.which == 13 || e.which == 9) {

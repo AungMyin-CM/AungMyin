@@ -221,7 +221,7 @@
         <hr>
         
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="position: absolute; bottom: 0; margin-bottom: 60px;">
-            @if($counts > 0)
+            @if(isset($counts) && $counts > 0)
                 <li class="nav-item">
                     <a class="nav-link" title="Feedback" id="feedbackBtn">
                         <i class="nav-icon fas fa-comment-alt"></i>

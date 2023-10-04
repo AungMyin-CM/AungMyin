@@ -488,12 +488,12 @@ html {
                                           </tr>
                                           
                                           <tr>
-                                            <td>User Management</td>
+                                            <td>Users</td>
                                             <td>
-                                              5 users
+                                              1-5
                                             </td>
                                             <td>
-                                              15 users
+                                              1-15
                                             </td>
                                             <td>
                                               Unlimited
