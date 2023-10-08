@@ -13,7 +13,7 @@ class IndexExistingPatients extends Command
 
     public function handle()
     {
-        $client = ClientBuilder::create()->build();
+        $client = ClientBuilder::create()->setBasicAuthentication('elastic','lEr2fYII__No_eKik3_G')->build();
         $indexName = 'patients';
 
         $params = [

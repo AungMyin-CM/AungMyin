@@ -28,7 +28,7 @@ class SearchController extends Controller
 
         $clinic_id = $request->input('clinic_id');
 
-        $client = ClientBuilder::create()->build();
+        $client = ClientBuilder::create()->setBasicAuthentication('elastic','lEr2fYII__No_eKik3_G')->build();
 
         $params = [
             'index' => 'patients',

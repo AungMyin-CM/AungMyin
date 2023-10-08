@@ -93,8 +93,15 @@ return [
 
         'elasticsearch' => [
             'driver' => 'elasticsearch',
-            'host' => env('ELASTICSEARCH_HOST', 'localhost'),
-            'port' => env('ELASTICSEARCH_PORT', 9200),
+            'hosts' => [
+                [
+                    'host' => env('ELASTICSEARCH_HOST', 'http://localhost'),
+                    'port' => env('ELASTICSEARCH_PORT', 9200),
+                    'scheme' => env('ELASTICSEARCH_SCHEME', 'http'),
+                    'user' => env('ELASTICSEARCH_USER'),
+                    'pass' => env('ELASTICSEARCH_PASS'),
+                ],
+            ],
         ],
 
     ],
