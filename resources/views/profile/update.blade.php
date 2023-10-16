@@ -258,7 +258,7 @@
                                             <p>{{ number_format($package->price) }}</p>
                                             <p>{{ date("F jS Y", $purchase_date) }}</p>
                                             <p>{{ date("F jS Y", $expire_date) }}</p>
-                                            <p>{{ $days_left }} days</p>
+                                            <p>{{ $days_left }} days {{json_encode($package)}}</p>
                                         </div>
                                     </div>
                                 </div>

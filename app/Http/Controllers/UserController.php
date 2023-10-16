@@ -374,7 +374,7 @@ class UserController extends Controller
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         // Get package info
-        $package = PackagePurchase::where('user_id', $user->id)->first();
+        $package = PackagePurchase::where('clinic_id', session()->get('cc_id'))->with('transaction')->first();
 
         $role = Role::where('id', $user->role_id)->get()->first();
 

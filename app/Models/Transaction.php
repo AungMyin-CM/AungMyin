@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Transaction extends Model
 {
@@ -28,6 +28,11 @@ class Transaction extends Model
     public function clinic(): HasMany
     {
         return $this->hasMany(Clinic::class, 'package_id');
+    }
+
+    public function packages(): HasMany
+    {
+        return $this->hasMany(PackagePurchase::class, 'id')->first();
     }
 
 }

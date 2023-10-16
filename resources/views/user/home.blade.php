@@ -57,7 +57,9 @@
                                                 $date = \Carbon\Carbon::now()->format('Y-m-d');
                                             ?>
                                             @if($date > $data->expire[0]->expire_at)
-                                                <a href="{{route('complete.payment',Crypt::encrypt($data->clinic_id))}}">
+                                                {{-- <a href="{{route('complete.payment',Crypt::encrypt($data->clinic_id))}}"> --}}
+                                                    <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
+
                                             @else
                                                 <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
                                             @endif
@@ -72,7 +74,10 @@
                                                             <h5 class="card-title m-1"  style="color: {{config('app.color')}}">{{$data->clinic[0]['name']}}</h5>
                                                                 @if($date > $data->expire[0]->expire_at)
 
-                                                                    <button class="btn btn-primary btn-sm mt-3 app-color">Complete Your Payment</button>
+                                                                    {{-- <button class="btn btn-primary btn-sm mt-3 app-color">Complete Your Payment</button> --}}
+                                                                    <p class="card-text">
+                                                                        <small class="text-danger">Expired on <b>{{$data->expire[0]->expire_at}}</b></small>
+                                                                    </p> 
                                                                 @else
                                                                     <p class="card-text">
                                                                         <small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small>

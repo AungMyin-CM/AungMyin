@@ -346,8 +346,8 @@ html {
                                 <div class="container">
                                     
                                     <div class="switch-wrapper mt-2">
-                                      <input id="monthly" type="radio" name="switch" checked>
-                                      <input id="yearly" type="radio" name="switch">
+                                      <input id="monthly" type="radio" name="switch" value="month" checked >
+                                      <input id="yearly" type="radio" name="switch" value="year">
                                       <label for="monthly">Monthly</label>
                                       <label for="yearly">Yearly</label>
                                       <span class="highlighter"></span>
@@ -366,47 +366,21 @@ html {
                                                 </div>
                                               </div>
                                             </th>
-                                            {{-- <th>
-                                              <div class="heading">Starter</div>
-                                              <div class="info">
-                                                <div class="price monthly">
-                                                  <div class="amount">$10 <span>month</span></div>
-                                                </div>
-                                                <div class="price yearly hide">
-                                                  <div class="amount">$7 <span>month</span></div>
-                                                  <div class="billing-msg">billed annually</div>
-                                                </div>
-                                                <button type="button">Get started</button>
-                                              </div>
-                                            </th>
-                                            <th>
-                                              <div class="heading">Essential</div>
-                                              <div class="info">
-                                                <div class="popular">Popular</div>
-                                                <div class="price monthly">
-                                                  <div class="amount">$22 <span>month</span></div>
-                                                </div>
-                                                <div class="price yearly hide">
-                                                  <div class="amount">$17 <span>month</span></div>
-                                                  <div class="billing-msg">billed annually</div>
-                                                </div>
-                                                <button type="button">Get started</button>
-                                              </div>
-                                            </th> --}}
+                                           
                                             @foreach($data as $package)
                                               <th>
                                                   <div class="heading">{{ $package->name }}</div>
                                                 <div class="info">
                                                   <div class="price monthly">
-                                                    <div class="amount">{{ number_format($package->price) }}<span>month *</span></div>
+                                                    <div class="amount">{{ number_format($package->price)}}</div>
                                                   </div>
                                                   <div class="price yearly hide">
-                                                    <div class="amount">{{number_format($package->price * 12)}}<span>year *</span></div>
+                                                    <div class="amount">{{ number_format(($package->price * 12) - $package->price) }}<span><del>{{ number_format($package->price) * 12 }}</del></span></div>
                                                     {{-- <div class="billing-msg">billed annually</div> --}}
                                     
                                                   </div>
                                     
-                                                  <button type="button"><a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="nav-link">Get started</a></button><br>
+                                                  <button type="button"><a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="nav-link" id="package_link">Get started</a></button><br>
                                                   <small>Free for {{$package->trialPeriod}} days</small>
                                                 </div>
                                               </th>
@@ -514,7 +488,29 @@ html {
             <!-- jQuery -->
 
         </body>
+        <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
         <script>
+
+          $('document').ready(function(){
+
+            var val = $(':radio[name=switch]:checked').val();
+            
+            var href = $("#package_link").attr('href');
+            $("#package_link").attr('href',href+'&time_value='+val);
+
+            
+          });
+
+          $(":radio[name=switch]").click(function(){
+              
+            var val = $(':radio[name=switch]:checked').val();
+            var href = $("#package_link").attr('href');
+
+            $("#package_link").attr('href',href+'&time_value='+val);
+          });
+
+
           const tableWrapper = document.querySelector(".table-wrapper");
           const switchInputs = document.querySelectorAll(".switch-wrapper input");
           const prices = tableWrapper.querySelectorAll(".price");

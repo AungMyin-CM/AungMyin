@@ -19,8 +19,10 @@
             if ($loggedInUser) {
                 $userClinic = $loggedInUser->user_clinic;
 
+                $clinicLogo = '';
+
                 if ($userClinic) {
-                    $clinic = $userClinic->clinic->first();
+                    $clinic = App\Models\Clinic::where('id',$userClinic->clinic)->get()->first();
 
                     if ($clinic) {
                         $clinicLogo = $clinic->avatar;

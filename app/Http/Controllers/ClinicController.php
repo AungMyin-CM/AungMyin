@@ -108,6 +108,7 @@ class ClinicController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
         $clinic = new Clinic();
         $package = Package::find($request->package_id);
+        $time_value = session()->get('time_value');
 
         if ($package->type == 'ultimate') {
 
@@ -165,6 +166,7 @@ class ClinicController extends Controller
             'clinic_id' => $clinic_id,
             'price' => $package['price'],
             'expire_at' => Carbon::parse($now)->addDays($package->trialPeriod),
+            'purchase_value' => $time_value,
             'status' => 1
         ]);
 
@@ -176,6 +178,7 @@ class ClinicController extends Controller
             'cost_amount' => $package->price,
             'discount' => $package->discount,
             'on_trial' => '1',
+            'purchase_value' => $time_value,
             'created_at' => Carbon::now(),
 
         ]);
@@ -473,6 +476,8 @@ class ClinicController extends Controller
         $free_month = $request->value;
 
         session()->put('is_free', $free_month);
+
+        session()->put('time_value',$request->time_value);
 
         $payments = ['1_k' => 'kpay', '2_w' => 'wpay', '3_c' => 'cod'];
 
