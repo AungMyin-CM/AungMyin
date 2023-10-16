@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRegisterRequest extends FormRequest
 {
@@ -24,18 +25,24 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|unique:user',
-            'email' => 'email',
-            'name' => 'required',
+            'first_name' => 'required',
+            'email' => 'required|email|unique:user',
+            'role_type' => 'required',
+            'gender' => 'required|in:1,0',
+            'avatar' => 'nullable|image|max:5000', // only 5MB is allowed
             'speciality' => 'nullable',
             'credentials' => 'nullable',
-            'password' => 'required|min:8',
-            'role_id' => 'nullable',
-            'phoneNumber' => 'required|min:10|max:15',
+            'password' => 'required|confirmed|min:6',
+            'phoneNumber' => 'required|min:10|max:11',
+            'city' => 'nullable',
+            'country' => 'nullable',
             'address' => 'required',
             'short_bio' => 'nullable',
-            'fees' => 'nullable',
-            'gender' => 'required',
+            'fees' => [
+                Rule::requiredIf(function () {
+                    return $this->input('role_type') == 1;
+                }),
+            ],
         ];
     }
 }

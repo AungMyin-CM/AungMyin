@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'AungMyin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -81,6 +81,12 @@ return [
     */
 
     'locale' => 'en',
+
+    'color' => '#003049',
+
+    'secondary_color' => '#FFFFFF',
+
+    'bg_color' => '#fdfaf0',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +180,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -230,6 +237,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

@@ -23,6 +23,7 @@
         "sass-loader": "^12.6.0"
     },
     "dependencies": {
+        "@pusher/push-notifications-web": "^1.1.0",
         "selectize": "^0.12.6"
     }
 }

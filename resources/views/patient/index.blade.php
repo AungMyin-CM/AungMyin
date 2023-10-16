@@ -1,111 +1,156 @@
 @extends("layouts.app")
 @section('content')
+<style>
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
 
-    <body class="hold-transition sidebar-mini layout-fixed">
-        <div class="wrapper">
-            <div class="content-wrapper">
-                <!-- Content Header (Page header) -->
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <h1>Patients</h1>
-                            </div>
-                            <div class="col-sm-6">
-                                <ol class="breadcrumb float-sm-right">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Patient</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div><!-- /.container-fluid -->
-                </section>
-                @if (Session::has('success'))
-                    <div class="col-md-6">
-                        <div class="alert alert-success" id="alert-message">
-                            <ul class="list-unstyled">
-                                <li>
-                                    {{ Session::get('success') }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                @endif
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
 
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <!-- /.card-header -->
-                                     @if(Helper::checkPermission('p_create', $permissions))
-                                        <div class="card-header">
-                                            <a href="{{ route('patient.create') }}" class="btn btn-primary float-right"><i
-                                            class="fas fa-plus"></i> Add new</a>
-                                        </div>
-                                    @endif
-                                    <div class="card-body">
-                                        <table id="datatable" class="table table-bordered table-striped">                                    
-                                          <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Code</th>
-                                                <th>Age</th>
-                                                <th>Gender</th>
-                                                <th>Actions</th>
-                                                {{-- <th></th>
-                                                <th></th> --}}
-                                                {{-- <th colspan="3" style="width:15%;">Actions</th> --}}
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($data as $row)
-                                                <tr>
-                                                    <td>{{ $row->name }}</td>
-                                                    <td>{{ $row->code }}</td>
-                                                    <td>{{ $row->age }}</td>
-                                                    <td>{{ $row->gender == 1 ? 'male' : 'female' }}</td>
-                                                    <td>
-                                                        <div class="row">
-                                                            @if(Helper::checkPermission('p_update', $permissions))
+    .inputfile+label {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: white;
+        background-color: #003049;
+        display: inline-block;
+        padding: 5px;
+        border-radius: 5px;
+        margin-left: 15px;
+    }
 
-                                                                <a href="{{ route('patient.edit' ,  Crypt::encrypt($row->id)) }}" style="margin:10px ;">
-                                                                <i class="fas fa-edit fa-lg"></i></a>
+    .inputfile:focus+label,
+    .inputfile+label:hover {
+        background-color: #003049;
+    }
 
-                                                            @endif
+    .inputfile+label {
+        cursor: pointer;
+        /* "hand" cursor */
+    }
+</style>
 
-                                                            @if(Helper::checkPermission('p_treatment', $permissions) && $role_type == 1 )
-                                                                <a href="{{ route('patient.treatment', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
-                                                                ><i class="fas fa-stethoscope fa-lg"></i></a>
-                                                            @endif
-
-                                                            @if(Helper::checkPermission('p_delete', $permissions))
-
-                                                                <form action="{{ route('patient.destroy', $row->id) }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    @method('DELETE')   
-                                                                    <button class="" type="submit" style="margin:5px;"><i class="fas fa-trash" style="color:#E95A4A;"></i></button>
-                                                                </form>
-
-                                                            @endif
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                        </table>
-                                      </div>
-                                    
-                                    <!-- /.card-body -->
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        @if(Helper::checkPermission('p_create', $permissions))
+                        <div class="col-6">
+                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i data-href="/clinic-system/exportPatientCSV" class="fas fa-download"></i></span>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                            </div>
+                            @endif
+
+
+                            <form method="post" action="{{ route('patient.excel.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
+                                @csrf
+                                @method('post')
+
+                                <!-- Import Excel File -->
+                                <div class="import-container">
+                                    <input type="file" id="excel-file-input" name="patient_excel" accept=".xls, .xlsx" style="display:none" required />
+                                    <a href="#" class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
+                                        <i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>
+                                    </a>
+                                    <span class="file-name excel-file-name"></span>
+                                </div>
+
+                                <!-- Import File -->
+                                <button type="submit" class="btn btn-sm text-white" id="import-submit" style="background-color: {{config('app.color')}}; display: none;">
+                                    <i class="fas fa-file-import"></i> <span class="d-none d-md-inline">Import</span>
+                                </button>
+                            </form>
+                        </div>
+                        @endif
+                        <div class="col-6">
+                            @if(count($data) !== 0)
+                            <a href="{{ route('patient.create') }}" class="btn float-right" style="color:{{config('app.secondary_color')}}; background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                            @endif
                         </div>
                     </div>
-                </section>
-            </div>
+                </div><!-- /.container-fluid -->
+
+                @if (Session::has('success'))
+                @include('partials._toast')
+                @endif
+            </section>
+
+            <section class="content">
+                <div class="container-fluid">
+                    <div id="patient-lists">
+                        @include('partials._patient-card')
+                    </div>
+                </div>
+            </section>
         </div>
-    </body>
-@endsection
+    </div>
+</body>
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
+
+<script>
+   
+
+    // Ajax Pagination
+    $(document).ready(function() {
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = $(this).attr('href').split('page=')[1];
+            fetch_data(page);
+        });
 
        
+    });
+
+    function exportPatientTasks(_this) {
+        let _url = $(_this).data('href');
+        window.location.href = _url;
+    }
+
+    function fetch_data(page) {
+        $.ajax({
+            url: "?page=" + page,
+            success: function(data) {
+                $('#patient-lists').html(data);
+            }
+        });
+    }
+
+    // Excel
+    $(document).ready(function() {
+        $('.import-button.excel').click(function() {
+            $('#excel-file-input').click();
+        });
+
+        $('#excel-file-input').change(function(event) {
+            const file = event.target.files[0];
+            const $importSubmitButton = $('#import-submit');
+
+            displayFileName(file, $(this).siblings('.excel-file-name'));
+
+            if (file) {
+                $importSubmitButton.show();
+            } else {
+                $importSubmitButton.hide();
+            }
+        });
+
+        function displayFileName(file, $element) {
+            const fileName = file ? file.name : 'No file selected';
+            $element.text(fileName);
+        }
+    });
+</script>
+@endsection

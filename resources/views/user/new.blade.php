@@ -2,338 +2,541 @@
 
 @section('content')
 
-    <body class="hold-transition sidebar-mini layout-fixed">
-        <div class="wrapper">
-            <div class="content-wrapper">
-                <section class="content-header">
-                    <div class="container-fluid">
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
+            <section class="content-header">
+                {{-- <div class="container-fluid">
                         <div class="row mb-2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-3">
                                 <h1>Register Form</h1>
+                                
                             </div>
-                            <div class="col-sm-6">
+                            <div class="text-danger col-sm-3">
+                                <ul>
+                                    <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-sm-6 text-right">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">User</a></li>
                                     <li class="breadcrumb-item active">New</li>
                                 </ol>
                             </div>
                         </div>
-                    </div><!-- /.container-fluid -->
-                </section>
+                        
+                    </div><!-- /.container-fluid --> --}}
+            </section>
 
-                <form action="{{ route('user.register') }}" method="POST">
-                    @csrf
+            <form id="form-user">
+                @csrf
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!-- left column -->
+                            <div class="col-md-6">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <div class="card-header" style="background-color:{{config('app.color')}}">
+                                        <h3 class="card-title">Please fill out form</h3>
+                                    </div>
 
-                    <section class="content">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <!-- left column -->
-                                <div class="col-md-6">
-                                    <!-- general form elements -->
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Please fill out form</h3>
-                                        </div>
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger">
-                                                <ul>
-                                                    @foreach ($errors->all() as $error)
-                                                        <li>{{ $error }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div><br />
-                                        @endif
-                                        <!-- /.card-header -->
-                                        <!-- form start -->
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
 
 
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
 
-                                                    <div class="form-group">
-                                                        <label for="code">Name</label>
-                                                        <input type="text" class="form-control" id="username" name="name"
-                                                            placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                
+                                                <div class="form-group">
+                                                    <label for="code">First Name<b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="text" class="form-control" id="username" name="first_name" value="{{ old('first_name') }}" autocomplete="off">
 
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="code">Code</label>
-                                                        <input type="text" class="form-control" id="code" name="code"
-                                                            placeholder="Enter code" value="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="sel1">Role</label>
-                                                        <select class="form-control" id="role_type" name="role_type">
-
-                                                            @foreach ($data as $key => $value)
-                                                                <option value="{{ $key }}">{{ $value }}
-                                                                </option>
-                                                            @endforeach
-
-                                                        </select>
-                                                    </div>
+                                                    <span id="firstnameError" class="text-danger small alert-msg"></span>
                                                 </div>
                                             </div>
 
-                                            <label for="gender">Gender</label>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="code">Last Name<b><sup class="text-danger"></sup></b></label>
+                                                    <input type="text" class="form-control" id="code" name="last_name" required value="{{ old('last_name') }}" autocomplete="off">
+                                                    <span class="small" id="a-text"></span>
 
+                                                    <span id="codeError" class="text-danger small alert-msg"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="sel1">Role<b><sup class="text-danger">*</sup></b></label>
+                                                    <select class="form-control" id="role_type" name="role_type">
+
+                                                        @foreach ($data as $key => $value)
+                                                        <option value="{{ $key }}">{{ $value }}
+                                                        </option>
+                                                        @endforeach
+
+                                                    </select>
+
+                                                    <span id="roleError" class="text-danger small alert-msg"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="gender">Gender<b><sup class="text-danger">*</sup></b></label>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="1"
-                                                            name="gender">
+                                                        <input class="form-check-input" id="male" type="radio" value="1" name="gender">
                                                         <label class="form-check-label" for="male">
                                                             Male
                                                         </label>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="0"
-                                                            name="gender">
+                                                        <input class="form-check-input" id="female" type="radio" value="0" name="gender">
                                                         <label class="form-check-label" for="female">
                                                             Female
                                                         </label>
                                                     </div>
                                                 </div>
-
-
-                                            </div><br/>
-
-                                            <div class="row" id="doctor_section">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="speciality">Speciality</label>
-                                                        <input type="text" class="form-control" id="speciality"
-                                                            name="speciality" placeholder="Speciality">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-
-                                                    <div class="form-group">
-                                                        <label for="credentials">Credentials</label>
-                                                        <textarea class="form-control" name="credentials" row="10"></textarea>
-                                                    </div>
-                                                </div>
                                             </div>
 
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1">Email address</label>
-                                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                                            name="email" placeholder="example@gmail.com">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
+                                            <span id="genderError" class="text-danger small alert-msg"></span>
+                                        </div>
 
-                                                    <div class="form-group">
-                                                        <label for="password">Password</label>
-                                                        <input type="password" class="form-control" id="password" name="password"
-                                                            placeholder="Password">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="phNumber">Phone Number</label>
-                                                <input type="tel" class="form-control" placeholder="09xxxxxxxxx"
-                                                    name="phoneNumber" value={{ old('phoneNumber') }}>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="city">Country</label>
-                                                        <input type="text" class="form-control" id="country"
-                                                            name="country" placeholder="Country">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="city">City</label>
-                                                        <input type="text" class="form-control" id="city" name="city"
-                                                            placeholder="City">
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="address">Address</label>
-                                                <textarea class="form-control" placeholder="Address" name="address">{{ old('address') }}</textarea>
-                                            </div>
-
-                                            <div class="form-group" id="short_bio">
-                                                <label for="short_bio">Short Bio</label>
-                                                <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio">{{ old('short_bio') }}</textarea>
-                                            </div>
-
-                                            <div class="col-md-6" id="fees">
+                                        <div class="row" id="doctor_section">
+                                            <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="fees">Fees</label>
-                                                    <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" />
+                                                    <label for="speciality">Speciality</label>
+                                                    <textarea class="form-control" name="speciality" row="10" autocomplete="off">{{ old('speciality') }}</textarea>
                                                 </div>
                                             </div>
-                                            
-                                            <!-- /.card-body -->
-                                        </div>
-                                    </div>
+                                            <div class="col-md-6">
 
+                                                <div class="form-group">
+                                                    <label for="credentials">Credentials</label>
+                                                    <textarea class="form-control" name="credentials" row="10" autocomplete="off">{{ old('credentials') }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="email">Email address <b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" value="{{ old('email') }}" autocomplete="off">
+                                                    <span class="small" id="em-text"></span>
+
+                                                    <span id="emailError" class="text-danger small alert-msg"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="password">Password <b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" autocomplete="off">
+
+                                                    <span id="passwordError" class="text-danger small alert-msg"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label for="password">Confirm Password <b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="password" class="form-control" id="password" name="password_confirmation" placeholder="Password" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phNumber">Phone Number <b><sup class="text-danger">*</sup></b></label>
+                                            <input type="tel" class="form-control" placeholder="09xxxxxxxxx" name="phoneNumber" value="{{ old('phoneNumber') }}" autocomplete="off">
+
+                                            <span id="phoneError" class="text-danger small alert-msg"></span>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="city">Country</label>
+                                                    <input type="text" class="form-control" id="country" name="country" placeholder="Country" value="{{ old('country') }}" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="city">City</label>
+                                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="address">Address <b><sup class="text-danger">*</sup></b></label>
+                                            <textarea class="form-control" placeholder="Address" name="address" autocomplete="off">{{ old('address') }}</textarea>
+
+                                            <span id="addressError" class="text-danger small alert-msg"></span>
+                                        </div>
+
+                                        <div class="form-group" id="short_bio">
+                                            <label for="short_bio">Short Bio</label>
+                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ old('short_bio') }}</textarea>
+                                        </div>
+
+                                        <div class="col-md-6" id="fees">
+                                            <div class="form-group">
+                                                <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
+                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" autocomplete="off" />
+
+                                                <span id="feesError" class="text-danger small alert-msg"></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- /.card-body -->
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Permissions</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-group">
-                                                <div class="">
-                                                    <input id="p_view"  type="checkbox" name="permission[]" value="p_view"
-                                                    >
 
-                                                    <label for="p_view">Patients</label>
-                                                </div>
-                                                <div class="form-check" style="padding:6px !important;">
-
-                                                    <div class="row">
-
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="p_create" name="permission[]"
-                                                                value="p_create">
-                                                            <label for="p_create">Create</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="p_update" name="permission[]"
-                                                                value="p_update">
-                                                            <label for="p_update">Update</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input id="p_delete" type="checkbox" name="permission[]"
-                                                                value="p_delete">
-                                                            <label for="p_delete">Delete</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input id="p_treatment" type="checkbox" name="permission[]"
-                                                                value="p_treatment">
-                                                            <label for="p_treatment">Treatment</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <hr />
-
-
-                                            <div class="form-group">
-                                                <div class="">
-                                                    <input id="d_view" id="d_permissions" type="checkbox" name="permission[]"  value="d_view">
-                                                    <label for="d_view">Dictionary</label>
-                                                </div>
-                                                <div class="form-check" style="padding:6px !important;">
-
-                                                    <div class="row">
-
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="d_create" name="permission[]"
-                                                                value="d_create">
-                                                            <label for="d_create">Create</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="d_update" name="permission[]"
-                                                                value="d_update">
-                                                            <label for="d_update">Update</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input id="d_delete" type="checkbox" name="permission[]"
-                                                                value="d_delete">
-                                                            <label for="d_delete">Delete</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <hr/>
-                                            <div class="form-group">
-                                                <div class="">
-                                                    <input id="ph_view" id="ph_permissions" type="checkbox" name="permission[]"  value="ph_view">
-                                                    <label for="ph_view">Pharmacy</label>
-                                                </div>
-                                                <div class="form-check" style="padding:6px !important;">
-
-                                                    <div class="row">
-
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="ph_create" name="permission[]"
-                                                                value="ph_create">
-                                                            <label for="ph_create">Create</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="ph_update" name="permission[]"
-                                                                value="ph_update">
-                                                            <label for="ph_update">Update</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input id="ph_delete" type="checkbox" name="permission[]"
-                                                                value="ph_delete">
-                                                            <label for="ph_delete">Delete</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        <hr/>
-                                            <div class="form-group">
-                                                <div class="">
-                                                    <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]"  value="pos_view">
-                                                    <label for="pos_view">POS</label>
-                                                </div>
-                                                <div class="form-check" style="padding:6px !important;">
-
-                                                    <div class="row">
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="pos_create" name="permission[]"
-                                                                value="pos_create">
-                                                            <label for="pos_create">Create</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input type="checkbox" id="pos_update" name="permission[]"
-                                                                value="pos_update">
-                                                            <label for="pos_update">Update</label>
-                                                        </div>
-                                                        <div class="col md-4 icheck-primary d-inline mt-2">
-                                                            <input id="pos_delete" type="checkbox" name="permission[]"
-                                                                value="pos_delete">
-                                                            <label for="pos_delete">Delete</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer ">
-                                            <button type="submit" class="btn btn-primary float-right">Submit</button>
-                                        </div>
-                                        <!-- Bootstrap Switch -->
-                                        <!-- /.card -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card card-primary">
+                                    <div class="card-header" style=" background-color:{{config('app.color')}}">
+                                        <h3 class="card-title">Permissions<sup class="text-warning"> (Please check at least one property) </sup></h3>
+                                        <input type="hidden" id="permission_check">
                                     </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <div class="">
+                                                <input id="p_view" type="checkbox" name="permission[]" value="p_view">
+
+                                                <label for="p_view">Patients</label>
+                                            </div>
+                                            <div class="form-check" style="padding:6px !important;">
+
+                                                <div class="row">
+
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="p_create" name="permission[]" value="p_create">
+                                                        <label for="p_create">Create</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="p_update" name="permission[]" value="p_update">
+                                                        <label for="p_update">Update</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="p_delete" type="checkbox" name="permission[]" value="p_delete">
+                                                        <label for="p_delete">Delete</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="p_treatment" type="checkbox" name="permission[]" value="p_treatment">
+                                                        <label for="p_treatment">Treatment</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <hr />
+
+
+                                        <div class="form-group">
+                                            <div class="">
+                                                <input id="d_view" id="d_permissions" type="checkbox" name="permission[]" value="d_view">
+                                                <label for="d_view">Dictionary</label>
+                                            </div>
+                                            <div class="form-check" style="padding:6px !important;">
+
+                                                <div class="row">
+
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="d_create" name="permission[]" value="d_create">
+                                                        <label for="d_create">Create</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="d_update" name="permission[]" value="d_update">
+                                                        <label for="d_update">Update</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="d_delete" type="checkbox" name="permission[]" value="d_delete">
+                                                        <label for="d_delete">Delete</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <div class="">
+                                                <input id="ph_view" id="ph_permissions" type="checkbox" name="permission[]" value="ph_view">
+                                                <label for="ph_view">Pharmacy</label>
+                                            </div>
+                                            <div class="form-check" style="padding:6px !important;">
+
+                                                <div class="row">
+
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="ph_create" name="permission[]" value="ph_create">
+                                                        <label for="ph_create">Create</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="ph_update" name="permission[]" value="ph_update">
+                                                        <label for="ph_update">Update</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="ph_delete" type="checkbox" name="permission[]" value="ph_delete">
+                                                        <label for="ph_delete">Delete</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <div class="">
+                                                <input id="pos_view" id="pos_permissions" type="checkbox" name="permission[]" value="pos_view">
+                                                <label for="pos_view">POS</label>
+                                            </div>
+                                            <div class="form-check" style="padding:6px !important;">
+
+                                                <div class="row">
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="pos_create" name="permission[]" value="pos_create">
+                                                        <label for="pos_create">Create</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="pos_update" name="permission[]" value="pos_update">
+                                                        <label for="pos_update">Update</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="pos_delete" type="checkbox" name="permission[]" value="pos_delete">
+                                                        <label for="pos_delete">Delete</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <hr />
+
+                                        <div class="form-group">
+                                            <div class="">
+                                                <input id="user_view" id="pos_permissions" type="checkbox" name="permission[]" value="user_view">
+                                                <label for="user_view">User</label>
+                                            </div>
+                                            <div class="form-check" style="padding:6px !important;">
+
+                                                <div class="row">
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="user_create" name="permission[]" value="user_create">
+                                                        <label for="user_create">Create</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input type="checkbox" id="user_update" name="permission[]" value="user_update">
+                                                        <label for="user_update">Update</label>
+                                                    </div>
+                                                    <div class="col md-4 icheck-primary d-inline mt-2">
+                                                        <input id="user_delete" type="checkbox" name="permission[]" value="user_delete">
+                                                        <label for="user_delete">Delete</label>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <input type="button" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}" onclick="submitForm()" value="Submit">
+                                    </div>
+
+                                    <!-- Bootstrap Switch -->
+                                    <!-- /.card -->
                                 </div>
                             </div>
-                    </section>
-                </form>
+                        </div>
+                </section>
+            </form>
 
-            </div>
+
         </div>
-    </body>
-    <script src="{{ asset('js/user.js') }}"></script>
-    <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+    </div>
+</body>
+<script src="{{ asset('js/user.js') }}"></script>
+<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+
+<script>
+    function submitForm() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        if ($('#form-user :checkbox:checked').length > 0) {
+            $.ajax({
+                url: "{{route('clinic-user.register')}}",
+                type: 'POST',
+                data: $("#form-user").serialize(),
+                beforeSend: function() {
+                    $('.wrapper').css('opacity', '0.1');
+                    $('.middle').css('opacity', '1');
+                },
+                success: function(response) {
+                    if (response == 1) {
+                        window.location = '/clinic-system/users'
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    var response = JSON.parse(xhr.responseText);
+
+                    let first_name = response.errors.first_name ? response.errors.first_name[0] : '';
+                    let code = response.errors.code ? response.errors.code[0] : '';
+                    let role_type = response.errors.role_type ? response.errors.role_type[0] : '';
+                    let gender = response.errors.gender ? response.errors.gender[0] : '';
+                    let email = response.errors.email ? response.errors.email[0] : '';
+                    let password = response.errors.password ? response.errors.password[0] : '';
+                    let phoneNumber = response.errors.phoneNumber ? response.errors.phoneNumber[0] : '';
+                    let address = response.errors.address ? response.errors.address[0] : '';
+                    let fees = response.errors.fees ? response.errors.fees[0] : '';
+
+                    $('#nameError').html(name);
+                    $('#codeError').html(code);
+                    $('#roleError').html(role_type);
+                    $('#genderError').html(gender);
+                    $('#emailError').html(email);
+                    $('#passwordError').html(password);
+                    $('#phoneError').html(phoneNumber);
+                    $('#addressError').html(address);
+                    $('#feesError').html(fees);
+                    $("#firstnameError").html(first_name);
+
+                    $(".alert-msg").show().delay(5000).fadeOut();
+
+                    $('.wrapper').css('opacity', '1');
+                    $('.middle').css('opacity', '0.1');
+                },
+                complete: function() { // Set our complete callback, adding the .hidden class and hiding the spinner.
+                    $('.wrapper').css('opacity', '1');
+                    $('.middle').css('opacity', '0.1');
+                },
+
+            })
+        } else {
+            $("html, body").animate({
+                scrollTop: 0
+            }, "slow");
+
+            let errorString = 'Please check at least one property!';
+
+            alertify.alert(errorString, function() {
+                alertify.message('Please fill the fields with *');
+            }).setHeader('<em>Some errors occured</em>');
+        }
+    }
+
+    // $("#code").blur(function() {
+
+    //     var username = $('#code').val();
+    //     var _token = $('input[name="_token"]').val();
+
+    //     if (username.length >= 5) {
+
+    //         $.ajax({
+    //             url: "{{ route('username_available.check') }}",
+    //             method: "POST",
+    //             data: {
+    //                 username: username,
+    //                 _token: _token
+    //             },
+    //             success: function(result) {
+    //                 if (result == 'unique') {
+    //                     $('#a-text').removeClass('text-danger');
+    //                     $('#a-text').removeClass('text-warning');
+    //                     $('#a-text').addClass('text-success');
+    //                     $('#a-text').text('Username available');
+    //                     $('#a-text').show();
+    //                     setTimeout(function() {
+    //                         $('#a-text').hide();
+    //                     }, 5000);
+    //                 } else {
+    //                     $('#a-text').removeClass('text-danger');
+    //                     $('#a-text').removeClass('text-success');
+    //                     $('#a-text').addClass('text-warning');
+    //                     $('#a-text').text('Username Already taken');
+    //                     $('#a-text').show();
+    //                     setTimeout(function() {
+    //                         $('#a-text').hide();
+    //                     }, 5000);
+    //                 }
+    //             }
+
+
+    //         });
+    //     } else {
+
+    //         $('#a-text').removeClass('text-warning');
+    //         $('#a-text').removeClass('text-success');
+    //         $('#a-text').addClass('text-danger');
+    //         $('#a-text').text('Must have at leat 5 characters');
+    //         $('#a-text').show();
+    //         setTimeout(function() {
+    //             $('#a-text').hide();
+    //         }, 5000);
+
+    //     }
+    // });
+
+    $('#email').blur(function() {
+
+        var error_email = '';
+        var email = $('#email').val();
+        var _token = $('input[name="_token"]').val();
+        var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if (!filter.test(email)) {
+            $('#em-text').removeClass('text-danger');
+            $('#em-text').removeClass('text-success');
+            $('#em-text').addClass('text-warning');
+            $('#em-text').text('Invaid Email');
+            $('#a-text').show();
+            setTimeout(function() {
+                $('#em-text').hide();
+            }, 5000);
+
+        } else {
+            $.ajax({
+                url: "{{ route('email_available.check') }}",
+                method: "POST",
+                data: {
+                    email: email,
+                    _token: _token
+                },
+                success: function(result) {
+                    if (result == 'unique') {
+                        $('#em-text').removeClass('text-danger');
+                        $('#em-text').removeClass('text-warning');
+                        $('#em-text').addClass('text-success');
+                        $('#em-text').text('Valid Email');
+                        $('#a-text').show();
+                        setTimeout(function() {
+                            $('#em-text').hide();
+                        }, 5000);
+                    } else {
+                        $('#em-text').removeClass('text-danger');
+                        $('#em-text').removeClass('text-success');
+                        $('#em-text').addClass('text-warning');
+                        $('#em-text').text('Email Already taken');
+                        $('#a-text').show();
+                        setTimeout(function() {
+                            $('#em-text').hide();
+                        }, 5000);
+                    }
+
+                }
+            })
+        }
+    });
+</script>
 
 
 @endsection

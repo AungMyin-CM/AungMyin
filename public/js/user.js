@@ -11025,17 +11025,39 @@ __webpack_require__.r(__webpack_exports__);
         $("#pos_view").prop('checked', true);
       }
     });
-    $('#role_type').on('change', function () {
-      if (this.value != 1) {
-        document.getElementById("doctor_section").setAttribute('hidden', 'hidden');
-        document.getElementById("short_bio").setAttribute('hidden', 'hidden');
-        document.getElementById("fees").setAttribute('hidden', 'hidden');
+    $("#user_view").on("change", function () {
+      if (this.checked) {
+        $("#user_create,#user_delete,#user_update").prop('checked', true);
       } else {
-        document.getElementById("doctor_section").removeAttribute('hidden');
-        document.getElementById("short_bio").removeAttribute('hidden');
-        document.getElementById("fees").removeAttribute('hidden');
+        $("#user_create,#user_delete,#user_update").prop('checked', false);
       }
     });
+    $("#user_create,#user_delete,#user_update").on('change', function () {
+      if (this.checked) {
+        $("#user_view").prop('checked', true);
+      }
+    });
+
+	function hideOrShowFields() {
+        const roleType = $("#role_type").val();
+        if (roleType != 1 && roleType != 5) {
+            $("#doctor_section").hide();
+            $("#short_bio").hide();
+            $("#fees").hide();
+        } else {
+            $("#doctor_section").show();
+            $("#short_bio").show();
+            $("#fees").show();
+        }
+    }
+
+    $(function () {
+        hideOrShowFields();
+
+        $("#role_type").on("change", function () {
+            hideOrShowFields();
+        });
+    });    
   });
 })((jquery__WEBPACK_IMPORTED_MODULE_0___default()));
 })();

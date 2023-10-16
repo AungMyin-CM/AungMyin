@@ -36,10 +36,6 @@ return [
     */
 
     'guards' => [
-        'clinic'  => [
-            'driver'  => 'session',
-            'provider' => 'clinic',
-        ],
         'user' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -64,11 +60,6 @@ return [
     */
 
     'providers' => [
-        'clinic' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Clinic::class,
-        ],
-
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,

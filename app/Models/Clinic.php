@@ -5,26 +5,36 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Clinic extends Authenticatable
+class Clinic extends Model
 {
     use HasFactory;
 
     protected $table = 'clinic';
 
-    protected $guard = 'clinic';
-
-    protected $fillable = [ 
-        'code','name','email','password','phoneNumber','address','package_id'
+    protected $fillable = [
+        'user_id', 'code', 'name', 'avatar', 'address', 'phoneNumber', 'package_id', 'package_purchased_date', 'package_purchased_times'
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    public function setPasswordAttribute($value)
+    public function expireDate()
     {
-    $this->attributes['password'] = bcrypt($value);
+        return $this->hasOne(PackagePurchase::class, 'clinic_id', 'id');
+    }
+
+    public function transaction(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'user_id');
+    }
+
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class);
+    }
+
+    public function patient(): HasMany
+    {
+        return $this->hasMany(Patient::class, 'clinic_code', 'id');
     }
 }

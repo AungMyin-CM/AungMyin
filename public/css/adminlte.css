@@ -12592,9 +12592,9 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   width: 0;
 }
 
-.sidebar:hover {
+/* .sidebar:hover {
   scrollbar-width: thin;
-}
+} */
 
 .sidebar:hover::-webkit-scrollbar {
   width: .5rem;
@@ -12630,7 +12630,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 
 .user-panel img {
   height: auto;
-  width: 2.1rem;
+  width: 3.1rem;
 }
 
 .user-panel .info {
