@@ -36,6 +36,11 @@ Route::get('/login', [LoginController::class, 'index'])->name('user-login')->mid
 
 Route::post('/send-otp', [UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
 
+Route::get('/.well-known/acme-challenge/4xLMh6F-_UUkepftHZWPtrTuEhZZ2VV8a9_mDc7IMiw',function(){
+  
+  return '4xLMh6F-_UUkepftHZWPtrTuEhZZ2VV8a9_mDc7IMiw.JhL8guqbYpyNxPARURqNLP7XLEFCKNsU5gbCSFebTZQ';
+  
+});
 // Forgot Password
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgetPassword'])->middleware('guest')->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'submitForgetPassword'])->middleware('guest')->name('password.email');

@@ -15,7 +15,7 @@ class DataController extends Controller
 {
     public function exportPatientCSV()
     {
-        $filepath = public_path('docs\Patient.xlsx');
+        $filepath = public_path('docs/Patient.xlsx');
         return Response::download($filepath); 
     }
 
