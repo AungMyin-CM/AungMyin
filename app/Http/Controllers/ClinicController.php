@@ -126,7 +126,7 @@ class ClinicController extends Controller
                 "d_view", "d_create", "d_update", "d_delete",
                 "ph_view", "ph_create", "ph_update", "ph_delete",
                 "pos_view", "pos_create", "pos_update", "pos_delete",
-                "user_view", "user_update", "user_delete"
+                "user_create","user_view", "user_update", "user_delete"
             ];
         } else if ($package->type == 'single') {
 
@@ -135,6 +135,7 @@ class ClinicController extends Controller
                 "d_view", "d_create", "d_update", "d_delete",
                 "ph_view", "ph_create", "ph_update", "ph_delete",
                 "pos_view", "pos_create", "pos_update", "pos_delete",
+                "user_create","user_view", "user_update", "user_delete"
             ];
         }
 
