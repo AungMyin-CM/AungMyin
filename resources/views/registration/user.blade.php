@@ -192,7 +192,7 @@
             </div>
             <div class="form-actions ms-auto mt-2" id="user-form">
 
-                <button class="btn btn-secondary float-left d-none" id="prev"><a href="{{route('user-login')}}" class="nav-link">Back to Login</a></button>
+                <button class="btn btn-secondary float-left"><a href="{{route('user-login')}}" class="nav-link"><i class="fas fa-circle-arrow-left"></i> Already Singed up ? Login</a></button>
                 <button id="next" class="btn btn-primary m-3" style="background-color: #003049 !important;"><i class="fas fa-circle-arrow-right"></i> Next</button>
             </div>
             {{-- <div class="form-step-indicators mt-5">
@@ -261,8 +261,6 @@
             }
         });
         $('#otpModal').modal({
-            backdrop: 'static',
-            keyboard: false
         })
         $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
             if (e.which == 13 || e.which == 9) {

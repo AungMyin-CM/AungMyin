@@ -9,6 +9,8 @@ Installation
 
 -   php artisan key:generate ( to generate a unique key for the application. )
 
--   php artisan migrate ( for database integration.)
+-   Please Import the database from sample_data/test_database.sql
+
+-   Checkout out the branch 1.0.1 and pull the lastest updates.
 
 -   php artisan serve

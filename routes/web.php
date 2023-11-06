@@ -112,7 +112,7 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::post('/fetchProLab', [PatientController::class, 'fetchProLab']);
 
-    Route::post('/search', [SearchController::class, 'searchPatient']);
+    Route::get('/search', [SearchController::class, 'searchPatient']);
     Route::post('/second_search', [SearchController::class, 'secondsearchPatient']);
 
 
@@ -171,15 +171,15 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
     Route::get('/exportPatientCSV', [DataController::class, 'exportPatientCSV']);
     Route::get('/exportMedCSV', [DataController::class, 'exportMedCSV']);
 
-    Route::post('/importExcelPatient',[DataController::class,'importPatientExcel'])->name('patient.excel.import');
-    Route::post('/importExcelPharmacy',[DataController::class,'importPharmacyExcel'])->name('pharmacy.excel.import');
+    Route::post('/importExcelPatient', [DataController::class, 'importPatientExcel'])->name('patient.excel.import');
+    Route::post('/importExcelPharmacy', [DataController::class, 'importPharmacyExcel'])->name('pharmacy.excel.import');
 
     Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');
 
     Route::get('/complete-payment/{id}', [ClinicController::class, 'completePayment'])->name('complete.payment');
 
-    Route::get('/dinger-complete',[ClinicController::class, 'completeDingerPayment'])->name('dinger.complete');
+    Route::get('/dinger-complete', [ClinicController::class, 'completeDingerPayment'])->name('dinger.complete');
 });
 
 Route::group(['prefix' => '/aungmyin/dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
@@ -207,7 +207,7 @@ Route::post('/feedback-store', [FeedBackController::class, 'store'])->name('feed
 
 Route::get('/waiting', [ClinicController::class, 'waitingList'])->name('wait.list');
 
-Route::get('/docs', [DocController::class, 'index'])->name('docs.index');
+Route::get('/documentation', [DocController::class, 'index'])->name('docs.index');
 
 Route::group(['middleware' => 'auth'], function () {
 

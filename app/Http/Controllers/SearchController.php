@@ -18,16 +18,57 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Str;
 
 use Auth;
+use Elastic\Elasticsearch\ClientBuilder;
 
 class SearchController extends Controller
 {
     public function searchPatient(Request $request)
     {
-        $ref = str_replace(' ', '_', $request->key);
+        $query = str_replace(' ', '_', $request->input('search'));
 
-        $clinic_id = UserClinic::where('user_id', $request->clinic_id)->pluck('clinic_id')->first();
+        $clinic_id = $request->input('clinic_id');
 
-        $data = Patient::select('id', 'name', 'age', 'father_name')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $request->clinic_id)->where('status', 1)->get();
+        $client = ClientBuilder::create()->setBasicAuthentication('elastic','lEr2fYII__No_eKik3_G')->build();
+
+        $params = [
+            'index' => 'patients',
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'bool' => [
+                                    'should' => [
+                                        [
+                                            'wildcard' => [
+                                                'Ref' => '*' . $query . '*',
+                                            ],
+                                        ],
+                                    ],
+                                    'minimum_should_match' => 1,
+                                ],
+                            ],
+                        ],
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'clinic_code' => $clinic_id,
+                                ],
+                            ],
+                            [
+                                'term' => [
+                                    'status' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+
+        $response = $client->search($params);
+        $data = $response['hits']['hits'];
 
         $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
@@ -36,19 +77,17 @@ class SearchController extends Controller
             if (count($data) == 0) {
                 $output = '';
             } else {
-                $output = '<ul class="list-group" style="display:block;">';
-                // <li class="list-group-item search-get-results-1-result"><span class="col-md-4 float-left">Name</span><span class="col-md-4">Age</span><span class="col-md-4 float-right">Father\'s Name</span></li>';
-
                 $output = '<ul class="list-group" style="display:block; position:relative;">';
 
-                foreach ($data as $row) {
+                foreach ($data as $hit) {
+                    $row = $hit['_source'];
                     $output .= '
                         <li class="list-group-item bg-secondary text-black"> <div class="row">              
-                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row->name) . '</span>' .
-                        '<span class="col-lg-4">Age: ' . $row->age . '</span>' .
-                        '<span class="col-lg-4">Father\'s Name: ' . $row->father_name . '</span>                 
+                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
+                        '<span class="col-lg-4">Age: ' . $row['age'] . '</span>' .
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
                         </a>  
-                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
                         </div>
@@ -63,14 +102,15 @@ class SearchController extends Controller
             } else {
                 $output = '<ul class="list-group" style="display:block; position:relative;">';
 
-                foreach ($data as $row) {
+                foreach ($data as $hit) {
+                    $row = $hit['_source'];
                     $output .= '
                         <li class="list-group-item bg-secondary text-black"> <div class="row">              
-                        <a  class="col-md-11 row" href="' . route('add.queue', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row->name) . '</span>' .
-                        '<span class="col-lg-4">Age: ' . $row->age . '</span>' .
-                        '<span class="col-lg-4">Father\'s Name: ' . $row->father_name . '</span>                 
+                        <a  class="col-md-11 row" href="' . route('add.queue', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
+                        '<span class="col-lg-4">Age: ' . $row['age'] . '</span>' .
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
                         </a>  
-                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
                         </div>
@@ -84,14 +124,15 @@ class SearchController extends Controller
             } else {
                 $output = '<ul class="list-group" style="display:block; position:relative;">';
 
-                foreach ($data as $row) {
+                foreach ($data as $hit) {
+                    $row = $hit['_source'];
                     $output .= '
                         <li class="list-group-item bg-secondary text-black"> <div class="row">              
-                        <a  class="col-md-11 row" href="' . route('pos-patient', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row->name) . '</span>' .
-                        '<span class="col-lg-4">Age: ' . $row->age . '</span>'.
-                        '<span class="col-lg-4">Father\'s Name: ' . $row->father_name . '</span>                 
+                        <a  class="col-md-11 row" href="' . route('pos-patient', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
+                        '<span class="col-lg-4">Age: ' . $row['age'] . '</span>'.
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
                         </a>  
-                        <a class="col-md-1" href="' . route('add.queue', $row->id) . '" class="btn btn-sm btn-tool">
+                        <a class="col-md-1" href="' . route('add.queue', $row['id']) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
                         </div>
@@ -106,14 +147,15 @@ class SearchController extends Controller
             } else {
                 $output = '<ul class="list-group" style="display:block; position:relative;">';
 
-                foreach ($data as $row) {
+                foreach ($data as $hit) {
+                    $row = $hit['_source'];
                     $output .= '
                         <li class="list-group-item bg-secondary text-black"> <div class="row">              
-                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row->name) . '</span>' .
-                        '<span class="col-lg-4">Age: ' . $row->age . '</span>'.
-                        '<span class="col-lg-4">Father\'s Name: ' . $row->father_name . '</span>                 
+                        <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
+                        '<span class="col-lg-4">Age: ' . $row['age'] . '</span>'.
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
                         </a>  
-                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
+                        <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
                         </div>
@@ -240,7 +282,7 @@ class SearchController extends Controller
         $row_id = $request->rowid;
 
         $data = Pharmacy::select('id', 'name', 'code')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_id', $clinic_id)->where('quantity', '>', '0')->where('expire_date', '>', $current_date)->where('status', 1)->get();
-        
+
         if (count($data) == 0) {
             $output = '';
         } else {
@@ -267,7 +309,7 @@ class SearchController extends Controller
 
         if (count($data) == 0) {
             $output = '';
-        }else{  
+        } else {
             $output = '<ul class="list-group" id="patient_group" style="display:block; position:relative;">';
 
             foreach ($data as $row) {

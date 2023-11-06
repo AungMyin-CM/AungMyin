@@ -21,6 +21,7 @@ use App\Models\PatientDiagnosis;
 use App\Models\Notification;
 use App\Models\PatientDoctor;
 use App\Events\NoticeEvent;
+use App\Events\PatientChanged;
 use App\Models\Package;
 use Carbon\Carbon;
 
@@ -92,7 +93,8 @@ class PatientController extends Controller
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
             $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name) . str_replace(' ', '_', $code);
             $p_status = $role->role_type == 1 ? 4 : 1;
-            $patient_id = $patient->create([
+
+            $newPatient = $patient->create([
                 'user_id' => Auth::guard('user')->user()['id'],
                 'code' => $code,
                 'name' => $request->name,
@@ -106,7 +108,11 @@ class PatientController extends Controller
                 'summary' => $request->summary,
                 'p_status' => $p_status,
                 'Ref' => $reference
-            ])->id;
+            ]);
+
+            event(new PatientChanged($newPatient));
+
+            $patient_id = $newPatient->id;
 
             return redirect()->route('patient.treatment', [Crypt::encrypt($patient_id)]);
         }
@@ -130,7 +136,7 @@ class PatientController extends Controller
             $reference = str_replace(' ', '_', $request->name) . "_" . $request->age . "_" . str_replace(' ', '_', $request->father_name) . str_replace(' ', '_', $code);
             $p_status = $role->role_type == 1 ? 4 : 1;
 
-            $patient_id = $patient->create([
+            $newPatient = $patient->create([
                 'user_id' => Auth::guard('user')->user()['id'],
                 'code' => $code,
                 'name' => $request->name,
@@ -144,12 +150,14 @@ class PatientController extends Controller
                 'summary' => $request->summary,
                 'p_status' => $p_status,
                 'Ref' => $reference
-            ])->id;
+            ]);
+
+            event(new PatientChanged($newPatient));
+
+            $patient_id = $newPatient->id;
         }
 
-        $patient = (Patient::where('id', $patient_id)->get())[0];
-
-        return response()->json($patient);
+        return response()->json($newPatient);
     }
 
     public function show(Request $request)
@@ -207,6 +215,9 @@ class PatientController extends Controller
             'Ref' => $reference
         ]);
 
+        $patient = (Patient::where('id', $id)->get())[0];
+        event(new PatientChanged($patient));
+
         return redirect('clinic-system/patient')->with('success', 'Patient updated successfully!');
     }
 
@@ -232,6 +243,7 @@ class PatientController extends Controller
 
         // Get updated data
         $patient = (Patient::where('id', $id)->get())[0];
+        event(new PatientChanged($patient));
 
         return response()->json($patient);
     }
@@ -469,7 +481,15 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        Patient::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
+        $patient = Patient::find($id);
+
+        if ($patient) {
+            $patient->update(['status' => '0']);
+            // Soft delete
+            $patient->delete();
+
+            event(new PatientChanged($patient));
+        }
 
         return redirect('clinic-system/patient')->with('success', 'Patient removed successfully!');
     }

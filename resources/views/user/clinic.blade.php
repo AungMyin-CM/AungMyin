@@ -130,10 +130,10 @@
             }
 
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: '/clinic-system/search',
                 data: {
-                    key: query,
+                    search: query,
                     clinic_id: clinic_id
                 }
             }).done(function(response) {

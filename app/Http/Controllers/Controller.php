@@ -51,6 +51,9 @@ class Controller extends BaseController
 
             $clinic_data = UserClinic::where('user_id', Auth::guard('user')->user()['id'])->get();
 
+            $clinic_data_count = UserClinic::where('user_id', Auth::guard('user')->user()['id'])->count();
+
+
              if(count($clinic_data) >= 1)
             {
                     foreach($clinic_data as $clinic)
@@ -58,7 +61,7 @@ class Controller extends BaseController
                         $user_clinic[] = Clinic::where('id',$clinic->clinic_id)->get();
                     }
 
-                view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic]);
+                view()->share(['permissions' => $permissions, 'role_type' => $role_type, 'notis' => $notifications,'user_clinics' => $user_clinic,'counts' => $clinic_data_count]);
 
 
             }

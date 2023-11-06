@@ -19,8 +19,10 @@
             if ($loggedInUser) {
                 $userClinic = $loggedInUser->user_clinic;
 
+                $clinicLogo = '';
+
                 if ($userClinic) {
-                    $clinic = $userClinic->clinic->first();
+                    $clinic = App\Models\Clinic::where('id',$userClinic->clinic)->get()->first();
 
                     if ($clinic) {
                         $clinicLogo = $clinic->avatar;
@@ -219,23 +221,26 @@
         </ul>
 
         <hr>
+        
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="position: absolute; bottom: 0; margin-bottom: 60px;">
-            <li class="nav-item">
-                <a class="nav-link" title="Feedback" id="feedbackBtn">
-                    <i class="nav-icon fas fa-comment-alt"></i>
-                    <p>
-                        Feedback
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('docs.index') }}" class="nav-link" title="Help" target="_blank">
-                    <i class="nav-icon fas fa-question-circle"></i>
-                    <p>
-                        Help
-                    </p>
-                </a>
-            </li>
+            @if(isset($counts) && $counts > 0)
+                <li class="nav-item">
+                    <a class="nav-link" title="Feedback" id="feedbackBtn">
+                        <i class="nav-icon fas fa-comment-alt"></i>
+                        <p>
+                            Feedback
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('docs.index') }}" class="nav-link" title="Help" target="_blank">
+                        <i class="nav-icon fas fa-question-circle"></i>
+                        <p>
+                            Help
+                        </p>
+                    </a>
+                </li>
+            @endif
             <li class="nav-item mt-2 logout" style="margin-left: 17px;">
                 @if (Auth::guard('user')->user())
                 <form action="{{ route('user.logout') }}" method="post">

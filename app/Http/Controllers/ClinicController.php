@@ -108,6 +108,7 @@ class ClinicController extends Controller
         $user_id = Auth::guard('user')->user()['id'];
         $clinic = new Clinic();
         $package = Package::find($request->package_id);
+        $time_value = session()->get('time_value');
 
         if ($package->type == 'ultimate') {
 
@@ -125,7 +126,7 @@ class ClinicController extends Controller
                 "d_view", "d_create", "d_update", "d_delete",
                 "ph_view", "ph_create", "ph_update", "ph_delete",
                 "pos_view", "pos_create", "pos_update", "pos_delete",
-                "user_view", "user_update", "user_delete"
+                "user_create","user_view", "user_update", "user_delete"
             ];
         } else if ($package->type == 'single') {
 
@@ -134,6 +135,7 @@ class ClinicController extends Controller
                 "d_view", "d_create", "d_update", "d_delete",
                 "ph_view", "ph_create", "ph_update", "ph_delete",
                 "pos_view", "pos_create", "pos_update", "pos_delete",
+                "user_create","user_view", "user_update", "user_delete"
             ];
         }
 
@@ -165,6 +167,7 @@ class ClinicController extends Controller
             'clinic_id' => $clinic_id,
             'price' => $package['price'],
             'expire_at' => Carbon::parse($now)->addDays($package->trialPeriod),
+            'purchase_value' => $time_value,
             'status' => 1
         ]);
 
@@ -176,6 +179,7 @@ class ClinicController extends Controller
             'cost_amount' => $package->price,
             'discount' => $package->discount,
             'on_trial' => '1',
+            'purchase_value' => $time_value,
             'created_at' => Carbon::now(),
 
         ]);
@@ -342,7 +346,8 @@ class ClinicController extends Controller
         $user = new User();
 
         $user_id = $user->create([
-            'name' => $request->name,
+
+            'name' => $request->first_name . ' ' . $request->last_name,
             'role_id' => $role_id,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
@@ -357,7 +362,10 @@ class ClinicController extends Controller
             'fees' => $request->fees,
             'user_type' => 2, // (user-type) 1 = normal-user 2 = added_from_clinic 3 = own_clinic
             'gender' => $request->gender,
-            'email_verified' => '1'
+            'email_verified' => '1',
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+
         ])->id;
 
         UserClinic::create([
@@ -375,7 +383,7 @@ class ClinicController extends Controller
             abort(404);
         }
 
-        $user = User::findOrfail($id);
+        $user = User::findOrfail(Crypt::decrypt($id));
         $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
 
         $role = Role::where('id', $user->role_id)->get()->first();
@@ -394,16 +402,16 @@ class ClinicController extends Controller
         $origin_password = User::where('id', $id)->pluck('password');
         $role_id = User::where('id', $id)->pluck('role_id');
 
-        if($role->role_type == 5){
-            $role_type = 5;
-        }else{
+        if($request->role_type){
             $role_type = $request->role_type;
+        }else{
+            $role_type = 5;
         }
 
         $role_id = Role::where('id', $role_id)->update(['role_type' => $role_type, 'permissions' => $permissions]);
 
         $requests = [
-            'name' => $request->name,
+            'name' => $request->first_name . ' ' . $request->last_name,
             'code' => $request->code,
             'speciality' => $request->speciality,
             'credentials' => $request->credentials,
@@ -415,6 +423,9 @@ class ClinicController extends Controller
             'gender' => $request->gender,
             'short_bio' => $request->short_bio,
             'fees' => $request->fees,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+
         ];
 
         if ($request->password != null && trim($request->password) != '') {
@@ -466,6 +477,8 @@ class ClinicController extends Controller
         $free_month = $request->value;
 
         session()->put('is_free', $free_month);
+
+        session()->put('time_value',$request->time_value);
 
         $payments = ['1_k' => 'kpay', '2_w' => 'wpay', '3_c' => 'cod'];
 

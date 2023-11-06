@@ -89,7 +89,7 @@
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="1" name="gender">
+                                                        <input class="form-check-input" id="male" type="radio" value="1" name="gender">
                                                         <label class="form-check-label" for="male">
                                                             Male
                                                         </label>
@@ -97,7 +97,7 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" id="gender" type="radio" value="0" name="gender">
+                                                        <input class="form-check-input" id="female" type="radio" value="0" name="gender">
                                                         <label class="form-check-label" for="female">
                                                             Female
                                                         </label>
@@ -435,57 +435,57 @@
         }
     }
 
-    $("#code").blur(function() {
+    // $("#code").blur(function() {
 
-        var username = $('#code').val();
-        var _token = $('input[name="_token"]').val();
+    //     var username = $('#code').val();
+    //     var _token = $('input[name="_token"]').val();
 
-        if (username.length >= 5) {
+    //     if (username.length >= 5) {
 
-            $.ajax({
-                url: "{{ route('username_available.check') }}",
-                method: "POST",
-                data: {
-                    username: username,
-                    _token: _token
-                },
-                success: function(result) {
-                    if (result == 'unique') {
-                        $('#a-text').removeClass('text-danger');
-                        $('#a-text').removeClass('text-warning');
-                        $('#a-text').addClass('text-success');
-                        $('#a-text').text('Username available');
-                        $('#a-text').show();
-                        setTimeout(function() {
-                            $('#a-text').hide();
-                        }, 5000);
-                    } else {
-                        $('#a-text').removeClass('text-danger');
-                        $('#a-text').removeClass('text-success');
-                        $('#a-text').addClass('text-warning');
-                        $('#a-text').text('Username Already taken');
-                        $('#a-text').show();
-                        setTimeout(function() {
-                            $('#a-text').hide();
-                        }, 5000);
-                    }
-                }
+    //         $.ajax({
+    //             url: "{{ route('username_available.check') }}",
+    //             method: "POST",
+    //             data: {
+    //                 username: username,
+    //                 _token: _token
+    //             },
+    //             success: function(result) {
+    //                 if (result == 'unique') {
+    //                     $('#a-text').removeClass('text-danger');
+    //                     $('#a-text').removeClass('text-warning');
+    //                     $('#a-text').addClass('text-success');
+    //                     $('#a-text').text('Username available');
+    //                     $('#a-text').show();
+    //                     setTimeout(function() {
+    //                         $('#a-text').hide();
+    //                     }, 5000);
+    //                 } else {
+    //                     $('#a-text').removeClass('text-danger');
+    //                     $('#a-text').removeClass('text-success');
+    //                     $('#a-text').addClass('text-warning');
+    //                     $('#a-text').text('Username Already taken');
+    //                     $('#a-text').show();
+    //                     setTimeout(function() {
+    //                         $('#a-text').hide();
+    //                     }, 5000);
+    //                 }
+    //             }
 
 
-            });
-        } else {
+    //         });
+    //     } else {
 
-            $('#a-text').removeClass('text-warning');
-            $('#a-text').removeClass('text-success');
-            $('#a-text').addClass('text-danger');
-            $('#a-text').text('Must have at leat 5 characters');
-            $('#a-text').show();
-            setTimeout(function() {
-                $('#a-text').hide();
-            }, 5000);
+    //         $('#a-text').removeClass('text-warning');
+    //         $('#a-text').removeClass('text-success');
+    //         $('#a-text').addClass('text-danger');
+    //         $('#a-text').text('Must have at leat 5 characters');
+    //         $('#a-text').show();
+    //         setTimeout(function() {
+    //             $('#a-text').hide();
+    //         }, 5000);
 
-        }
-    });
+    //     }
+    // });
 
     $('#email').blur(function() {
 
