@@ -499,7 +499,7 @@ class PatientController extends Controller
         $text = $request->key;
         $user_id = Auth::guard('user')->user()['id'];
 
-        $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => null, 'user_id' =>  $user_id])->first();
+        $data = Dictionary::select('code', 'meaning')->where(['code' => $text, 'isMed' => 0, 'user_id' =>  $user_id])->first();
 
         if ($data == '') {
             echo 'no-data';
