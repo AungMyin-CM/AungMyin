@@ -38,7 +38,7 @@
                                     <li>RBS - {{ $row->rbs }} mg/dL</li> <br>
                                     <li>Diseases - {{ $row->disease }}</li> <br>
                                     @if($row->prescription != '')
-                                    <li>Prescription: {{ Str::limit($row->prescription, $limit = 100, $end = '...') }}</li>
+                                    <li>Prescription: {{ Str::limit($row->prescription, $end = '...') }}</li>
                                     @endif
 
                                     @if($row->diag != '')
@@ -77,6 +77,7 @@
                 <div class="row mb-3">
                     <div class="col-8">
                         <ul class="list-unstyled">
+                            if()
                             <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li>
                             <li>PR - {{ $row->pr }} min</li>
                             <li>T - {{ $row->temp }}*F</li>
@@ -93,7 +94,7 @@
 
                 <ul class="list-unstyled">
                     @if($row->prescription != '')
-                    <li>Prescription: {{ Str::limit($row->prescription, $limit = 100, $end = '...') }}</li>
+                    <li>Prescription: {{ Str::limit($row->prescription,  $end = '...') }}</li>
                     @endif
 
                     @if($row->diag != '')

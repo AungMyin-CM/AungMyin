@@ -397,28 +397,35 @@
                                         <div class="form-group mb-3">
                                             <div class="row">
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="sys_bp" id="sys_bp" placeholder="Sys">
+                                                    <small for="sys_bp">Sys</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="sys_bp" id="sys_bp" >
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="dia_bp" id="dia_bp" placeholder="Dia">
+                                                    <small for="dia_bp">Dia</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="dia_bp" id="dia_bp" >
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="pr" id="pr" placeholder="P.R">
+                                                    <small for="pr">P.R</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="pr" id="pr" >
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="temp" id="temp" placeholder="Temp">
+                                                    <small for="temp">Temp</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="temp" id="temp"  >
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="spo2" id="spo2" placeholder="Spo2">
+                                                    <small for="spo2">Spo2</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="spo2" id="spo2"  >
                                                 </div>
                                                 <div class="col-md-2 col-sm-4 mb-1">
-                                                    <input type="text" class="form-control c-field" autocomplete="off" name="rbs" id="rbs" placeholder="Rbs">
+                                                    <small for="rbs">Rbs</small>
+                                                    <input type="text" class="form-control c-field" autocomplete="off" name="rbs" id="rbs"  >
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="mb-3 dictionary-container">
-                                            <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" placeholder="History & Examination" name="prescription">{{ old('prescription') }}</textarea>
+                                            <small for="dictionary">History & Examination</small>
+                                            <textarea class="form-control c-field" id="dictionary" rows="3" autocomplete="off" name="prescription">{{ old('prescription') }}</textarea>
                                             <i class="fas fa-spinner fa-spin loading" id="loading"></i>
                                             <i class="toggle-dictionary fas fa-question"></i>
 
