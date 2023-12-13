@@ -50,7 +50,7 @@ class PatientController extends Controller
         $clinic_id = session()->get('cc_id');
 
         if ($request->name) {
-            $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->get();
+            $patientData =  Patient::where("clinic_code", $clinic_id)->where('name', 'like', $request->name . '%')->where('status', 1)->paginate(12);
         } else {
             $patientData = Patient::where("clinic_code", $clinic_id)
                 ->where('status', 1)
@@ -164,7 +164,7 @@ class PatientController extends Controller
     {
         $clinic_id = $request->query('clinic_id');
         $ref = str_replace(' ', '_', $request->query('name'));
-        
+
         $patient = Patient::select('id', 'name', 'age', 'father_name', 'drug_allergy')->where('Ref', 'like', '%' . $ref . '%')->where('clinic_code', $clinic_id)->where('status', 1)->first();
 
         $visits = Visit::where('patient_id', $patient->id)->get();

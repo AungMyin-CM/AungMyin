@@ -100,18 +100,14 @@
 <script src="{{ asset('plugins/jquery-ui/jquery-ui.js') }}"></script>
 
 <script>
-   
 
     // Ajax Pagination
     $(document).ready(function() {
-
         $(document).on('click', '.pagination a', function(event) {
             event.preventDefault();
             let page = $(this).attr('href').split('page=')[1];
             fetch_data(page);
         });
-
-       
     });
 
     function exportPatientTasks(_this) {
