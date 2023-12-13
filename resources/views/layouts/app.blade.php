@@ -58,6 +58,12 @@
     <!-- DataTable -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap4.min.css">
+
+    <script src="https://cdn.tiny.cloud/1/3tuipmiry93swu25uc8spws125ffkfwlj7af3efuvpiubu59/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    
+    <script>tinymce.init({selector:'textarea'});</script>
+
     
     <style>
 

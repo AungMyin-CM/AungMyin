@@ -31,26 +31,26 @@
                         <div class="card">
                             <div class="card-body">
                                 <ul class="list-unstyled">
-                                    <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li>
-                                    <li>PR - {{ $row->pr }} min</li>
-                                    <li>T - {{ $row->temp }}*F</li>
-                                    <li>SpO2 - {{ $row->spo2 }} % on Air</li>
-                                    <li>RBS - {{ $row->rbs }} mg/dL</li> <br>
-                                    <li>Diseases - {{ $row->disease }}</li> <br>
+                                    @if($row->sys_bp && $row->dia_bp) <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li> @endif
+                                    @if($row->pr) <li>PR - {{ $row->pr }} min</li> @endif
+                                    @if($row->temp) <li>T - {{ $row->temp }}*F</li> @endif
+                                    @if($row->spo2) <li>SpO2 - {{ $row->spo2 }} % on Air</li> @endif
+                                    @if($row->rbs) <li>RBS - {{ $row->rbs }} mg/dL</li> <br> @endif
+                                    @if($row->disease) <li>Diseases - {{ $row->disease }}</li> <br> @endif
                                     @if($row->prescription != '')
-                                    <li>Prescription: {{ Str::limit($row->prescription, $end = '...') }}</li>
+                                    <li>Prescription: {{ Str::limit($row->prescription, $limit = 500, $end = '...') }}</li>
                                     @endif
 
                                     @if($row->diag != '')
-                                    <li>Diagnosis: {{ Str::limit($row->diag, $limit = 100, $end = '...') }}</li>
+                                    <li>Diagnosis: {{ Str::limit($row->diag, $limit = 500, $end = '...') }}</li>
                                     @endif
 
                                     @if($row->investigation != '')
-                                    <li>Investigation: {{ Str::limit($row->investigation, $limit = 100, $end = '...') }}</li>
+                                    <li>Investigation: {{ Str::limit($row->investigation, $limit = 500, $end = '...') }}</li>
                                     @endif
 
                                     @if($row->procedure != '')
-                                    <li>Procedure: {{ Str::limit($row->procedure, $limit = 100, $end = '...') }}</li>
+                                    <li>Procedure: {{ Str::limit($row->procedure, $limit = 500, $end = '...') }}</li>
                                     @endif
 
                                     <br>
@@ -77,12 +77,12 @@
                 <div class="row mb-3">
                     <div class="col-8">
                         <ul class="list-unstyled">
-                            if()
-                            <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li>
-                            <li>PR - {{ $row->pr }} min</li>
-                            <li>T - {{ $row->temp }}*F</li>
-                            <li>SpO2 - {{ $row->spo2 }} % on Air</li>
-                            <li>RBS - {{ $row->rbs }} mg/dL</li>
+                            
+                            @if($row->sys_bp && $row->dia_bp) <li>Bp - {{ $row->sys_bp }}/{{ $row->dia_bp }} mmHg</li> @endif
+                            @if($row->pr) <li>PR - {{ $row->pr }} min</li> @endif
+                            @if($row->temp) <li>T - {{ $row->temp }}*F</li> @endif
+                            @if($row->spo2) <li>SpO2 - {{ $row->spo2 }} % on Air</li> @endif
+                            @if($row->rbs) <li>RBS - {{ $row->rbs }} mg/dL</li> @endif
                         </ul>
                     </div>
                     <div class="col-4 text-right">
@@ -94,19 +94,19 @@
 
                 <ul class="list-unstyled">
                     @if($row->prescription != '')
-                    <li>Prescription: {{ Str::limit($row->prescription,  $end = '...') }}</li>
+                    <li>Prescription: {{ Str::limit($row->prescription, $limit = 500, $end = '...') }}</li>
                     @endif
 
                     @if($row->diag != '')
-                    <li>Diagnosis: {{ Str::limit($row->diag, $limit = 100, $end = '...') }}</li>
+                    <li>Diagnosis: {{ Str::limit($row->diag, $limit = 500, $end = '...') }}</li>
                     @endif
 
                     @if($row->investigation != '')
-                    <li>Investigation: {{ Str::limit($row->investigation, $limit = 100, $end = '...') }}</li>
+                    <li>Investigation: {{ Str::limit($row->investigation, $limit = 500, $end = '...') }}</li>
                     @endif
 
                     @if($row->procedure != '')
-                    <li>Procedure: {{ Str::limit($row->procedure, $limit = 100, $end = '...') }}</li>
+                    <li>Procedure: {{ Str::limit($row->procedure, $limit = 500, $end = '...') }}</li>
                     @endif
                 </ul>
 
