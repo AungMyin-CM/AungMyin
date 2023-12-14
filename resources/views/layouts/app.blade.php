@@ -62,7 +62,7 @@
     <script src="https://cdn.tiny.cloud/1/3tuipmiry93swu25uc8spws125ffkfwlj7af3efuvpiubu59/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     
-    <script>tinymce.init({selector:'textarea'});</script>
+    <script>tinymce.init({selector:'#dictionary'});</script>
 
     
     <style>
