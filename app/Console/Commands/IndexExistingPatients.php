@@ -32,6 +32,7 @@ class IndexExistingPatients extends Command
             ],
         ];
 
+
         $indexExists = $client->indices()->exists(['index' => $indexName]);
 
         if (!$indexExists) {
@@ -59,3 +60,4 @@ class IndexExistingPatients extends Command
         $this->info('Indexing completed.');
     }
 }
+

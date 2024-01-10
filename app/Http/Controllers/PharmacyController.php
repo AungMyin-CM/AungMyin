@@ -140,7 +140,7 @@ class PharmacyController extends Controller
         if (!Auth::guard('user')->user()->isAdmin()) {
             abort(404);
         }
-        
+
         Pharmacy::whereId($id)->update(['status' => '0', 'deleted_at' => Carbon::now()]);
 
         return redirect('clinic-system/pharmacy')->with('success', 'Medicine deleted successfully!');

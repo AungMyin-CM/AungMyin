@@ -54,13 +54,23 @@
                         @if(Helper::checkPermission('ph_create', $permissions))
                         <div class="col-6">
                             <span data-href="/clinic-system/exportMedCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportTasks(event.target);"><i class="fas fa-download"></i></span>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
-                            <form method="post" action="{{ route('pharmacy.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
+
+                            <form method="post" action="{{ route('pharmacy.excel.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
                                 @csrf
 
                                 <!-- Import Excel File -->
                                 <div class="import-container">
-                                    <input type="file" id="excel-file-input" accept=".xls, .xlsx" style="display:none" required />
+                                    <input type="file" id="excel-file-input" name="pharmacy_excel" accept=".xls, .xlsx" style="display:none" required />
                                     <button class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
                                         <i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>
                                     </button>

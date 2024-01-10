@@ -71,7 +71,7 @@ class Controller extends BaseController
 
         return $next($request);
 
-            
+
         });
     }
 
@@ -82,7 +82,7 @@ class Controller extends BaseController
         }else{
             return false;
         }
-        
+
     }
 
     public function isAdmin()

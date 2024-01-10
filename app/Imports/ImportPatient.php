@@ -31,8 +31,8 @@ class ImportPatient implements ToModel, WithValidation, WithHeadingRow
 
         if($row['gender'] == "Male"){
             $row['gender'] = 1 ;
-        }else if($row['gender'] == "Female"){ 
-            $row['gender'] = 0 ; 
+        }else if($row['gender'] == "Female"){
+            $row['gender'] = 0 ;
         }
 
         $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
@@ -60,7 +60,7 @@ class ImportPatient implements ToModel, WithValidation, WithHeadingRow
             "drug_allergy"      => $row['drug_allergy'],
             "p_status"          => $p_status,
             "Ref"               => $reference
-            
+
 
         ]);
     }

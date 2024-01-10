@@ -41,7 +41,12 @@
                     <div class="row">
                         @if(Helper::checkPermission('p_create', $permissions))
                         <div class="col-6">
-                            <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i data-href="/clinic-system/exportPatientCSV" class="fas fa-download"></i></span>
+                            {{-- <span data-href="/clinic-system/exportPatientCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportPatientTasks(event.target);"><i data-href="/clinic-system/exportPatientCSV" class="fas fa-download"></i></span> --}}
+                            <a href="{{route('exportPatient')}}">
+                                <span id="export" class="btn btn-success btn-sm float-left mr-2">
+                                    <i class="fas fa-download"></i>
+                                </span>
+                            </a>
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>
@@ -111,7 +116,9 @@
     });
 
     function exportPatientTasks(_this) {
+        console.log(_this);
         let _url = $(_this).data('href');
+        console.log(_url);
         window.location.href = _url;
     }
 

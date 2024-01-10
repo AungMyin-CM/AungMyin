@@ -11,8 +11,7 @@ class Dictionary extends Model
 
     protected $table = 'dictionary';
 
-
-    protected $fillable = [ 
+    protected $fillable = [
         'code','meaning','user_id','isCommon','isMed'
     ];
 

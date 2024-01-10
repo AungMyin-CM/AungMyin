@@ -37,9 +37,9 @@ Route::get('/login', [LoginController::class, 'index'])->name('user-login')->mid
 Route::post('/send-otp', [UserController::class, 'sendOtp'])->name('send-otp')->middleware('guest');
 
 Route::get('/.well-known/acme-challenge/4xLMh6F-_UUkepftHZWPtrTuEhZZ2VV8a9_mDc7IMiw',function(){
-  
+
   return '4xLMh6F-_UUkepftHZWPtrTuEhZZ2VV8a9_mDc7IMiw.JhL8guqbYpyNxPARURqNLP7XLEFCKNsU5gbCSFebTZQ';
-  
+
 });
 // Forgot Password
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgetPassword'])->middleware('guest')->name('password.request');
@@ -168,11 +168,15 @@ Route::group(['prefix' => '/clinic-system', 'middleware' => ['auth']], function 
 
     Route::get('getDoctors', [ClinicController::class, 'fetchDoctors'])->name('get.doctors');
 
-    Route::get('/exportPatientCSV', [DataController::class, 'exportPatientCSV']);
+    Route::get('/exportPatient', [DataController::class, 'exportPatient'])->name('exportPatient');
     Route::get('/exportMedCSV', [DataController::class, 'exportMedCSV']);
 
     Route::post('/importExcelPatient', [DataController::class, 'importPatientExcel'])->name('patient.excel.import');
     Route::post('/importExcelPharmacy', [DataController::class, 'importPharmacyExcel'])->name('pharmacy.excel.import');
+
+    // dictionary import/export
+    Route::get('/exportDictionaryCSV',[DataController::class,'exportDictionaryCSV']);
+    Route::post('/importExcelDictionary',[DataController::class,'importDictionaryExcel'])->name('dictionary.excel.import');
 
     Route::post('/pharmacyImport', [PharmacyController::class, 'pharmacyImport'])->name('pharmacy.import');
     Route::post('/patientImport', [PatientController::class, 'patientImport'])->name('patient.import');

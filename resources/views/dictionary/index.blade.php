@@ -22,7 +22,42 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6"></div>
+
+                        @if(Helper::checkPermission('d_create', $permissions))
+                        <div class="col-6">
+                            <span data-href="/clinic-system/exportDictionaryCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportDictionaryTasks(event.target);"><i data-href="/clinic-system/exportDictionaryCSV" class="fas fa-download"></i></span>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+
+                            <form method="post" action="{{ route('dictionary.excel.import') }}" enctype="multipart/form-data" class="float-left d-flex" style="gap: 1px;">
+                                @csrf
+                                @method('post')
+
+                                <!-- Import Excel File -->
+                                <div class="import-container">
+                                    <input type="file" id="excel-file-input" name="dictionary_excel" accept=".xls, .xlsx" style="display:none" required />
+                                    <a href="#" class="btn btn-sm text-white import-button excel" style="background-color: {{config('app.color')}}">
+                                        <i class="fas fa-file-excel"></i> <span class="d-none d-md-inline">Excel</span>
+                                    </a>
+                                    <span class="file-name excel-file-name"></span>
+                                </div>
+
+                                <!-- Import File -->
+                                <button type="submit" class="btn btn-sm text-white" id="import-submit" style="background-color: {{config('app.color')}}; display: none;">
+                                    <i class="fas fa-file-import"></i> <span class="d-none d-md-inline">Import</span>
+                                </button>
+                            </form>
+                        </div>
+                        @endif
+
                         <div class="col-sm-6">
                             @if(count($data) !== 0)
                             <a href="{{ route('dictionary.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}">
@@ -66,22 +101,22 @@
                                     <td>
                                         <span class="show">
                                             @php
-              
+
                                               $med = explode('<br>',preg_replace('/(<br>)+$/', '', $row->meaning));
-              
+
                                               $medInfo = [];
-                                              
+
                                               foreach ($med as $key =>$medRow) {
                                                 $medInfo[] = explode("^", $medRow);
                                               }
-              
+
                                               $amount = 0;
-                                              
+
                                                 foreach($medInfo as $key => $d){
                                                   echo '<span class="badge badge-primary">'.$d[1].' </span> <span class="badge badge-secondary">'.$d[2].' </span> <span class="badge badge-info">'.$d[3].' </span><br/>';
-                                                } 
-              
-              
+                                                }
+
+
                                             @endphp</span>
                                     </td>
                                 @endif
@@ -138,11 +173,43 @@
         },
     });
 
+
+    function exportDictionaryTasks(_this) {
+        let _url = $(_this).data('href');
+        window.location.href = _url;
+    }
+
     $(document).ready(function() {
         $('#addDataBtn').on('click', function() {
             window.location.href = "{{ route('dictionary.create') }}";
         });
     });
+
+    // Excel
+    $(document).ready(function() {
+        $('.import-button.excel').click(function() {
+            $('#excel-file-input').click();
+        });
+
+        $('#excel-file-input').change(function(event) {
+            const file = event.target.files[0];
+            const $importSubmitButton = $('#import-submit');
+
+            displayFileName(file, $(this).siblings('.excel-file-name'));
+
+            if (file) {
+                $importSubmitButton.show();
+            } else {
+                $importSubmitButton.hide();
+            }
+        });
+
+        function displayFileName(file, $element) {
+            const fileName = file ? file.name : 'No file selected';
+            $element.text(fileName);
+        }
+    });
+
 </script>
 
 @endsection

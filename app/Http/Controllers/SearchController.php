@@ -82,11 +82,11 @@ class SearchController extends Controller
                 foreach ($data as $hit) {
                     $row = $hit['_source'];
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
                         '<span class="col-lg-4">Age: ' . $row['age'] . '</span>' .
-                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
-                        </a>  
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>
+                        </a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
@@ -105,11 +105,11 @@ class SearchController extends Controller
                 foreach ($data as $hit) {
                     $row = $hit['_source'];
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('add.queue', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
                         '<span class="col-lg-4">Age: ' . $row['age'] . '</span>' .
-                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
-                        </a>  
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>
+                        </a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
@@ -127,11 +127,11 @@ class SearchController extends Controller
                 foreach ($data as $hit) {
                     $row = $hit['_source'];
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('pos-patient', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
                         '<span class="col-lg-4">Age: ' . $row['age'] . '</span>'.
-                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
-                        </a>  
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>
+                        </a>
                         <a class="col-md-1" href="' . route('add.queue', $row['id']) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
@@ -150,11 +150,11 @@ class SearchController extends Controller
                 foreach ($data as $hit) {
                     $row = $hit['_source'];
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row['id'])) . '" style="color:#000 !important;">     <span class="col-lg-4">' . Str::title($row['name']) . '</span>' .
                         '<span class="col-lg-4">Age: ' . $row['age'] . '</span>'.
-                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>                 
-                        </a>  
+                        '<span class="col-lg-4">Father\'s Name: ' . $row['father_name'] . '</span>
+                        </a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row['id'])) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
@@ -190,10 +190,10 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
                         '<span class="col-lg-6">Age: ' . $row->age . '</span>' .
-                        '</a>  
+                        '</a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
@@ -211,10 +211,10 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('add.queue', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
                         '<span class="col-lg-6">Age: ' . $row->age . '</span>' .
-                        ' </a>  
+                        ' </a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
@@ -231,10 +231,10 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('pos-patient', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
                         '<span class="col-lg-6">Age: ' . $row->age . '</span>'.
-                        '</a>  
+                        '</a>
                         <a class="col-md-1" href="' . route('add.queue', $row->id) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-users fa-lg" style="color:black;"></i>
                         </a>
@@ -252,10 +252,10 @@ class SearchController extends Controller
 
                 foreach ($data as $row) {
                     $output .= '
-                        <li class="list-group-item bg-secondary text-black"> <div class="row">              
+                        <li class="list-group-item bg-secondary text-black"> <div class="row">
                         <a  class="col-md-11 row" href="' . route('patient.treatment', Crypt::encrypt($row->id)) . '" style="color:#000 !important;">     <span class="col-lg-6">' . Str::title($row->name) . '</span>' .
                         '<span class="col-lg-6">Age: ' . $row->age . '</span>'.
-                        '</a>  
+                        '</a>
                         <a class="col-md-1" href="' . route('patient.edit', Crypt::encrypt($row->id)) . '" class="btn btn-sm btn-tool">
                         <i class="fas fa-edit fa-lg" style="color:black;"></i>
                         </a>
@@ -315,7 +315,7 @@ class SearchController extends Controller
             foreach ($data as $row) {
                 $output .= '
                     <li class="list-group-item" onclick="getPatientData('.$row->id.')">
-                        <div class="row" id="p_data_'.$row->id.'"> 
+                        <div class="row" id="p_data_'.$row->id.'">
                             <span class="col-md-4" data-name= "'.$row->name.'"  id= "name_'.$row->id.'">'.Str::title($row->name).'</span>
                             <span class="col-md-4" data-age= "'.$row->age.'"  id= "age_'.$row->id.'">Age: '.$row->age.'</span>
                             <span class="col-md-4" data-f_name= "'.$row->father_name.'"  id= "father_name_'.$row->id.'">Father\'s Name: '.$row->father_name.'</span>

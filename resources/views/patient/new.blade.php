@@ -174,12 +174,12 @@
                                                 <div class="form-group">
                                                     <label for="address">Address</label>
                                                     <textarea class="form-control @error('address') is-invalid @enderror" placeholder="Address" name="address" autocomplete="off">{{ old('address') }}</textarea>
-        
+
                                                     @error('address') <span class="text-danger">{{ $message }}</span>@enderror
                                                 </div>
                                             </div>
 
-                                           
+
 
                                             <div class="col-md-4">
                                                 <div class="form-group">
@@ -194,19 +194,19 @@
                                                     <textarea class="form-control" placeholder="Summary" rows="4" name="summary" autocomplete="off">{{ old('summary') }}</textarea>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
 
-                                        
+
 
                                         <div class="row">
 
                                             <div class="col-md-6">
-                                           
+
                                                 <div class="form-group">
-        
+
                                                     <label for="gender">Gender</label>
-        
+
                                                     <div class="row">
                                                         <div class="col-md-3">
                                                             <div class="form-check">
@@ -239,7 +239,7 @@
                                 </div>
 
                             </div>
-                           
+
                         </div>
                 </section>
             </form>

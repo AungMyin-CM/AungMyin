@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\UserRegisterRequest;
-use App\Models\Package;
-use App\Models\PackagePurchase;
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Package;
 use App\Models\UserClinic;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use App\Models\PackagePurchase;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 
-use Auth;
+use App\Http\Requests\UserRegisterRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 
@@ -125,7 +126,7 @@ class UserController extends Controller
             ])->id;
         }
 
-        $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
+        // $verifyURL = route('verify', ['otp' => $otp, 'value' => $user_id, 'service' => 'Email_verification']);
 
         $message = 'Hello, <b>' . $request->email . '</b>';
         $message = 'Thanks for singing up, we just need to verify your email address';
@@ -137,7 +138,7 @@ class UserController extends Controller
             'body' => $message,
             'otp' => $otp,
         ];
-        \Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+        Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
             $message->to($mail_data['recipient'])
                 ->from($mail_data['fromEmail'], $mail_data['fromName'])
                 ->subject($mail_data['subject']);
@@ -176,7 +177,7 @@ class UserController extends Controller
 
         $otp = $this->otpGenerator();
 
-        $verifyURL = route('verify', ['otp' => $otp, 'value' => '1', 'service' => 'Email_verification']);
+        // $verifyURL = route('verify', ['otp' => $otp, 'value' => '1', 'service' => 'Email_verification']);
 
         $message = 'Hello, <b>' . 'email' . '</b>';
         $message = 'Thanks for singing up, we just need to verify your email address';

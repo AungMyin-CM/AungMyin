@@ -37,4 +37,5 @@ class Clinic extends Model
     {
         return $this->hasMany(Patient::class, 'clinic_code', 'id');
     }
+
 }

@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\UserRegisterRequest;
-use Auth;
+use Session;
+use Carbon\Carbon;
+use App\Models\Role;
+use App\Models\User;
 
 use App\Models\Clinic;
-use App\Models\User;
-use App\Models\PackagePurchase;
-use App\Models\UserClinic;
-use App\Models\Patient;
-use App\Models\Role;
 use App\Models\Master;
 use App\Models\Package;
+use App\Models\Patient;
+use App\Models\UserClinic;
 use App\Models\Transaction;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
-use App\Http\Controllers\HomeController;
-use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Http\Request;
+use App\Models\PackagePurchase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Controllers\HomeController;
 
-use Carbon\Carbon;
+use App\Http\Requests\UserUpdateRequest;
 
-use Session;
+use Illuminate\Support\Facades\Response;
 
-use DB;
+use App\Http\Requests\UserRegisterRequest;
 
-use Response;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 
@@ -50,7 +50,6 @@ class ClinicController extends Controller
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
 
-
             try {
                 $clinic_id = Crypt::decrypt($request->code);
                 $clinic_name = Clinic::where('id', $clinic_id)->value('name');
@@ -61,11 +60,16 @@ class ClinicController extends Controller
                 abort(404);
             }
 
+            // dd($permissions);
+
             $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
             $clinic_name = Clinic::where('id', $clinic_id)->value('name');
             $user_id = Auth::guard('user')->user()['id'];
             $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
             $now = new Carbon;
+
+            // dd(session('cc_id'));
+            // dd(session('cc_name'));
 
             if ($role->role_type == 2 || $role->role_type == 5) {
 
@@ -98,7 +102,7 @@ class ClinicController extends Controller
             return view('user/clinic')->with('data', ['patientData' => $patientData, 'role' => $role->role_type, 'a_doctors' => $available_doctors, 'name' => $clinic_name]);
         } else {
 
-            return view('user/clinic')->with('data', ['patientData' => 0, 'name' => $clinic_name]);
+            // return view('user/clinic')->with('data', ['patientData' => 0, 'name' => $clinic_name]);
         }
     }
 
@@ -223,9 +227,9 @@ class ClinicController extends Controller
         ]);
 
         $user_clinic = UserClinic::where('user_id', $clinic->user_id)->with('expire')->with('clinic')->get();
-        
+
         return view('user/home')->with('data',['user_clinic' => $user_clinic, 'clinic' => '1' , 'home_page' => '1']);
-        
+
 
     }
 
@@ -614,7 +618,7 @@ class ClinicController extends Controller
                                             </a>
                                             <div class="modal fade" id="myModal" role="dialog">
                                                 <div class="modal-dialog">
-                                    
+
                                                     <!-- Modal content-->
                                                     <div class="modal-content">
                                                     <div class="modal-header">
@@ -629,13 +633,13 @@ class ClinicController extends Controller
                                                                 <td>Action</td>
                                                             </tr>
                                                             <tr>
-                                                            
+
                                                             </tr>
                                                     </table>
                                                     </div>
-                                                
+
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>';
                         } elseif ($role->role_type == 1 || $role->role_type == 5) {

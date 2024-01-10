@@ -31,7 +31,7 @@
                         <div class="col-md-8 center-screen">
 
                             <h1>{{Str::title($data['name'])}}</h1><br>
-                            
+
                             @if(Helper::checkPermission('p_view', $permissions))
                             <div class="input-group text-red">
                                 <input type="search" id="main_search" class="form-control form-control-lg" placeholder="Type your keywords here" autocomplete="off">
@@ -40,7 +40,7 @@
                                 <div class="input-group-append" id="search-indicator" style="z-index: 0;">
                                     <a class="btn btn-lg btn-default" href="" id="addRoute"><i id="search" class="fa fa-search"></i></a>
                                 </div>
-                                
+
                                 <div class="input-group-append">
                                     <a class="btn btn-lg btn-default" id="loading-indicator" style="display:none;"><i class="fas fa-spinner fa-spin"></i></a>
                                 </div>
@@ -110,7 +110,7 @@
         $(window).click(function(event) {
             if ($(event.target).closest(patientAddModal).length && $(event.target).is(patientAddModal)) {
                 patientAddModal.css("display", "none");
-            } 
+            }
         });
 
         $('#main_search').keyup(function() {
@@ -137,6 +137,7 @@
                     clinic_id: clinic_id
                 }
             }).done(function(response) {
+                // console.log(response);
                 $('#loading-indicator').hide();
                 $('#search-indicator').show();
 

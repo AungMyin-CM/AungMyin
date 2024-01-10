@@ -21,7 +21,7 @@
                                     <div class="card mb-3" style="cursor:pointer;" id="clinic-card">
                                         <div class="row no-gutters">
                                             <div class="col-md-4" style="background:url({{asset('images/web-photos/clinic.jpg')}})">
-                                            
+
                                             </div>
                                             <div class="col-md-8">
                                             <div class="card-body">
@@ -47,15 +47,18 @@
 
                                     // print_r($diff_in_days); // Output: 1
 
-                                    
+
 
                                 ?>
- 
+
                                     <div class="col-md-4">
                                         <div class="container">
                                             <?php
                                                 $date = \Carbon\Carbon::now()->format('Y-m-d');
+
                                             ?>
+
+
                                             @if($date > $data->expire[0]->expire_at)
                                                 {{-- <a href="{{route('complete.payment',Crypt::encrypt($data->clinic_id))}}"> --}}
                                                     <a href="{{route('user.clinic',Crypt::encrypt($data->clinic_id))}}">
@@ -77,20 +80,20 @@
                                                                     {{-- <button class="btn btn-primary btn-sm mt-3 app-color">Complete Your Payment</button> --}}
                                                                     <p class="card-text">
                                                                         <small class="text-danger">Expired on <b>{{$data->expire[0]->expire_at}}</b></small>
-                                                                    </p> 
+                                                                    </p>
                                                                 @else
                                                                     <p class="card-text">
-                                                                        <small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at}}</b></small>
-                                                                    </p> 
+                                                                        <small class="text-muted">Expire on <b>{{$data->expire[0]->expire_at }}</b></small>
+                                                                    </p>
                                                                 @endif
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </a>
-                                            
+
                                         </div>
-                                    </div> 
+                                    </div>
                                 @endforeach
                                     <div class="col-md-4">
                                         <a href="{{route('package.selection')}}">
@@ -98,7 +101,7 @@
                                         <div class="card mb-3" style="cursor:pointer;" id="clinic-card">
                                             <div class="row no-gutters">
                                                 <div class="col-md-4" style="background:url({{asset('images/web-photos/clinic.jpg')}})">
-                                                
+
                                                 </div>
                                                 <div class="col-md-8">
                                                 <div class="card-body">
@@ -111,11 +114,11 @@
                                         </div>
                                         </a>
                                     </div>
-                                
+
                             @endif
                         </div>
                     </div>
-                    
+
 
             </section>
         </div>

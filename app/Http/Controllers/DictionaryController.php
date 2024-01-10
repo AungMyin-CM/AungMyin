@@ -85,7 +85,7 @@ class DictionaryController extends Controller
             $id = Crypt::decrypt($id);
             $dictionary = Dictionary::findOrFail($id);
 
-            return view('dictionary/edit', compact('dictionary'));   
+            return view('dictionary/edit', compact('dictionary'));
         } catch (DecryptException $e) {
             abort(404);
         }

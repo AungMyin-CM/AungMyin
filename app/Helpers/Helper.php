@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Role;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 
 class Helper
@@ -15,7 +15,7 @@ class Helper
         }else{
             return false;
         }
-        
+
     }
 
     public static function isAdmin()
