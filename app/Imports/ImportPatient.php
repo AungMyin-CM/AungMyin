@@ -2,20 +2,21 @@
 
 namespace App\Imports;
 
-use App\Models\Patient;
-use App\Models\Clinic;
+use Carbon\Carbon;
 use App\Models\Role;
+use App\Models\Clinic;
 
 
+use App\Models\Patient;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Elastic\Elasticsearch\ClientBuilder;
+
+
 use Maatwebsite\Excel\Concerns\Importable;
 
-
-use Carbon\Carbon;
-
-use Auth;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ImportPatient implements ToModel, WithValidation, WithHeadingRow
 {
@@ -45,7 +46,7 @@ class ImportPatient implements ToModel, WithValidation, WithHeadingRow
         $reference = str_replace(' ', '_', $row['name']) . "_" . $row['age'] . "_" . str_replace(' ', '_', $row['father_name']) . str_replace(' ', '_', $code);
 
 
-        return new Patient([
+        $patient = new Patient([
 
             "user_id"           => $user_id,
             "code"              => $code,
@@ -60,9 +61,13 @@ class ImportPatient implements ToModel, WithValidation, WithHeadingRow
             "drug_allergy"      => $row['drug_allergy'],
             "p_status"          => $p_status,
             "Ref"               => $reference
-
-
         ]);
+        $patient->save();
+
+        $this->indexData();
+
+        return $patient;
+
     }
 
     public function rules(): array
@@ -87,4 +92,53 @@ class ImportPatient implements ToModel, WithValidation, WithHeadingRow
 
         return $patient_code;
     }
+
+    private function indexData()
+    {
+        $client = ClientBuilder::create()->setBasicAuthentication('elastic','lEr2fYII__No_eKik3_G')->build();
+            $indexName = 'patients';
+
+            $params = [
+                'index' => $indexName,
+                'body' => [
+                    'mappings' => [
+                        'properties' => [
+                            'status' => [
+                                'type' => 'keyword',
+                            ],
+                            'clinic_code' => [
+                                'type' => 'keyword',
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+
+
+            $indexExists = $client->indices()->exists(['index' => $indexName]);
+
+            if (!$indexExists) {
+                $client->indices()->create($params);
+                // $this->info("Index created: $indexName");
+            }
+
+            $patients = Patient::all();
+
+            $params = ['body' => []];
+
+            foreach ($patients as $patient) {
+                $params['body'][] = [
+                    'index' => [
+                        '_index' => $indexName,
+                        '_id' => $patient->id,
+                    ],
+                ];
+
+                $params['body'][] = $patient->toArray();
+            }
+
+            $client->bulk($params);
+
+            // $this->info('Indexing completed.');
+        }
 }
