@@ -53,7 +53,13 @@
                     <div class="row">
                         @if(Helper::checkPermission('ph_create', $permissions))
                         <div class="col-6">
-                            <span data-href="/clinic-system/exportMedCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportTasks(event.target);"><i class="fas fa-download"></i></span>
+                            {{-- <span data-href="/clinic-system/exportMedCSV" id="export" class="btn btn-success btn-sm float-left mr-2" onclick="exportTasks(event.target);"><i class="fas fa-download"></i></span> --}}
+                            <a href="{{route('exportPharmacy')}}">
+                                <span id="export" class="btn btn-success btn-sm float-left mr-2">
+                                    <i class="fas fa-download"></i>
+                                </span>
+                            </a>
+
                             @if ($errors->any())
                                 <div class="alert alert-danger">
                                     <ul>

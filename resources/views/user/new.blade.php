@@ -10,14 +10,14 @@
                         <div class="row mb-2">
                             <div class="col-sm-3">
                                 <h1>Register Form</h1>
-                                
+
                             </div>
                             <div class="text-danger col-sm-3">
                                 <ul>
                                     <i class="fa fa-info-circle d-none" id="alert"> <small>Please fill out all requried fields.</small></i>
                                 </ul>
                             </div>
-                            
+
                             <div class="col-sm-6 text-right">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">User</a></li>
@@ -25,7 +25,7 @@
                                 </ol>
                             </div>
                         </div>
-                        
+
                     </div><!-- /.container-fluid --> --}}
             </section>
 
@@ -488,6 +488,8 @@
     // });
 
     $('#email').blur(function() {
+
+        // alert('hello world');
 
         var error_email = '';
         var email = $('#email').val();

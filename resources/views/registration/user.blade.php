@@ -248,7 +248,6 @@
     var loadFile = function(event) {
         for (var i = 0; i < event.target.files.length; i++) {
             var src = URL.createObjectURL(event.target.files[i]);
-            console.log(src);
             $("#image_logo").remove();
             $("#image_upload").append("<img id='image_logo' onclick='showImage(" + i + ")' src=" + src + " class='avatar mb-3' alt='img' />");
 

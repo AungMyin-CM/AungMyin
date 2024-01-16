@@ -25,6 +25,7 @@ class SuperAdminController extends Controller
 
     public function authenticate(SuperAdminLoginRequest $request)
     {
+
         if ($request->validated()) {
             $data = User::where('code', $request->code)->get()->first();
 

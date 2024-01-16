@@ -221,7 +221,7 @@
         </ul>
 
         <hr>
-        
+
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false" style="position: absolute; bottom: 0; margin-bottom: 60px;">
             @if(isset($counts) && $counts > 0)
                 <li class="nav-item">

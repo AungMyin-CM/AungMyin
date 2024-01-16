@@ -5,7 +5,7 @@
         <div class="wrapper">
             <div class="content-wrapper" style="background-color: {{config('app.bg_color')}} !important">
                 <section class="content-header">
-                  
+
                 </section>
 
                 <section class="content">
@@ -18,7 +18,7 @@
                                     <div class="card-header" style="background-color: {{config('app.color')}}">
                                         <h3 class="card-title">Please fill out form</h3>
                                     </div>
-                                   
+
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <form action="{{ route('dictionary.store') }}" method="POST">
@@ -36,7 +36,7 @@
                                             </div>
                                             <div class="form-group float-right">
                                                 {{-- <div class="icheck-primary d-inline mt-2"> --}}
-                                                    <label for="is_med">Medicine</label>   
+                                                    <label for="is_med">Medicine</label>
 
                                                     <input type="checkbox" id="is_med" name="is_med" value="1">
                                                 {{-- </div>  --}}
@@ -56,12 +56,12 @@
                                                         <table class="table table-bordered" id="product_info_table">
                                                             <thead>
                                                               <tr>
-                                                                <th style="width:45%">Name</th>                                                   
+                                                                <th style="width:45%">Name</th>
                                                                 <th style="width:25%">Qty</th>
                                                                 <th style="width:20%">Days</th>
                                                                 <th ><button type="button" id="add_dic_med_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                                                               </tr>
-                                                            </thead>   
+                                                            </thead>
                                                              <tbody>
                                                                <tr id="row_1">
                                                                  <td>
@@ -70,18 +70,18 @@
                                                                       <div id="medList_1" style="display:none;position:absolute;width:35%;">
                                                                     </div>
                                                                 </td>
-                                                                  
+
                                                                   <td>
-                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" autocomplete="off"></td>           
+                                                                    <input type="text" name="quantity[]" id="qty_1" class="form-control" autocomplete="off"></td>
                                                                   <td>
-                                                                    <input type="number" name="days[]" id="days_1" class="form-control" autocomplete="off">  
+                                                                    <input type="number" name="days[]" id="days_1" class="form-control" autocomplete="off">
                                                                   </td>
-                                                                  
+
                                                                </tr>
                                                              </tbody>
-                                                          </table>              
+                                                          </table>
                                                   </section>
-                                            </div>          
+                                            </div>
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="card-footer">
@@ -104,7 +104,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            }); 
+            });
         });
 
         function searchMed(rowid) {
@@ -114,14 +114,14 @@
                 type: "POST",
                 url: '/clinic-system/searchMed',
                 data: { key: query, clinic_id: clinic_id, rowid: rowid}
-            }).done(function( response ) {         
+            }).done(function( response ) {
             if(query != '')
             {
-                $('#medList_'+rowid).css("display","block");  
+                $('#medList_'+rowid).css("display","block");
                 $('#medList_'+rowid).html(response);
             }
             else{
-                $('#medList_'+rowid).css("display","none");  
+                $('#medList_'+rowid).css("display","none");
                 $('#medList_'+rowid).html("");
             }
             });
@@ -132,17 +132,17 @@
             var med_name = rowid.getAttribute("data-name");
             var row_id = rowid.getAttribute("row-id");
             $("#product_search_"+row_id).val(med_name);
-            $("#med_id_"+row_id).val(med_id);      
-            $('#medList_'+row_id).css("display","none");  
+            $("#med_id_"+row_id).val(med_id);
+            $('#medList_'+row_id).css("display","none");
             $('#medList_'+row_id).html("");
-            
+
         }
         function removeRow(tr_id)
         {
             $("#product_info_table tbody tr#row_"+tr_id).remove();
         }
 
-        
+
 
     </script>
 @endsection

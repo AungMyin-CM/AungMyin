@@ -30,8 +30,7 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Requests\UserRegisterRequest;
 
 use Illuminate\Contracts\Encryption\DecryptException;
-
-
+use Illuminate\Support\Facades\Log;
 
 // require_once 'phpseclib/Crypt/RSA.php';
 
@@ -340,6 +339,7 @@ class ClinicController extends Controller
         if (!$this->checkPermission("user_create")) {
             abort(404);
         }
+        Log::info($request->permission);
 
         $permissions = json_encode($request->permission);
 

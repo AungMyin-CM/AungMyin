@@ -290,10 +290,10 @@
                 <input type="text" class="form-control rounded search" id="input-search" placeholder="Type to Search..." autocomplete="off">
                 <i class="fas fa-spinner fa-spin" id="loading-indicator"></i>
 
-                <div id="patientList" class="search-get-results" style="display:none;"></div>   
+                <div id="patientList" class="search-get-results" style="display:none;"></div>
             </div>
         </li>
-        
+
         @endif
         @endif
     </ul>

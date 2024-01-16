@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Aung Myin Clinic Manager</title>
@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
     <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
-    
+
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
@@ -61,10 +61,10 @@
 
     <script src="https://cdn.tiny.cloud/1/3tuipmiry93swu25uc8spws125ffkfwlj7af3efuvpiubu59/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
-    
+
     <script>tinymce.init({selector:'#dictionary'});</script>
 
-    
+
     <style>
 
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
@@ -86,10 +86,10 @@
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
-      
+
       // Enable pusher logging - don't include this in production
       Pusher.logToConsole = true;
-    
+
       var pusher = new Pusher('4477b1080cfccdc685cf', {
         cluster: 'ap1'
       });
@@ -105,14 +105,14 @@
             titleColor: '#FFFFFF',
             messageColor: '#FFFFFF',
             timeout: 20000,
-            backgroundColor: '#95bb72',        
+            backgroundColor: '#95bb72',
             message: data.message
             });
 
             $.ajax({
             type: "GET",
             url: '/clinic-system/check-noti',
-        
+
               success: function( response ) {
                 if(response != 'no-data'){
 
@@ -129,14 +129,14 @@
                             }
                             $("#p_notis").append(
                               '<a class="dropdown-item" onclick="readAction(this)" id="patient_noti'+data.id+'" data-id="'+data.id+'"><div class="media"><div class="media-body"><h3 class="dropdown-item-title">'+data.name+'</h3><ul class="list-unstyled"><li><small class="text-muted" id="age">Age: '+data.age+'</small></li><li><small class="text-muted" id="gender">Gender: '+(data.gender == 1 ? 'Male' : 'Female')+'</small></li></ul><p class="text-sm text-muted text-right"><i class="far fa-clock mr-1" id="time_'+data.id+'">'+data.time+'</i></p></div></div></a><div class="dropdown-divider"></div>'
-                            );                       
+                            );
                           }
-                          
+
                       });
 
 
                     }else{
-                       
+
                         $("#p_notis").append('<a href="#" id="no_noti" class="dropdown-item dropdown-footer">No notifications yet.</a>');
                     }
                 }else if(response == 'no-session') {
@@ -146,7 +146,7 @@
                 }
 
               },
-              error: function(httpObj, textStatus) {       
+              error: function(httpObj, textStatus) {
                     location.reload();
                 },
             });
@@ -187,7 +187,7 @@
     </script>
 </head>
 <body class="sidebar-mini layout-fixed sidebar-collapse" data-new-gr-c-s-check-loaded="14.1112.0" data-gr-ext-installed="" cz-shortcut-listen="true" style="height: auto;">
-  
+
 <div class="middle">
     <div class="bar bar1"></div>
     <div class="bar bar2"></div>
