@@ -23,9 +23,20 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6"></div>
+
                         <div class="col-sm-6">
                             @if(count($data) !== 0)
-                            <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+
+                                @if($packageType == 'single')
+                                    @if(count($users) < 5)
+                                        <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                                    @else
+                                        <button id="errorAlertBox" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</button>
+                                    @endif
+                                @else
+                                    <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                                @endif
+
                             @endif
                         </div>
                     </div>
@@ -130,6 +141,11 @@
         $('#addDataBtn').on('click', function() {
             window.location.href = "{{ route('user.create') }}";
         });
+
+        $('#errorAlertBox').on('click',function(){
+            alertify.alert('Sorry, You Can\'t Create More Than 5 Users!').setHeader('<em>Some errors occured</em>');
+        });
+
     });
 </script>
 

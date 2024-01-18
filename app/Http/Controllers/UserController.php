@@ -46,7 +46,27 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('user/index')->with('data', $userData);
+
+        $clinic_id = session()->get('cc_id');
+
+        $packages = Package::with('clinic')->get()->toArray();
+
+        $matchingPackageId = null;
+
+        foreach ($packages as $package) {
+            foreach ($package['clinic'] as $clinic) {
+                if ($clinic['id'] == $clinic_id) {
+                    $matchingPackageId = $clinic['package_id'];
+                    break 2;
+                }
+            }
+        }
+
+        $packageType = Package::where('id', $matchingPackageId)->pluck('type')->first();
+
+        $users = UserClinic::where('clinic_id', $clinic_id)->get();
+
+        return view('user/index')->with('data', $userData)->with('packageType',$packageType)->with('users',$users);
     }
 
     public function register(Request $request)

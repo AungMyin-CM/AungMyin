@@ -45,6 +45,9 @@ class ClinicController extends Controller
 
     public function index(Request $request)
     {
+
+        $clinic_id = Crypt::decrypt($request->code);
+
         if (Auth::user()->role_id != null) {
 
             $role = Role::where('id', Auth::guard('user')->user()['role_id'])->get()->first();
@@ -59,16 +62,11 @@ class ClinicController extends Controller
                 abort(404);
             }
 
-            // dd($permissions);
-
             $clinic_code = Clinic::where('id', $clinic_id)->pluck('code');
             $clinic_name = Clinic::where('id', $clinic_id)->value('name');
             $user_id = Auth::guard('user')->user()['id'];
             $available_doctors = DB::table('user')->select('role_id')->join('role', 'role.id', '=', 'user.role_id')->join('user_clinic', 'user_clinic.user_id', '=', 'user.id')->where('role.role_type', '1')->where('user_clinic.clinic_id', $clinic_id)->count();
             $now = new Carbon;
-
-            // dd(session('cc_id'));
-            // dd(session('cc_name'));
 
             if ($role->role_type == 2 || $role->role_type == 5) {
 
@@ -326,10 +324,59 @@ class ClinicController extends Controller
             abort(404);
         }
 
-        $id = Clinic::where('id', session()->get('cc_id'))->pluck('package_id')->first();
+        $clinic_id = session()->get('cc_id');
 
-        $data = ['1' => 'doctor', '2' => 'receptionist', '3' => 'pharmacist', '4' => 'staff'];
+        $packages = Package::with('clinic')->get()->toArray();
 
+        $matchingPackageId = null;
+
+        foreach ($packages as $package) {
+            foreach ($package['clinic'] as $clinic) {
+                if ($clinic['id'] == $clinic_id) {
+                    $matchingPackageId = $clinic['package_id'];
+                    break 2;
+                }
+            }
+        }
+
+
+        $packageType = Package::where('id', $matchingPackageId)->pluck('type')->first();
+
+        $users = UserClinic::where('clinic_id', $clinic_id)->get();
+
+        $userRoleIds = [];
+
+        foreach ($users as $user) {
+            $userRoleId = User::where('id', $user->user_id)->value('role_id');
+            $userRoleIds[] = $userRoleId;
+        }
+
+        $userRoleTypes = [];
+
+        foreach ($userRoleIds as $userRoleId) {
+            $userRoleType = Role::where('id', $userRoleId)->value('role_type');
+            $userRoleTypes[] = $userRoleType;
+        }
+
+
+        $allRoles = [
+            '1' => 'doctor',
+            '2' => 'receptionist',
+            '3' => 'pharmacist',
+            '4' => 'staff',
+        ];
+
+        $data = [];
+
+        if($packageType == 'single'){
+            foreach ($allRoles as $roleId => $roleType) {
+                if (!in_array($roleId, $userRoleTypes)) {
+                    $data[$roleId] = $roleType;
+                }
+            }
+        }else{
+            $data = $allRoles;
+        }
         return view('user/new')->with('data', $data);
     }
 

@@ -39,6 +39,9 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <div class="card-header" style="background-color:{{config('app.color')}}">
+                                        <?php
+                                            // dd($data);
+                                        ?>
                                         <h3 class="card-title">Please fill out form</h3>
                                     </div>
 
@@ -73,8 +76,8 @@
                                                     <select class="form-control" id="role_type" name="role_type">
 
                                                         @foreach ($data as $key => $value)
-                                                        <option value="{{ $key }}">{{ $value }}
-                                                        </option>
+                                                            <option value="{{ $key }}">{{ $value }}
+                                                            </option>
                                                         @endforeach
 
                                                     </select>
@@ -108,21 +111,23 @@
                                             <span id="genderError" class="text-danger small alert-msg"></span>
                                         </div>
 
-                                        <div class="row" id="doctor_section">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="speciality">Speciality</label>
-                                                    <textarea class="form-control" name="speciality" row="10" autocomplete="off">{{ old('speciality') }}</textarea>
+                                        @if(in_array('doctor',$data))
+                                            <div class="row" id="doctor_section">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="speciality">Speciality</label>
+                                                        <textarea class="form-control" name="speciality" row="10" autocomplete="off">{{ old('speciality') }}</textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6">
+                                                <div class="col-md-6">
 
-                                                <div class="form-group">
-                                                    <label for="credentials">Credentials</label>
-                                                    <textarea class="form-control" name="credentials" row="10" autocomplete="off">{{ old('credentials') }}</textarea>
+                                                    <div class="form-group">
+                                                        <label for="credentials">Credentials</label>
+                                                        <textarea class="form-control" name="credentials" row="10" autocomplete="off">{{ old('credentials') }}</textarea>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
 
                                         <div class="row">
                                             <div class="col-md-12">
@@ -181,21 +186,24 @@
                                             <span id="addressError" class="text-danger small alert-msg"></span>
                                         </div>
 
-                                        <div class="form-group" id="short_bio">
-                                            <label for="short_bio">Short Bio</label>
-                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ old('short_bio') }}</textarea>
-                                        </div>
+                                        @if(in_array('doctor',$data))
 
-                                        <div class="col-md-6" id="fees">
-                                            <div class="form-group">
-                                                <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
-                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" autocomplete="off" />
-
-                                                <span id="feesError" class="text-danger small alert-msg"></span>
+                                            <div class="form-group" id="short_bio">
+                                                <label for="short_bio">Short Bio</label>
+                                                <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ old('short_bio') }}</textarea>
                                             </div>
-                                        </div>
 
-                                        <!-- /.card-body -->
+                                            <div class="col-md-6" id="fees">
+                                                <div class="form-group">
+                                                    <label class="fees">Fees <b><sup class="text-danger">*</sup></b></label>
+                                                    <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" id="fees" value="{{ old('fees') }}" autocomplete="off" />
+
+                                                    <span id="feesError" class="text-danger small alert-msg"></span>
+                                                </div>
+                                            </div>
+
+                                        @endif
+
                                     </div>
                                 </div>
 
