@@ -31,7 +31,13 @@
                                     @if(count($users) < 5)
                                         <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
                                     @else
-                                        <button id="errorAlertBox" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</button>
+                                        <button id="singleErrorAlertBox" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</button>
+                                    @endif
+                                @elseif ($packageType == 'group')
+                                    @if(count($users) < 15)
+                                        <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
+                                    @else
+                                        <button id="groupErrorAlertBox" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</button>
                                     @endif
                                 @else
                                     <a href="{{ route('user.create') }}" class="btn btn-primary float-right" style="background-color: {{config('app.color')}}"><i class="fas fa-plus"></i> Add new</a>
@@ -142,8 +148,12 @@
             window.location.href = "{{ route('user.create') }}";
         });
 
-        $('#errorAlertBox').on('click',function(){
+        $('#singleErrorAlertBox').on('click',function(){
             alertify.alert('Sorry, You Can\'t Create More Than 5 Users!').setHeader('<em>Some errors occured</em>');
+        });
+
+        $('#groupErrorAlertBox').on('click',function(){
+            alertify.alert('Sorry, You Can\'t Create More Than 15 Users!').setHeader('<em>Some errors occured</em>');
         });
 
     });

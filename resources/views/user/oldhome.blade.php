@@ -29,18 +29,18 @@
                             {{ csrf_field() }}
                     </div>
                         @if($data['patientData'] != "" && count($data['patientData']) != 0)
-                            <div class="col-md-4 p-2">                    
+                            <div class="col-md-4 p-2">
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h3 class="card-title">Waiting List</h3>
                                     </div>
-                                    <div class="card-body"> 
+                                    <div class="card-body">
                                         @foreach ($data['patientData'] as $row)
                                             <div class="card" style="background:#FFFFFF;">
                                                 <div class="card-header border-0">
                                                     <h3 class="card-title bold">{{ $row->name }}&nbsp;&nbsp;&nbsp;
                                                         @if($row->gender ==1)
-                                                            <i class="fas fa-male fa-lg" style="color:blue;"></i> 
+                                                            <i class="fas fa-male fa-lg" style="color:blue;"></i>
                                                        @else
                                                             <i class="fas fa-female fa-lg" style="color:rgb(251, 123, 145);"></i>
                                                         @endif
@@ -71,9 +71,9 @@
                                                             <a href="{{ route('pos-patient', Crypt::encrypt($row->id)) }}" style="margin:10px ;"
                                                                 ><i class="fas fa-receipt fa-lg"></i>
                                                             </a>
-                                
+
                                                         @endif
-                                                            
+
                                                         @if($data['role'] == 1 || $data['role'] == 2)
 
                                                             <a href="#" class="btn btn-sm btn-tool" onclick="updateStatus(this)" id="status" data-status="5" data-patient-id = "{{ $row->id }}">
@@ -85,20 +85,20 @@
                                                     </div><br/>
                                                     <div class="float-left">
                                                         <div class="col-md-12">
-                                                            Age: {{ $row->age }}  
+                                                            Age: {{ $row->age }}
                                                         </div>
                                                         <div class="col-md-12">
-                                                            Father's Name: {{ $row->father_name }}   
-                                                        </div>  
-                                                        
+                                                            Father's Name: {{ $row->father_name }}
+                                                        </div>
+
                                                     </div>
                                                     <div class="float-right">
                                                         <br/>
                                                         <small>{{ $row->updated_at }}</small>
                                                     </div>
 
-                                                   
-                                                </div>                                            
+
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>
@@ -128,9 +128,9 @@
             }
         });
 
-        $('#main_search').keyup(function(){ 
+        $('#main_search').keyup(function(){
                 var query = $(this).val();
-                
+
                 var clinic_id = $("#clinic_code").val();
 
                 $.ajax({
@@ -138,7 +138,7 @@
                     url: '/search',
                     data: { key: query, clinic_id: clinic_id}
                 }).done(function( response ) {
-                   
+
                 if(query != '')
                 {
                     if(response == ''){
@@ -152,11 +152,11 @@
                         $("#addRoute").attr("href", "{{ route('patient.index') }}"+"?name="+query);
                     }
 
-                    $('#patientList').css("display","block");  
+                    $('#patientList').css("display","block");
                     $('#patientList').html(response);
                 }
                 else{
-                    $('#patientList').css("display","none");  
+                    $('#patientList').css("display","none");
                     $('#patientList').html("");
                 }
             });
@@ -173,7 +173,7 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-                
+
         $.ajax({
             type: "POST",
             url: '/updateStatus',

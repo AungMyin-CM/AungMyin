@@ -48,6 +48,8 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'submitForgetP
 Route::get('/reset-password/{email}/{token}', [ForgotPasswordController::class, 'showResetPassword'])
     ->middleware('guest')
     ->name('password.reset');
+
+
 Route::post('/reset-password', [ForgotPasswordController::class, 'submitResetPassword'])->middleware('guest')->name('password.update');
 
 Route::get('/', [HomeController::class, 'welcome'])->name('aung-myin.welcome');

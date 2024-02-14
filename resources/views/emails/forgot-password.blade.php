@@ -82,7 +82,8 @@
 
                         <h1 style="font-size: 20px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 600; text-decoration: none; color: #000000;">Reset Password</h1>
 
-                        <p style="font-size: 15px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #919293;">You can reset your password from this link: <a target="_blank" style="text-decoration: underline; color: #000000;" href="{{ route('password.reset', ['email' => encrypt($email), 'token' => $token]) }}"><small style="text-decoration: underline;">Reset Password</small></a></p>
+                        {{-- <p style="font-size: 15px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #919293;">You can reset your password from this link: <a target="_blank" style="text-decoration: underline; color: #000000;" href="{{ route('password.reset', ['email' => encrypt($email), 'token' => $token]) }}"><small style="text-decoration: underline;">Reset Password</small></a></p> --}}
+                        <p style="font-size: 15px; line-height: 24px; font-family: 'Helvetica', Arial, sans-serif; font-weight: 400; text-decoration: none; color: #919293;">You can reset your password from this link: <a target="_blank" style="text-decoration: underline; color: #000000;" href="{{ 'http://localhost:8000/reset-password/'. encrypt($email).'/'.$token }}"><small style="text-decoration: underline;">Reset Password</small></a></p>
                     </td>
                 </tr>
             </tbody>

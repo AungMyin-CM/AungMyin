@@ -344,7 +344,7 @@ html {
                         <div class="container-fluid">
                             <div class="container">
                                 <div class="container">
-                                    
+
                                     <div class="switch-wrapper mt-2">
                                       <input id="monthly" type="radio" name="switch" value="month" checked >
                                       <input id="yearly" type="radio" name="switch" value="year">
@@ -366,7 +366,7 @@ html {
                                                 </div>
                                               </div>
                                             </th>
-                                           
+
                                             @foreach($data as $package)
                                               <th>
                                                   <div class="heading">{{ $package->name }}</div>
@@ -377,9 +377,9 @@ html {
                                                   <div class="price yearly hide">
                                                     <div class="amount">{{ number_format(($package->price * 12) - $package->price) }}<span><del>{{ number_format($package->price) * 12 }}</del></span></div>
                                                     {{-- <div class="billing-msg">billed annually</div> --}}
-                                    
+
                                                   </div>
-                                    
+
                                                   <button type="button"><a href="{{route('clinic.info','_token='.Crypt::encrypt($package->id).'&value=1')}}" class="nav-link" id="package_link">Get started</a></button><br>
                                                   <small>Free for {{$package->trialPeriod}} days</small>
                                                 </div>
@@ -387,7 +387,7 @@ html {
                                             @endforeach
                                           </tr>
                                         </thead>
-                                        <tbody> 
+                                        <tbody>
                                           <tr>
                                             <td>Patient Record</td>
                                             <td>
@@ -460,7 +460,7 @@ html {
                                               </svg>
                                             </td>
                                           </tr>
-                                          
+
                                           <tr>
                                             <td>Users</td>
                                             <td>
@@ -477,7 +477,7 @@ html {
                                       </table>
                                     </div>
                                   </div>
-                                  
+
                             </div>
                         </div>
                     </section>
@@ -495,15 +495,15 @@ html {
           $('document').ready(function(){
 
             var val = $(':radio[name=switch]:checked').val();
-            
+
             var href = $("#package_link").attr('href');
             $("#package_link").attr('href',href+'&time_value='+val);
 
-            
+
           });
 
           $(":radio[name=switch]").click(function(){
-              
+
             var val = $(':radio[name=switch]:checked').val();
             var href = $("#package_link").attr('href');
 

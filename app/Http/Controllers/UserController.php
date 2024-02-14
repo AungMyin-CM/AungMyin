@@ -18,9 +18,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 
 use App\Http\Requests\UserRegisterRequest;
+use App\Jobs\SendOtpJob;
 use Illuminate\Contracts\Encryption\DecryptException;
-
-
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -158,11 +159,14 @@ class UserController extends Controller
             'body' => $message,
             'otp' => $otp,
         ];
-        Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
-            $message->to($mail_data['recipient'])
-                ->from($mail_data['fromEmail'], $mail_data['fromName'])
-                ->subject($mail_data['subject']);
-        });
+
+        // Mail::send('email-template', $mail_data, function ($message) use ($mail_data) {
+        //     $message->to($mail_data['recipient'])
+        //         ->from($mail_data['fromEmail'], $mail_data['fromName'])
+        //         ->subject($mail_data['subject']);
+        // });
+
+        SendOtpJob::dispatch($mail_data);
 
         echo "Email Sent";
     }

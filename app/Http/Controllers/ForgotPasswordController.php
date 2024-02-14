@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ResetPasswordMailJob;
 use App\Mail\PasswordResetMail;
 use Carbon\Carbon;
 use App\Models\User;
@@ -41,7 +42,8 @@ class ForgotPasswordController extends Controller
             'subject' => 'Reset Password',
         ];
 
-        Mail::to($recipient)->send(new PasswordResetMail($mailData));
+        // Mail::to($recipient)->send(new PasswordResetMail($mailData));
+        ResetPasswordMailJob::dispatch($recipient,$mailData);
 
         return back()->with('success', 'We have emailed your password reset link!');
     }
