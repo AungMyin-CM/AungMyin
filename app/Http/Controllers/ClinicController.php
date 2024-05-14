@@ -342,7 +342,11 @@ class ClinicController extends Controller
 
         $packageType = Package::where('id', $matchingPackageId)->pluck('type')->first();
 
-        $users = UserClinic::where('clinic_id', $clinic_id)->get();
+        // $users = UserClinic::where('clinic_id', $clinic_id)->get();
+        $users = UserClinic::where('clinic_id', $clinic_id)
+           ->join('user', 'user.id', '=', 'user_clinic.user_id')
+           ->where('user.status', 1)
+           ->get();
 
         $userRoleIds = [];
 

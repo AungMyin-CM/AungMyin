@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DictionaryRequest;
 use App\Models\Dictionary;
-
-
+use App\Models\UserClinic;
 use Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
@@ -24,9 +23,20 @@ class DictionaryController extends Controller
             abort(403);
         }
 
-        $dictData = Dictionary::where("user_id", Auth::guard('user')
-            ->user()['id'])
-            ->get();
+        // $dictData = Dictionary::where("user_id", Auth::guard('user')
+        //     ->user()['id'])
+        //     ->get();
+
+
+        $user_id = Auth::user()->id;
+
+        $clinic_ids = UserClinic::where('user_id', $user_id)->pluck('clinic_id');
+
+        $dictData = Dictionary::select('dictionary.*')
+                               ->join('user_clinic', 'dictionary.user_id', '=', 'user_clinic.user_id')
+                               ->whereIn('user_clinic.clinic_id', $clinic_ids)
+                               ->get();
+
         return view('dictionary/index')->with('data', $dictData);
     }
 
@@ -114,7 +124,7 @@ class DictionaryController extends Controller
 
             $assign_medicines = '';
             for ($x = 0; $x < $count_product; $x++) {
-                $assign_medicines .= (isset($med_id[$x]) ? $med_id[$x] : 'xx') . '^' .  $request->med_name[$x] . '^' . $request->med_qty[$x] . '^' . $request->days[$x] . '<br>';
+                $assign_medicines .= (isset($med_id[$x]) ? $med_id[$x] : 'xx') . '^' .  $request->med_name[$x] . '^' . $request->quantity[$x] . '^' . $request->days[$x] . '<br>';
             }
             Dictionary::whereId($id)->update([
                 'code' => $request->code,
@@ -124,7 +134,9 @@ class DictionaryController extends Controller
             ]);
         } else {
             $med_data = null;
-            Dictionary::whereId($id)->update(['code' => $request->code, 'meaning' => $request->meaning, 'isMed' => $med_data]);
+            Dictionary::whereId($id)->update([
+                'code' => $request->code,
+                'meaning' => $request->meaning, 'isMed' => $med_data]);
         }
 
 

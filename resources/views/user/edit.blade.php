@@ -182,20 +182,22 @@
                                         </div>
 
 
-
-                                        <div class="form-group" id="short_bio" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
-                                            <label for="short_bio">Short Bio</label>
-                                            <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ $user->short_bio }}</textarea>
-                                        </div>
-
-                                        <div class="col-md-6" id="fees" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
-                                            <div class="form-group">
-                                                <label class="fees">Fees</label>
-                                                <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" autocomplete="off" />
-
-                                                @error('fees') <span class="text-danger small">{{ $message }}</span>@enderror
+                                        @if ($role->role_type == 1)
+                                            <div class="form-group" id="short_bio" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
+                                                <label for="short_bio">Short Bio</label>
+                                                <textarea class="form-control" placeholder="Doctor's Short Bio" name="short_bio" autocomplete="off">{{ $user->short_bio }}</textarea>
                                             </div>
-                                        </div>
+
+                                            <div class="col-md-6" id="fees" {{$role->role_type == 1 || 5? '' : 'hidden'}}>
+                                                <div class="form-group">
+                                                    <label class="fees">Fees</label>
+                                                    <input type="number" pattern="{0-9}" class="form-control" name="fees" placeholder="Fees" value="{{ $user->fees }}" autocomplete="off" />
+
+                                                    @error('fees') <span class="text-danger small">{{ $message }}</span>@enderror
+                                                </div>
+                                            </div>
+                                        @endif
+
 
 
                                         <!-- /.card-body -->

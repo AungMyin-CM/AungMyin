@@ -65,7 +65,15 @@ class UserController extends Controller
 
         $packageType = Package::where('id', $matchingPackageId)->pluck('type')->first();
 
-        $users = UserClinic::where('clinic_id', $clinic_id)->get();
+        // $users = UserClinic::where('clinic_id', $clinic_id)->where('status','1')->get();
+        // dd($users->toArray());
+
+        $users = UserClinic::where('clinic_id', $clinic_id)
+                           ->join('user', 'user.id', '=', 'user_clinic.user_id')
+                           ->where('user.status', 1)
+                           ->get();
+
+        // dd($users->toArray());
 
         return view('user/index')->with('data', $userData)->with('packageType',$packageType)->with('users',$users);
     }
