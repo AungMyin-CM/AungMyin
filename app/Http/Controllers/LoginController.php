@@ -24,13 +24,26 @@ class LoginController extends Controller
         // $this->middleware('guest:clinic')->except('userlogout');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('login/user');
+
+        // dd($request->all());
+        return view('login/user')->with('request',$request);
     }
 
     public function login(LoginRequest $request)
     {
+
+
+        // if ($request->has('redirect')){
+        //     dd('there is session');
+        //     $redirect = Session::get('redirect');
+        //     Session::forget('redirect');
+        //     return redirect()->route('package.selection');
+        // }else{
+        //     dd('not');
+        // }
+
         if ($request->validated()) {
             $data = User::where("email", $request->email)->get()->first();
 
@@ -46,9 +59,24 @@ class LoginController extends Controller
                     $count_user_clinic = UserClinic::where('user_id', Auth::id())->count();
 
                     if ($count_user_clinic == 1) {
+
+                        if (request()->has('redirect')) {
+
+                            // $redirect = Session::get('redirect');
+                            // Session::forget('redirect');
+                            return redirect()->route('package.selection');
+                        }
+
                         return redirect('/clinic-system/' . Crypt::encrypt($user_clinic->clinic_id))->with('message', "");
                     } else {
-                        return redirect('/home');
+
+                        if (request()->has('redirect')) {
+                            return redirect()->route('package.selection');
+                        }else {
+                            return redirect('/home');
+                        }
+
+
                     }
                 } else {
                     return back()->withErrors(['email' => 'Invalid Credentials!'])->onlyInput('email');

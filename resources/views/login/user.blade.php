@@ -23,6 +23,17 @@
                                 <form action="{{ route('login') }}" class="row g-4 mb-2" method="post">
                                     @csrf
                                     <div class="col-12 mb-1">
+
+                                        {{-- @php
+                                            if($request->has('redirect')){
+                                                dd('output');
+                                            }
+                                        @endphp --}}
+
+                                        @if($request->has('redirect'))
+                                            <input type="hidden" name="redirect">
+                                        @endif
+
                                         <label>Email<span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <div class="input-group-append">
@@ -49,7 +60,14 @@
                                     </div>
                                 </form>
                                 <div class="card-footer text-muted text-center">
-                                    New user?<a href="{{ route('register.user') }}" class="" style="color:  {{config('app.color')}}"> Create an account</a>
+
+
+                                    @if($request->has('redirect'))
+
+                                        New user?<a href="{{ route('register.user', ['redirect' => 'buy']) }}" class="" style="color:  {{config('app.color')}}"> Create an account</a>
+                                    @else
+                                        New user?<a href="{{ route('register.user') }}" class="" style="color:  {{config('app.color')}}"> Create an account</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -180,7 +180,13 @@
                 <li class="na">Pharetra massa</li>
                 <li class="na">Massa ultricies mi</li> -->
               </ul>
-              <a href="#" class="btn-buy">Buy Now</a>
+              {{-- <a href="{{route('package.selection')}}" class="btn-buy">Buy Now</a> --}}
+              {{-- <a href="{{ route('package.selection')}}?from_package_selection=true" class="btn-buy">Buy Now</a> --}}
+              <a href="{{ route('login', ['redirect' => 'buy']) }}" class="btn-buy">
+                <input type="hidden" name="redirect">
+                Buy Now
+              </a>
+
             </div>
           </div>
 
@@ -198,7 +204,10 @@
                 <li>Pharetra massa</li>
                 <li class="na">Massa ultricies mi</li> -->
               </ul>
-              <a href="#" class="btn-buy">Buy Now</a>
+              <a href="{{route('login',['redirect' => 'buy'])}}" class="btn-buy">
+                <input type="hidden" name="redirect">
+                Buy Now
+              </a>
             </div>
           </div>
         </div>

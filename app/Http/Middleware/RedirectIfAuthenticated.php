@@ -22,7 +22,7 @@ class RedirectIfAuthenticated
         if (Auth::guard('user')->check()) {
             return redirect('home');
         }
-        
+
         return $next($request);
     }
 }
